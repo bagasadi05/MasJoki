@@ -22,6 +22,9 @@ interface HalamanProps {
   params: Promise<{ layanan: string }>;
 }
 
+// Halaman SEO statis: blocking lebih sederhana daripada memecah Suspense.
+export const instant = false;
+
 function cariLayanan(slug: string) {
   return SLUG.has(slug as ServiceId) ? getService(slug) : null;
 }

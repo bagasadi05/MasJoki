@@ -1,0 +1,200 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ *
+ * Token
+ * ------------------------------------------------------------------ */
+
+@theme {
+  --color-paper: #fbfaf6;
+  --color-paper-2: #f2f0e6;
+  --color-ink: #101a33;
+  --color-ink-soft: #3c465c;
+  --color-muted: #6e7480;
+  --color-line: #ded9c8;
+  --color-line-strong: #c9c2ac;
+  --color-brand: #1f3be0;
+  --color-brand-dark: #152dae;
+  --color-brand-soft: #e7eaff;
+  --color-stabilo: #ffe44d;
+  --color-stabilo-soft: #fff6c2;
+
+  --font-display: var(--font-bricolage), "Times New Roman", serif;
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-nota: 6px;
+}
+
+/* ------------------------------------------------------------------ *
+ * Dasar
+ * ------------------------------------------------------------------ */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: var(--color-stabilo);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  section[id] {
+    scroll-margin-top: 96px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Nota: kartu harga dengan tepi bawah bergerigi
+ * ------------------------------------------------------------------ */
+
+.nota {
+  position: relative;
+  background-color: #fffefb;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-nota) var(--radius-nota) 0 0;
+  box-shadow:
+    0 1px 0 rgba(16, 26, 51, 0.04),
+    0 18px 40px -24px rgba(16, 26, 51, 0.35);
+}
+
+.nota::after {
+  content: "";
+  position: absolute;
+  inset-inline: -1px;
+  bottom: -9px;
+  height: 10px;
+  background: #fffefb;
+  border-inline: 1px solid var(--color-line);
+  -webkit-mask-image: radial-gradient(circle at 8px 0, transparent 7px, #000 7.5px);
+  mask-image: radial-gradient(circle at 8px 0, transparent 7px, #000 7.5px);
+  -webkit-mask-size: 16px 100%;
+  mask-size: 16px 100%;
+  -webkit-mask-repeat: repeat-x;
+  mask-repeat: repeat-x;
+}
+
+/* ------------------------------------------------------------------ *
+ * Potongan visual lain
+ * ------------------------------------------------------------------ */
+
+.stempel {
+  display: inline-block;
+  border: 2px solid currentColor;
+  border-radius: 3px;
+  padding: 0.3rem 0.6rem;
+  color: var(--color-brand);
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  line-height: 1;
+  text-transform: uppercase;
+  transform: rotate(-6deg);
+  opacity: 0.82;
+  mix-blend-mode: multiply;
+  box-shadow: inset 0 0 0 2px rgba(31, 59, 224, 0.14);
+  white-space: nowrap;
+}
+
+.leader {
+  flex: 1 1 auto;
+  min-width: 1.5rem;
+  margin: 0 0.65rem 0.28rem;
+  border-bottom: 1px dotted var(--color-line-strong);
+  transform: translateY(-0.1rem);
+}
+
+.kertas-titik {
+  background-image: radial-gradient(
+    circle,
+    rgba(16, 26, 51, 0.11) 1px,
+    transparent 1px
+  );
+  background-size: 22px 22px;
+}
+
+.garis-stabilo {
+  background-image: linear-gradient(
+    to top,
+    var(--color-stabilo) 0%,
+    var(--color-stabilo) 38%,
+    transparent 38%
+  );
+  background-repeat: no-repeat;
+  padding-inline: 0.1em;
+}
+
+/* ------------------------------------------------------------------ *
+ * Gerak: satu momen saat halaman dibuka, lalu diam
+ * ------------------------------------------------------------------ */
+
+@keyframes nota-cetak {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes stempel-turun {
+  0% {
+    opacity: 0;
+    transform: rotate(-16deg) scale(1.5);
+  }
+  65% {
+    opacity: 0.9;
+    transform: rotate(-6deg) scale(0.97);
+  }
+  100% {
+    opacity: 0.82;
+    transform: rotate(-6deg) scale(1);
+  }
+}
+
+.nota-masuk {
+  animation: nota-cetak 0.85s cubic-bezier(0.22, 0.72, 0.2, 1) both;
+}
+
+.stempel-masuk {
+  animation: stempel-turun 0.5s 0.55s cubic-bezier(0.22, 0.72, 0.2, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .nota-masuk,
+  .stempel-masuk {
+    animation: none;
+  }
+}

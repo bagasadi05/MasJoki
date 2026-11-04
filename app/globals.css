@@ -1,43 +1,43 @@
 @import "tailwindcss";
 
 /* ------------------------------------------------------------------ *
- * Token
+ * Token Tema
  * ------------------------------------------------------------------ */
 
 @theme {
-  --color-paper: #fbfaf6;
-  --color-paper-2: #f2f0e6;
-  --color-ink: #101a33;
-  --color-ink-soft: #3c465c;
-  --color-muted: #686e79;
-  --color-line: #ded9c8;
-  --color-line-strong: #c9c2ac;
-  --color-brand: #1f3be0;
-  --color-brand-dark: #152dae;
-  --color-brand-soft: #e7eaff;
-  --color-stabilo: #ffe44d;
-  --color-stabilo-soft: #fff6c2;
+  --color-paper: #fcfbf7;
+  --color-paper-2: #f4f1e8;
+  --color-ink: #0b1329;
+  --color-ink-soft: #334155;
+  --color-muted: #64748b;
+  --color-line: #e2ded5;
+  --color-line-strong: #cac4b5;
+  --color-brand: #2563eb;
+  --color-brand-dark: #1d4ed8;
+  --color-brand-soft: #eff6ff;
+  --color-stabilo: #fde047;
+  --color-stabilo-soft: #fef9c3;
 
-  /* Aksen layanan: chroma rendah, dipakai untuk penanda kecil dan wash tipis. */
-  --color-mint: #2a6b55;
-  --color-mint-soft: #e6f1ea;
-  --color-koral: #9e4e42;
-  --color-koral-soft: #f6e7e2;
-  --color-lilac: #6556a3;
-  --color-lilac-soft: #ece7f7;
-  --color-amber: #8a5d12;
-  --color-amber-soft: #f7edd3;
-  --color-langit: #2b6a97;
-  --color-langit-soft: #e4eff7;
-  --color-olive: #5f6f2a;
-  --color-olive-soft: #eef1dc;
-  --color-rose: #9d4d6b;
-  --color-rose-soft: #f6e7ed;
+  /* 8 Warna Layanan Mas Joki (Modern, Vivid, Ramah & Berkontras Tinggi) */
+  --color-mint: #059669;
+  --color-mint-soft: #ecfdf5;
+  --color-koral: #ea580c;
+  --color-koral-soft: #fff7ed;
+  --color-lilac: #7c3aed;
+  --color-lilac-soft: #f5f3ff;
+  --color-amber: #d97706;
+  --color-amber-soft: #fffbeb;
+  --color-langit: #0284c7;
+  --color-langit-soft: #f0f9ff;
+  --color-olive: #65a30d;
+  --color-olive-soft: #f7fee7;
+  --color-rose: #db2777;
+  --color-rose-soft: #fdf2f8;
 
-  --font-display: var(--font-bricolage), "Times New Roman", serif;
+  --font-display: var(--font-bricolage), system-ui, sans-serif;
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
 
-  --radius-nota: 6px;
+  --radius-nota: 12px;
 }
 
 /* ------------------------------------------------------------------ *
@@ -59,14 +59,14 @@
   }
 
   ::selection {
-    background-color: var(--color-stabilo);
-    color: var(--color-ink);
+    background-color: #fde047;
+    color: #0b1329;
   }
 
   :focus-visible {
     outline: 2px solid var(--color-brand);
     outline-offset: 3px;
-    border-radius: 2px;
+    border-radius: 6px;
   }
 
   a,
@@ -81,15 +81,16 @@
 
   section[id],
   #konten {
-    scroll-margin-top: 96px;
+    scroll-margin-top: 88px;
   }
 
   h1,
   h2,
-  h3 {
+  h3,
+  h4 {
     font-family: var(--font-display);
-    font-weight: 600;
-    letter-spacing: -0.02em;
+    font-weight: 700;
+    letter-spacing: -0.025em;
     text-wrap: balance;
   }
 
@@ -99,26 +100,34 @@
 }
 
 /* ------------------------------------------------------------------ *
- * Nota: kartu harga dengan tepi bawah bergerigi
+ * Nota: Kwitansi Modern Interaktif
  * ------------------------------------------------------------------ */
 
 .nota {
   position: relative;
-  background-color: #fffefb;
+  background-color: #ffffff;
   border: 1px solid var(--color-line);
   border-radius: var(--radius-nota) var(--radius-nota) 0 0;
   box-shadow:
-    0 1px 0 rgba(16, 26, 51, 0.04),
-    0 18px 40px -24px rgba(16, 26, 51, 0.35);
+    0 4px 6px -1px rgba(15, 23, 42, 0.05),
+    0 20px 35px -10px rgba(37, 99, 235, 0.12),
+    0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+}
+
+.nota:hover {
+  box-shadow:
+    0 12px 20px -3px rgba(15, 23, 42, 0.08),
+    0 28px 45px -12px rgba(37, 99, 235, 0.18);
 }
 
 .nota::after {
   content: "";
   position: absolute;
   inset-inline: -1px;
-  bottom: -9px;
-  height: 10px;
-  background: #fffefb;
+  bottom: -11px;
+  height: 12px;
+  background: #ffffff;
   border-inline: 1px solid var(--color-line);
   -webkit-mask-image: radial-gradient(circle at 8px 0, transparent 7px, #000 7.5px);
   mask-image: radial-gradient(circle at 8px 0, transparent 7px, #000 7.5px);
@@ -129,25 +138,26 @@
 }
 
 /* ------------------------------------------------------------------ *
- * Potongan visual lain
+ * Ornamen & Efek Visual
  * ------------------------------------------------------------------ */
 
 .stempel {
   display: inline-block;
   border: 2px solid currentColor;
-  border-radius: 3px;
-  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  padding: 0.35rem 0.65rem;
   color: var(--color-brand);
   font-family: var(--font-sans);
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.22em;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
   line-height: 1;
   text-transform: uppercase;
-  transform: rotate(-6deg);
-  opacity: 0.82;
-  mix-blend-mode: multiply;
-  box-shadow: inset 0 0 0 2px rgba(31, 59, 224, 0.14);
+  transform: rotate(-5deg);
+  opacity: 0.92;
+  background-color: rgba(239, 246, 255, 0.7);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 2px 8px -2px rgba(37, 99, 235, 0.25);
   white-space: nowrap;
 }
 
@@ -155,33 +165,31 @@
   flex: 1 1 auto;
   min-width: 1.5rem;
   margin: 0 0.65rem 0.28rem;
-  border-bottom: 1px dotted var(--color-line-strong);
+  border-bottom: 1.5px dotted var(--color-line-strong);
   transform: translateY(-0.1rem);
 }
 
 .kertas-titik {
   background-image: radial-gradient(
     circle,
-    rgba(16, 26, 51, 0.11) 1px,
-    transparent 1px
+    rgba(37, 99, 235, 0.09) 1.5px,
+    transparent 1.5px
   );
-  background-size: 22px 22px;
+  background-size: 24px 24px;
 }
 
-/* Pita warna: kedelapan warna layanan dalam garis rata (bukan gradasi halus).
-   Taxonomy warna brand — dipakai seadanya: bawah header, mahkota blok CTA,
-   atas footer. */
+/* Pita warna: 8 spektrum warna layanan */
 .pita {
   background-image: linear-gradient(
     90deg,
-    var(--color-brand) 0 12.5%,
-    var(--color-mint) 12.5% 25%,
-    var(--color-koral) 25% 37.5%,
-    var(--color-lilac) 37.5% 50%,
-    var(--color-amber) 50% 62.5%,
-    var(--color-langit) 62.5% 75%,
-    var(--color-olive) 75% 87.5%,
-    var(--color-rose) 87.5% 100%
+    #2563eb 0 12.5%,
+    #059669 12.5% 25%,
+    #ea580c 25% 37.5%,
+    #7c3aed 37.5% 50%,
+    #d97706 50% 62.5%,
+    #0284c7 62.5% 75%,
+    #65a30d 75% 87.5%,
+    #db2777 87.5% 100%
   );
 }
 
@@ -189,47 +197,126 @@
   background-image: linear-gradient(
     to top,
     var(--color-stabilo) 0%,
-    var(--color-stabilo) 38%,
-    transparent 38%
+    var(--color-stabilo) 45%,
+    transparent 45%
   );
   background-repeat: no-repeat;
-  padding-inline: 0.1em;
+  padding-inline: 0.2em;
+  border-radius: 4px;
+}
+
+/* Glow latar belakang halus */
+.aurora-bg {
+  background: radial-gradient(circle at 12% 15%, rgba(37, 99, 235, 0.09), transparent 45%),
+              radial-gradient(circle at 88% 22%, rgba(124, 58, 237, 0.09), transparent 42%),
+              radial-gradient(circle at 50% 80%, rgba(5, 150, 105, 0.08), transparent 48%);
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
 }
 
 /* ------------------------------------------------------------------ *
- * Gerak: satu momen saat halaman dibuka, lalu diam
+ * Animasi Halus & Dinamis
  * ------------------------------------------------------------------ */
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes float-delayed {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
 
 @keyframes nota-cetak {
   from {
     clip-path: inset(0 0 100% 0);
+    opacity: 0.6;
+    transform: translateY(8px);
   }
   to {
     clip-path: inset(0 0 0 0);
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
 @keyframes stempel-turun {
   0% {
     opacity: 0;
-    transform: rotate(-16deg) scale(1.5);
+    transform: rotate(-16deg) scale(1.6);
   }
   65% {
-    opacity: 0.9;
-    transform: rotate(-6deg) scale(0.97);
+    opacity: 1;
+    transform: rotate(-5deg) scale(0.96);
   }
   100% {
-    opacity: 0.82;
-    transform: rotate(-6deg) scale(1);
+    opacity: 0.92;
+    transform: rotate(-5deg) scale(1);
   }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.75;
+    transform: scale(1.08);
+  }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float-delayed 4.5s 1.5s ease-in-out infinite;
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 35s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
 }
 
 .nota-masuk {
-  animation: nota-cetak 0.85s cubic-bezier(0.22, 0.72, 0.2, 1) both;
+  animation: nota-cetak 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .stempel-masuk {
-  animation: stempel-turun 0.5s 0.55s cubic-bezier(0.22, 0.72, 0.2, 1) both;
+  animation: stempel-turun 0.5s 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.live-pulse {
+  animation: pulse-subtle 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -237,8 +324,12 @@
     scroll-behavior: auto;
   }
 
+  .animate-float,
+  .animate-float-delayed,
+  .animate-marquee,
   .nota-masuk,
-  .stempel-masuk {
+  .stempel-masuk,
+  .live-pulse {
     animation: none;
   }
 }

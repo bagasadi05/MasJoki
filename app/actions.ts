@@ -1,12 +1,18 @@
 "use server";
 
-import { pesanPesanan, pesanPenawaran } from "@/lib/pesan";
+import { pesanPesanan, pesanOrderSpesifik, pesanPenawaran } from "@/lib/pesan";
 import { computePrice } from "@/lib/pricing";
 import { cekRateLimit } from "@/lib/rate-limit";
 import { getService } from "@/lib/services";
 import { waLink } from "@/lib/site";
 import type { ActionResult } from "@/lib/types";
-import { fieldErrors, firstIssue, orderSchema, quoteSchema } from "@/lib/validation";
+import {
+  fieldErrors,
+  firstIssue,
+  orderSchema,
+  specializedOrderSchema,
+  quoteSchema,
+} from "@/lib/validation";
 
 /**
  * Tidak ada database. Server action ini hanya memvalidasi isian, menghitung
@@ -43,11 +49,17 @@ export async function submitOrder(
   const blokir = await blokirKalauBanjir();
   if (blokir) return blokir;
 
+  const rawAddons = formData
+    .getAll("addons")
+    .map((item) => String(item))
+    .filter(Boolean);
+
   const parsed = orderSchema.safeParse({
     serviceId: formData.get("serviceId"),
     qty: formData.get("qty"),
     deadlineId: formData.get("deadlineId"),
     difficultyId: formData.get("difficultyId"),
+    addons: rawAddons,
     name: formData.get("name"),
     whatsapp: formData.get("whatsapp"),
     fileUrl: formData.get("fileUrl") ?? "",
@@ -70,6 +82,7 @@ export async function submitOrder(
     data.qty,
     data.deadlineId,
     data.difficultyId,
+    data.addons,
   );
 
   const pesan = pesanPesanan({
@@ -85,6 +98,79 @@ export async function submitOrder(
     status: "ok",
     message:
       "Pesanan siap dikirim. Buka WhatsApp dan tekan kirim — admin akan mengonfirmasi harga sebelum kamu bayar.",
+    waUrl: waLink(pesan),
+  };
+}
+
+export async function submitSpecializedOrder(
+  _prev: ActionResult | null,
+  formData: FormData,
+): Promise<ActionResult> {
+  if (isBot(formData)) {
+    return { status: "ok", message: "Pesanan diterima." };
+  }
+
+  const blokir = await blokirKalauBanjir();
+  if (blokir) return blokir;
+
+  const rawAddons = formData
+    .getAll("addons")
+    .map((item) => String(item))
+    .filter(Boolean);
+
+  const parsed = specializedOrderSchema.safeParse({
+    serviceId: formData.get("serviceId"),
+    qty: formData.get("qty"),
+    deadlineId: formData.get("deadlineId"),
+    difficultyId: formData.get("difficultyId"),
+    addons: rawAddons,
+    name: formData.get("name"),
+    whatsapp: formData.get("whatsapp"),
+    fileUrl: formData.get("fileUrl") ?? "",
+    notes: formData.get("notes") ?? "",
+    checkerTool: formData.get("checkerTool") ?? "",
+    currentScore: formData.get("currentScore") ?? "",
+    targetScore: formData.get("targetScore") ?? "",
+    citationStyle: formData.get("citationStyle") ?? "",
+    customPreference: formData.get("customPreference") ?? "",
+  });
+
+  if (!parsed.success) {
+    return {
+      status: "error",
+      message: firstIssue(parsed.error),
+      fieldErrors: fieldErrors(parsed.error),
+    };
+  }
+
+  const data = parsed.data;
+  const service = getService(data.serviceId);
+  const price = computePrice(
+    service,
+    data.qty,
+    data.deadlineId,
+    data.difficultyId,
+    data.addons,
+  );
+
+  const pesan = pesanOrderSpesifik({
+    service,
+    price,
+    name: data.name,
+    whatsapp: data.whatsapp,
+    fileUrl: data.fileUrl,
+    notes: data.notes,
+    checkerTool: data.checkerTool,
+    currentScore: data.currentScore,
+    targetScore: data.targetScore,
+    citationStyle: data.citationStyle,
+    customPreference: data.customPreference,
+  });
+
+  return {
+    status: "ok",
+    message:
+      "Pesanan siap dikirim ke WhatsApp admin. Rincian tugas lengkap sudah terangkum otomatis.",
     waUrl: waLink(pesan),
   };
 }

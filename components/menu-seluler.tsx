@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { ArrowRight, ExternalLink, Menu, X } from "lucide-react";
 import type { navigasi } from "@/lib/nav";
 import { pembayaran, waLink } from "@/lib/site";
 
@@ -15,13 +17,13 @@ export function MenuSeluler({
   items: typeof navigasi;
 }) {
   const [buka, setBuka] = useState(false);
+  const pathname = usePathname();
   const tombolRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!buka) return;
 
-    // Fokuskan tautan pertama supaya pengguna keyboard tidak tersesat.
     const tautanPertama =
       panelRef.current?.querySelector<HTMLElement>("a, button");
     tautanPertama?.focus();
@@ -61,65 +63,52 @@ export function MenuSeluler({
         aria-controls="menu-seluler"
         aria-label={buka ? "Tutup menu" : "Buka menu"}
         onClick={() => setBuka((nilai) => !nilai)}
-        className="grid size-11 place-items-center rounded-md border border-line bg-white text-ink-soft transition-colors hover:border-line-strong hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+        className="grid size-10 place-items-center rounded-xl border border-line bg-white text-ink-soft transition-colors hover:border-line-strong hover:text-ink cursor-pointer"
       >
-        <svg
-          aria-hidden
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-          className="size-5"
-        >
-          {buka ? (
-            <path d="M6 6l12 12M18 6L6 18" />
-          ) : (
-            <path d="M4 7h16M4 12h16M4 17h16" />
-          )}
-        </svg>
+        {buka ? (
+          <X className="size-5" />
+        ) : (
+          <Menu className="size-5" />
+        )}
       </button>
 
       {buka ? (
         <div
           ref={panelRef}
           id="menu-seluler"
-          className="absolute inset-x-0 top-full max-h-[calc(100dvh-4rem)] overflow-y-auto border-b border-line bg-paper shadow-[0_24px_40px_-30px_rgba(16,26,51,0.5)]"
+          className="absolute inset-x-0 top-full max-h-[calc(100dvh-4rem)] overflow-y-auto border-b border-line bg-paper shadow-2xl animate-fade-in"
         >
-          <nav aria-label="Navigasi seluler" className="mx-auto max-w-6xl px-5 sm:px-8">
+          <nav aria-label="Navigasi seluler" className="mx-auto max-w-6xl px-5 py-4 sm:px-8">
             <ul className="divide-y divide-line">
-              {items.map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    onClick={() => setBuka(false)}
-                    className="flex items-center justify-between py-3.5 text-[0.9rem] text-ink-soft transition-colors hover:text-brand"
-                  >
-                    {item.label}
-                    <span aria-hidden className="text-muted">
-                      →
-                    </span>
-                  </Link>
-                </li>
-              ))}
-              <li>
-                <Link
-                  href="/jasa"
-                  onClick={() => setBuka(false)}
-                  className="flex items-center justify-between py-3.5 text-[0.9rem] text-ink-soft transition-colors hover:text-brand"
-                >
-                  Semua layanan
-                  <span aria-hidden className="text-muted">
-                    →
-                  </span>
-                </Link>
-              </li>
+              {items.map((item) => {
+                const aktif =
+                  item.href === "/"
+                    ? pathname === "/"
+                    : pathname.startsWith(item.href);
+
+                return (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      onClick={() => setBuka(false)}
+                      className={`flex items-center justify-between py-3.5 text-[0.92rem] font-bold transition-colors ${
+                        aktif
+                          ? "text-brand"
+                          : "text-ink-soft hover:text-brand"
+                      }`}
+                    >
+                      <span>{item.label}</span>
+                      <ArrowRight className="size-4 text-muted" />
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
 
-            <div className="py-4">
+            <div className="mt-4 border-t border-line pt-4">
               <p className="text-[0.72rem] leading-relaxed text-muted">
-                Pembayaran {pembayaran.metode.join(" · ")} ke{" "}
-                <span className="font-mono tabular-nums text-ink-soft">
+                Pembayaran resmi {pembayaran.metode.join(" · ")} ke{" "}
+                <span className="font-mono font-bold text-ink">
                   {pembayaran.nomor}
                 </span>
               </p>
@@ -128,10 +117,10 @@ export function MenuSeluler({
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setBuka(false)}
-                className="mt-2.5 inline-flex w-full items-center justify-center gap-2 rounded-md bg-brand px-4 py-2.5 text-[0.84rem] font-semibold text-white transition-colors hover:bg-brand-dark"
+                className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-brand px-4 py-3 text-[0.86rem] font-bold text-white shadow-md shadow-brand/20 transition-colors hover:bg-brand-dark"
               >
-                Tanya admin di WhatsApp
-                <span aria-hidden>↗</span>
+                <span>Tanya Admin di WhatsApp</span>
+                <ExternalLink className="size-3.5 opacity-70" />
               </a>
             </div>
           </nav>

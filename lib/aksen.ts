@@ -34,6 +34,12 @@ export interface Aksen {
   wash: string;
   /** Nama token untuk gaya inline (mis. pita atas nota). */
   varName: string;
+  /** Ikon representasi visual layanan (ramah & ekspresif). */
+  ikon: string;
+  /** Gradasi latar belakang modern untuk kartu. */
+  gradient: string;
+  /** Warna aksen hex untuk style inline atau border highlight. */
+  hex: string;
 }
 
 export const AKSEN: Record<AksenId, Aksen> = {
@@ -44,9 +50,12 @@ export const AKSEN: Record<AksenId, Aksen> = {
     top: "border-t-brand",
     ring: "ring-brand",
     text: "text-brand",
-    chip: "border-brand/25 bg-brand-soft text-brand",
-    wash: "bg-brand-soft/45",
+    chip: "border-brand/30 bg-brand-soft text-brand",
+    wash: "bg-brand-soft/50",
     varName: "--color-brand",
+    ikon: "🔄",
+    gradient: "from-blue-500/10 via-indigo-500/5 to-transparent",
+    hex: "#2563EB",
   },
   mint: {
     dot: "bg-mint",
@@ -55,9 +64,12 @@ export const AKSEN: Record<AksenId, Aksen> = {
     top: "border-t-mint",
     ring: "ring-mint",
     text: "text-mint",
-    chip: "border-mint/25 bg-mint-soft text-mint",
-    wash: "bg-mint-soft/45",
+    chip: "border-mint/30 bg-mint-soft text-mint",
+    wash: "bg-mint-soft/50",
     varName: "--color-mint",
+    ikon: "✨",
+    gradient: "from-emerald-500/10 via-teal-500/5 to-transparent",
+    hex: "#059669",
   },
   koral: {
     dot: "bg-koral",
@@ -66,9 +78,12 @@ export const AKSEN: Record<AksenId, Aksen> = {
     top: "border-t-koral",
     ring: "ring-koral",
     text: "text-koral",
-    chip: "border-koral/25 bg-koral-soft text-koral",
-    wash: "bg-koral-soft/45",
+    chip: "border-koral/30 bg-koral-soft text-koral",
+    wash: "bg-koral-soft/50",
     varName: "--color-koral",
+    ikon: "📚",
+    gradient: "from-orange-500/10 via-rose-500/5 to-transparent",
+    hex: "#EA580C",
   },
   lilac: {
     dot: "bg-lilac",
@@ -77,9 +92,12 @@ export const AKSEN: Record<AksenId, Aksen> = {
     top: "border-t-lilac",
     ring: "ring-lilac",
     text: "text-lilac",
-    chip: "border-lilac/25 bg-lilac-soft text-lilac",
-    wash: "bg-lilac-soft/45",
+    chip: "border-lilac/30 bg-lilac-soft text-lilac",
+    wash: "bg-lilac-soft/50",
     varName: "--color-lilac",
+    ikon: "🎓",
+    gradient: "from-purple-500/10 via-violet-500/5 to-transparent",
+    hex: "#7C3AED",
   },
   amber: {
     dot: "bg-amber",
@@ -88,9 +106,12 @@ export const AKSEN: Record<AksenId, Aksen> = {
     top: "border-t-amber",
     ring: "ring-amber",
     text: "text-amber",
-    chip: "border-amber/25 bg-amber-soft text-amber",
-    wash: "bg-amber-soft/45",
+    chip: "border-amber/30 bg-amber-soft text-amber",
+    wash: "bg-amber-soft/50",
     varName: "--color-amber",
+    ikon: "📊",
+    gradient: "from-amber-500/10 via-yellow-500/5 to-transparent",
+    hex: "#D97706",
   },
   langit: {
     dot: "bg-langit",
@@ -99,9 +120,12 @@ export const AKSEN: Record<AksenId, Aksen> = {
     top: "border-t-langit",
     ring: "ring-langit",
     text: "text-langit",
-    chip: "border-langit/25 bg-langit-soft text-langit",
-    wash: "bg-langit-soft/45",
+    chip: "border-langit/30 bg-langit-soft text-langit",
+    wash: "bg-langit-soft/50",
     varName: "--color-langit",
+    ikon: "📝",
+    gradient: "from-sky-500/10 via-cyan-500/5 to-transparent",
+    hex: "#0284C7",
   },
   olive: {
     dot: "bg-olive",
@@ -110,9 +134,12 @@ export const AKSEN: Record<AksenId, Aksen> = {
     top: "border-t-olive",
     ring: "ring-olive",
     text: "text-olive",
-    chip: "border-olive/25 bg-olive-soft text-olive",
-    wash: "bg-olive-soft/45",
+    chip: "border-olive/30 bg-olive-soft text-olive",
+    wash: "bg-olive-soft/50",
     varName: "--color-olive",
+    ikon: "🌐",
+    gradient: "from-lime-500/10 via-emerald-500/5 to-transparent",
+    hex: "#65A30D",
   },
   rose: {
     dot: "bg-rose",
@@ -121,9 +148,12 @@ export const AKSEN: Record<AksenId, Aksen> = {
     top: "border-t-rose",
     ring: "ring-rose",
     text: "text-rose",
-    chip: "border-rose/25 bg-rose-soft text-rose",
-    wash: "bg-rose-soft/45",
+    chip: "border-rose/30 bg-rose-soft text-rose",
+    wash: "bg-rose-soft/50",
     varName: "--color-rose",
+    ikon: "🎨",
+    gradient: "from-pink-500/10 via-fuchsia-500/5 to-transparent",
+    hex: "#DB2777",
   },
 };
 

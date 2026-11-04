@@ -23,19 +23,23 @@ interface CalculatorState {
 
 const CalculatorContext = createContext<CalculatorState | null>(null);
 
-export function scrollKeKalkulator() {
-  const target = document.getElementById("hitung");
-  if (!target) return;
-  const kurangiGerak = window.matchMedia(
-    "(prefers-reduced-motion: reduce)",
-  ).matches;
-  target.scrollIntoView({
-    behavior: kurangiGerak ? "auto" : "smooth",
-    block: "start",
-  });
-  // Pindahkan fokus ke judul supaya pengguna keyboard/screen reader tidak
-  // tertinggal di tombol asal.
-  document.getElementById("judul-hitung")?.focus({ preventScroll: true });
+export function scrollKeKalkulator(id?: ServiceId) {
+  const target =
+    document.getElementById("hitung") ||
+    document.getElementById("kalkulator-area");
+
+  if (target) {
+    const kurangiGerak = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    target.scrollIntoView({
+      behavior: kurangiGerak ? "auto" : "smooth",
+      block: "start",
+    });
+    document.getElementById("judul-hitung")?.focus({ preventScroll: true });
+  } else if (typeof window !== "undefined") {
+    window.location.href = id ? `/hitung?layanan=${id}` : "/hitung";
+  }
 }
 
 export function CalculatorProvider({
@@ -46,15 +50,11 @@ export function CalculatorProvider({
   const [serviceId, setServiceId] = useState<ServiceId>("parafrase");
   const [mode, setMode] = useState<Mode>("hitung");
 
-  // Halaman layanan menaut ke /?layanan=makalah#hitung supaya kalkulator
-  // langsung terbuka pada layanan yang sedang dibaca.
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
 
     const layanan = params.get("layanan");
     if (layanan && SERVICES.some((service) => service.id === layanan)) {
-      // Sinkronisasi awal dari URL setelah hidrasi. Sengaja bukan state turunan:
-      // server tidak boleh membaca query string agar halaman tetap statis.
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setServiceId(layanan as ServiceId);
     }
@@ -67,7 +67,7 @@ export function CalculatorProvider({
   const pilihLayanan = useCallback((id: ServiceId) => {
     setServiceId(id);
     setMode("hitung");
-    scrollKeKalkulator();
+    scrollKeKalkulator(id);
   }, []);
 
   const value = useMemo(

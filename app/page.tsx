@@ -1,147 +1,71 @@
+import Image from "next/image";
 import Link from "next/link";
+import {
+  ArrowRight,
+  BookOpen,
+  Calculator,
+  CreditCard,
+  ExternalLink,
+  FileText,
+  FolderArchive,
+  Lock,
+  MessageCircle,
+  Rocket,
+  RotateCcw,
+  ShieldCheck,
+  Star,
+  Zap,
+} from "lucide-react";
 import { CalculatorProvider } from "@/components/calculator-context";
-import { FaqList } from "@/components/faq-list";
-import { ModeCta } from "@/components/mode-cta";
-import { Nota } from "@/components/nota";
-import { Pembayaran } from "@/components/pembayaran";
-import { PriceCalculator } from "@/components/price-calculator";
+import { HeroLivePreview } from "@/components/hero-live-preview";
+import { MarqueeTicker } from "@/components/marquee-ticker";
 import { ServiceList } from "@/components/service-list";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { faq } from "@/content/faq";
-import { aksenLayanan } from "@/lib/aksen";
-import { rupiah } from "@/lib/format";
-import { computePrice } from "@/lib/pricing";
-import { getService } from "@/lib/services";
 import { site, waLink, waPesanUmum } from "@/lib/site";
-
-const heroLines = [
-  {
-    label: "Parafrase",
-    detail: "1.000 kata · 10 × Rp 3.000",
-    amount: 30000,
-  },
-  {
-    label: "Tenggat kurang dari 24 jam",
-    detail: "Biaya prioritas +60%",
-    amount: 18000,
-  },
-];
-
-const contoh = [
-  {
-    judul: "Makalah 20 halaman",
-    serviceId: "makalah",
-    qty: 20,
-    deadlineId: "cepat",
-    difficultyId: "standar",
-    keterangan: "Tenggat 2–3 hari, tingkat standar",
-  },
-  {
-    judul: "PowerPoint 15 slide",
-    serviceId: "powerpoint",
-    qty: 15,
-    deadlineId: "kilat",
-    difficultyId: "standar",
-    keterangan: "Tenggat hari ini, tingkat standar",
-  },
-  {
-    judul: "Artikel jurnal 1 judul",
-    serviceId: "jurnal",
-    qty: 1,
-    deadlineId: "normal",
-    difficultyId: "riset",
-    keterangan: "Tenggat 4–6 hari, butuh analisis data",
-  },
-].map((item) => {
-  const service = getService(item.serviceId);
-  const price = computePrice(
-    service,
-    item.qty,
-    item.deadlineId,
-    item.difficultyId,
-  );
-  return { ...item, service, price };
-});
-
-const langkah = [
-  {
-    nomor: "01",
-    judul: "Atur jumlah dan tenggat",
-    isi: "Pilih layanan, masukkan jumlah halaman atau kata, lalu tentukan kapan kamu butuh. Total langsung muncul di nota.",
-  },
-  {
-    nomor: "02",
-    judul: "Kirim ke WhatsApp",
-    isi: "Tempel tautan file dan data kontakmu. Satu klik, ringkasan pesanan langsung masuk ke chat admin.",
-  },
-  {
-    nomor: "03",
-    judul: "Bayar lewat e-wallet",
-    isi: "Admin konfirmasi total akhir. Transfer lewat ShopeePay, GoPay, atau DANA, lalu kirim bukti di chat yang sama.",
-  },
-  {
-    nomor: "04",
-    judul: "Terima hasil",
-    isi: "Hasil dikirim dalam format yang bisa diedit. Ada dua kali revisi kalau ada yang menyimpang dari brief.",
-  },
-];
 
 const alasan = [
   {
-    judul: "Harga tidak naik diam-diam",
-    isi: "Angka di nota dikunci setelah file dicek. Kalau ada perubahan lingkup, kamu yang memutuskan, bukan admin.",
+    judul: "Harga Terbuka Tanpa Tawar-Menawar",
+    isi: "Gak perlu nanya 'berapaan min?'. Angka di nota dikunci sejak awal. Tidak ada biaya tersembunyi yang mendadak muncul di tengah jalan.",
+    icon: Lock,
+    bg: "bg-blue-50/70 border-blue-200 text-blue-950",
+    iconBg: "bg-blue-100 text-blue-700",
   },
   {
-    judul: "Dua kali revisi, tanpa biaya",
-    isi: "Berlaku untuk bagian yang memang tidak sesuai brief atau pedoman kampusmu. Bukan untuk ganti topik.",
+    judul: "Garansi 2× Revisi Gratis",
+    isi: "Setiap pesanan dilindungi garansi revisi gratis sebanyak dua kali sesuai instruksi atau format kampus yang kamu kirimkan.",
+    icon: RotateCcw,
+    bg: "bg-emerald-50/70 border-emerald-200 text-emerald-950",
+    iconBg: "bg-emerald-100 text-emerald-700",
   },
   {
-    judul: "File bisa kamu edit lagi",
-    isi: "Word, PowerPoint, dan file desain sumber ikut dikirim. Kamu tidak berhenti di PDF yang terkunci.",
+    judul: "File Sumber Lengkap & Siap Edit",
+    isi: "Kami selalu menyerahkan file mentah: Word (.docx), PowerPoint (.pptx), atau format asli lainnya. Bebas kamu kembangkan kapan pun.",
+    icon: FolderArchive,
+    bg: "bg-amber-50/70 border-amber-200 text-amber-950",
+    iconBg: "bg-amber-100 text-amber-700",
   },
   {
-    judul: "Satu pintu, satu admin",
-    isi: "Semua lewat WhatsApp, langsung ke admin yang sama. Tidak perlu mengulang cerita ke orang yang berbeda.",
+    judul: "Kerahasiaan Terjaga 100%",
+    isi: "Data mahasiswa, nama kampus, materi tugas, dan berkas yang kamu kirim dijamin aman, privat, dan tidak pernah dipublikasikan.",
+    icon: ShieldCheck,
+    bg: "bg-purple-50/70 border-purple-200 text-purple-950",
+    iconBg: "bg-purple-100 text-purple-700",
   },
 ];
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "ProfessionalService",
-      name: site.name,
-      description:
-        "Bantuan penulisan dan penyuntingan tugas: parafrase, humanisasi teks, makalah, PowerPoint, artikel jurnal, terjemahan, dan perapian format Word.",
-      areaServed: "ID",
-      priceRange: "Rp15.000–Rp250.000",
-      email: site.email,
-      address: { "@type": "PostalAddress", addressLocality: site.kota },
-      openingHours: "Mo-Su 07:00-23:00",
-      makesOffer: [
-        "Parafrase",
-        "Humanisasi teks",
-        "Makalah & laporan",
-        "Artikel jurnal",
-        "PowerPoint",
-        "Rapikan Word",
-        "Terjemahan",
-        "Desain visual",
-      ].map((name) => ({
-        "@type": "Offer",
-        itemOffered: { "@type": "Service", name },
-      })),
-    },
-    {
-      "@type": "FAQPage",
-      mainEntity: faq.map((item) => ({
-        "@type": "Question",
-        name: item.q,
-        acceptedAnswer: { "@type": "Answer", text: item.a },
-      })),
-    },
-  ],
+  "@type": "ProfessionalService",
+  name: site.name,
+  description:
+    "Bantuan penulisan dan penyuntingan tugas: parafrase, humanisasi teks AI, makalah, PowerPoint, artikel jurnal, terjemahan, dan perapian format Word.",
+  areaServed: "ID",
+  priceRange: "Rp15.000–Rp250.000",
+  email: site.email,
+  address: { "@type": "PostalAddress", addressLocality: site.kota },
+  openingHours: "Mo-Su 07:00-23:00",
 };
 
 export default function Home() {
@@ -151,336 +75,261 @@ export default function Home() {
 
       <main id="konten">
         {/* ---------------------------------------------------------- *
-         * Hero
+         * Hero Section (Inspirasi Modern Manuru + Ciri Khas Mas Joki)
          * ---------------------------------------------------------- */}
-        <section className="relative overflow-hidden border-b border-line">
+        <section className="relative overflow-hidden border-b border-line bg-gradient-to-b from-paper via-white to-paper-2/40 aurora-bg">
           <div
             aria-hidden
-            className="kertas-titik pointer-events-none absolute inset-0 opacity-40 [mask-image:radial-gradient(70%_60%_at_50%_0%,#000,transparent)]"
+            className="kertas-titik pointer-events-none absolute inset-0 opacity-40 [mask-image:radial-gradient(75%_65%_at_50%_0%,#000,transparent)]"
           />
-          <div className="relative mx-auto grid max-w-6xl gap-12 px-5 pb-16 pt-14 sm:px-8 lg:grid-cols-[1.04fr_0.96fr] lg:items-center lg:gap-16 lg:pb-24 lg:pt-20">
+
+          <div className="relative mx-auto grid max-w-6xl gap-12 px-5 pb-16 pt-12 sm:px-8 lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:gap-14 lg:pb-24 lg:pt-16">
             <div>
-              <h1 className="font-display text-[2.45rem] leading-[1.04] tracking-[-0.03em] text-ink sm:text-[3.1rem] lg:text-[3.35rem]">
-                Harga tugasmu{" "}
-                <span className="garis-stabilo">kelihatan</span> sebelum kamu
-                chat.
-              </h1>
-
-              <p className="mt-5 max-w-[46ch] text-[0.98rem] leading-relaxed text-ink-soft sm:text-[1.03rem]">
-                Parafrase, humanisasi teks, makalah, PowerPoint, sampai rapikan
-                Word. Atur jumlah dan tenggatnya, total keluar seketika — tanpa
-                menunggu dibalas.
-              </p>
-
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <ModeCta
-                  mode="hitung"
-                  className="inline-flex items-center justify-center rounded-md bg-brand px-6 py-3.5 text-[0.9rem] font-semibold text-white transition-colors hover:bg-brand-dark"
-                >
-                  Hitung biaya tugasku
-                </ModeCta>
-                <ModeCta
-                  mode="penawaran"
-                  className="inline-flex items-center justify-center rounded-md border border-ink px-6 py-3.5 text-[0.9rem] font-semibold text-ink transition-colors hover:bg-ink hover:text-paper"
-                >
-                  Minta penawaran
-                </ModeCta>
+              {/* Badge Friendly Mascot Intro */}
+              <div className="inline-flex items-center gap-2.5 rounded-full border border-brand/20 bg-brand-soft/90 p-1 pr-4 text-[0.8rem] font-bold text-brand shadow-xs backdrop-blur-xs">
+                <div className="relative size-7 overflow-hidden rounded-full border-2 border-brand/30 bg-white ring-1 ring-white">
+                  <Image
+                    src="/mas-joki.jpg"
+                    alt="Maskot Mas Joki"
+                    width={28}
+                    height={28}
+                    className="size-full object-cover object-top"
+                  />
+                </div>
+                <span>Halo! Kenalkan Mas Joki</span>
+                <span className="text-brand/40">✦</span>
+                <span>Asisten Akademik Transparan</span>
               </div>
 
-              <p className="mt-5 text-[0.78rem] leading-relaxed text-muted">
-                Dua kali revisi · ShopeePay, GoPay, DANA · file sumber
-                diserahkan
+              <h1 className="mt-5 font-display text-[2.6rem] leading-[1.05] tracking-[-0.035em] text-ink sm:text-[3.4rem] lg:text-[3.8rem]">
+                Tugas kuliah beres,{" "}
+                <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                  harga pasti kelihatan
+                </span>{" "}
+                di awal.
+              </h1>
+
+              <p className="mt-5 max-w-[50ch] text-[1.04rem] leading-relaxed text-ink-soft sm:text-[1.1rem]">
+                Gak perlu lagi nunggu DM dibalas berjam-jam cuma buat tahu harga.
+                Parafrase, humanisasi teks AI, makalah, PowerPoint, jurnal, sampai rapikan Word —
+                cek estimasi biaya dan nota transparan seketika!
               </p>
 
-              <p className="mt-6 text-[0.8rem] text-muted">
-                Masih ragu?{" "}
+              {/* CTAs */}
+              <div className="mt-8 flex flex-col gap-3.5 sm:flex-row">
+                <Link
+                  href="/hitung"
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl bg-brand px-7 py-4 text-[0.96rem] font-extrabold text-white shadow-lg shadow-brand/25 transition-all duration-200 hover:-translate-y-1 hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35 active:translate-y-0 cursor-pointer"
+                >
+                  <Calculator className="size-4.5" />
+                  <span>Hitung Biaya Sekarang</span>
+                  <ArrowRight className="size-4" />
+                </Link>
                 <a
                   href={waLink(waPesanUmum)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-semibold text-ink underline decoration-line-strong underline-offset-4 transition-colors hover:text-brand hover:decoration-brand"
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl border-2 border-ink bg-white px-7 py-4 text-[0.96rem] font-bold text-ink shadow-xs transition-all duration-200 hover:-translate-y-1 hover:bg-ink hover:text-white active:translate-y-0"
                 >
-                  Tanya langsung ke admin
+                  <MessageCircle className="size-4.5 text-emerald-600" />
+                  <span>Chat Mas Joki</span>
+                  <ExternalLink className="size-3.5 opacity-60" />
                 </a>
-              </p>
+              </div>
+
+              {/* Trust Badges */}
+              <div className="mt-8 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center sm:gap-2.5 text-[0.76rem] font-semibold text-muted">
+                <span className="inline-flex items-center gap-1.5 rounded-xl bg-white border border-line px-3 py-1.5 shadow-2xs">
+                  <Zap className="size-3.5 text-amber-500 fill-amber-500" />
+                  <span>Pengerjaan Mulai 6 Jam</span>
+                </span>
+                <span className="inline-flex items-center gap-1.5 rounded-xl bg-white border border-line px-3 py-1.5 shadow-2xs">
+                  <RotateCcw className="size-3.5 text-emerald-600" />
+                  <span>Garansi 2× Revisi</span>
+                </span>
+                <span className="inline-flex items-center gap-1.5 rounded-xl bg-white border border-line px-3 py-1.5 shadow-2xs">
+                  <FileText className="size-3.5 text-blue-600" />
+                  <span>File Sumber Word &amp; PPT</span>
+                </span>
+                <span className="inline-flex items-center gap-1.5 rounded-xl bg-white border border-line px-3 py-1.5 shadow-2xs">
+                  <CreditCard className="size-3.5 text-purple-600" />
+                  <span>E-Wallet Resmi</span>
+                </span>
+              </div>
             </div>
 
+            {/* Visual Khas: Showcase Maskot 3D Mas Joki + Live Quick Estimator */}
             <div className="relative">
-              <Nota
-                lines={heroLines}
-                total={48000}
-                note="Contoh: 1.000 kata, dikerjakan hari ini."
-                stamp="Contoh hitungan"
-                animate
-                className="mx-auto max-w-md"
-              />
-              <p className="mx-auto mt-5 max-w-md text-[0.72rem] leading-relaxed text-muted">
-                Angka ini keluar dari kalkulator yang sama dengan yang ada di
-                bawah, bukan karangan.
-              </p>
+              <HeroLivePreview />
             </div>
           </div>
         </section>
 
         {/* ---------------------------------------------------------- *
-         * Janji singkat
+         * Running Marquee Ticker (Modern Touch)
          * ---------------------------------------------------------- */}
-        <section aria-label="Yang selalu kamu dapat" className="border-b border-line bg-paper-2/50">
-          <div className="mx-auto flex max-w-6xl flex-wrap gap-2 px-5 py-5 text-[0.78rem] text-ink-soft sm:px-8">
-            {[
-              { label: "Harga dihitung di depan", dot: "bg-brand" },
-              { label: "Revisi 2× termasuk", dot: "bg-mint" },
-              { label: "File sumber diserahkan", dot: "bg-amber" },
-              { label: "ShopeePay, GoPay, DANA", dot: "bg-rose" },
-            ].map((item) => (
-              <p
-                key={item.label}
-                className="inline-flex items-center gap-2 rounded-full border border-line bg-white/70 px-3.5 py-1.5"
-              >
-                <span
-                  aria-hidden
-                  className={`inline-block size-1.5 shrink-0 rounded-full ${item.dot}`}
-                />
-                {item.label}
-              </p>
-            ))}
-          </div>
-        </section>
+        <MarqueeTicker />
 
         {/* ---------------------------------------------------------- *
-         * Layanan
-         * ---------------------------------------------------------- */}
-        <section id="layanan" className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
-          <div className="max-w-2xl">
-            <h2 className="font-display text-[1.9rem] leading-tight tracking-[-0.02em] text-ink sm:text-[2.5rem]">
-              Daftar harga, bukan tebakan.
-            </h2>
-            <p className="mt-4 text-[0.95rem] leading-relaxed text-ink-soft">
-              Harga per satuan di bawah sudah termasuk pengerjaan. Total akhir
-              menyesuaikan tenggat dan tingkat kesulitan — semuanya terlihat
-              sebelum kamu memesan.
-            </p>
-          </div>
-
-          <div className="mt-10">
-            <ServiceList />
-          </div>
-
-          <p className="mt-5 text-[0.8rem] text-muted">
-            Tugasnya kombinasi atau tidak ada di daftar?{" "}
-            <ModeCta
-              mode="penawaran"
-              className="font-semibold text-ink underline decoration-line-strong underline-offset-4 transition-colors hover:text-brand hover:decoration-brand"
-            >
-              Minta penawaran
-            </ModeCta>
-            .
-          </p>
-          <p className="mt-2 text-[0.8rem] text-muted">
-            Ingin tahu cakupan tiap layanan?{" "}
-            <Link
-              href="/jasa"
-              className="font-semibold text-ink underline decoration-line-strong underline-offset-4 transition-colors hover:text-brand hover:decoration-brand"
-            >
-              Buka detail layanan
-            </Link>
-            .
-          </p>
-        </section>
-
-        {/* ---------------------------------------------------------- *
-         * Cara kerja
-         * ---------------------------------------------------------- */}
-        <section
-          id="cara-kerja"
-          className="border-y border-line bg-amber-soft/50"
-        >
-          <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
-            <h2 className="max-w-xl font-display text-[1.9rem] leading-tight tracking-[-0.02em] text-ink sm:text-[2.5rem]">
-              Empat langkah, tanpa drama.
-            </h2>
-
-            <ol className="mt-10 grid gap-8 sm:grid-cols-2 sm:gap-10 lg:grid-cols-4">
-              {langkah.map((item) => (
-                <li key={item.nomor} className="border-t border-line-strong pt-5">
-                  <p className="font-mono text-[0.72rem] tabular-nums text-brand">
-                    {item.nomor}
-                  </p>
-                  <h3 className="mt-3 font-display text-[1.15rem] leading-snug tracking-tight text-ink">
-                    {item.judul}
-                  </h3>
-                  <p className="mt-2 text-[0.85rem] leading-relaxed text-muted">
-                    {item.isi}
-                  </p>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </section>
-
-        <Pembayaran />
-
-        {/* ---------------------------------------------------------- *
-         * Kalkulator
-         * ---------------------------------------------------------- */}
-        <section id="hitung" className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
-          <div className="max-w-2xl">
-            <h2
-              id="judul-hitung"
-              tabIndex={-1}
-              className="font-display text-[1.9rem] leading-tight tracking-[-0.02em] text-ink focus:outline-none sm:text-[2.5rem]"
-            >
-              Hitung sendiri, sekarang.
-            </h2>
-            <p className="mt-4 text-[0.95rem] leading-relaxed text-ink-soft">
-              Ubah jumlah atau tenggat, totalnya ikut berubah. Kalau tugasmu
-              tidak masuk pola di bawah, pindah ke mode penawaran.
-            </p>
-          </div>
-
-          <div className="mt-10">
-            <PriceCalculator />
-          </div>
-        </section>
-
-        {/* ---------------------------------------------------------- *
-         * Contoh hitungan
-         * ---------------------------------------------------------- */}
-        <section className="border-y border-line bg-lilac-soft/50">
-          <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
-            <div className="flex flex-wrap items-end justify-between gap-4">
-              <h2 className="max-w-xl font-display text-[1.9rem] leading-tight tracking-[-0.02em] text-ink sm:text-[2.5rem]">
-                Tiga contoh, biar ada gambaran.
-              </h2>
-              <p className="text-[0.78rem] text-muted">
-                Dihitung dari daftar harga di atas.
-              </p>
-            </div>
-
-            <ul className="mt-10 grid gap-5 sm:grid-cols-3">
-              {contoh.map((item) => {
-                const aksen = aksenLayanan(item.service.id);
-
-                return (
-                  <li
-                    key={item.judul}
-                    className={`flex flex-col justify-between rounded-md border border-line border-t-4 ${aksen.top} bg-white p-5 pt-4`}
-                  >
-                    <div>
-                      <p className="flex items-center gap-2 text-[0.72rem] text-muted">
-                        <span
-                          aria-hidden
-                          className={`inline-block size-1.5 shrink-0 rounded-full ${aksen.dot}`}
-                        />
-                        {item.service.name}
-                      </p>
-                      <h3 className="mt-1 font-display text-[1.1rem] leading-snug tracking-tight text-ink">
-                        {item.judul}
-                      </h3>
-                      <p className="mt-2 text-[0.78rem] leading-relaxed text-muted">
-                        {item.keterangan}
-                      </p>
-                    </div>
-                    <div className="mt-6 border-t border-dashed border-line pt-3">
-                      <p className="text-[0.7rem] tracking-wide text-muted">
-                        Total
-                      </p>
-                      <p className="font-display text-[1.35rem] tracking-tight text-ink tabular-nums">
-                        {rupiah(item.price.total)}
-                      </p>
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        </section>
-
-        {/* ---------------------------------------------------------- *
-         * Alasan
+         * Layanan Kami (Katalog Grid Ceria & Penuh Warna)
          * ---------------------------------------------------------- */}
         <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
-          <h2 className="max-w-xl font-display text-[1.9rem] leading-tight tracking-[-0.02em] text-ink sm:text-[2.5rem]">
-            Yang bikin orang balik lagi.
-          </h2>
-
-          <dl className="mt-10 grid gap-x-12 gap-y-8 sm:grid-cols-2">
-            {alasan.map((item) => (
-              <div key={item.judul} className="border-t border-line pt-5">
-                <dt className="font-display text-[1.1rem] leading-snug tracking-tight text-ink">
-                  {item.judul}
-                </dt>
-                <dd className="mt-2 max-w-[46ch] text-[0.85rem] leading-relaxed text-muted">
-                  {item.isi}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </section>
-
-        {/* ---------------------------------------------------------- *
-         * FAQ
-         * ---------------------------------------------------------- */}
-        <section id="tanya" className="border-t border-line bg-paper-2/50">
-          <div className="mx-auto grid max-w-6xl gap-10 px-5 py-16 sm:px-8 sm:py-24 lg:grid-cols-[0.42fr_0.58fr] lg:gap-16">
-            <div>
-              <h2 className="font-display text-[1.9rem] leading-tight tracking-[-0.02em] text-ink sm:text-[2.2rem]">
-                Pertanyaan yang sering masuk.
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div className="max-w-2xl">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-brand/20 bg-brand-soft px-3.5 py-1 text-xs font-bold text-brand shadow-2xs">
+                <BookOpen className="size-3.5" />
+                <span>Solusi Tugas Akademik</span>
+              </span>
+              <h2 className="mt-3 font-display text-[2.1rem] leading-tight tracking-[-0.02em] text-ink sm:text-[2.7rem]">
+                Delapan Layanan Bantuan Tugas.
               </h2>
-              <p className="mt-4 max-w-[34ch] text-[0.9rem] leading-relaxed text-muted">
-                Kalau yang kamu cari tidak ada di sini, tanya langsung. Admin
-                menjawab di jam operasional.
+              <p className="mt-3 text-[1rem] leading-relaxed text-ink-soft">
+                Pilih layanan yang kamu butuhkan. Hitung estimasi biaya langsung di kalkulator atau buka detailnya.
               </p>
-              <a
-                href={waLink(waPesanUmum)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-5 inline-flex items-center gap-2 text-[0.84rem] font-semibold text-brand transition-colors hover:text-brand-dark"
-              >
-                Tanya lewat WhatsApp
-                <span aria-hidden>↗</span>
-              </a>
             </div>
 
-            <FaqList />
+            <Link
+              href="/jasa"
+              className="inline-flex items-center gap-2 rounded-xl border border-line bg-white px-5 py-3 text-sm font-bold text-ink hover:border-brand hover:text-brand shadow-2xs transition-colors shrink-0"
+            >
+              <span>Katalog Layanan Lengkap</span>
+              <ArrowRight className="size-4" />
+            </Link>
+          </div>
+
+          <div className="mt-12">
+            <ServiceList />
           </div>
         </section>
 
         {/* ---------------------------------------------------------- *
-         * CTA akhir
+         * Bento Grid Alasan (Kenapa Memilih Mas Joki)
+         * ---------------------------------------------------------- */}
+        <section className="border-y border-line bg-paper-2/50 py-16 sm:py-24">
+          <div className="mx-auto max-w-6xl px-5 sm:px-8">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+              <div className="max-w-xl">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3.5 py-1 text-xs font-bold text-emerald-900 shadow-2xs">
+                  <Star className="size-3.5 text-emerald-700 fill-emerald-600" />
+                  <span>Nilai Kepercayaan</span>
+                </span>
+                <h2 className="mt-3 font-display text-[2.1rem] leading-tight tracking-[-0.02em] text-ink sm:text-[2.7rem]">
+                  Alasan Mahasiswa Selalu Balik Lagi.
+                </h2>
+                <p className="mt-3 text-[0.98rem] text-ink-soft">
+                  Pengalaman asistensi tugas yang jujur, aman, dan tanpa rasa waswas.
+                </p>
+              </div>
+
+              <Link
+                href="/cara-kerja"
+                className="inline-flex items-center gap-2 rounded-xl bg-ink px-5 py-3 text-sm font-bold text-white hover:bg-brand shadow-xs transition-colors shrink-0"
+              >
+                <span>Pelajari Cara Kerja &amp; Pembayaran</span>
+                <ArrowRight className="size-4" />
+              </Link>
+            </div>
+
+            <div className="mt-12 grid gap-6 sm:grid-cols-2">
+              {alasan.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={item.judul}
+                    className={`rounded-3xl border p-7 transition-all duration-300 hover:shadow-md ${item.bg}`}
+                  >
+                    <div className="flex items-center gap-3.5">
+                      <div
+                        className={`grid size-11 place-items-center rounded-2xl shadow-2xs ${item.iconBg}`}
+                      >
+                        <Icon className="size-5.5" />
+                      </div>
+                      <h3 className="font-display text-[1.25rem] font-bold tracking-tight">
+                        {item.judul}
+                      </h3>
+                    </div>
+                    <p className="mt-3.5 text-[0.9rem] leading-relaxed opacity-90">
+                      {item.isi}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* ---------------------------------------------------------- *
+         * CTA Banner Akhir dengan Maskot Mas Joki
          * ---------------------------------------------------------- */}
         <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
-          <div className="relative overflow-hidden rounded-lg bg-ink px-6 py-12 sm:px-12 sm:py-16">
-            <div aria-hidden className="pita absolute inset-x-0 top-0 h-1" />
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-ink via-slate-900 to-indigo-950 px-8 py-14 shadow-2xl sm:px-14 sm:py-18">
+            <div aria-hidden className="pita absolute inset-x-0 top-0 h-[4px]" />
             <div
               aria-hidden
-              className="pointer-events-none absolute -right-16 -top-16 size-64 rounded-full border border-white/10"
+              className="pointer-events-none absolute -right-16 -top-16 size-80 rounded-full bg-brand/25 blur-3xl"
             />
-            <div className="relative max-w-2xl">
-              <h2 className="font-display text-[1.95rem] leading-[1.1] tracking-[-0.02em] text-paper sm:text-[2.6rem]">
-                Masukkan jumlah halaman.
-                <br />
-                <span className="bg-stabilo px-1.5 text-ink">
-                  Lihat harganya.
+            <div
+              aria-hidden
+              className="pointer-events-none absolute -left-16 -bottom-16 size-80 rounded-full bg-purple-600/25 blur-3xl"
+            />
+
+            <div className="relative grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+              <div>
+                <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1 text-xs font-semibold text-white/90 backdrop-blur-xs">
+                  <Rocket className="size-3.5 text-amber-400" />
+                  <span>Siap Selesaikan Tugasmu?</span>
                 </span>
-              </h2>
-              <p className="mt-5 max-w-[44ch] text-[0.9rem] leading-relaxed text-paper/70">
-                Tidak perlu daftar akun. Tidak ada biaya konsultasi. Total
-                muncul sebelum kamu menulis satu pesan pun.
-              </p>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <ModeCta
-                  mode="hitung"
-                  className="inline-flex items-center justify-center rounded-md bg-stabilo px-6 py-3.5 text-[0.9rem] font-semibold text-ink transition-colors hover:bg-white"
-                >
-                  Hitung biaya tugasku
-                </ModeCta>
-                <ModeCta
-                  mode="penawaran"
-                  className="inline-flex items-center justify-center rounded-md border border-white/25 px-6 py-3.5 text-[0.9rem] font-semibold text-paper transition-colors hover:border-white/60 hover:bg-white/5"
-                >
-                  Minta penawaran
-                </ModeCta>
+
+                <h2 className="mt-4 font-display text-[2.3rem] leading-[1.08] tracking-[-0.02em] text-white sm:text-[3rem]">
+                  Cek harga tugasmu sekarang.
+                  <br />
+                  <span className="text-stabilo">
+                    Transparan &amp; tanpa ribet.
+                  </span>
+                </h2>
+
+                <p className="mt-4 max-w-[46ch] text-[0.98rem] leading-relaxed text-white/80">
+                  Tidak perlu bikin akun. Tidak ada biaya konsultasi tersembunyi.
+                  Ketahui nominal pasti sebelum kamu mengetik satu baris chat pun.
+                </p>
+
+                <div className="mt-8 flex flex-col gap-3.5 sm:flex-row">
+                  <Link
+                    href="/hitung"
+                    className="inline-flex items-center justify-center gap-2 rounded-2xl bg-stabilo px-7 py-4 text-[0.94rem] font-extrabold text-ink shadow-lg transition-all duration-200 hover:-translate-y-1 hover:bg-white active:translate-y-0 cursor-pointer"
+                  >
+                    <Calculator className="size-4.5" />
+                    <span>Hitung Biaya Sekarang</span>
+                    <ArrowRight className="size-4" />
+                  </Link>
+                  <a
+                    href={waLink(waPesanUmum)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/30 bg-white/5 px-7 py-4 text-[0.94rem] font-bold text-white backdrop-blur-xs transition-all duration-200 hover:bg-white/15 active:translate-y-0"
+                  >
+                    <MessageCircle className="size-4.5" />
+                    <span>Chat WhatsApp</span>
+                    <ExternalLink className="size-3.5 opacity-60" />
+                  </a>
+                </div>
+              </div>
+
+              {/* Avatar Mascot in final CTA */}
+              <div className="hidden lg:flex justify-end">
+                <div className="relative size-56 overflow-hidden rounded-3xl border-4 border-white/20 bg-white/5 shadow-2xl backdrop-blur-sm transition-transform duration-300 hover:scale-105">
+                  <Image
+                    src="/mas-joki.jpg"
+                    alt="Maskot Mas Joki Jempol"
+                    width={224}
+                    height={224}
+                    className="size-full object-cover object-top"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                  <span className="absolute bottom-3.5 inset-x-0 text-center font-display text-xs font-bold text-white">
+                    Mas Joki Siap Membantu 👍
+                  </span>
+                </div>
               </div>
             </div>
           </div>

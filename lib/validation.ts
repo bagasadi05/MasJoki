@@ -13,6 +13,13 @@ const SERVICE_IDS = [
 
 const DEADLINE_IDS = ["santai", "normal", "cepat", "kilat"] as const;
 const DIFFICULTY_IDS = ["standar", "menengah", "riset"] as const;
+const ADDON_IDS = [
+  "lampiran_similarity",
+  "format_daftar_isi",
+  "referensi_jurnal",
+  "catatan_presentasi",
+  "slide_ringkasan",
+] as const;
 
 /**
  * Nomor Indonesia: 08xx, 628xx, atau +628xx.
@@ -48,11 +55,20 @@ export const orderSchema = z.object({
     .min(1, "Jumlah minimal 1")
     .max(100000, "Jumlah terlalu besar, minta penawaran manual"),
   deadlineId: z.enum(DEADLINE_IDS),
-  difficultyId: z.enum(DIFFICULTY_IDS),
+  difficultyId: z.enum(DIFFICULTY_IDS).optional().default("standar"),
+  addons: z.array(z.enum(ADDON_IDS)).optional().default([]),
   name: nameSchema,
   whatsapp: whatsappSchema,
   fileUrl: fileUrlSchema.optional().default(""),
   notes: z.string().trim().max(1000, "Catatan maksimal 1000 karakter").optional().default(""),
+});
+
+export const specializedOrderSchema = orderSchema.extend({
+  checkerTool: z.string().trim().max(100).optional().default(""),
+  currentScore: z.string().trim().max(100).optional().default(""),
+  targetScore: z.string().trim().max(100).optional().default(""),
+  citationStyle: z.string().trim().max(100).optional().default(""),
+  customPreference: z.string().trim().max(100).optional().default(""),
 });
 
 export const quoteSchema = z.object({
@@ -70,6 +86,7 @@ export const quoteSchema = z.object({
 });
 
 export type OrderInput = z.infer<typeof orderSchema>;
+export type SpecializedOrderInput = z.infer<typeof specializedOrderSchema>;
 export type QuoteInput = z.infer<typeof quoteSchema>;
 
 /** Ambil pesan error pertama yang layak ditampilkan ke pengguna. */

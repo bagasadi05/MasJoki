@@ -120,64 +120,62 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
       <SiteHeader />
 
       <main id="konten">
-        <section className={`border-b border-line ${aksen.wash}`}>
-          <div className="mx-auto max-w-6xl px-5 pb-12 pt-10 sm:px-8 sm:pb-16 sm:pt-14">
-            <nav aria-label="Remah roti" className="text-[0.76rem] text-muted">
+        {/* Hero Section Layanan */}
+        <section className={`border-b border-line bg-gradient-to-b from-paper via-white to-paper-2/40`}>
+          <div className="mx-auto max-w-6xl px-5 pb-14 pt-10 sm:px-8 sm:pb-20 sm:pt-14">
+            <nav aria-label="Remah roti" className="flex items-center gap-2 text-[0.8rem] font-medium text-muted">
               <Link href="/" className="transition-colors hover:text-brand">
                 Beranda
               </Link>
-              <span aria-hidden className="mx-1.5">
-                /
-              </span>
+              <span aria-hidden className="text-muted/40">/</span>
               <Link href="/jasa" className="transition-colors hover:text-brand">
                 Layanan
               </Link>
-              <span aria-hidden className="mx-1.5">
-                /
-              </span>
-              <span className="text-ink-soft">{service.name}</span>
+              <span aria-hidden className="text-muted/40">/</span>
+              <span className="font-bold text-ink">{service.name}</span>
             </nav>
 
-            <div className="mt-6 grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-start lg:gap-16">
+            <div className="mt-8 grid gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:gap-16">
               <div>
-                <div className="mb-3">
-                  <StempelLayanan id={service.id} />
+                <div className="flex items-center gap-3">
+                  <StempelLayanan id={service.id} ukuran="sedang" />
+                  <span className="text-2xl" aria-hidden>{aksen.ikon}</span>
+                  <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold ${aksen.chip}`}>
+                    <span>⚡</span> {priceLabel(service)}
+                  </span>
                 </div>
-                <h1 className="font-display text-[2.2rem] leading-[1.06] tracking-[-0.03em] text-ink sm:text-[2.9rem]">
+
+                <h1 className="mt-4 font-display text-[2.4rem] leading-[1.06] tracking-[-0.03em] text-ink sm:text-[3.2rem]">
                   Jasa {service.name.toLowerCase()}
                 </h1>
 
-                <p className="mt-4 max-w-[52ch] text-[0.98rem] leading-relaxed text-ink-soft">
+                <p className="mt-4 max-w-[54ch] text-[1.02rem] leading-relaxed text-ink-soft">
                   {konten.intro}
                 </p>
 
-                <p
-                  className={`mt-5 inline-flex items-center gap-2 rounded-md border px-3.5 py-2 text-[0.8rem] ${aksen.chip}`}
-                >
-                  <span
-                    aria-hidden
-                    className="inline-block size-1.5 rounded-full bg-current opacity-70"
-                  />
-                  {priceLabel(service)} · pengerjaan {service.turnaround}
-                </p>
+                <div className="mt-5 flex flex-wrap items-center gap-3 text-[0.78rem] text-muted">
+                  <span className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-white px-2.5 py-1">
+                    ⏱️ Estimasi pengerjaan: <strong className="text-ink">{service.turnaround}</strong>
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-white px-2.5 py-1">
+                    🔄 Termasuk <strong>2× revisi</strong>
+                  </span>
+                </div>
 
-                <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <div className="mt-8 flex flex-col gap-3.5 sm:flex-row">
                   <Link
-                    href={`/?layanan=${service.id}#hitung`}
-                    className="inline-flex items-center justify-center rounded-md bg-brand px-6 py-3.5 text-[0.9rem] font-semibold text-white transition-colors hover:bg-brand-dark"
+                    href={`/jasa/${service.id}/order`}
+                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-7 py-4 text-[0.94rem] font-extrabold text-white shadow-lg shadow-brand/25 transition-all hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35"
                   >
-                    Hitung biaya persisnya
+                    <span>Pesan {service.name} Sekarang</span>
+                    <span aria-hidden>→</span>
                   </Link>
-                  <a
-                    href={waLink(
-                      `Halo Mas Joki, saya mau tanya soal ${service.name.toLowerCase()}.`,
-                    )}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center rounded-md border border-ink px-6 py-3.5 text-[0.9rem] font-semibold text-ink transition-colors hover:bg-ink hover:text-paper"
+                  <Link
+                    href={`/hitung?layanan=${service.id}`}
+                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-line bg-white px-5 py-4 text-[0.92rem] font-bold text-ink hover:bg-paper-2 transition-colors"
                   >
-                    Tanya admin
-                  </a>
+                    <span>Simulasi Kalkulator</span>
+                  </Link>
                 </div>
               </div>
 
@@ -185,208 +183,218 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                 <Nota
                   lines={contoh.lines}
                   total={contoh.total}
-                  note={`Contoh ${contoh.qty} ${BASIS_LABEL[service.basis]} dengan tenggat 4–6 hari dan tingkat standar.`}
-                  stamp="Contoh hitungan"
-                  className="mx-auto max-w-md"
+                  note={`Contoh simulasi ${contoh.qty} ${BASIS_LABEL[service.basis]} dengan tenggat normal (4–6 hari).`}
+                  stamp="Harga Transparan"
+                  code="SIM-DETAIL"
                   aksen={aksen}
+                  className="mx-auto max-w-md"
                 />
               </div>
             </div>
           </div>
         </section>
 
-        <section className="mx-auto max-w-6xl px-5 py-14 sm:px-8 sm:py-20">
-          <div className="grid gap-12 lg:grid-cols-[0.44fr_0.56fr] lg:gap-16">
-            <div>
-              <h2 className="font-display text-[1.6rem] leading-tight tracking-tight text-ink">
-                Yang termasuk
-              </h2>
-              <ul className="mt-5 space-y-3.5">
-                {konten.cakupan.map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-start gap-3 text-[0.88rem] leading-relaxed text-ink-soft"
-                  >
-                    <span
-                      aria-hidden
-                      className={`mt-[0.5rem] inline-block size-1.5 shrink-0 rounded-full ${aksen.dot}`}
-                    />
-                    {item}
-                  </li>
-                ))}
-              </ul>
+        {/* Scope & Presets Grid */}
+        <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
+          <div className="grid gap-12 lg:grid-cols-[0.5fr_0.5fr] lg:gap-16">
+            {/* Cakupan & Persiapan */}
+            <div className="space-y-8">
+              <div className="rounded-2xl border border-line bg-white p-6 shadow-2xs">
+                <h2 className="font-display text-[1.35rem] font-bold text-ink">
+                  Yang Sudah Termasuk:
+                </h2>
+                <ul className="mt-4 space-y-3">
+                  {konten.cakupan.map((item) => (
+                    <li
+                      key={item}
+                      className="flex items-start gap-3 text-[0.88rem] leading-relaxed text-ink-soft"
+                    >
+                      <span className="mt-0.5 text-base text-emerald-600">✓</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-              <h2 className="mt-10 font-display text-[1.6rem] leading-tight tracking-tight text-ink">
-                Yang perlu kamu siapkan
-              </h2>
-              <ul className="mt-5 space-y-3.5">
-                {konten.siapkan.map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-start gap-3 text-[0.88rem] leading-relaxed text-ink-soft"
-                  >
-                    <span
-                      aria-hidden
-                      className="mt-1 inline-block size-1.5 shrink-0 rounded-full border border-line-strong"
-                    />
-                    {item}
-                  </li>
-                ))}
-              </ul>
+              <div className="rounded-2xl border border-line bg-paper-2/60 p-6">
+                <h2 className="font-display text-[1.35rem] font-bold text-ink">
+                  Yang Perlu Kamu Siapkan:
+                </h2>
+                <ul className="mt-4 space-y-3">
+                  {konten.siapkan.map((item) => (
+                    <li
+                      key={item}
+                      className="flex items-start gap-3 text-[0.88rem] leading-relaxed text-ink-soft"
+                    >
+                      <span className="mt-0.5 text-base text-brand">📋</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
 
+            {/* Gambaran Preset Harga */}
             <div>
-              <h2 className="font-display text-[1.6rem] leading-tight tracking-tight text-ink">
-                Gambaran harga
-              </h2>
-              <p className="mt-3 max-w-[54ch] text-[0.86rem] leading-relaxed text-muted">
-                Dihitung dengan tenggat 4–6 hari dan tingkat standar. Total
-                akhirnya berubah kalau kamu butuh lebih cepat atau butuh
-                referensi tambahan.
-              </p>
+              <div className="rounded-2xl border border-line bg-white p-6 shadow-2xs sm:p-8">
+                <h2 className="font-display text-[1.35rem] font-bold text-ink">
+                  Gambaran Biaya Berdasarkan Jumlah
+                </h2>
+                <p className="mt-2 text-[0.86rem] leading-relaxed text-muted">
+                  Simulasi dengan tenggat normal 4–6 hari dan tingkat standar.
+                  Kamu bisa sesuaikan jumlah persisnya di kalkulator interaktif.
+                </p>
 
-              <ul className="mt-5 divide-y divide-line border-y border-line">
-                {service.presets.map((qty) => {
-                  const harga = computePrice(service, qty, "normal", "standar");
-                  return (
-                    <li
-                      key={qty}
-                      className="flex items-baseline justify-between gap-4 py-3.5"
-                    >
-                      <span className="text-[0.88rem] text-ink-soft">
-                        {qty} {BASIS_LABEL[service.basis]}
-                      </span>
-                      <span className="font-mono text-[0.86rem] tabular-nums text-ink">
-                        {rupiah(harga.total)}
-                      </span>
-                    </li>
-                  );
-                })}
-              </ul>
+                <ul className="mt-6 divide-y divide-line border-y border-line">
+                  {service.presets.map((qty) => {
+                    const harga = computePrice(service, qty, "normal", "standar");
+                    return (
+                      <li
+                        key={qty}
+                        className="flex items-center justify-between py-4"
+                      >
+                        <span className="text-[0.92rem] font-semibold text-ink">
+                          {qty} {BASIS_LABEL[service.basis]}
+                        </span>
+                        <span className="font-mono text-[1rem] font-extrabold tabular-nums text-brand">
+                          {rupiah(harga.total)}
+                        </span>
+                      </li>
+                    );
+                  })}
+                </ul>
 
-              <p className="mt-4 text-[0.78rem] leading-relaxed text-muted">
-                Butuh jumlah di luar daftar, atau tugasnya gabungan beberapa
-                layanan?{" "}
-                <Link
-                  href={`/?layanan=${service.id}&mode=penawaran#hitung`}
-                  className="font-semibold text-ink underline decoration-line-strong underline-offset-4 transition-colors hover:text-brand hover:decoration-brand"
-                >
-                  Minta penawaran
-                </Link>
-                .
-              </p>
+                <div className="mt-6">
+                  <Link
+                    href={`/jasa/${service.id}/order`}
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-brand px-5 py-3.5 text-[0.88rem] font-bold text-white shadow-sm transition-colors hover:bg-brand-dark"
+                  >
+                    <span>Lanjut ke Formulir Pemesanan</span>
+                    <span aria-hidden>→</span>
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
-        <section className="border-t border-line bg-paper-2/50">
-          <div className="mx-auto max-w-3xl px-5 py-14 sm:px-8 sm:py-20">
-            <h2 className="font-display text-[1.7rem] leading-tight tracking-tight text-ink">
-              Pertanyaan soal {service.name.toLowerCase()}
+        {/* FAQ Layanan */}
+        <section className="border-t border-line bg-paper-2/60">
+          <div className="mx-auto max-w-3xl px-5 py-16 sm:px-8 sm:py-24">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-brand/20 bg-brand-soft px-3 py-1 text-[0.74rem] font-bold text-brand">
+              <span>❓</span> FAQ Layanan
+            </span>
+            <h2 className="mt-3 font-display text-[1.9rem] font-bold leading-tight tracking-tight text-ink sm:text-[2.2rem]">
+              Pertanyaan seputar {service.name.toLowerCase()}
             </h2>
 
-            <div className="mt-6 border-t border-line">
+            <div className="mt-8 space-y-3">
               {konten.faq.map((item) => (
                 <details
                   key={item.q}
-                  className="group border-b border-line [&_summary::-webkit-details-marker]:hidden"
+                  className="group rounded-2xl border border-line bg-white p-5 transition-all duration-150 hover:border-brand/40 hover:shadow-2xs [&_summary::-webkit-details-marker]:hidden"
                 >
-                  <summary className="flex cursor-pointer list-none items-start justify-between gap-6 py-5 text-left">
-                    <span className="text-[0.95rem] font-medium leading-snug text-ink transition-colors group-hover:text-brand">
+                  <summary className="flex cursor-pointer list-none items-start justify-between gap-4 text-left">
+                    <span className="font-display text-[1.02rem] font-bold leading-snug text-ink transition-colors group-hover:text-brand">
                       {item.q}
                     </span>
-                    <svg
-                      aria-hidden
-                      viewBox="0 0 16 16"
-                      className="mt-0.5 size-3.5 shrink-0 text-muted transition-transform duration-200 group-open:rotate-45"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.6"
-                      strokeLinecap="round"
-                    >
-                      <path d="M8 2v12M2 8h12" />
-                    </svg>
+                    <span className="grid size-7 shrink-0 place-items-center rounded-lg bg-paper-2 text-ink-soft transition-transform duration-200 group-open:rotate-45 group-open:bg-brand-soft group-open:text-brand">
+                      <svg
+                        aria-hidden
+                        viewBox="0 0 16 16"
+                        className="size-3.5"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                      >
+                        <path d="M8 2v12M2 8h12" />
+                      </svg>
+                    </span>
                   </summary>
-                  <p className="max-w-[68ch] pb-5 pr-10 text-[0.86rem] leading-relaxed text-ink-soft">
+                  <p className="mt-3.5 max-w-[68ch] text-[0.88rem] leading-relaxed text-ink-soft border-t border-dashed border-line pt-3">
                     {item.a}
                   </p>
                 </details>
               ))}
             </div>
 
-            <p className="mt-6 text-[0.84rem] leading-relaxed text-muted">
-              Belum terjawab?{" "}
+            <p className="mt-8 text-[0.86rem] text-muted">
+              Masih ada hal yang ingin ditanyakan?{" "}
               <a
                 href={waLink(
                   `Halo Mas Joki, saya mau tanya soal ${service.name.toLowerCase()}.`,
                 )}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-semibold text-ink underline decoration-line-strong underline-offset-4 transition-colors hover:text-brand hover:decoration-brand"
+                className="font-bold text-brand underline decoration-brand/30 underline-offset-4 hover:decoration-brand"
               >
-                Tanya lewat WhatsApp
+                Chat Admin Langsung via WhatsApp ↗
               </a>
-              . Admin menjawab di jam operasional.
             </p>
           </div>
         </section>
 
-        <section className="mx-auto max-w-6xl px-5 py-14 sm:px-8 sm:py-20">
-          <h2 className="font-display text-[1.4rem] tracking-tight text-ink">
-            Layanan lain
+        {/* Layanan Lain */}
+        <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
+          <h2 className="font-display text-[1.6rem] font-bold tracking-tight text-ink">
+            Jelajahi Layanan Mas Joki Lainnya
           </h2>
-          <ul className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {lain.map((item) => (
-              <li key={item.id}>
-                <Link
-                  href={`/jasa/${item.id}`}
-                  className="flex h-full flex-col justify-between rounded-md border border-line bg-white p-4 transition-colors hover:bg-paper-2/40"
-                >
-                  <span className="flex items-center gap-2 text-[0.9rem] font-medium leading-snug text-ink">
-                    <StempelLayanan id={item.id} ukuran="kecil" />
+              <Link
+                key={item.id}
+                href={`/jasa/${item.id}`}
+                className="group flex flex-col justify-between rounded-2xl border border-line bg-white p-5 shadow-2xs transition-all duration-200 hover:-translate-y-1 hover:border-brand/40 hover:shadow-md"
+              >
+                <div className="flex items-center gap-3">
+                  <StempelLayanan id={item.id} ukuran="kecil" />
+                  <span className="font-display text-[1.05rem] font-bold text-ink group-hover:text-brand transition-colors">
                     {item.name}
                   </span>
-                  <span className="mt-3 font-mono text-[0.76rem] tabular-nums text-muted">
-                    {priceLabel(item)}
-                  </span>
-                </Link>
-              </li>
+                </div>
+                <div className="mt-4 border-t border-dashed border-line pt-3 flex items-baseline justify-between text-[0.76rem]">
+                  <span className="text-muted">{priceLabel(item)}</span>
+                  <span className="font-bold text-brand group-hover:underline">Buka →</span>
+                </div>
+              </Link>
             ))}
-          </ul>
+          </div>
         </section>
 
-        <section className="mx-auto max-w-6xl px-5 pb-16 sm:px-8 sm:pb-20">
-          <div className="relative overflow-hidden rounded-lg bg-ink px-6 py-10 sm:px-12 sm:py-14">
-            <div
-              aria-hidden
-              className="pointer-events-none absolute -right-16 -top-16 size-64 rounded-full border border-white/10"
-            />
+        {/* Banner CTA */}
+        <section className="mx-auto max-w-6xl px-5 pb-18 sm:px-8 sm:pb-24">
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-ink via-slate-900 to-indigo-950 px-7 py-12 shadow-xl sm:px-12 sm:py-16">
+            <div aria-hidden className="pita absolute inset-x-0 top-0 h-[4px]" />
             <div className="relative grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center lg:gap-10">
               <div>
-                <h2 className="font-display text-[1.75rem] leading-[1.12] tracking-[-0.02em] text-paper sm:text-[2.2rem]">
-                  Siap mulai {service.name.toLowerCase()}?
+                <h2 className="font-display text-[2rem] font-bold leading-tight tracking-tight text-white sm:text-[2.5rem]">
+                  Siap menyelesaikan {service.name.toLowerCase()} sekarang?
                 </h2>
-                <p className="mt-3 max-w-[48ch] text-[0.88rem] leading-relaxed text-paper/70">
-                  Hitung dulu di kalkulator. Total, rincian, dan nomor pembayaran
-                  muncul sebelum kamu menulis pesan.
+                <p className="mt-2.5 max-w-[48ch] text-[0.92rem] leading-relaxed text-white/80">
+                  Masukkan jumlah di kalkulator. Rincian biaya, tenggat, dan nomor pembayaran
+                  langsung terlihat detik ini juga.
                 </p>
               </div>
+
               <div className="flex flex-col gap-3 sm:flex-row">
                 <Link
-                  href={`/?layanan=${service.id}#hitung`}
-                  className="inline-flex items-center justify-center rounded-md bg-stabilo px-6 py-3.5 text-[0.9rem] font-semibold text-ink transition-colors hover:bg-white"
+                  href={`/jasa/${service.id}/order`}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-stabilo px-7 py-4 text-[0.94rem] font-extrabold text-ink shadow-md transition-all hover:bg-white"
                 >
-                  Hitung biayanya
+                  <span>Pesan {service.name} Sekarang</span>
+                  <span aria-hidden>→</span>
                 </Link>
                 <a
                   href={waLink(
-                    `Halo Mas Joki, saya mau tanya soal ${service.name.toLowerCase()}.`,
+                    `Halo Mas Joki, saya mau pesan ${service.name.toLowerCase()}.`,
                   )}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center rounded-md border border-white/25 px-6 py-3.5 text-[0.9rem] font-semibold text-paper transition-colors hover:border-white/60 hover:bg-white/5"
+                  className="inline-flex items-center justify-center rounded-xl border border-white/30 bg-white/5 px-6 py-4 text-[0.92rem] font-bold text-white backdrop-blur-xs transition-colors hover:bg-white/15"
                 >
-                  Tanya admin
+                  Chat Admin
                 </a>
               </div>
             </div>

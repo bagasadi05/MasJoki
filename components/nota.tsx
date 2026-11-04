@@ -1,32 +1,45 @@
+"use client";
+
 import { rupiah } from "@/lib/format";
 import type { Aksen } from "@/lib/aksen";
+import { AnimatedPrice } from "./animated-number";
+import { Check, Clock, CreditCard, Ruler, Sparkles } from "lucide-react";
 
 export interface NotaLine {
   label: string;
   detail?: string;
   amount: number;
+  kind?: "base" | "discount" | "surcharge" | "addon";
 }
 
 interface NotaProps {
   code?: string;
   lines: NotaLine[];
   total: number;
+  dpAmount?: number;
+  effectiveUnitLabel?: string;
+  estimatedTurnaround?: string;
+  equivalentLabel?: string;
   note?: string;
   stamp?: string;
   animate?: boolean;
   className?: string;
-  /** Warna layanan aktif: menggambar pita tipis di atas nota. */
+  /** Warna layanan aktif: menggambar pita warna di atas nota. */
   aksen?: Aksen;
 }
 
 /**
- * Nota harga. Elemen visual utama brand: semua angka diperlakukan seperti
- * yang tercetak di kertas, bukan seperti kartu harga SaaS.
+ * Nota harga: Elemen visual utama brand Mas Joki.
+ * Menggabungkan estetika kwitansi transparan dengan desain kartu modern yang elegan dan rapi.
  */
 export function Nota({
   code = "DRAF",
   lines,
   total,
+  dpAmount,
+  effectiveUnitLabel,
+  estimatedTurnaround,
+  equivalentLabel,
   note,
   stamp,
   animate = false,
@@ -38,69 +51,169 @@ export function Nota({
       {aksen ? (
         <span
           aria-hidden
-          className="absolute -top-px left-0 right-0 z-10 h-[5px]"
+          className="absolute -top-px left-0 right-0 z-10 h-[6px]"
           style={{
-            background: `var(${aksen.varName})`,
+            background: `linear-gradient(90deg, var(${aksen.varName}), ${aksen.hex})`,
             borderRadius: "var(--radius-nota) var(--radius-nota) 0 0",
           }}
         />
-      ) : null}
-      <div className="px-5 pb-7 pt-5 sm:px-6">
+      ) : (
+        <span
+          aria-hidden
+          className="pita absolute -top-px left-0 right-0 z-10 h-[5px]"
+          style={{
+            borderRadius: "var(--radius-nota) var(--radius-nota) 0 0",
+          }}
+        />
+      )}
+
+      <div className="p-6 sm:p-7">
+        {/* Header Nota */}
         <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="font-display text-xl leading-none tracking-tight">
-              Mas Joki
-            </p>
-            <p className="mt-1.5 text-[0.7rem] text-muted">
-              Nota estimasi biaya
-            </p>
+          <div className="flex items-center gap-3">
+            <div className="grid size-9 -rotate-3 place-items-center rounded-xl border border-brand/20 bg-brand-soft text-brand shadow-xs">
+              <span className="font-display text-[0.82rem] font-black">MJ</span>
+            </div>
+            <div>
+              <p className="font-display text-lg font-bold leading-none tracking-tight text-ink">
+                Mas Joki
+              </p>
+              <p className="mt-1 text-[0.72rem] font-medium text-muted">
+                Estimasi Biaya Transparan
+              </p>
+            </div>
           </div>
+
           <div className="text-right">
-            <p className="text-[0.66rem] tracking-wide text-muted">Nomor</p>
-            <p className="font-mono text-sm font-medium tabular-nums text-ink">
+            <span className="inline-block rounded-md bg-paper-2 px-2 py-0.5 font-mono text-[0.66rem] font-semibold uppercase tracking-wider text-muted">
               {code}
-            </p>
+            </span>
           </div>
         </div>
 
-        <div className="my-4 border-t border-dashed border-line" />
+        {/* Garis batas putus-putus */}
+        <div className="my-5 border-t border-dashed border-line" />
 
-        <dl className="space-y-3">
-          {lines.map((line, index) => (
-            <div key={`${line.label}-${index}`} className="flex items-baseline justify-between gap-3">
-              <div className="min-w-0">
-                <dt className="text-[0.86rem] leading-snug text-ink">
-                  {line.label}
-                </dt>
-                {line.detail ? (
-                  <dd className="mt-0.5 text-[0.72rem] leading-snug text-muted">
-                    {line.detail}
-                  </dd>
-                ) : null}
+        {/* Rincian item */}
+        <dl className="space-y-3.5">
+          {lines.map((line, index) => {
+            const isDiscount = line.amount < 0 || line.kind === "discount";
+            const isAddon = line.kind === "addon";
+
+            return (
+              <div
+                key={`${line.label}-${index}`}
+                className="flex items-baseline justify-between gap-3 text-[0.88rem]"
+              >
+                <div className="min-w-0 pr-2">
+                  <dt
+                    className={`font-medium leading-snug flex items-center gap-1.5 ${
+                      isDiscount
+                        ? "font-bold text-emerald-700"
+                        : isAddon
+                          ? "font-semibold text-brand-dark"
+                          : "text-ink"
+                    }`}
+                  >
+                    {isAddon ? <Sparkles className="size-3 text-brand shrink-0" /> : null}
+                    <span>{line.label}</span>
+                  </dt>
+                  {line.detail ? (
+                    <dd
+                      className={`mt-0.5 text-[0.74rem] leading-snug ${
+                        isDiscount ? "text-emerald-600 font-medium" : "text-muted"
+                      }`}
+                    >
+                      {line.detail}
+                    </dd>
+                  ) : null}
+                </div>
+                <dd
+                  className={`shrink-0 font-mono text-[0.84rem] font-semibold tabular-nums ${
+                    isDiscount
+                      ? "font-bold text-emerald-700"
+                      : isAddon
+                        ? "text-brand"
+                        : "text-ink-soft"
+                  }`}
+                >
+                  {isDiscount
+                    ? `- ${rupiah(Math.abs(line.amount))}`
+                    : rupiah(line.amount)}
+                </dd>
               </div>
-              <dd className="shrink-0 font-mono text-[0.82rem] tabular-nums text-ink-soft">
-                {rupiah(line.amount)}
-              </dd>
-            </div>
-          ))}
+            );
+          })}
         </dl>
 
-        <div className="my-4 border-t border-dashed border-line" />
+        {/* Garis batas putus-putus */}
+        <div className="my-5 border-t border-dashed border-line" />
 
-        <div className="flex items-end justify-between gap-3">
-          <p className="text-[0.78rem] font-semibold text-ink">Total</p>
-          <p className="font-display text-[1.7rem] leading-none tracking-tight text-ink tabular-nums">
-            {rupiah(total)}
+        {/* Total Akhir dengan Animasi Angka Berputar Halus */}
+        <div className="flex items-end justify-between gap-3 rounded-xl bg-paper-2/70 p-3.5 border border-line/60">
+          <div>
+            <p className="text-[0.72rem] font-bold uppercase tracking-wider text-muted">
+              Total Akhir
+            </p>
+            <p className="text-[0.68rem] text-muted">
+              {effectiveUnitLabel
+                ? `Rata-rata ${effectiveUnitLabel}`
+                : "Terkunci setelah file dicek"}
+            </p>
+          </div>
+          <p className="font-display text-[1.85rem] font-extrabold leading-none tracking-tight text-brand tabular-nums">
+            <AnimatedPrice value={total} />
           </p>
         </div>
 
-        {note ? (
-          <p className="mt-3 text-[0.72rem] leading-relaxed text-muted">{note}</p>
+        {/* Info Opsi DP 50% & Estimasi Pengerjaan */}
+        {dpAmount || estimatedTurnaround || equivalentLabel ? (
+          <div className="mt-3.5 space-y-2 rounded-xl border border-brand/15 bg-brand-soft/40 p-3 text-[0.75rem]">
+            {dpAmount ? (
+              <div className="flex items-center justify-between gap-2">
+                <span className="flex items-center gap-1.5 font-semibold text-ink-soft">
+                  <CreditCard className="size-3.5 text-brand" />
+                  <span>Opsi DP 50% (Uang Muka):</span>
+                </span>
+                <span className="font-mono font-bold text-ink tabular-nums">
+                  <AnimatedPrice value={dpAmount} />
+                </span>
+              </div>
+            ) : null}
+
+            {estimatedTurnaround ? (
+              <div className="flex items-center justify-between gap-2">
+                <span className="flex items-center gap-1.5 font-semibold text-ink-soft">
+                  <Clock className="size-3.5 text-brand" />
+                  <span>Estimasi Selesai:</span>
+                </span>
+                <span className="font-bold text-ink">{estimatedTurnaround}</span>
+              </div>
+            ) : null}
+
+            {equivalentLabel ? (
+              <div className="flex items-center gap-1.5 border-t border-brand/10 pt-1.5 text-[0.71rem] text-muted">
+                <Ruler className="size-3 text-muted shrink-0" />
+                <span>{equivalentLabel}</span>
+              </div>
+            ) : null}
+          </div>
         ) : null}
 
+        {note ? (
+          <p className="mt-3.5 text-[0.74rem] leading-relaxed text-muted">
+            ℹ️ {note}
+          </p>
+        ) : null}
+
+        {/* Stempel verifikasi */}
         {stamp ? (
-          <div className="mt-5 flex justify-end">
+          <div className="mt-5 flex items-center justify-between">
+            <div className="flex items-center gap-1 font-mono text-[0.65rem] tracking-widest text-muted/60 uppercase">
+              ||| |||| | ||||| ||
+            </div>
             <span className={`stempel ${animate ? "stempel-masuk" : ""}`}>
+              <Check className="size-3.5 inline mr-1 stroke-[3]" />
               {stamp}
             </span>
           </div>

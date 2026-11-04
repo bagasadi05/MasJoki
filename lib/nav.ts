@@ -1,7 +1,8 @@
-/** Navigasi utama, dipakai header desktop dan menu seluler. */
+/** Navigasi utama multi-halaman untuk header dan menu seluler. */
 export const navigasi = [
-  { href: "/#layanan", label: "Layanan" },
-  { href: "/#cara-kerja", label: "Cara kerja" },
-  { href: "/#hitung", label: "Hitung biaya" },
-  { href: "/#tanya", label: "FAQ" },
+  { href: "/", label: "Beranda" },
+  { href: "/jasa", label: "Layanan" },
+  { href: "/hitung", label: "Hitung Biaya" },
+  { href: "/cara-kerja", label: "Cara Kerja" },
+  { href: "/faq", label: "FAQ" },
 ];

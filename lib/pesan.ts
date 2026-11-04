@@ -31,19 +31,89 @@ export function pesanPesanan({
   fileUrl?: string;
   notes?: string;
 }): string {
+  const daftarTambahan =
+    price.selectedAddons.length > 0
+      ? price.selectedAddons
+          .map((item) => `${item.shortLabel} (+${rupiah(item.price)})`)
+          .join(", ")
+      : null;
+
   return rapikan([
     "Halo Mas Joki, saya mau pesan:",
     "",
     `Layanan: ${service.name}`,
-    `Jumlah: ${price.qty} ${BASIS_LABEL[service.basis]}`,
-    `Tenggat: ${price.deadline.label}`,
-    `Tingkat: ${price.difficulty.label}`,
-    `Estimasi: ${rupiah(price.total)}`,
+    `Jumlah: ${price.qty} ${BASIS_LABEL[service.basis]} (${price.equivalentLabel})`,
+    `Tenggat: ${price.deadline.label} (Estimasi: ${price.estimatedTurnaround})`,
+    "Tingkat: Standar (dikonfirmasi setelah admin cek brief)",
+    daftarTambahan ? `Opsi Tambahan: ${daftarTambahan}` : false,
+    price.discountAmount > 0 && price.discountLabel
+      ? `Potongan: -${rupiah(price.discountAmount)} (${price.discountLabel})`
+      : false,
+    `Estimasi Total: ${rupiah(price.total)} (Bisa DP 50%: ${rupiah(price.dpAmount)})`,
     "",
     `Nama: ${name}`,
     `WhatsApp: ${whatsapp}`,
     fileUrl ? `File: ${fileUrl}` : false,
     notes ? `Catatan: ${notes}` : false,
+    "",
+    `Pembayaran via ${pembayaran.metode.join("/")} ke ${pembayaran.nomor} setelah admin konfirmasi.`,
+  ]);
+}
+
+export function pesanOrderSpesifik({
+  service,
+  price,
+  name,
+  whatsapp,
+  fileUrl,
+  notes,
+  checkerTool,
+  currentScore,
+  targetScore,
+  citationStyle,
+  customPreference,
+}: {
+  service: Service;
+  price: PriceResult;
+  name: string;
+  whatsapp: string;
+  fileUrl?: string;
+  notes?: string;
+  checkerTool?: string;
+  currentScore?: string;
+  targetScore?: string;
+  citationStyle?: string;
+  customPreference?: string;
+}): string {
+  const daftarTambahan =
+    price.selectedAddons.length > 0
+      ? price.selectedAddons
+          .map((item) => `${item.shortLabel} (+${rupiah(item.price)})`)
+          .join(", ")
+      : null;
+
+  return rapikan([
+    `Halo Mas Joki, saya mau pesan order khusus ${service.name}:`,
+    "",
+    `Layanan: ${service.name}`,
+    `Jumlah: ${price.qty} ${BASIS_LABEL[service.basis]} (${price.equivalentLabel})`,
+    checkerTool ? `Pengecek/Sistem: ${checkerTool}` : false,
+    currentScore ? `Kondisi/Skor Saat Ini: ${currentScore}` : false,
+    targetScore ? `Target Skor Akhir: ${targetScore}` : false,
+    citationStyle ? `Format Sitasi/Rujukan: ${citationStyle}` : false,
+    customPreference ? `Spesifikasi Khusus: ${customPreference}` : false,
+    `Tenggat: ${price.deadline.label} (Estimasi: ${price.estimatedTurnaround})`,
+    "Tingkat: Standar (dikonfirmasi setelah admin cek brief)",
+    daftarTambahan ? `Opsi Tambahan: ${daftarTambahan}` : false,
+    price.discountAmount > 0 && price.discountLabel
+      ? `Potongan: -${rupiah(price.discountAmount)} (${price.discountLabel})`
+      : false,
+    `Estimasi Total: ${rupiah(price.total)} (Bisa DP 50%: ${rupiah(price.dpAmount)})`,
+    "",
+    `Nama: ${name}`,
+    `WhatsApp: ${whatsapp}`,
+    fileUrl ? `File Dokumen: ${fileUrl}` : false,
+    notes ? `Catatan Khusus: ${notes}` : false,
     "",
     `Pembayaran via ${pembayaran.metode.join("/")} ke ${pembayaran.nomor} setelah admin konfirmasi.`,
   ]);

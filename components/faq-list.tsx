@@ -2,29 +2,31 @@ import { faq } from "@/content/faq";
 
 export function FaqList() {
   return (
-    <div className="border-t border-line">
+    <div className="space-y-3">
       {faq.map((item) => (
         <details
           key={item.q}
-          className="group border-b border-line [&_summary::-webkit-details-marker]:hidden"
+          className="group rounded-2xl border border-line bg-white p-5 transition-all duration-150 hover:border-brand/40 hover:shadow-sm [&_summary::-webkit-details-marker]:hidden"
         >
-          <summary className="flex cursor-pointer list-none items-start justify-between gap-6 py-5 text-left transition-colors hover:text-brand">
-            <span className="text-[0.95rem] font-medium leading-snug text-ink group-hover:text-brand">
+          <summary className="flex cursor-pointer list-none items-start justify-between gap-4 text-left">
+            <span className="font-display text-[1.02rem] font-bold leading-snug text-ink transition-colors group-hover:text-brand">
               {item.q}
             </span>
-            <svg
-              aria-hidden
-              viewBox="0 0 16 16"
-              className="mt-0.5 size-3.5 shrink-0 text-muted transition-transform duration-200 group-open:rotate-45"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.6"
-              strokeLinecap="round"
-            >
-              <path d="M8 2v12M2 8h12" />
-            </svg>
+            <span className="grid size-7 shrink-0 place-items-center rounded-lg bg-paper-2 text-ink-soft transition-transform duration-200 group-open:rotate-45 group-open:bg-brand-soft group-open:text-brand">
+              <svg
+                aria-hidden
+                viewBox="0 0 16 16"
+                className="size-3.5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              >
+                <path d="M8 2v12M2 8h12" />
+              </svg>
+            </span>
           </summary>
-          <p className="max-w-[68ch] pb-5 pr-10 text-[0.86rem] leading-relaxed text-ink-soft">
+          <p className="mt-3.5 max-w-[68ch] text-[0.88rem] leading-relaxed text-ink-soft border-t border-dashed border-line pt-3">
             {item.a}
           </p>
         </details>

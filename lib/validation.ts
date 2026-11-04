@@ -76,3 +76,20 @@ export type QuoteInput = z.infer<typeof quoteSchema>;
 export function firstIssue(error: z.ZodError): string {
   return error.issues[0]?.message ?? "Data belum lengkap";
 }
+
+/**
+ * Petakan error zod ke nama kolom, dipakai untuk menampilkan pesan tepat di
+ * bawah kolom yang salah (bukan hanya satu pesan di ujung formulir).
+ */
+export function fieldErrors(error: z.ZodError): Record<string, string> {
+  const hasil: Record<string, string> = {};
+
+  for (const issue of error.issues) {
+    const kunci = String(issue.path[0] ?? "");
+    if (kunci && !hasil[kunci]) {
+      hasil[kunci] = issue.message;
+    }
+  }
+
+  return hasil;
+}

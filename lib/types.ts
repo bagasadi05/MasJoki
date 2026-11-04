@@ -8,4 +8,6 @@ export interface ActionResult {
    * pengguna membukanya, pesanan langsung masuk ke chat admin.
    */
   waUrl?: string;
+  /** Pesan per kolom, supaya kesalahan tampil di tempat yang tepat. */
+  fieldErrors?: Record<string, string>;
 }

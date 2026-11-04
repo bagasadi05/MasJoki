@@ -1,13 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { pembayaran } from "@/lib/site";
+import { pembayaran, waLink } from "@/lib/site";
 
 const WARNA: Record<string, string> = {
   ShopeePay: "bg-orange-500",
   GoPay: "bg-sky-500",
   DANA: "bg-blue-600",
 };
+
+const waKonfirmasi = waLink(
+  "Halo Mas Joki, saya mau konfirmasi pembayaran pesanan saya.",
+);
 
 export function Pembayaran() {
   const [tersalin, setTersalin] = useState(false);
@@ -43,10 +47,13 @@ export function Pembayaran() {
               <button
                 type="button"
                 onClick={salin}
-                className="rounded border border-line px-3 py-1.5 text-[0.76rem] font-semibold text-ink-soft transition-colors hover:border-brand hover:text-brand"
+                className="rounded border border-line px-3.5 py-2 text-[0.76rem] font-semibold text-ink-soft transition-colors hover:border-brand hover:text-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
               >
                 {tersalin ? "Tersalin" : "Salin nomor"}
               </button>
+              <span aria-live="polite" className="sr-only">
+                {tersalin ? "Nomor pembayaran tersalin" : ""}
+              </span>
             </div>
 
             <ul className="mt-4 flex flex-wrap gap-2">
@@ -70,6 +77,16 @@ export function Pembayaran() {
             nama atau nomor lain yang mengatasnamakan Mas Joki, jangan
             ditransfer.
           </p>
+
+          <a
+            href={waKonfirmasi}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-5 inline-flex items-center gap-2 rounded-md border border-ink px-4 py-2.5 text-[0.82rem] font-semibold text-ink transition-colors hover:bg-ink hover:text-paper"
+          >
+            Konfirmasi pembayaran di WhatsApp
+            <span aria-hidden>↗</span>
+          </a>
         </div>
 
         <div className="lg:pt-2">

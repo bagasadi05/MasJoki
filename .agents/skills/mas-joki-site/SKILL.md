@@ -24,16 +24,20 @@ WhatsApp. Pembayaran manual lewat ShopeePay/GoPay/DANA.
 | `lib/site.ts` | Brand, nomor WhatsApp, **nomor pembayaran e-wallet**, jam operasional. |
 | `lib/validation.ts` | Skema zod untuk kedua formulir. |
 | `lib/rate-limit.ts` | Rate limit in-memory per IP. |
-| `lib/types.ts` | `ActionResult` (status, pesan, `waUrl`). |
+| `lib/types.ts` | `ActionResult` (status, pesan, `waUrl`, `fieldErrors`). |
+| `lib/nav.ts` | Item navigasi bersama (header desktop + menu seluler). |
+| `lib/pesan.ts` | Penyusun teks pesan WhatsApp (fungsi murni, mudah diuji). |
 | `app/actions.ts` | Server action `submitOrder` & `submitQuote` → susun tautan WhatsApp. |
 | `app/page.tsx` | Landing page: hero, daftar harga, cara kerja, pembayaran, kalkulator, FAQ. |
 | `app/jasa/page.tsx` | Daftar layanan (SEO + internal link). |
 | `app/jasa/[layanan]/page.tsx` | Detail per layanan, statis via `generateStaticParams`. |
 | `content/layanan.ts` | Konten per layanan (intro, cakupan, FAQ). Wajib diisi saat nambah layanan. |
 | `content/faq.ts` | FAQ umum (dipakai juga untuk FAQPage schema). |
-| `components/price-calculator.tsx` | Kalkulator dua mode + panel sukses. |
-| `components/pembayaran.tsx` | Bagian pembayaran e-wallet + tombol salin nomor. |
-| `components/wa-melayang.tsx` | Tombol WhatsApp melayang di semua halaman. |
+| `components/price-calculator.tsx` | Kalkulator dua mode, validasi per kolom, panel sukses. |
+| `components/pembayaran.tsx` | Bagian pembayaran e-wallet + tombol salin nomor + CTA konfirmasi. |
+| `components/wa-melayang.tsx` | Tombol WhatsApp melayang; sembunyi saat bagian `#hitung`/`#bayar` terlihat. |
+| `components/site-header.tsx` | Header sticky + CTA; memuat menu seluler. |
+| `components/menu-seluler.tsx` | Menu dropdown mobile (Escape, klik luar, fokus kembali ke tombol). |
 | `components/nota.tsx` | Komponen nota/kwitansi. |
 
 ## Alur pesanan (penting)
@@ -128,6 +132,25 @@ display: Bricolage Grotesque · body: Plus Jakarta Sans
   memang membawa informasi.
 - Fokus keyboard wajib terlihat; jangan hapus `:focus-visible` di `globals.css`.
 - Halaman ini terang saja. Jangan tambahkan mode gelap tanpa diminta.
+
+## UX & aksesibilitas
+
+- Form memakai `noValidate`; validasi lewat zod di server action. Error
+  dikembalikan sebagai `fieldErrors`, ditampilkan di bawah kolom terkait, lalu
+  fokus berpindah ke kolom pertama yang salah (`fokusKesalahan`). Pesan error
+  pada satu kolom hilang saat kolom itu diperbaiki (`bersihkanGalat`).
+- Panel sukses menggulir dirinya ke tampilan dan memakai `role="status"`.
+  Tombol WhatsApp tetap tautan biasa yang dibuka pengguna, bukan redirect
+  otomatis.
+- Header punya skip link ke `#konten` (setiap `<main>` wajib `id="konten"`) dan
+  menu seluler yang bisa ditutup dengan Escape/klik luar.
+- Tombol WhatsApp melayang disembunyikan saat `#hitung` atau `#bayar` terlihat
+  agar tidak menutupi CTA utama. Jangan menambahkan tombol melayang kedua.
+- Target sentuh minimal ~40px; jangan mengecilkan tombol header di mobile.
+- Semua placeholder diakhiri `…` (bukan `...`), dan input non-rahasia memakai
+  `autoComplete="off"`/`spellCheck={false}` bila perlu.
+- Jangan memakai `aria-live` pada seluruh nota (berisik). Cukup satu region
+  `sr-only` berisi total.
 
 ## Perintah
 

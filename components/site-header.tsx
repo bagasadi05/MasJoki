@@ -1,17 +1,11 @@
 import Link from "next/link";
-
-// Tautan absolut supaya tetap benar saat header dipakai di halaman lain.
-const nav = [
-  { href: "/#layanan", label: "Layanan" },
-  { href: "/#cara-kerja", label: "Cara kerja" },
-  { href: "/#hitung", label: "Hitung biaya" },
-  { href: "/#tanya", label: "FAQ" },
-];
+import { MenuSeluler } from "./menu-seluler";
+import { navigasi } from "@/lib/nav";
 
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-paper/85 backdrop-blur-sm">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-6 px-5 sm:px-8">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-5 sm:px-8">
         <Link
           href="/"
           className="flex items-center gap-2.5"
@@ -26,8 +20,8 @@ export function SiteHeader() {
         </Link>
 
         <nav aria-label="Navigasi utama" className="hidden md:block">
-          <ul className="flex items-center gap-7">
-            {nav.map((item) => (
+          <ul className="flex items-center gap-5 lg:gap-7">
+            {navigasi.map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}
@@ -40,12 +34,15 @@ export function SiteHeader() {
           </ul>
         </nav>
 
-        <Link
-          href="/#hitung"
-          className="rounded-md border border-ink px-3.5 py-2 text-[0.8rem] font-semibold text-ink transition-colors hover:bg-ink hover:text-paper"
-        >
-          Hitung biaya
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/#hitung"
+            className="rounded-md border border-ink px-3.5 py-3 text-[0.78rem] font-semibold text-ink transition-colors hover:bg-ink hover:text-paper sm:px-3.5 sm:py-2 sm:text-[0.8rem]"
+          >
+            Hitung biaya
+          </Link>
+          <MenuSeluler items={navigasi} />
+        </div>
       </div>
     </header>
   );

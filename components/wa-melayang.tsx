@@ -1,16 +1,46 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { waLink, waPesanUmum } from "@/lib/site";
 
 /**
  * Tombol WhatsApp melayang. Sama seperti pola "CS" di situs jasa sejenis:
  * selalu ada jalan keluar kalau pengunjung bingung.
+ *
+ * Tombol disembunyikan saat bagian kalkulator atau pembayaran terlihat, supaya
+ * tidak menutupi tombol utama di layar kecil.
  */
 export function WaMelayang() {
+  const [sembunyi, setSembunyi] = useState(false);
+
+  useEffect(() => {
+    const bagian = document.querySelectorAll("#hitung, #bayar");
+    if (bagian.length === 0) return;
+
+    const pengamat = new IntersectionObserver(
+      (entries) => {
+        setSembunyi(entries.some((entry) => entry.isIntersecting));
+      },
+      { rootMargin: "0px 0px -15% 0px", threshold: 0 },
+    );
+
+    bagian.forEach((el) => pengamat.observe(el));
+    return () => pengamat.disconnect();
+  }, []);
+
   return (
     <a
       href={waLink(waPesanUmum)}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-4 right-4 z-50 inline-flex items-center gap-2 rounded-full border border-line bg-white/95 px-4 py-2.5 text-[0.8rem] font-semibold text-ink shadow-[0_10px_30px_-12px_rgba(16,26,51,0.45)] backdrop-blur transition-colors hover:border-line-strong hover:text-brand sm:bottom-6 sm:right-6"
+      className={`fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-4 z-50 inline-flex items-center gap-2 rounded-full border border-line bg-white/95 px-4 py-2.5 text-[0.8rem] font-semibold text-ink shadow-[0_10px_30px_-12px_rgba(16,26,51,0.45)] backdrop-blur transition-all hover:border-line-strong hover:text-brand motion-reduce:transition-none sm:bottom-[max(1.5rem,env(safe-area-inset-bottom))] sm:right-6 ${
+        sembunyi
+          ? "pointer-events-none translate-y-2 opacity-0"
+          : "translate-y-0 opacity-100"
+      } print:hidden`}
+      aria-hidden={sembunyi}
+      tabIndex={sembunyi ? -1 : undefined}
+      aria-label="Tanya admin di WhatsApp (buka tab baru)"
     >
       <svg
         aria-hidden

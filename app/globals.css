@@ -53,7 +53,18 @@
     border-radius: 2px;
   }
 
-  section[id] {
+  a,
+  button,
+  input,
+  select,
+  textarea,
+  summary {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  section[id],
+  #konten {
     scroll-margin-top: 96px;
   }
 

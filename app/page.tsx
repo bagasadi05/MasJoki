@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { CalculatorProvider } from "@/components/calculator-context";
 import { FaqList } from "@/components/faq-list";
 import { ModeCta } from "@/components/mode-cta";
@@ -100,7 +101,7 @@ const alasan = [
   },
   {
     judul: "Satu pintu, satu admin",
-    isi: "Semua lewat WhatsApp dengan kode pesanan. Tidak perlu mengulang cerita ke orang yang berbeda.",
+    isi: "Semua lewat WhatsApp, langsung ke admin yang sama. Tidak perlu mengulang cerita ke orang yang berbeda.",
   },
 ];
 
@@ -147,7 +148,7 @@ export default function Home() {
     <CalculatorProvider>
       <SiteHeader />
 
-      <main>
+      <main id="konten">
         {/* ---------------------------------------------------------- *
          * Hero
          * ---------------------------------------------------------- */}
@@ -269,6 +270,16 @@ export default function Home() {
             </ModeCta>
             .
           </p>
+          <p className="mt-2 text-[0.8rem] text-muted">
+            Ingin tahu cakupan tiap layanan?{" "}
+            <Link
+              href="/jasa"
+              className="font-semibold text-ink underline decoration-line-strong underline-offset-4 transition-colors hover:text-brand hover:decoration-brand"
+            >
+              Buka detail layanan
+            </Link>
+            .
+          </p>
         </section>
 
         {/* ---------------------------------------------------------- *
@@ -308,7 +319,11 @@ export default function Home() {
          * ---------------------------------------------------------- */}
         <section id="hitung" className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
           <div className="max-w-2xl">
-            <h2 className="font-display text-[1.9rem] leading-tight tracking-[-0.02em] text-ink sm:text-[2.5rem]">
+            <h2
+              id="judul-hitung"
+              tabIndex={-1}
+              className="font-display text-[1.9rem] leading-tight tracking-[-0.02em] text-ink focus:outline-none sm:text-[2.5rem]"
+            >
               Hitung sendiri, sekarang.
             </h2>
             <p className="mt-4 text-[0.95rem] leading-relaxed text-ink-soft">

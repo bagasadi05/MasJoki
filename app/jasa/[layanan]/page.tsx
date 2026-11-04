@@ -116,7 +116,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
     <>
       <SiteHeader />
 
-      <main>
+      <main id="konten">
         <section className="border-b border-line">
           <div className="mx-auto max-w-6xl px-5 pb-12 pt-10 sm:px-8 sm:pb-16 sm:pt-14">
             <nav aria-label="Remah roti" className="text-[0.76rem] text-muted">
@@ -340,6 +340,44 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
               </li>
             ))}
           </ul>
+        </section>
+
+        <section className="mx-auto max-w-6xl px-5 pb-16 sm:px-8 sm:pb-20">
+          <div className="relative overflow-hidden rounded-lg bg-ink px-6 py-10 sm:px-12 sm:py-14">
+            <div
+              aria-hidden
+              className="pointer-events-none absolute -right-16 -top-16 size-64 rounded-full border border-white/10"
+            />
+            <div className="relative grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center lg:gap-10">
+              <div>
+                <h2 className="font-display text-[1.75rem] leading-[1.12] tracking-[-0.02em] text-paper sm:text-[2.2rem]">
+                  Siap mulai {service.name.toLowerCase()}?
+                </h2>
+                <p className="mt-3 max-w-[48ch] text-[0.88rem] leading-relaxed text-paper/70">
+                  Hitung dulu di kalkulator. Total, rincian, dan nomor pembayaran
+                  muncul sebelum kamu menulis pesan.
+                </p>
+              </div>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <Link
+                  href={`/?layanan=${service.id}#hitung`}
+                  className="inline-flex items-center justify-center rounded-md bg-stabilo px-6 py-3.5 text-[0.9rem] font-semibold text-ink transition-colors hover:bg-white"
+                >
+                  Hitung biayanya
+                </Link>
+                <a
+                  href={waLink(
+                    `Halo Mas Joki, saya mau tanya soal ${service.name.toLowerCase()}.`,
+                  )}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center rounded-md border border-white/25 px-6 py-3.5 text-[0.9rem] font-semibold text-paper transition-colors hover:border-white/60 hover:bg-white/5"
+                >
+                  Tanya admin
+                </a>
+              </div>
+            </div>
+          </div>
         </section>
       </main>
 

@@ -6,7 +6,7 @@ import { cekRateLimit } from "@/lib/rate-limit";
 import { getService } from "@/lib/services";
 import { waLink } from "@/lib/site";
 import type { ActionResult } from "@/lib/types";
-import { firstIssue, orderSchema, quoteSchema } from "@/lib/validation";
+import { fieldErrors, firstIssue, orderSchema, quoteSchema } from "@/lib/validation";
 
 /**
  * Tidak ada database. Server action ini hanya memvalidasi isian, menghitung
@@ -55,7 +55,11 @@ export async function submitOrder(
   });
 
   if (!parsed.success) {
-    return { status: "error", message: firstIssue(parsed.error) };
+    return {
+      status: "error",
+      message: firstIssue(parsed.error),
+      fieldErrors: fieldErrors(parsed.error),
+    };
   }
 
   const data = parsed.data;
@@ -107,7 +111,11 @@ export async function submitQuote(
   });
 
   if (!parsed.success) {
-    return { status: "error", message: firstIssue(parsed.error) };
+    return {
+      status: "error",
+      message: firstIssue(parsed.error),
+      fieldErrors: fieldErrors(parsed.error),
+    };
   }
 
   const data = parsed.data;

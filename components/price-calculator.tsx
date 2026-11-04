@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState, useTransition } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { submitOrder, submitQuote } from "@/app/actions";
 import { useCalculator } from "./calculator-context";
 import { Nota } from "./nota";
@@ -26,6 +26,85 @@ const fieldClass =
   "w-full rounded-md border border-line bg-white px-3.5 py-2.5 text-sm text-ink placeholder:text-muted/70 transition-colors hover:border-line-strong focus:border-brand focus:outline-none";
 
 const labelClass = "mb-1.5 block text-[0.78rem] font-semibold text-ink";
+
+/** Kolom yang difokuskan untuk tiap kunci error dari zod. */
+const FOKUS_ERROR: Record<string, string> = {
+  serviceId: "jumlah",
+  qty: "jumlah",
+  deadlineId: "tenggat-hitung",
+  difficultyId: "tingkat-hitung",
+  name: "name",
+  whatsapp: "whatsapp",
+  fileUrl: "fileUrl",
+  notes: "notes",
+  detail: "detail",
+  budget: "budget",
+};
+
+/** Urutan visual kolom, supaya fokus selalu ke kesalahan paling atas. */
+const URUTAN_HITUNG = [
+  "serviceId",
+  "qty",
+  "deadlineId",
+  "difficultyId",
+  "name",
+  "whatsapp",
+  "fileUrl",
+  "notes",
+];
+const URUTAN_PENAWARAN = [
+  "serviceId",
+  "detail",
+  "deadlineId",
+  "budget",
+  "name",
+  "whatsapp",
+  "fileUrl",
+];
+
+function fokusKesalahan(
+  errors: Record<string, string> | undefined,
+  mode: "hitung" | "penawaran",
+) {
+  if (!errors) return;
+
+  const urutan = mode === "hitung" ? URUTAN_HITUNG : URUTAN_PENAWARAN;
+  const kunci =
+    urutan.find((item) => item in errors) ?? Object.keys(errors)[0];
+  const petaMode =
+    mode === "hitung"
+      ? { serviceId: "jumlah", deadlineId: "tenggat-hitung" }
+      : { serviceId: "layanan-kutipan", deadlineId: "tenggat-kutipan" };
+  const id = kunci
+    ? ((petaMode as Record<string, string>)[kunci] ?? FOKUS_ERROR[kunci])
+    : undefined;
+  const el = id ? document.getElementById(id) : null;
+  if (!el) return;
+
+  const kurangiGerak = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+
+  el.focus({ preventScroll: true });
+  el.scrollIntoView({
+    behavior: kurangiGerak ? "auto" : "smooth",
+    block: "center",
+  });
+}
+
+function PesanGalat({ id, pesan }: { id: string; pesan?: string }) {
+  if (!pesan) return null;
+
+  return (
+    <p
+      id={id}
+      role="alert"
+      className="mt-1.5 text-[0.76rem] leading-relaxed text-red-700"
+    >
+      {pesan}
+    </p>
+  );
+}
 
 function defaultQtys(): Record<string, string> {
   return Object.fromEntries(
@@ -86,8 +165,27 @@ export function PriceCalculator() {
       if (jawaban.status === "ok") {
         form.reset();
         setQtyInput(defaultQtys());
+      } else {
+        fokusKesalahan(jawaban.fieldErrors, mode);
       }
     });
+  }
+
+  /** Hapus pesan galat pada kolom yang sedang diperbaiki. */
+  function bersihkanGalat(event: React.SyntheticEvent<HTMLFormElement>) {
+    if (result?.status !== "error" || !result.fieldErrors) return;
+
+    const nama = (event.target as HTMLInputElement).name;
+    const kunci = nama === "qtyTampilan" ? "qty" : nama;
+    if (!kunci || !(kunci in result.fieldErrors)) return;
+
+    const sisa = { ...result.fieldErrors };
+    delete sisa[kunci];
+    setResult(
+      Object.keys(sisa).length === 0
+        ? null
+        : { ...result, fieldErrors: sisa },
+    );
   }
 
   if (result?.status === "ok") {
@@ -102,15 +200,35 @@ export function PriceCalculator() {
               ? "Tugas lain"
               : getService(quoteService).name
         }
+        detail={
+          mode === "hitung"
+            ? `${price.qty} ${BASIS_LABEL[service.basis]} · ${price.deadline.label} · ${price.difficulty.label}`
+            : undefined
+        }
         total={mode === "hitung" ? price.total : null}
         onReset={() => setResult(null)}
       />
     );
   }
 
+  const galat =
+    result?.status === "error" &&
+    result.fieldErrors &&
+    Object.keys(result.fieldErrors).length > 0
+      ? result.fieldErrors
+      : undefined;
+
   return (
     <div>
-      <div className="mb-8 inline-flex rounded-md border border-line bg-white p-1">
+      <p className="mb-4 max-w-[62ch] text-[0.84rem] leading-relaxed text-muted">
+        Isi jumlah dan tenggat, totalnya langsung muncul. Data kontak diisi
+        terakhir sebelum pesanan dikirim ke WhatsApp.
+      </p>
+      <div
+        role="group"
+        aria-label="Pilih cara memesan"
+        className="mb-8 inline-flex rounded-md border border-line bg-white p-1"
+      >
         <button
           type="button"
           onClick={() => {
@@ -146,6 +264,8 @@ export function PriceCalculator() {
       <form
         ref={formRef}
         onSubmit={kirim}
+        onInput={bersihkanGalat}
+        noValidate
         className="grid gap-10 lg:grid-cols-[1.02fr_0.98fr] lg:gap-14"
       >
         {/* Kolom kiri atas: variabel yang mengubah harga */}
@@ -154,7 +274,7 @@ export function PriceCalculator() {
             <>
               <fieldset>
                 <legend className={labelClass}>Layanan</legend>
-                <div className="grid gap-2 sm:grid-cols-2">
+                <div className="grid grid-cols-2 gap-2">
                   {SERVICES.map((item) => {
                     const aktif = item.id === service.id;
                     return (
@@ -179,6 +299,7 @@ export function PriceCalculator() {
                     );
                   })}
                 </div>
+                <PesanGalat id="galat-layanan" pesan={galat?.serviceId} />
               </fieldset>
 
               <div>
@@ -194,29 +315,40 @@ export function PriceCalculator() {
                     autoComplete="off"
                     value={qtyInput[service.id] ?? String(service.defaultQty)}
                     onChange={(event) => ubahJumlah(event.target.value)}
+                    aria-invalid={galat?.qty ? true : undefined}
+                    aria-describedby={galat?.qty ? "galat-jumlah" : undefined}
                     className={`${fieldClass} max-w-[10rem] font-mono tabular-nums`}
                   />
                   <span className="text-sm text-muted">
                     {BASIS_LABEL[service.basis]}
                   </span>
                 </div>
+                <PesanGalat id="galat-jumlah" pesan={galat?.qty} />
                 <div className="mt-2.5 flex flex-wrap gap-1.5">
-                  {service.presets.map((preset) => (
-                    <button
-                      key={preset}
-                      type="button"
-                      onClick={() => ubahJumlah(String(preset))}
-                      className="rounded border border-line bg-white px-2.5 py-1 font-mono text-[0.72rem] tabular-nums text-ink-soft transition-colors hover:border-brand hover:text-brand"
-                    >
-                      {angka(preset)}
-                    </button>
-                  ))}
+                  {service.presets.map((preset) => {
+                    const aktif = price.qty === preset;
+                    return (
+                      <button
+                        key={preset}
+                        type="button"
+                        onClick={() => ubahJumlah(String(preset))}
+                        aria-pressed={aktif}
+                        className={`rounded border px-3 py-1.5 font-mono text-[0.74rem] tabular-nums transition-colors ${
+                          aktif
+                            ? "border-brand bg-brand-soft text-brand"
+                            : "border-line bg-white text-ink-soft hover:border-brand hover:text-brand"
+                        }`}
+                      >
+                        {angka(preset)}
+                      </button>
+                    );
+                  })}
                 </div>
                 <input type="hidden" name="qty" value={price.qty} />
                 <input type="hidden" name="serviceId" value={service.id} />
               </div>
 
-              <fieldset>
+              <fieldset id="tenggat-hitung" tabIndex={-1}>
                 <legend className={labelClass}>Tenggat</legend>
                 <div className="grid gap-2 sm:grid-cols-2">
                   {DEADLINES.map((item) => (
@@ -247,9 +379,10 @@ export function PriceCalculator() {
                     </label>
                   ))}
                 </div>
+                <PesanGalat id="galat-tenggat" pesan={galat?.deadlineId} />
               </fieldset>
 
-              <fieldset>
+              <fieldset id="tingkat-hitung" tabIndex={-1}>
                 <legend className={labelClass}>Tingkat kesulitan</legend>
                 <div className="flex flex-wrap gap-2">
                   {DIFFICULTIES.map((item) => (
@@ -278,6 +411,7 @@ export function PriceCalculator() {
                     </label>
                   ))}
                 </div>
+                <PesanGalat id="galat-tingkat" pesan={galat?.difficultyId} />
               </fieldset>
             </>
           ) : (
@@ -293,6 +427,8 @@ export function PriceCalculator() {
                   onChange={(event) =>
                     setQuoteService(event.target.value as ServiceId | "lainnya")
                   }
+                  aria-invalid={galat?.serviceId ? true : undefined}
+                  aria-describedby={galat?.serviceId ? "galat-layanan-kutipan" : undefined}
                   className={fieldClass}
                 >
                   {SERVICES.map((item) => (
@@ -302,6 +438,10 @@ export function PriceCalculator() {
                   ))}
                   <option value="lainnya">Lainnya (jelaskan di bawah)</option>
                 </select>
+                <PesanGalat
+                  id="galat-layanan-kutipan"
+                  pesan={galat?.serviceId}
+                />
               </div>
 
               <div>
@@ -314,15 +454,18 @@ export function PriceCalculator() {
                   required
                   minLength={20}
                   rows={6}
+                  aria-invalid={galat?.detail ? true : undefined}
+                  aria-describedby={galat?.detail ? "galat-detail" : undefined}
                   placeholder="Contoh: makalah 20 halaman, tema kebijakan publik, sudah ada 8 referensi, butuh daftar pustaka APA 7."
                   className={`${fieldClass} resize-y leading-relaxed`}
                 />
+                <PesanGalat id="galat-detail" pesan={galat?.detail} />
                 <p className="mt-1.5 text-[0.72rem] text-muted">
                   Semakin detail, semakin cepat admin memberi angka pasti.
                 </p>
               </div>
 
-              <fieldset>
+              <fieldset id="tenggat-kutipan" tabIndex={-1}>
                 <legend className={labelClass}>Dibutuhkan kapan?</legend>
                 <div className="grid gap-2 sm:grid-cols-2">
                   {DEADLINES.map((item) => (
@@ -350,6 +493,7 @@ export function PriceCalculator() {
                     </label>
                   ))}
                 </div>
+                <PesanGalat id="galat-tenggat-kutipan" pesan={galat?.deadlineId} />
               </fieldset>
 
               <div>
@@ -361,8 +505,11 @@ export function PriceCalculator() {
                   name="budget"
                   type="text"
                   placeholder="Contoh: di bawah Rp 200.000"
+                  aria-invalid={galat?.budget ? true : undefined}
+                  aria-describedby={galat?.budget ? "galat-budget" : undefined}
                   className={fieldClass}
                 />
+                <PesanGalat id="galat-budget" pesan={galat?.budget} />
               </div>
             </>
           )}
@@ -371,7 +518,10 @@ export function PriceCalculator() {
         {/* Nota: di mobile muncul setelah variabel, sebelum data kontak */}
         <div className="lg:col-start-2 lg:row-span-2 lg:row-start-1">
           <div className="lg:sticky lg:top-24">
-            <div aria-live="polite">
+            <p className="sr-only" aria-live="polite" aria-atomic="true">
+              {mode === "hitung" ? `Total ${rupiah(price.total)}` : ""}
+            </p>
+            <div>
               {mode === "hitung" ? (
                 <Nota
                   lines={price.lines}
@@ -409,7 +559,16 @@ export function PriceCalculator() {
         </div>
 
         {/* Kolom kiri bawah: data kontak + kirim */}
-        <div className="space-y-5 lg:col-start-1 lg:row-start-2">
+        <div className="space-y-5 border-t border-line pt-6 lg:col-start-1 lg:row-start-2">
+          <div>
+            <h3 className="font-display text-lg leading-tight tracking-tight text-ink">
+              Data kontak
+            </h3>
+            <p className="mt-1 text-[0.78rem] text-muted">
+              Dipakai admin untuk membalas dan mengirim hasil. Tidak dipublikasikan.
+            </p>
+          </div>
+
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
               <label htmlFor="name" className={labelClass}>
@@ -423,8 +582,11 @@ export function PriceCalculator() {
                 maxLength={80}
                 autoComplete="name"
                 placeholder="Nama atau panggilanmu"
+                aria-invalid={galat?.name ? true : undefined}
+                aria-describedby={galat?.name ? "galat-name" : undefined}
                 className={fieldClass}
               />
+              <PesanGalat id="galat-name" pesan={galat?.name} />
             </div>
             <div>
               <label htmlFor="whatsapp" className={labelClass}>
@@ -433,12 +595,17 @@ export function PriceCalculator() {
               <input
                 id="whatsapp"
                 name="whatsapp"
+                type="tel"
                 required
                 inputMode="tel"
                 autoComplete="tel"
+                spellCheck={false}
                 placeholder="0812 3456 7890"
+                aria-invalid={galat?.whatsapp ? true : undefined}
+                aria-describedby={galat?.whatsapp ? "galat-whatsapp" : undefined}
                 className={fieldClass}
               />
+              <PesanGalat id="galat-whatsapp" pesan={galat?.whatsapp} />
             </div>
           </div>
 
@@ -450,9 +617,14 @@ export function PriceCalculator() {
               id="fileUrl"
               name="fileUrl"
               type="url"
-              placeholder="https://drive.google.com/..."
+              autoComplete="off"
+              spellCheck={false}
+              placeholder="https://drive.google.com/…"
+              aria-invalid={galat?.fileUrl ? true : undefined}
+              aria-describedby={galat?.fileUrl ? "galat-fileUrl" : undefined}
               className={fieldClass}
             />
+            <PesanGalat id="galat-fileUrl" pesan={galat?.fileUrl} />
             <p className="mt-1.5 text-[0.72rem] text-muted">
               Google Drive, OneDrive, atau apa pun yang bisa dibuka tanpa login.
             </p>
@@ -468,8 +640,11 @@ export function PriceCalculator() {
                 name="notes"
                 rows={3}
                 placeholder="Contoh: pakai APA 7, font Times New Roman 12, ada template dari kampus."
+                aria-invalid={galat?.notes ? true : undefined}
+                aria-describedby={galat?.notes ? "galat-notes" : undefined}
                 className={`${fieldClass} resize-y leading-relaxed`}
               />
+              <PesanGalat id="galat-notes" pesan={galat?.notes} />
             </div>
           ) : null}
 
@@ -479,7 +654,7 @@ export function PriceCalculator() {
             <input id="perusahaan" name="perusahaan" tabIndex={-1} autoComplete="off" />
           </div>
 
-          {result?.status === "error" ? (
+          {result?.status === "error" && !galat ? (
             <p
               role="alert"
               className="rounded-md border border-red-300 bg-red-50 px-3.5 py-2.5 text-[0.82rem] text-red-800"
@@ -491,6 +666,7 @@ export function PriceCalculator() {
           <button
             type="submit"
             disabled={pending}
+            aria-busy={pending}
             className="w-full rounded-md bg-brand px-5 py-3.5 text-[0.92rem] font-semibold text-white transition-colors hover:bg-brand-dark disabled:cursor-not-allowed disabled:opacity-60"
           >
             {pending
@@ -571,16 +747,30 @@ function SuccessPanel({
   result,
   mode,
   serviceName,
+  detail,
   total,
   onReset,
 }: {
   result: ActionResult;
   mode: "hitung" | "penawaran";
   serviceName: string;
+  detail?: string;
   total: number | null;
   onReset: () => void;
 }) {
   const [tersalin, setTersalin] = useState(false);
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const kurangiGerak = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    panelRef.current?.scrollIntoView({
+      behavior: kurangiGerak ? "auto" : "smooth",
+      block: "center",
+    });
+  }, []);
 
   async function salinNomor() {
     try {
@@ -593,27 +783,32 @@ function SuccessPanel({
   }
 
   return (
-    <div className="mx-auto max-w-xl">
+    <div ref={panelRef} className="mx-auto max-w-xl">
       <div className="rounded-md border border-line bg-white p-7 shadow-[0_18px_40px_-28px_rgba(16,26,51,0.4)] sm:p-9">
-        <p className="inline-flex items-center gap-2 rounded-full bg-brand-soft px-3 py-1 text-[0.72rem] font-semibold text-brand">
-          <span aria-hidden className="size-1.5 rounded-full bg-brand" />
-          {mode === "hitung" ? "Pesanan siap" : "Brief siap"}
-        </p>
+        <div role="status" aria-live="polite">
+          <p className="inline-flex items-center gap-2 rounded-full bg-brand-soft px-3 py-1 text-[0.72rem] font-semibold text-brand">
+            <span aria-hidden className="size-1.5 rounded-full bg-brand" />
+            {mode === "hitung" ? "Pesanan siap" : "Brief siap"}
+          </p>
 
-        <h3 className="mt-4 font-display text-2xl tracking-tight text-ink">
-          {mode === "hitung"
-            ? "Tinggal kirim ke WhatsApp."
-            : "Tinggal kirim brief-nya."}
-        </h3>
+          <h3 className="mt-4 font-display text-2xl tracking-tight text-ink">
+            {mode === "hitung"
+              ? "Tinggal kirim ke WhatsApp."
+              : "Tinggal kirim brief-nya."}
+          </h3>
 
-        <p className="mt-2 text-[0.9rem] leading-relaxed text-ink-soft">
-          {result.message}
-        </p>
+          <p className="mt-2 text-[0.9rem] leading-relaxed text-ink-soft">
+            {result.message}
+          </p>
+        </div>
 
         <dl className="mt-6 grid grid-cols-2 gap-4 border-y border-dashed border-line py-4 text-[0.8rem]">
           <div>
             <dt className="text-muted">Layanan</dt>
             <dd className="mt-0.5 font-medium text-ink">{serviceName}</dd>
+            {detail ? (
+              <dd className="mt-0.5 text-[0.72rem] text-muted">{detail}</dd>
+            ) : null}
           </div>
           <div>
             <dt className="text-muted">
@@ -632,7 +827,7 @@ function SuccessPanel({
                 Pembayaran setelah dikonfirmasi
               </p>
               <p className="mt-1 text-[0.74rem] text-muted">
-                {pembayaran.metode.join(" · ")}
+                {pembayaran.metode.join(" · ")} · kirim bukti di chat yang sama
               </p>
               <div className="mt-2 flex flex-wrap items-center gap-3">
                 <span className="font-mono text-[1.05rem] font-semibold tabular-nums text-ink">
@@ -641,10 +836,13 @@ function SuccessPanel({
                 <button
                   type="button"
                   onClick={salinNomor}
-                  className="rounded border border-line bg-white px-2.5 py-1 text-[0.72rem] font-semibold text-ink-soft transition-colors hover:border-brand hover:text-brand"
+                  className="rounded border border-line bg-white px-3 py-2 text-[0.72rem] font-semibold text-ink-soft transition-colors hover:border-brand hover:text-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
                 >
                   {tersalin ? "Tersalin" : "Salin nomor"}
                 </button>
+                <span aria-live="polite" className="sr-only">
+                  {tersalin ? "Nomor pembayaran tersalin" : ""}
+                </span>
               </div>
             </div>
 
@@ -653,9 +851,10 @@ function SuccessPanel({
                 href={result.waUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex flex-1 items-center justify-center rounded-md bg-brand px-5 py-3 text-[0.88rem] font-semibold text-white transition-colors hover:bg-brand-dark"
+                className="inline-flex flex-1 items-center justify-center gap-2 rounded-md bg-brand px-5 py-3 text-[0.88rem] font-semibold text-white transition-colors hover:bg-brand-dark"
               >
                 Kirim pesanan via WhatsApp
+                <span aria-hidden>↗</span>
               </a>
               <button
                 type="button"

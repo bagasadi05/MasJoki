@@ -33,6 +33,9 @@ export function scrollKeKalkulator() {
     behavior: kurangiGerak ? "auto" : "smooth",
     block: "start",
   });
+  // Pindahkan fokus ke judul supaya pengguna keyboard/screen reader tidak
+  // tertinggal di tombol asal.
+  document.getElementById("judul-hitung")?.focus({ preventScroll: true });
 }
 
 export function CalculatorProvider({

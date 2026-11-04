@@ -4,7 +4,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { rupiah } from "@/lib/format";
 import { SERVICES, priceLabel } from "@/lib/services";
-import { site } from "@/lib/site";
+import { site, waLink, waPesanUmum } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Layanan & harga",
@@ -18,7 +18,7 @@ export default function HalamanDaftarLayanan() {
     <>
       <SiteHeader />
 
-      <main className="mx-auto max-w-6xl px-5 py-14 sm:px-8 sm:py-20">
+      <main id="konten" className="mx-auto max-w-6xl px-5 py-14 sm:px-8 sm:py-20">
         <nav aria-label="Remah roti" className="text-[0.76rem] text-muted">
           <Link href="/" className="transition-colors hover:text-brand">
             Beranda
@@ -37,6 +37,23 @@ export default function HalamanDaftarLayanan() {
           jumlah, tenggat, dan tingkat kesulitan — dan selalu muncul sebelum
           kamu memesan.
         </p>
+
+        <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+          <Link
+            href="/#hitung"
+            className="inline-flex items-center justify-center rounded-md bg-brand px-6 py-3.5 text-[0.9rem] font-semibold text-white transition-colors hover:bg-brand-dark"
+          >
+            Hitung biaya tugasku
+          </Link>
+          <a
+            href={waLink(waPesanUmum)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center rounded-md border border-ink px-6 py-3.5 text-[0.9rem] font-semibold text-ink transition-colors hover:bg-ink hover:text-paper"
+          >
+            Tanya admin
+          </a>
+        </div>
 
         <ul className="mt-10 grid gap-4 sm:grid-cols-2">
           {SERVICES.map((service) => (

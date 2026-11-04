@@ -1,3 +1,5 @@
+import { pembayaran } from "@/lib/site";
+
 export interface FaqItem {
   q: string;
   a: string;
@@ -10,7 +12,7 @@ export const faq: FaqItem[] = [
   },
   {
     q: "Bagaimana cara membayarnya?",
-    a: "Setelah admin mengonfirmasi pesanan, kamu menerima tautan pembayaran. Bisa lewat QRIS, virtual account bank, atau transfer. Pesanan mulai dikerjakan setelah pembayaran masuk.",
+    a: `Bayar lewat ShopeePay, GoPay, atau DANA ke nomor yang sama dengan admin: ${pembayaran.nomor}. Kirim bukti transfer di chat WhatsApp yang sama. Pengerjaan mulai setelah pembayaran dikonfirmasi.`,
   },
   {
     q: "Berapa kali saya boleh minta revisi?",

@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { SERVICES } from "@/lib/services";
-import { site, waLink, waPesanUmum } from "@/lib/site";
+import { pembayaran, site, waLink, waPesanUmum } from "@/lib/site";
 
 export function SiteFooter() {
   return (
     <footer className="border-t border-line bg-paper-2/60">
-      <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8">
+      <div className="mx-auto max-w-6xl px-5 pb-24 pt-14 sm:px-8 sm:pb-14">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr]">
           <div>
             <p className="font-display text-2xl tracking-tight text-ink">
@@ -78,7 +78,7 @@ export function SiteFooter() {
               <li className="pt-1 text-[0.78rem] leading-relaxed text-muted">
                 Bayar via ShopeePay, GoPay, atau DANA
                 <br />
-                <span className="font-mono tabular-nums">089619774116</span>
+                <span className="font-mono tabular-nums">{pembayaran.nomor}</span>
               </li>
             </ul>
           </nav>

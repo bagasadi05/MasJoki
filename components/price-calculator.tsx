@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useMemo, useRef, useState, useTransition } from "react";
 import { submitOrder, submitQuote } from "@/app/actions";
 import { useCalculator } from "./calculator-context";
@@ -20,7 +19,7 @@ import {
   SERVICES,
   type ServiceId,
 } from "@/lib/services";
-import { site, waLink } from "@/lib/site";
+import { pembayaran, site } from "@/lib/site";
 import type { ActionResult } from "@/lib/types";
 
 const fieldClass =
@@ -396,7 +395,7 @@ export function PriceCalculator() {
               <div className="flex justify-between gap-4">
                 <dt className="text-muted">Pembayaran</dt>
                 <dd className="text-right font-medium text-ink-soft">
-                  QRIS, VA, transfer
+                  {pembayaran.metode.join(" · ")}
                 </dd>
               </div>
               <div className="flex justify-between gap-4">
@@ -502,8 +501,8 @@ export function PriceCalculator() {
           </button>
 
           <p className="text-center text-[0.72rem] leading-relaxed text-muted">
-            Belum ada pembayaran di langkah ini. Admin konfirmasi dulu lewat
-            WhatsApp.
+            Tidak perlu daftar. Setelah dikirim, admin konfirmasi lewat WhatsApp
+            sebelum kamu bayar.
           </p>
         </div>
       </form>
@@ -581,23 +580,30 @@ function SuccessPanel({
   total: number | null;
   onReset: () => void;
 }) {
-  const pesan =
-    mode === "hitung"
-      ? `Halo Mas Joki, saya baru membuat pesanan ${result.code} (${serviceName}${
-          total ? `, estimasi ${rupiah(total)}` : ""
-        }). Mohon dikonfirmasi.`
-      : `Halo Mas Joki, saya baru mengirim permintaan penawaran ${result.code} (${serviceName}). Mohon dicek ya.`;
+  const [tersalin, setTersalin] = useState(false);
+
+  async function salinNomor() {
+    try {
+      await navigator.clipboard.writeText(pembayaran.nomor);
+      setTersalin(true);
+      window.setTimeout(() => setTersalin(false), 2000);
+    } catch {
+      // Clipboard bisa ditolak browser; nomornya tetap terbaca di layar.
+    }
+  }
 
   return (
     <div className="mx-auto max-w-xl">
       <div className="rounded-md border border-line bg-white p-7 shadow-[0_18px_40px_-28px_rgba(16,26,51,0.4)] sm:p-9">
         <p className="inline-flex items-center gap-2 rounded-full bg-brand-soft px-3 py-1 text-[0.72rem] font-semibold text-brand">
           <span aria-hidden className="size-1.5 rounded-full bg-brand" />
-          {mode === "hitung" ? "Pesanan diterima" : "Permintaan terkirim"}
+          {mode === "hitung" ? "Pesanan siap" : "Brief siap"}
         </p>
 
         <h3 className="mt-4 font-display text-2xl tracking-tight text-ink">
-          {mode === "hitung" ? "Tinggal konfirmasi." : "Brief-nya sudah masuk."}
+          {mode === "hitung"
+            ? "Tinggal kirim ke WhatsApp."
+            : "Tinggal kirim brief-nya."}
         </h3>
 
         <p className="mt-2 text-[0.9rem] leading-relaxed text-ink-soft">
@@ -606,66 +612,74 @@ function SuccessPanel({
 
         <dl className="mt-6 grid grid-cols-2 gap-4 border-y border-dashed border-line py-4 text-[0.8rem]">
           <div>
-            <dt className="text-muted">Kode</dt>
-            <dd className="mt-0.5 font-mono text-base font-semibold tabular-nums text-ink">
-              {result.code ?? "—"}
-            </dd>
-          </div>
-          <div>
             <dt className="text-muted">Layanan</dt>
             <dd className="mt-0.5 font-medium text-ink">{serviceName}</dd>
           </div>
+          <div>
+            <dt className="text-muted">
+              {mode === "hitung" ? "Estimasi" : "Harga"}
+            </dt>
+            <dd className="mt-0.5 font-mono text-base font-semibold tabular-nums text-ink">
+              {total ? rupiah(total) : "Menunggu admin"}
+            </dd>
+          </div>
         </dl>
 
-        {result.demo ? (
-          <p className="mt-4 rounded-md border border-amber-300 bg-amber-50 px-3.5 py-2.5 text-[0.78rem] leading-relaxed text-amber-900">
-            <strong className="font-semibold">Mode demo.</strong> Database belum
-            terhubung, jadi data ini belum benar-benar tersimpan. Isi kredensial
-            Supabase di <code className="font-mono">.env.local</code> untuk
-            mengaktifkan.
-          </p>
-        ) : null}
+        {result.waUrl ? (
+          <>
+            <div className="mt-5 rounded-md border border-line bg-paper-2/70 px-4 py-3.5">
+              <p className="text-[0.78rem] font-semibold text-ink">
+                Pembayaran setelah dikonfirmasi
+              </p>
+              <p className="mt-1 text-[0.74rem] text-muted">
+                {pembayaran.metode.join(" · ")}
+              </p>
+              <div className="mt-2 flex flex-wrap items-center gap-3">
+                <span className="font-mono text-[1.05rem] font-semibold tabular-nums text-ink">
+                  {pembayaran.nomor}
+                </span>
+                <button
+                  type="button"
+                  onClick={salinNomor}
+                  className="rounded border border-line bg-white px-2.5 py-1 text-[0.72rem] font-semibold text-ink-soft transition-colors hover:border-brand hover:text-brand"
+                >
+                  {tersalin ? "Tersalin" : "Salin nomor"}
+                </button>
+              </div>
+            </div>
 
-        <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-          {!result.demo ? (
-            <Link
-              href={`/pesanan/${result.code}`}
-              className="inline-flex flex-1 items-center justify-center rounded-md bg-brand px-5 py-3 text-[0.88rem] font-semibold text-white transition-colors hover:bg-brand-dark"
-            >
-              Lihat &amp; bayar pesanan
-            </Link>
-          ) : (
-            <a
-              href={waLink(pesan)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex flex-1 items-center justify-center rounded-md bg-brand px-5 py-3 text-[0.88rem] font-semibold text-white transition-colors hover:bg-brand-dark"
-            >
-              Lanjut di WhatsApp
-            </a>
-          )}
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+              <a
+                href={result.waUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex flex-1 items-center justify-center rounded-md bg-brand px-5 py-3 text-[0.88rem] font-semibold text-white transition-colors hover:bg-brand-dark"
+              >
+                Kirim pesanan via WhatsApp
+              </a>
+              <button
+                type="button"
+                onClick={onReset}
+                className="inline-flex items-center justify-center rounded-md border border-line px-5 py-3 text-[0.88rem] font-semibold text-ink-soft transition-colors hover:border-line-strong hover:text-ink"
+              >
+                Buat lagi
+              </button>
+            </div>
+
+            <p className="mt-3 text-center text-[0.72rem] leading-relaxed text-muted">
+              Isi pesan sudah terisi otomatis. Kamu tinggal tekan kirim di
+              WhatsApp.
+            </p>
+          </>
+        ) : (
           <button
             type="button"
             onClick={onReset}
-            className="inline-flex items-center justify-center rounded-md border border-line px-5 py-3 text-[0.88rem] font-semibold text-ink-soft transition-colors hover:border-line-strong hover:text-ink"
+            className="mt-6 inline-flex w-full items-center justify-center rounded-md border border-line px-5 py-3 text-[0.88rem] font-semibold text-ink-soft transition-colors hover:border-line-strong hover:text-ink"
           >
-            Buat lagi
+            Kembali
           </button>
-        </div>
-
-        {!result.demo ? (
-          <p className="mt-3 text-center text-[0.74rem] leading-relaxed text-muted">
-            Masih perlu bicara dulu?{" "}
-            <a
-              href={waLink(pesan)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-semibold text-ink underline decoration-line-strong underline-offset-4"
-            >
-              Buka WhatsApp
-            </a>
-          </p>
-        ) : null}
+        )}
       </div>
     </div>
   );

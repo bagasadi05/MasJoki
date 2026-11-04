@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Plus_Jakarta_Sans } from "next/font/google";
+import { WaMelayang } from "@/components/wa-melayang";
 import "./globals.css";
 
 const display = Bricolage_Grotesque({
@@ -54,6 +55,7 @@ export default function RootLayout({
     <html lang="id" className={`${display.variable} ${sans.variable}`}>
       <body className="min-h-dvh bg-paper font-sans text-ink antialiased">
         {children}
+        <WaMelayang />
       </body>
     </html>
   );

@@ -2,6 +2,7 @@ import { CalculatorProvider } from "@/components/calculator-context";
 import { FaqList } from "@/components/faq-list";
 import { ModeCta } from "@/components/mode-cta";
 import { Nota } from "@/components/nota";
+import { Pembayaran } from "@/components/pembayaran";
 import { PriceCalculator } from "@/components/price-calculator";
 import { ServiceList } from "@/components/service-list";
 import { SiteFooter } from "@/components/site-footer";
@@ -69,12 +70,17 @@ const langkah = [
   },
   {
     nomor: "02",
-    judul: "Kirim file, admin kunci harga",
-    isi: "Tempel tautan file dan data kontakmu. Admin cek sebentar, lalu kirim tautan pembayaran lewat WhatsApp.",
+    judul: "Kirim ke WhatsApp",
+    isi: "Tempel tautan file dan data kontakmu. Satu klik, ringkasan pesanan langsung masuk ke chat admin.",
   },
   {
     nomor: "03",
-    judul: "Terima hasil, pakai jatah revisi",
+    judul: "Bayar lewat e-wallet",
+    isi: "Admin konfirmasi total akhir. Transfer lewat ShopeePay, GoPay, atau DANA, lalu kirim bukti di chat yang sama.",
+  },
+  {
+    nomor: "04",
+    judul: "Terima hasil",
     isi: "Hasil dikirim dalam format yang bisa diedit. Ada dua kali revisi kalau ada yang menyimpang dari brief.",
   },
 ];
@@ -178,7 +184,7 @@ export default function Home() {
               </div>
 
               <p className="mt-5 text-[0.78rem] leading-relaxed text-muted">
-                Dua kali revisi · QRIS &amp; virtual account · file sumber
+                Dua kali revisi · ShopeePay, GoPay, DANA · file sumber
                 diserahkan
               </p>
 
@@ -221,7 +227,7 @@ export default function Home() {
               "Harga dihitung di depan",
               "Revisi 2× termasuk",
               "File sumber diserahkan",
-              "QRIS, VA, transfer",
+              "ShopeePay, GoPay, DANA",
             ].map((item) => (
               <p key={item} className="flex items-start gap-2">
                 <span
@@ -274,10 +280,10 @@ export default function Home() {
         >
           <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
             <h2 className="max-w-xl font-display text-[1.9rem] leading-tight tracking-[-0.02em] text-ink sm:text-[2.5rem]">
-              Tiga langkah, tanpa drama.
+              Empat langkah, tanpa drama.
             </h2>
 
-            <ol className="mt-10 grid gap-8 sm:grid-cols-3 sm:gap-10">
+            <ol className="mt-10 grid gap-8 sm:grid-cols-2 sm:gap-10 lg:grid-cols-4">
               {langkah.map((item) => (
                 <li key={item.nomor} className="border-t border-line-strong pt-5">
                   <p className="font-mono text-[0.72rem] tabular-nums text-brand">
@@ -294,6 +300,8 @@ export default function Home() {
             </ol>
           </div>
         </section>
+
+        <Pembayaran />
 
         {/* ---------------------------------------------------------- *
          * Kalkulator

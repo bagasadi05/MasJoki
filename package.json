@@ -10,7 +10,6 @@
     "typecheck": "node --max-old-space-size=4096 ./node_modules/typescript/bin/tsc --noEmit"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.118.0",
     "next": "16.4.5",
     "react": "19.3.0",
     "react-dom": "19.3.0",

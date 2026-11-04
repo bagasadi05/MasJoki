@@ -1,10 +1,10 @@
 ---
 name: mas-joki-site
-description: Konvensi proyek situs Mas Joki (jasa bantuan tugas Indonesia). Gunakan saat mengubah harga, menambah layanan, menyunting copy, mengerjakan alur pesanan/penawaran, atau menyentuh desain dan database proyek ini. Berisi sumber kebenaran harga, aturan copy yang tidak boleh dilanggar, token desain, dan peta file.
+description: Konvensi proyek situs Mas Joki (jasa bantuan tugas Indonesia). Gunakan saat mengubah harga, menambah layanan, menyunting copy, mengerjakan alur pesanan/penawaran, atau menyentuh desain proyek ini. Berisi sumber kebenaran harga, aturan copy yang tidak boleh dilanggar, nomor pembayaran, token desain, dan peta file.
 license: MIT
 metadata:
   audience: maintainers
-  stack: nextjs-supabase
+  stack: nextjs
 ---
 
 # Mas Joki — konvensi proyek
@@ -12,32 +12,45 @@ metadata:
 Situs pemesanan jasa bantuan tugas berbahasa Indonesia. Model bisnisnya
 **harga transparan**: pengunjung menghitung sendiri biayanya sebelum chat.
 
+**Tanpa database, tanpa payment gateway.** Pesanan berakhir sebagai chat
+WhatsApp. Pembayaran manual lewat ShopeePay/GoPay/DANA.
+
 ## Peta file
 
 | Path | Isi |
 |---|---|
 | `lib/services.ts` | Katalog 8 layanan + harga per satuan. **Satu-satunya sumber harga.** |
 | `lib/pricing.ts` | Mesin hitung: tenggat, tingkat kesulitan, pembulatan, batas minimum. |
-| `lib/site.ts` | Identitas brand, nomor WhatsApp, jam operasional. |
+| `lib/site.ts` | Brand, nomor WhatsApp, **nomor pembayaran e-wallet**, jam operasional. |
 | `lib/validation.ts` | Skema zod untuk kedua formulir. |
-| `lib/supabase.ts` | Klien service role (server only). |
-| `lib/midtrans.ts` | Klien Snap (REST, tanpa SDK). |
-| `lib/payment-status.ts` | Pemetaan status Midtrans → status lokal + aturan monoton. |
-| `lib/auth.ts` | Sesi admin (cookie HMAC). |
-| `app/actions.ts` | Server action `submitOrder` dan `submitQuote`. |
-| `app/admin/(dashboard)/` | Dashboard admin, dilindungi layout. |
-| `app/admin/(dashboard)/actions.ts` | `ubahStatus` + `cekStatusPembayaran` (rekonsiliasi Midtrans). |
-| `app/api/pembayaran/route.ts` | Membuat transaksi Snap untuk satu pesanan. |
-| `app/api/midtrans/webhook/route.ts` | Verifikasi signature + update status. |
-| `app/pesanan/[kode]/page.tsx` | Halaman status & bayar untuk pelanggan. |
-| `app/page.tsx` | Landing page + JSON-LD. |
+| `lib/rate-limit.ts` | Rate limit in-memory per IP. |
+| `lib/types.ts` | `ActionResult` (status, pesan, `waUrl`). |
+| `app/actions.ts` | Server action `submitOrder` & `submitQuote` → susun tautan WhatsApp. |
+| `app/page.tsx` | Landing page: hero, daftar harga, cara kerja, pembayaran, kalkulator, FAQ. |
 | `app/jasa/page.tsx` | Daftar layanan (SEO + internal link). |
-| `app/jasa/[layanan]/page.tsx` | Halaman detail per layanan, statis via `generateStaticParams`. |
+| `app/jasa/[layanan]/page.tsx` | Detail per layanan, statis via `generateStaticParams`. |
 | `content/layanan.ts` | Konten per layanan (intro, cakupan, FAQ). Wajib diisi saat nambah layanan. |
-| `components/price-calculator.tsx` | Kalkulator dua mode. |
+| `content/faq.ts` | FAQ umum (dipakai juga untuk FAQPage schema). |
+| `components/price-calculator.tsx` | Kalkulator dua mode + panel sukses. |
+| `components/pembayaran.tsx` | Bagian pembayaran e-wallet + tombol salin nomor. |
+| `components/wa-melayang.tsx` | Tombol WhatsApp melayang di semua halaman. |
 | `components/nota.tsx` | Komponen nota/kwitansi. |
-| `supabase/schema.sql` | Tabel `orders` dan `quote_requests`. |
-| `content/faq.ts` | Sumber FAQ (dipakai juga untuk FAQPage schema). |
+
+## Alur pesanan (penting)
+
+1. Form dikirim ke server action.
+2. Action memvalidasi (zod), menghitung ulang harga, lalu menyusun teks pesanan.
+3. Action mengembalikan `waUrl` (`wa.me/...?text=...`) — **tidak ada yang
+   disimpan**.
+4. Panel sukses menampilkan estimasi + nomor pembayaran + tombol
+   "Kirim pesanan via WhatsApp". Tautan dibuka di tab baru; pengguna tinggal
+   menekan kirim.
+
+Jangan menambahkan database tanpa diminta. Jangan menambahkan payment gateway.
+Kalau perlu menyimpan pesanan, itu perubahan arsitektur — diskusikan dulu.
+
+Nomor pembayaran ada di `lib/site.ts` (`pembayaran`). Format tampil `08…`,
+format WhatsApp `62…`.
 
 ## Model harga
 
@@ -51,12 +64,22 @@ Situs pemesanan jasa bantuan tugas berbahasa Indonesia. Model bisnisnya
   tenggat dan kesulitan. Total dibulatkan ke **500 rupiah**.
 
 **Aturan:** total di browser tidak pernah dipercaya. Server action menghitung
-ulang harga dari `serviceId` + `qty` sebelum menyimpan.
+ulang harga dari `serviceId` + `qty` sebelum menyusun pesan WhatsApp.
 
 Menambah layanan = tambah objek di `SERVICES` **dan** entri di
 `content/layanan.ts`. URL halaman detail mengikuti `service.id`:
 `/jasa/{id}`. Menghapus/mengganti `id` layanan memotong URL SEO yang sudah
 terindeks — kalau hanya mengubah isi, jangan ganti `id`.
+
+## Dua mode pesanan
+
+1. **Hitung langsung** — pengguna memilih layanan, jumlah, tenggat, kesulitan.
+   Nota menampilkan rincian baris. Pesan WhatsApp memuat semuanya + estimasi.
+2. **Minta penawaran** — brief bebas untuk tugas yang tidak masuk pola.
+   Pesan WhatsApp memuat brief + tenggat + anggaran.
+
+Keduanya memakai honeypot `perusahaan`. Bot yang mengisi honeypot mendapat
+balasan "ok" tanpa `waUrl`, jadi tidak ada tautan yang bisa disalahgunakan.
 
 ## Halaman layanan (SEO)
 
@@ -66,25 +89,8 @@ terindeks — kalau hanya mengubah isi, jangan ganti `id`.
 - CTA "Hitung biaya persisnya" menaut ke `/?layanan={id}#hitung`. Kode di
   `CalculatorProvider` membaca query `layanan`/`mode` dari URL — jangan hapus,
   itu yang membuat tombol CTA langsung memilih layanan yang benar.
-- Slug tak dikenal → 404 (tidak boleh `dynamicParams`; tidak kompatibel dengan
-  `cacheComponents`).
-
-## Dua mode pesanan
-
-1. **Hitung langsung** — pengguna memilih layanan, jumlah, tenggat, kesulitan.
-   Nota menampilkan rincian baris. Submit menyimpan ke `orders`.
-2. **Minta penawaran** — brief bebas untuk tugas yang tidak masuk pola.
-   Submit menyimpan ke `quote_requests`.
-
-Keduanya memakai honeypot `perusahaan`. Tanpa kredensial Supabase, action
-mengembalikan `demo: true` dan UI menampilkan peringatan bahwa data belum
-tersimpan — jangan hapus perilaku ini, itu yang membuat repo bisa dijalankan
-tanpa backend.
-
-Status pesanan: `menunggu_konfirmasi`→`menunggu_pembayaran`→`dibayar`→
-`dikerjakan`→`revisi`→`selesai`, plus `kedaluwarsa` / `gagal` / `dikembalikan`
-/ `batal`. Definisi label & pemetaan dari Midtrans ada di
-`lib/payment-status.ts` — jangan satukan aturannya di tempat lain.
+- Slug tak dikenal → 404. Jangan menambah `dynamicParams`; tidak kompatibel
+  dengan `cacheComponents`.
 
 ## Aturan copy (jangan dilanggar)
 
@@ -98,9 +104,11 @@ Status pesanan: `menunggu_konfirmasi`→`menunggu_pembayaran`→`dibayar`→
 - Sebut layanan apa adanya: bantuan penulisan dan penyuntingan, bukan
   "pengerjaan tugasmu biar kamu libur".
 - Bahasa Indonesia informal-profesional: "kamu", bukan "Anda". Angka pakai
-  format `Rp 15.000` lewat `rupiah()` di `lib/format.ts`, jangan `toLocaleString`
-  langsung (hindari hydration mismatch).
+  format `Rp 15.000` lewat `rupiah()` di `lib/format.ts`, jangan
+  `toLocaleString` langsung (hindari hydration mismatch).
 - Sebut harga selalu dengan satuan: "Rp 2.500 / 100 kata", bukan "mulai 2.500".
+- Pembayaran disebut sebagai **ShopeePay, GoPay, DANA** — bukan QRIS/VA/transfer
+  bank.
 
 ## Token desain
 
@@ -124,14 +132,14 @@ display: Bricolage Grotesque · body: Plus Jakarta Sans
 ## Perintah
 
 ```bash
-npm run dev     # http://localhost:3000
-npm run build   # cek tipe + build produksi
+npm run dev       # http://localhost:3000
+npm run build     # build produksi
 npm run lint
+npm run typecheck
 ```
-
-Seeder Supabase: jalankan `supabase/schema.sql` di SQL Editor.
 
 ## Belum dikerjakan
 
-- Upload file langsung ke Supabase Storage (sekarang hanya tautan).
-- Autentikasi admin berlapis (Supabase Auth) kalau admin lebih dari satu.
+- Upload file langsung dari halaman (sekarang hanya tautan Drive).
+- Cek status pesanan otomatis (status hanya lewat chat WhatsApp).
+- Katalog promo/kode referral.

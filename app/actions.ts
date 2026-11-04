@@ -1,18 +1,18 @@
 "use server";
 
+import { pesanPesanan, pesanPenawaran } from "@/lib/pesan";
 import { computePrice } from "@/lib/pricing";
-import { rupiah } from "@/lib/format";
 import { cekRateLimit } from "@/lib/rate-limit";
 import { getService } from "@/lib/services";
-import { supabaseAdmin } from "@/lib/supabase";
+import { waLink } from "@/lib/site";
 import type { ActionResult } from "@/lib/types";
 import { firstIssue, orderSchema, quoteSchema } from "@/lib/validation";
 
-function buatKode(prefix: "P" | "Q"): string {
-  const waktu = Date.now().toString(36).slice(-4).toUpperCase();
-  const acak = Math.random().toString(36).slice(2, 5).toUpperCase();
-  return `MJ-${prefix}${waktu}${acak}`;
-}
+/**
+ * Tidak ada database. Server action ini hanya memvalidasi isian, menghitung
+ * ulang harga, lalu menyusun tautan WhatsApp berisi ringkasan pesanan.
+ * Pesanan "tersimpan" sebagai pesan di chat admin.
+ */
 
 function isBot(formData: FormData): boolean {
   // Honeypot: kolom yang tidak pernah diisi manusia.
@@ -20,7 +20,7 @@ function isBot(formData: FormData): boolean {
 }
 
 /** Batas per IP di luar honeypot. Bot yang masuk honeypot tidak kena di sini. */
-async function blokirKalauByarpet(): Promise<ActionResult | null> {
+async function blokirKalauBanjir(): Promise<ActionResult | null> {
   const limit = await cekRateLimit();
   if (limit.ok) return null;
 
@@ -36,10 +36,11 @@ export async function submitOrder(
   formData: FormData,
 ): Promise<ActionResult> {
   if (isBot(formData)) {
+    // Bot tidak diberi tautan apa pun.
     return { status: "ok", message: "Pesanan diterima." };
   }
 
-  const blokir = await blokirKalauByarpet();
+  const blokir = await blokirKalauBanjir();
   if (blokir) return blokir;
 
   const parsed = orderSchema.safeParse({
@@ -59,48 +60,28 @@ export async function submitOrder(
 
   const data = parsed.data;
   const service = getService(data.serviceId);
-  // Harga dihitung ulang di server; total dari browser tidak dipercaya.
-  const price = computePrice(service, data.qty, data.deadlineId, data.difficultyId);
-  const code = buatKode("P");
+  // Harga dihitung ulang di server; angka dari browser tidak dipercaya.
+  const price = computePrice(
+    service,
+    data.qty,
+    data.deadlineId,
+    data.difficultyId,
+  );
 
-  if (!supabaseAdmin) {
-    return {
-      status: "ok",
-      code,
-      demo: true,
-      message: `Estimasi ${rupiah(price.total)} tersimpan sebagai draf. Supabase belum dihubungkan, jadi pesanan ini belum masuk database.`,
-    };
-  }
-
-  const { error } = await supabaseAdmin.from("orders").insert({
-    code,
-    customer_name: data.name,
+  const pesan = pesanPesanan({
+    service,
+    price,
+    name: data.name,
     whatsapp: data.whatsapp,
-    service_id: service.id,
-    service_name: service.name,
-    quantity: price.qty,
-    deadline: data.deadlineId,
-    difficulty: data.difficultyId,
-    subtotal: price.subtotal,
-    total: price.total,
-    file_url: data.fileUrl || null,
-    notes: data.notes || null,
-    status: "menunggu_konfirmasi",
+    fileUrl: data.fileUrl,
+    notes: data.notes,
   });
-
-  if (error) {
-    console.error("[submitOrder]", error.message);
-    return {
-      status: "error",
-      message: "Pesanan gagal disimpan. Coba lagi, atau kirim lewat WhatsApp.",
-    };
-  }
 
   return {
     status: "ok",
-    code,
     message:
-      "Pesanan masuk. Admin akan konfirmasi lewat WhatsApp sebelum kamu bayar.",
+      "Pesanan siap dikirim. Buka WhatsApp dan tekan kirim — admin akan mengonfirmasi harga sebelum kamu bayar.",
+    waUrl: waLink(pesan),
   };
 }
 
@@ -112,7 +93,7 @@ export async function submitQuote(
     return { status: "ok", message: "Permintaan diterima." };
   }
 
-  const blokir = await blokirKalauByarpet();
+  const blokir = await blokirKalauBanjir();
   if (blokir) return blokir;
 
   const parsed = quoteSchema.safeParse({
@@ -130,42 +111,23 @@ export async function submitQuote(
   }
 
   const data = parsed.data;
-  const code = buatKode("Q");
+  const layanan =
+    data.serviceId === "lainnya" ? "Lainnya" : getService(data.serviceId).name;
 
-  if (!supabaseAdmin) {
-    return {
-      status: "ok",
-      code,
-      demo: true,
-      message:
-        "Permintaan penawaran siap dikirim. Supabase belum dihubungkan, jadi data ini belum masuk database.",
-    };
-  }
-
-  const { error } = await supabaseAdmin.from("quote_requests").insert({
-    code,
-    customer_name: data.name,
-    whatsapp: data.whatsapp,
-    service_id: data.serviceId,
+  const pesan = pesanPenawaran({
+    layanan,
+    deadlineId: data.deadlineId,
+    budget: data.budget,
+    fileUrl: data.fileUrl,
     detail: data.detail,
-    deadline: data.deadlineId,
-    budget: data.budget || null,
-    file_url: data.fileUrl || null,
-    status: "baru",
+    name: data.name,
+    whatsapp: data.whatsapp,
   });
-
-  if (error) {
-    console.error("[submitQuote]", error.message);
-    return {
-      status: "error",
-      message: "Permintaan gagal disimpan. Coba lagi, atau kirim lewat WhatsApp.",
-    };
-  }
 
   return {
     status: "ok",
-    code,
     message:
-      "Permintaan masuk. Admin balas dengan rincian harga, biasanya di bawah 1 jam kerja.",
+      "Brief siap dikirim. Buka WhatsApp dan tekan kirim — admin balas dengan rincian harga, biasanya di bawah 1 jam kerja.",
+    waUrl: waLink(pesan),
   };
 }

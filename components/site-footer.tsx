@@ -75,6 +75,11 @@ export function SiteFooter() {
                   Instagram
                 </a>
               </li>
+              <li className="pt-1 text-[0.78rem] leading-relaxed text-muted">
+                Bayar via ShopeePay, GoPay, atau DANA
+                <br />
+                <span className="font-mono tabular-nums">089619774116</span>
+              </li>
             </ul>
           </nav>
         </div>

@@ -9,7 +9,7 @@
   --color-paper-2: #f2f0e6;
   --color-ink: #101a33;
   --color-ink-soft: #3c465c;
-  --color-muted: #6e7480;
+  --color-muted: #686e79;
   --color-line: #ded9c8;
   --color-line-strong: #c9c2ac;
   --color-brand: #1f3be0;
@@ -17,6 +17,22 @@
   --color-brand-soft: #e7eaff;
   --color-stabilo: #ffe44d;
   --color-stabilo-soft: #fff6c2;
+
+  /* Aksen layanan: chroma rendah, dipakai untuk penanda kecil dan wash tipis. */
+  --color-mint: #2a6b55;
+  --color-mint-soft: #e6f1ea;
+  --color-koral: #9e4e42;
+  --color-koral-soft: #f6e7e2;
+  --color-lilac: #6556a3;
+  --color-lilac-soft: #ece7f7;
+  --color-amber: #8a5d12;
+  --color-amber-soft: #f7edd3;
+  --color-langit: #2b6a97;
+  --color-langit-soft: #e4eff7;
+  --color-olive: #5f6f2a;
+  --color-olive-soft: #eef1dc;
+  --color-rose: #9d4d6b;
+  --color-rose-soft: #f6e7ed;
 
   --font-display: var(--font-bricolage), "Times New Roman", serif;
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;

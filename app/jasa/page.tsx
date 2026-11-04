@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { aksenLayanan } from "@/lib/aksen";
 import { rupiah } from "@/lib/format";
 import { SERVICES, priceLabel } from "@/lib/services";
 import { site, waLink, waPesanUmum } from "@/lib/site";
@@ -56,39 +57,47 @@ export default function HalamanDaftarLayanan() {
         </div>
 
         <ul className="mt-10 grid gap-4 sm:grid-cols-2">
-          {SERVICES.map((service) => (
-            <li key={service.id}>
-              <Link
-                href={`/jasa/${service.id}`}
-                className="group flex h-full flex-col justify-between rounded-md border border-line bg-white p-5 transition-colors hover:border-line-strong"
-              >
-                <div>
-                  <div className="flex items-start justify-between gap-4">
-                    <h2 className="font-display text-[1.2rem] leading-snug tracking-tight text-ink group-hover:text-brand">
-                      {service.name}
-                    </h2>
-                    {service.popular ? (
-                      <span className="shrink-0 rounded-full bg-brand-soft px-2.5 py-1 text-[0.68rem] font-semibold text-brand">
-                        Sering dipesan
-                      </span>
-                    ) : null}
-                  </div>
-                  <p className="mt-2 max-w-[44ch] text-[0.86rem] leading-relaxed text-muted">
-                    {service.promise}
-                  </p>
-                </div>
+          {SERVICES.map((service) => {
+            const aksen = aksenLayanan(service.id);
 
-                <div className="mt-6 flex flex-wrap items-baseline justify-between gap-2 border-t border-dashed border-line pt-3">
-                  <p className="font-mono text-[0.8rem] tabular-nums text-ink-soft">
-                    {priceLabel(service)}
-                  </p>
-                  <p className="text-[0.74rem] text-muted">
-                    mulai {rupiah(service.minPrice)}
-                  </p>
-                </div>
-              </Link>
-            </li>
-          ))}
+            return (
+              <li key={service.id}>
+                <Link
+                  href={`/jasa/${service.id}`}
+                  className={`group flex h-full flex-col justify-between rounded-md border border-line border-t-4 ${aksen.top} bg-white p-5 pt-4 transition-colors hover:bg-paper-2/40`}
+                >
+                  <div>
+                    <div className="flex items-start justify-between gap-4">
+                      <h2 className="flex items-center gap-2.5 font-display text-[1.2rem] leading-snug tracking-tight text-ink group-hover:text-brand">
+                        <span
+                          aria-hidden
+                          className={`inline-block size-2 shrink-0 rounded-full ${aksen.dot}`}
+                        />
+                        {service.name}
+                      </h2>
+                      {service.popular ? (
+                        <span className="shrink-0 rounded-full bg-brand-soft px-2.5 py-1 text-[0.68rem] font-semibold text-brand">
+                          Sering dipesan
+                        </span>
+                      ) : null}
+                    </div>
+                    <p className="mt-2 max-w-[44ch] text-[0.86rem] leading-relaxed text-muted">
+                      {service.promise}
+                    </p>
+                  </div>
+
+                  <div className="mt-6 flex flex-wrap items-baseline justify-between gap-2 border-t border-dashed border-line pt-3">
+                    <p className="font-mono text-[0.8rem] tabular-nums text-ink-soft">
+                      {priceLabel(service)}
+                    </p>
+                    <p className="text-[0.74rem] text-muted">
+                      mulai {rupiah(service.minPrice)}
+                    </p>
+                  </div>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
 
         <p className="mt-8 text-[0.84rem] leading-relaxed text-muted">

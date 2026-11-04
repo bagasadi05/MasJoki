@@ -9,6 +9,7 @@ import { ServiceList } from "@/components/service-list";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { faq } from "@/content/faq";
+import { aksenLayanan } from "@/lib/aksen";
 import { rupiah } from "@/lib/format";
 import { computePrice } from "@/lib/pricing";
 import { getService } from "@/lib/services";
@@ -225,17 +226,17 @@ export default function Home() {
         <section aria-label="Yang selalu kamu dapat" className="border-b border-line bg-paper-2/50">
           <div className="mx-auto grid max-w-6xl grid-cols-2 gap-x-6 gap-y-4 px-5 py-6 text-[0.78rem] text-ink-soft sm:grid-cols-4 sm:px-8">
             {[
-              "Harga dihitung di depan",
-              "Revisi 2× termasuk",
-              "File sumber diserahkan",
-              "ShopeePay, GoPay, DANA",
+              { label: "Harga dihitung di depan", dot: "bg-brand" },
+              { label: "Revisi 2× termasuk", dot: "bg-mint" },
+              { label: "File sumber diserahkan", dot: "bg-amber" },
+              { label: "ShopeePay, GoPay, DANA", dot: "bg-rose" },
             ].map((item) => (
-              <p key={item} className="flex items-start gap-2">
+              <p key={item.label} className="flex items-start gap-2">
                 <span
                   aria-hidden
-                  className="mt-[0.42rem] inline-block size-1.5 shrink-0 rounded-full bg-brand"
+                  className={`mt-[0.42rem] inline-block size-1.5 shrink-0 rounded-full ${item.dot}`}
                 />
-                {item}
+                {item.label}
               </p>
             ))}
           </div>
@@ -340,7 +341,7 @@ export default function Home() {
         {/* ---------------------------------------------------------- *
          * Contoh hitungan
          * ---------------------------------------------------------- */}
-        <section className="border-y border-line bg-paper-2/50">
+        <section className="border-y border-line bg-lilac-soft/40">
           <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <h2 className="max-w-xl font-display text-[1.9rem] leading-tight tracking-[-0.02em] text-ink sm:text-[2.5rem]">
@@ -352,32 +353,40 @@ export default function Home() {
             </div>
 
             <ul className="mt-10 grid gap-5 sm:grid-cols-3">
-              {contoh.map((item) => (
-                <li
-                  key={item.judul}
-                  className="flex flex-col justify-between rounded-md border border-line bg-white p-5"
-                >
-                  <div>
-                    <p className="text-[0.72rem] text-muted">
-                      {item.service.name}
-                    </p>
-                    <h3 className="mt-1 font-display text-[1.1rem] leading-snug tracking-tight text-ink">
-                      {item.judul}
-                    </h3>
-                    <p className="mt-2 text-[0.78rem] leading-relaxed text-muted">
-                      {item.keterangan}
-                    </p>
-                  </div>
-                  <div className="mt-6 border-t border-dashed border-line pt-3">
-                    <p className="text-[0.7rem] tracking-wide text-muted">
-                      Total
-                    </p>
-                    <p className="font-display text-[1.35rem] tracking-tight text-ink tabular-nums">
-                      {rupiah(item.price.total)}
-                    </p>
-                  </div>
-                </li>
-              ))}
+              {contoh.map((item) => {
+                const aksen = aksenLayanan(item.service.id);
+
+                return (
+                  <li
+                    key={item.judul}
+                    className={`flex flex-col justify-between rounded-md border border-line border-t-4 ${aksen.top} bg-white p-5 pt-4`}
+                  >
+                    <div>
+                      <p className="flex items-center gap-2 text-[0.72rem] text-muted">
+                        <span
+                          aria-hidden
+                          className={`inline-block size-1.5 shrink-0 rounded-full ${aksen.dot}`}
+                        />
+                        {item.service.name}
+                      </p>
+                      <h3 className="mt-1 font-display text-[1.1rem] leading-snug tracking-tight text-ink">
+                        {item.judul}
+                      </h3>
+                      <p className="mt-2 text-[0.78rem] leading-relaxed text-muted">
+                        {item.keterangan}
+                      </p>
+                    </div>
+                    <div className="mt-6 border-t border-dashed border-line pt-3">
+                      <p className="text-[0.7rem] tracking-wide text-muted">
+                        Total
+                      </p>
+                      <p className="font-display text-[1.35rem] tracking-tight text-ink tabular-nums">
+                        {rupiah(item.price.total)}
+                      </p>
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </section>

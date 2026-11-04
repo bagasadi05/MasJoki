@@ -3,10 +3,19 @@
 import { useState } from "react";
 import { pembayaran, waLink } from "@/lib/site";
 
-const WARNA: Record<string, string> = {
-  ShopeePay: "bg-orange-500",
-  GoPay: "bg-sky-500",
-  DANA: "bg-blue-600",
+const METODE: Record<string, { dot: string; chip: string }> = {
+  ShopeePay: {
+    dot: "bg-orange-500",
+    chip: "border-orange-200 bg-orange-50 text-orange-900",
+  },
+  GoPay: {
+    dot: "bg-sky-500",
+    chip: "border-sky-200 bg-sky-50 text-sky-900",
+  },
+  DANA: {
+    dot: "bg-blue-600",
+    chip: "border-blue-200 bg-blue-50 text-blue-900",
+  },
 };
 
 const waKonfirmasi = waLink(
@@ -27,7 +36,7 @@ export function Pembayaran() {
   }
 
   return (
-    <section id="bayar" className="border-y border-line bg-paper-2/50">
+    <section id="bayar" className="border-y border-line bg-langit-soft/40">
       <div className="mx-auto grid max-w-6xl gap-12 px-5 py-16 sm:px-8 sm:py-24 lg:grid-cols-[0.52fr_0.48fr] lg:gap-16">
         <div>
           <h2 className="max-w-md font-display text-[1.9rem] leading-tight tracking-[-0.02em] text-ink sm:text-[2.5rem]">
@@ -57,18 +66,25 @@ export function Pembayaran() {
             </div>
 
             <ul className="mt-4 flex flex-wrap gap-2">
-              {pembayaran.metode.map((metode) => (
-                <li
-                  key={metode}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-line px-2.5 py-1 text-[0.74rem] text-ink-soft"
-                >
-                  <span
-                    aria-hidden
-                    className={`size-1.5 rounded-full ${WARNA[metode] ?? "bg-ink-soft"}`}
-                  />
-                  {metode}
-                </li>
-              ))}
+              {pembayaran.metode.map((metode) => {
+                const gaya = METODE[metode] ?? {
+                  dot: "bg-ink-soft",
+                  chip: "border-line bg-white text-ink-soft",
+                };
+
+                return (
+                  <li
+                    key={metode}
+                    className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[0.74rem] ${gaya.chip}`}
+                  >
+                    <span
+                      aria-hidden
+                      className={`size-1.5 rounded-full ${gaya.dot}`}
+                    />
+                    {metode}
+                  </li>
+                );
+              })}
             </ul>
           </div>
 

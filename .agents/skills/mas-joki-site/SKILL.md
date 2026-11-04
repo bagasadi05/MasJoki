@@ -26,6 +26,7 @@ WhatsApp. Pembayaran manual lewat ShopeePay/GoPay/DANA.
 | `lib/rate-limit.ts` | Rate limit in-memory per IP. |
 | `lib/types.ts` | `ActionResult` (status, pesan, `waUrl`, `fieldErrors`). |
 | `lib/nav.ts` | Item navigasi bersama (header desktop + menu seluler). |
+| `lib/aksen.ts` | Palet aksen + pemetaan warna per layanan (satu sumber identitas warna). |
 | `lib/pesan.ts` | Penyusun teks pesan WhatsApp (fungsi murni, mudah diuji). |
 | `app/actions.ts` | Server action `submitOrder` & `submitQuote` → susun tautan WhatsApp. |
 | `app/page.tsx` | Landing page: hero, daftar harga, cara kerja, pembayaran, kalkulator, FAQ. |
@@ -119,10 +120,37 @@ balasan "ok" tanpa `waUrl`, jadi tidak ada tautan yang bisa disalahgunakan.
 Arah visual: **nota/kwitansi**, bukan kartu SaaS.
 
 ```
-paper #FBFAF6 · ink #101A33 · ink-soft #3C465C · muted #6E7480
+paper #FBFAF6 · ink #101A33 · ink-soft #3C465C · muted #686E79
 line #DED9C8 · brand #1F3BE0 · brand-soft #E7EAFF · stabilo #FFE44D
 display: Bricolage Grotesque · body: Plus Jakarta Sans
 ```
+
+### Warna aksen layanan
+
+Satu layanan = satu warna, dipakai konsisten sebagai penanda (bukan hiasan):
+
+| Aksen | Teks | Latar lembut | Layanan |
+|---|---|---|---|
+| biru | `#1F3BE0` | `#E7EAFF` | Parafrase |
+| mint | `#2A6B55` | `#E6F1EA` | Humanisasi teks |
+| koral | `#9E4E42` | `#F6E7E2` | Makalah & laporan |
+| lilac | `#6556A3` | `#ECE7F7` | Artikel jurnal |
+| amber | `#8A5D12` | `#F7EDD3` | PowerPoint |
+| langit | `#2B6A97` | `#E4EFF7` | Rapikan Word |
+| olive | `#5F6F2A` | `#EEF1DC` | Terjemahan |
+| rose | `#9D4D6B` | `#F6E7ED` | Desain visual |
+
+Aturannya:
+
+- Semua warna aksen dan pemetaan layanan ada di `lib/aksen.ts`. Jangan menulis
+  kelas warna langsung di komponen untuk identitas layanan.
+- Warna hanya boleh muncul sebagai titik kecil, garis atas kartu, chip, atau
+  wash bagian. Jangan mewarnai tombol utama — tombol aksi tetap `brand`/`ink`.
+- Jangan menambah warna baru di luar tabel ini. Kalau butuh, turunkan chroma
+  dan pastikan kontras teks ≥ 4.5:1 di atas latarnya.
+- Warna tidak boleh menjadi satu-satunya pembeda; nama layanan selalu ada.
+- Wash bagian maksimal tiga: `paper-2` (netral), `langit-soft/40` (pembayaran),
+  `lilac-soft/40` (contoh). Sisanya biarkan `paper`.
 
 - Nota = `.nota` (tepi bawah bergerigi), stempel = `.stempel`.
 - Hanya satu momen gerak: nota tercetak + stempel turun saat hero dimuat.

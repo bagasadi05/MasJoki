@@ -5,6 +5,7 @@ import { Nota } from "@/components/nota";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { KONTEN_LAYANAN } from "@/content/layanan";
+import { aksenLayanan } from "@/lib/aksen";
 import { rupiah } from "@/lib/format";
 import { computePrice } from "@/lib/pricing";
 import {
@@ -61,6 +62,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
   if (!service) notFound();
 
   const konten = KONTEN_LAYANAN[service.id];
+  const aksen = aksenLayanan(service.id);
 
   // Contoh harga: jumlah bawaan, tenggat 4–6 hari, tingkat standar.
   const contoh = computePrice(service, service.defaultQty, "normal", "standar");
@@ -117,7 +119,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
       <SiteHeader />
 
       <main id="konten">
-        <section className="border-b border-line">
+        <section className={`border-b border-line ${aksen.wash}`}>
           <div className="mx-auto max-w-6xl px-5 pb-12 pt-10 sm:px-8 sm:pb-16 sm:pt-14">
             <nav aria-label="Remah roti" className="text-[0.76rem] text-muted">
               <Link href="/" className="transition-colors hover:text-brand">
@@ -145,8 +147,13 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                   {konten.intro}
                 </p>
 
-                <p className="mt-5 inline-flex items-center gap-2 rounded-md border border-line bg-paper-2/70 px-3.5 py-2 text-[0.8rem] text-ink-soft">
-                  <span aria-hidden className="inline-block size-1.5 rounded-full bg-brand" />
+                <p
+                  className={`mt-5 inline-flex items-center gap-2 rounded-md border px-3.5 py-2 text-[0.8rem] ${aksen.chip}`}
+                >
+                  <span
+                    aria-hidden
+                    className="inline-block size-1.5 rounded-full bg-current opacity-70"
+                  />
                   {priceLabel(service)} · pengerjaan {service.turnaround}
                 </p>
 
@@ -197,7 +204,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                   >
                     <span
                       aria-hidden
-                      className="mt-[0.5rem] inline-block size-1.5 shrink-0 rounded-full bg-brand"
+                      className={`mt-[0.5rem] inline-block size-1.5 shrink-0 rounded-full ${aksen.dot}`}
                     />
                     {item}
                   </li>
@@ -324,21 +331,29 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
             Layanan lain
           </h2>
           <ul className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {lain.map((item) => (
-              <li key={item.id}>
-                <Link
-                  href={`/jasa/${item.id}`}
-                  className="flex h-full flex-col justify-between rounded-md border border-line bg-white p-4 transition-colors hover:border-line-strong"
-                >
-                  <span className="text-[0.9rem] font-medium leading-snug text-ink">
-                    {item.name}
-                  </span>
-                  <span className="mt-3 font-mono text-[0.76rem] tabular-nums text-muted">
-                    {priceLabel(item)}
-                  </span>
-                </Link>
-              </li>
-            ))}
+            {lain.map((item) => {
+              const aksenLain = aksenLayanan(item.id);
+
+              return (
+                <li key={item.id}>
+                  <Link
+                    href={`/jasa/${item.id}`}
+                    className="flex h-full flex-col justify-between rounded-md border border-line bg-white p-4 transition-colors hover:bg-paper-2/40"
+                  >
+                    <span className="flex items-center gap-2 text-[0.9rem] font-medium leading-snug text-ink">
+                      <span
+                        aria-hidden
+                        className={`inline-block size-1.5 shrink-0 rounded-full ${aksenLain.dot}`}
+                      />
+                      {item.name}
+                    </span>
+                    <span className="mt-3 font-mono text-[0.76rem] tabular-nums text-muted">
+                      {priceLabel(item)}
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </section>
 

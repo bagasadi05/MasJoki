@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { submitOrder, submitQuote } from "@/app/actions";
 import { useCalculator } from "./calculator-context";
 import { Nota } from "./nota";
+import { aksenLayanan } from "@/lib/aksen";
 import { angka, rupiah } from "@/lib/format";
 import {
   computePrice,
@@ -277,6 +278,7 @@ export function PriceCalculator() {
                 <div className="grid grid-cols-2 gap-2">
                   {SERVICES.map((item) => {
                     const aktif = item.id === service.id;
+                    const aksen = aksenLayanan(item.id);
                     return (
                       <button
                         key={item.id}
@@ -285,12 +287,18 @@ export function PriceCalculator() {
                         aria-pressed={aktif}
                         className={`flex flex-col items-start rounded-md border px-3 py-2.5 text-left transition-colors ${
                           aktif
-                            ? "border-brand bg-brand-soft"
+                            ? `${aksen.soft} ${aksen.border} ring-1 ${aksen.ring}`
                             : "border-line bg-white hover:border-line-strong"
                         }`}
                       >
-                        <span className="text-[0.86rem] font-semibold text-ink">
-                          {item.name}
+                        <span className="flex items-center gap-2">
+                          <span
+                            aria-hidden
+                            className={`inline-block size-1.5 shrink-0 rounded-full ${aksen.dot}`}
+                          />
+                          <span className="text-[0.86rem] font-semibold text-ink">
+                            {item.name}
+                          </span>
                         </span>
                         <span className="mt-0.5 font-mono text-[0.68rem] tabular-nums text-muted">
                           {priceLabel(item)}

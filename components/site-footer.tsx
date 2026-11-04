@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { aksenLayanan } from "@/lib/aksen";
 import { SERVICES } from "@/lib/services";
 import { pembayaran, site, waLink, waPesanUmum } from "@/lib/site";
 
@@ -23,16 +24,24 @@ export function SiteFooter() {
           <nav aria-label="Layanan">
             <p className="text-[0.78rem] font-semibold text-ink">Layanan</p>
             <ul className="mt-3 space-y-2">
-              {SERVICES.slice(0, 5).map((service) => (
-                <li key={service.id}>
-                  <Link
-                    href={`/jasa/${service.id}`}
-                    className="text-[0.82rem] text-muted transition-colors hover:text-brand"
-                  >
-                    {service.name}
-                  </Link>
-                </li>
-              ))}
+              {SERVICES.slice(0, 5).map((service) => {
+                const aksen = aksenLayanan(service.id);
+
+                return (
+                  <li key={service.id}>
+                    <Link
+                      href={`/jasa/${service.id}`}
+                      className="inline-flex items-center gap-2 text-[0.82rem] text-muted transition-colors hover:text-brand"
+                    >
+                      <span
+                        aria-hidden
+                        className={`inline-block size-1.5 shrink-0 rounded-full ${aksen.dot}`}
+                      />
+                      {service.name}
+                    </Link>
+                  </li>
+                );
+              })}
               <li>
                 <Link
                   href="/jasa"

@@ -1,4 +1,5 @@
 import { rupiah } from "@/lib/format";
+import type { Aksen } from "@/lib/aksen";
 
 export interface NotaLine {
   label: string;
@@ -14,6 +15,8 @@ interface NotaProps {
   stamp?: string;
   animate?: boolean;
   className?: string;
+  /** Warna layanan aktif: menggambar pita tipis di atas nota. */
+  aksen?: Aksen;
 }
 
 /**
@@ -28,9 +31,20 @@ export function Nota({
   stamp,
   animate = false,
   className = "",
+  aksen,
 }: NotaProps) {
   return (
     <div className={`nota ${animate ? "nota-masuk" : ""} ${className}`}>
+      {aksen ? (
+        <span
+          aria-hidden
+          className="absolute -top-px left-0 right-0 z-10 h-[5px]"
+          style={{
+            background: `var(${aksen.varName})`,
+            borderRadius: "var(--radius-nota) var(--radius-nota) 0 0",
+          }}
+        />
+      ) : null}
       <div className="px-5 pb-7 pt-5 sm:px-6">
         <div className="flex items-start justify-between gap-4">
           <div>

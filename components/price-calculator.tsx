@@ -537,6 +537,7 @@ export function PriceCalculator() {
                   note={`Pengerjaan ${service.turnaround} untuk tenggat ini. Harga dikunci admin setelah file dicek.`}
                   stamp="Harga terbuka"
                   code="DRAF"
+                  aksen={aksenLayanan(service.id)}
                 />
               ) : (
                 <NotaPenawaran />

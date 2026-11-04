@@ -6,6 +6,7 @@ import { pembayaran, site, waLink, waPesanUmum } from "@/lib/site";
 export function SiteFooter() {
   return (
     <footer className="border-t border-line bg-paper-2/60">
+      <div aria-hidden className="pita h-1" />
       <div className="mx-auto max-w-6xl px-5 pb-24 pt-14 sm:px-8 sm:pb-14">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr]">
           <div>

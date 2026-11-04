@@ -161,7 +161,9 @@ export default function Home() {
           <div className="relative mx-auto grid max-w-6xl gap-12 px-5 pb-16 pt-14 sm:px-8 lg:grid-cols-[1.04fr_0.96fr] lg:items-center lg:gap-16 lg:pb-24 lg:pt-20">
             <div>
               <h1 className="font-display text-[2.45rem] leading-[1.04] tracking-[-0.03em] text-ink sm:text-[3.1rem] lg:text-[3.35rem]">
-                Harga tugasmu kelihatan sebelum kamu chat.
+                Harga tugasmu{" "}
+                <span className="garis-stabilo">kelihatan</span> sebelum kamu
+                chat.
               </h1>
 
               <p className="mt-5 max-w-[46ch] text-[0.98rem] leading-relaxed text-ink-soft sm:text-[1.03rem]">
@@ -224,17 +226,20 @@ export default function Home() {
          * Janji singkat
          * ---------------------------------------------------------- */}
         <section aria-label="Yang selalu kamu dapat" className="border-b border-line bg-paper-2/50">
-          <div className="mx-auto grid max-w-6xl grid-cols-2 gap-x-6 gap-y-4 px-5 py-6 text-[0.78rem] text-ink-soft sm:grid-cols-4 sm:px-8">
+          <div className="mx-auto flex max-w-6xl flex-wrap gap-2 px-5 py-5 text-[0.78rem] text-ink-soft sm:px-8">
             {[
               { label: "Harga dihitung di depan", dot: "bg-brand" },
               { label: "Revisi 2× termasuk", dot: "bg-mint" },
               { label: "File sumber diserahkan", dot: "bg-amber" },
               { label: "ShopeePay, GoPay, DANA", dot: "bg-rose" },
             ].map((item) => (
-              <p key={item.label} className="flex items-start gap-2">
+              <p
+                key={item.label}
+                className="inline-flex items-center gap-2 rounded-full border border-line bg-white/70 px-3.5 py-1.5"
+              >
                 <span
                   aria-hidden
-                  className={`mt-[0.42rem] inline-block size-1.5 shrink-0 rounded-full ${item.dot}`}
+                  className={`inline-block size-1.5 shrink-0 rounded-full ${item.dot}`}
                 />
                 {item.label}
               </p>
@@ -288,7 +293,7 @@ export default function Home() {
          * ---------------------------------------------------------- */}
         <section
           id="cara-kerja"
-          className="border-y border-line bg-paper-2/50"
+          className="border-y border-line bg-amber-soft/50"
         >
           <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
             <h2 className="max-w-xl font-display text-[1.9rem] leading-tight tracking-[-0.02em] text-ink sm:text-[2.5rem]">
@@ -341,7 +346,7 @@ export default function Home() {
         {/* ---------------------------------------------------------- *
          * Contoh hitungan
          * ---------------------------------------------------------- */}
-        <section className="border-y border-line bg-lilac-soft/40">
+        <section className="border-y border-line bg-lilac-soft/50">
           <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <h2 className="max-w-xl font-display text-[1.9rem] leading-tight tracking-[-0.02em] text-ink sm:text-[2.5rem]">
@@ -446,6 +451,7 @@ export default function Home() {
          * ---------------------------------------------------------- */}
         <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
           <div className="relative overflow-hidden rounded-lg bg-ink px-6 py-12 sm:px-12 sm:py-16">
+            <div aria-hidden className="pita absolute inset-x-0 top-0 h-1" />
             <div
               aria-hidden
               className="pointer-events-none absolute -right-16 -top-16 size-64 rounded-full border border-white/10"

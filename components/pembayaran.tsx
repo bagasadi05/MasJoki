@@ -36,7 +36,7 @@ export function Pembayaran() {
   }
 
   return (
-    <section id="bayar" className="border-y border-line bg-langit-soft/40">
+    <section id="bayar" className="border-y border-line bg-langit-soft/50">
       <div className="mx-auto grid max-w-6xl gap-12 px-5 py-16 sm:px-8 sm:py-24 lg:grid-cols-[0.52fr_0.48fr] lg:gap-16">
         <div>
           <h2 className="max-w-md font-display text-[1.9rem] leading-tight tracking-[-0.02em] text-ink sm:text-[2.5rem]">

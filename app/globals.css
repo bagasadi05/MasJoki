@@ -168,6 +168,23 @@
   background-size: 22px 22px;
 }
 
+/* Pita warna: kedelapan warna layanan dalam garis rata (bukan gradasi halus).
+   Taxonomy warna brand — dipakai seadanya: bawah header, mahkota blok CTA,
+   atas footer. */
+.pita {
+  background-image: linear-gradient(
+    90deg,
+    var(--color-brand) 0 12.5%,
+    var(--color-mint) 12.5% 25%,
+    var(--color-koral) 25% 37.5%,
+    var(--color-lilac) 37.5% 50%,
+    var(--color-amber) 50% 62.5%,
+    var(--color-langit) 62.5% 75%,
+    var(--color-olive) 75% 87.5%,
+    var(--color-rose) 87.5% 100%
+  );
+}
+
 .garis-stabilo {
   background-image: linear-gradient(
     to top,

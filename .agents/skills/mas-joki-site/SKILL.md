@@ -39,7 +39,8 @@ WhatsApp. Pembayaran manual lewat ShopeePay/GoPay/DANA.
 | `components/wa-melayang.tsx` | Tombol WhatsApp melayang; sembunyi saat bagian `#hitung`/`#bayar` terlihat. |
 | `components/site-header.tsx` | Header sticky + CTA; memuat menu seluler. |
 | `components/menu-seluler.tsx` | Menu dropdown mobile (Escape, klik luar, fokus kembali ke tombol). |
-| `components/nota.tsx` | Komponen nota/kwitansi. |
+| `components/nota.tsx` | Komponen nota/kwitansi; prop `aksen` menggambar pita warna di tepi atas. |
+| `components/stempel-layanan.tsx` | Cap inisial layanan (kotak warna miring) untuk identitas visual. |
 
 ## Alur pesanan (penting)
 
@@ -144,13 +145,23 @@ Aturannya:
 
 - Semua warna aksen dan pemetaan layanan ada di `lib/aksen.ts`. Jangan menulis
   kelas warna langsung di komponen untuk identitas layanan.
-- Warna hanya boleh muncul sebagai titik kecil, garis atas kartu, chip, atau
-  wash bagian. Jangan mewarnai tombol utama — tombol aksi tetap `brand`/`ink`.
+- Warna hanya boleh muncul sebagai titik kecil, cap inisial, garis atas kartu,
+  chip, pita, atau wash bagian. Jangan mewarnai tombol utama — tombol aksi tetap
+  `brand`/`ink`.
 - Jangan menambah warna baru di luar tabel ini. Kalau butuh, turunkan chroma
   dan pastikan kontras teks ≥ 4.5:1 di atas latarnya.
 - Warna tidak boleh menjadi satu-satunya pembeda; nama layanan selalu ada.
-- Wash bagian maksimal tiga: `paper-2` (netral), `langit-soft/40` (pembayaran),
-  `lilac-soft/40` (contoh). Sisanya biarkan `paper`.
+- Wash bagian: `paper-2` untuk netral, `amber-soft/50` (cara kerja),
+  `langit-soft/50` (pembayaran), `lilac-soft/50` (contoh). Hero layanan memakai
+  `aksen.wash` (/45). Sisanya biarkan `paper`.
+- `components/stempel-layanan.tsx` = cap inisial dua huruf untuk identitas
+  layanan di daftar harga, kartu `/jasa`, judul halaman layanan, dan layanan
+  terkait. Titik kecil tetap dipakai di footer dan tombol kalkulator.
+- `.pita` = garis 4px berisi delapan warna layanan (bukan gradasi halus).
+  Maksimal tiga tempat per halaman: bawah header, mahkota blok CTA akhir, dan
+  atas footer.
+- `Nota` menerima prop `aksen`; garis 5px di atas nota mengikuti layanan aktif
+  (kalkulator) atau layanan halaman (detail). Tanpa `aksen`, nota tetap netral.
 
 - Nota = `.nota` (tepi bawah bergerigi), stempel = `.stempel`.
 - Hanya satu momen gerak: nota tercetak + stempel turun saat hero dimuat.

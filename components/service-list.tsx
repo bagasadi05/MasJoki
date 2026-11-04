@@ -1,7 +1,7 @@
 "use client";
 
 import { useCalculator } from "./calculator-context";
-import { aksenLayanan } from "@/lib/aksen";
+import { StempelLayanan } from "./stempel-layanan";
 import { priceLabel, SERVICES } from "@/lib/services";
 
 export function ServiceList() {
@@ -10,8 +10,6 @@ export function ServiceList() {
   return (
     <ul className="divide-y divide-line border-y border-line">
       {SERVICES.map((service) => {
-        const aksen = aksenLayanan(service.id);
-
         return (
           <li key={service.id}>
             <button
@@ -20,11 +18,8 @@ export function ServiceList() {
               className="group flex w-full flex-col gap-3 py-5 text-left transition-colors hover:bg-paper-2/60 focus-visible:bg-paper-2/60 sm:flex-row sm:items-baseline sm:gap-4 sm:px-2"
             >
               <span className="min-w-0 sm:w-[54%]">
-                <span className="flex flex-wrap items-center gap-x-2">
-                  <span
-                    aria-hidden
-                    className={`inline-block size-2 shrink-0 rounded-full ${aksen.dot}`}
-                  />
+                <span className="flex flex-wrap items-center gap-x-2.5">
+                  <StempelLayanan id={service.id} />
                   <span className="font-display text-[1.15rem] leading-none tracking-tight text-ink">
                     {service.name}
                   </span>

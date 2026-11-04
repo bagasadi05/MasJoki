@@ -32,6 +32,8 @@ export interface Aksen {
   chip: string;
   /** Wash bagian yang sangat tipis. */
   wash: string;
+  /** Nama token untuk gaya inline (mis. pita atas nota). */
+  varName: string;
 }
 
 export const AKSEN: Record<AksenId, Aksen> = {
@@ -43,7 +45,8 @@ export const AKSEN: Record<AksenId, Aksen> = {
     ring: "ring-brand",
     text: "text-brand",
     chip: "border-brand/25 bg-brand-soft text-brand",
-    wash: "bg-brand-soft/35",
+    wash: "bg-brand-soft/45",
+    varName: "--color-brand",
   },
   mint: {
     dot: "bg-mint",
@@ -53,7 +56,8 @@ export const AKSEN: Record<AksenId, Aksen> = {
     ring: "ring-mint",
     text: "text-mint",
     chip: "border-mint/25 bg-mint-soft text-mint",
-    wash: "bg-mint-soft/35",
+    wash: "bg-mint-soft/45",
+    varName: "--color-mint",
   },
   koral: {
     dot: "bg-koral",
@@ -63,7 +67,8 @@ export const AKSEN: Record<AksenId, Aksen> = {
     ring: "ring-koral",
     text: "text-koral",
     chip: "border-koral/25 bg-koral-soft text-koral",
-    wash: "bg-koral-soft/35",
+    wash: "bg-koral-soft/45",
+    varName: "--color-koral",
   },
   lilac: {
     dot: "bg-lilac",
@@ -73,7 +78,8 @@ export const AKSEN: Record<AksenId, Aksen> = {
     ring: "ring-lilac",
     text: "text-lilac",
     chip: "border-lilac/25 bg-lilac-soft text-lilac",
-    wash: "bg-lilac-soft/35",
+    wash: "bg-lilac-soft/45",
+    varName: "--color-lilac",
   },
   amber: {
     dot: "bg-amber",
@@ -83,7 +89,8 @@ export const AKSEN: Record<AksenId, Aksen> = {
     ring: "ring-amber",
     text: "text-amber",
     chip: "border-amber/25 bg-amber-soft text-amber",
-    wash: "bg-amber-soft/35",
+    wash: "bg-amber-soft/45",
+    varName: "--color-amber",
   },
   langit: {
     dot: "bg-langit",
@@ -93,7 +100,8 @@ export const AKSEN: Record<AksenId, Aksen> = {
     ring: "ring-langit",
     text: "text-langit",
     chip: "border-langit/25 bg-langit-soft text-langit",
-    wash: "bg-langit-soft/35",
+    wash: "bg-langit-soft/45",
+    varName: "--color-langit",
   },
   olive: {
     dot: "bg-olive",
@@ -103,7 +111,8 @@ export const AKSEN: Record<AksenId, Aksen> = {
     ring: "ring-olive",
     text: "text-olive",
     chip: "border-olive/25 bg-olive-soft text-olive",
-    wash: "bg-olive-soft/35",
+    wash: "bg-olive-soft/45",
+    varName: "--color-olive",
   },
   rose: {
     dot: "bg-rose",
@@ -113,7 +122,8 @@ export const AKSEN: Record<AksenId, Aksen> = {
     ring: "ring-rose",
     text: "text-rose",
     chip: "border-rose/25 bg-rose-soft text-rose",
-    wash: "bg-rose-soft/35",
+    wash: "bg-rose-soft/45",
+    varName: "--color-rose",
   },
 };
 
@@ -126,6 +136,18 @@ export const WARNA_LAYANAN: Record<ServiceId, AksenId> = {
   word: "langit",
   terjemah: "olive",
   desain: "rose",
+};
+
+/** Inisial dua huruf untuk cap/stempel kecil, gaya nota. */
+export const INISIAL: Record<ServiceId, string> = {
+  parafrase: "Pa",
+  humanisasi: "Hu",
+  makalah: "Ma",
+  jurnal: "Ju",
+  powerpoint: "PP",
+  word: "Wo",
+  terjemah: "Te",
+  desain: "De",
 };
 
 export function aksenLayanan(id: ServiceId): Aksen {

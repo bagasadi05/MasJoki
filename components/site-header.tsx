@@ -44,6 +44,7 @@ export function SiteHeader() {
           <MenuSeluler items={navigasi} />
         </div>
       </div>
+      <div aria-hidden className="pita h-1" />
     </header>
   );
 }

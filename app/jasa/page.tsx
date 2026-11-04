@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { StempelLayanan } from "@/components/stempel-layanan";
 import { aksenLayanan } from "@/lib/aksen";
 import { rupiah } from "@/lib/format";
 import { SERVICES, priceLabel } from "@/lib/services";
@@ -69,10 +70,7 @@ export default function HalamanDaftarLayanan() {
                   <div>
                     <div className="flex items-start justify-between gap-4">
                       <h2 className="flex items-center gap-2.5 font-display text-[1.2rem] leading-snug tracking-tight text-ink group-hover:text-brand">
-                        <span
-                          aria-hidden
-                          className={`inline-block size-2 shrink-0 rounded-full ${aksen.dot}`}
-                        />
+                        <StempelLayanan id={service.id} />
                         {service.name}
                       </h2>
                       {service.popular ? (

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Nota } from "@/components/nota";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { StempelLayanan } from "@/components/stempel-layanan";
 import { KONTEN_LAYANAN } from "@/content/layanan";
 import { aksenLayanan } from "@/lib/aksen";
 import { rupiah } from "@/lib/format";
@@ -139,6 +140,9 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
 
             <div className="mt-6 grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-start lg:gap-16">
               <div>
+                <div className="mb-3">
+                  <StempelLayanan id={service.id} />
+                </div>
                 <h1 className="font-display text-[2.2rem] leading-[1.06] tracking-[-0.03em] text-ink sm:text-[2.9rem]">
                   Jasa {service.name.toLowerCase()}
                 </h1>
@@ -184,6 +188,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                   note={`Contoh ${contoh.qty} ${BASIS_LABEL[service.basis]} dengan tenggat 4–6 hari dan tingkat standar.`}
                   stamp="Contoh hitungan"
                   className="mx-auto max-w-md"
+                  aksen={aksen}
                 />
               </div>
             </div>
@@ -331,29 +336,22 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
             Layanan lain
           </h2>
           <ul className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {lain.map((item) => {
-              const aksenLain = aksenLayanan(item.id);
-
-              return (
-                <li key={item.id}>
-                  <Link
-                    href={`/jasa/${item.id}`}
-                    className="flex h-full flex-col justify-between rounded-md border border-line bg-white p-4 transition-colors hover:bg-paper-2/40"
-                  >
-                    <span className="flex items-center gap-2 text-[0.9rem] font-medium leading-snug text-ink">
-                      <span
-                        aria-hidden
-                        className={`inline-block size-1.5 shrink-0 rounded-full ${aksenLain.dot}`}
-                      />
-                      {item.name}
-                    </span>
-                    <span className="mt-3 font-mono text-[0.76rem] tabular-nums text-muted">
-                      {priceLabel(item)}
-                    </span>
-                  </Link>
-                </li>
-              );
-            })}
+            {lain.map((item) => (
+              <li key={item.id}>
+                <Link
+                  href={`/jasa/${item.id}`}
+                  className="flex h-full flex-col justify-between rounded-md border border-line bg-white p-4 transition-colors hover:bg-paper-2/40"
+                >
+                  <span className="flex items-center gap-2 text-[0.9rem] font-medium leading-snug text-ink">
+                    <StempelLayanan id={item.id} ukuran="kecil" />
+                    {item.name}
+                  </span>
+                  <span className="mt-3 font-mono text-[0.76rem] tabular-nums text-muted">
+                    {priceLabel(item)}
+                  </span>
+                </Link>
+              </li>
+            ))}
           </ul>
         </section>
 

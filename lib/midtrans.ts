@@ -16,6 +16,11 @@ const snapBase = isProduction
   ? "https://app.midtrans.com"
   : "https://app.sandbox.midtrans.com";
 
+/** Basis URL Core API (untuk cek status manual). */
+const coreBase = isProduction
+  ? "https://api.midtrans.com"
+  : "https://api.sandbox.midtrans.com";
+
 export interface SnapItem {
   id: string;
   price: number;
@@ -93,4 +98,55 @@ export async function buatTransaksiSnap(
 
 export function snapClientKey(): string {
   return process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY ?? "";
+}
+
+/**
+ * Cek status transaksi dari Core API. Dipakai tombol rekonsiliasi di
+ * dashboard, sebagai cadangan kalau webhook telat / tidak sampai.
+ */
+export async function cekStatusTransaksi(orderId: string): Promise<{
+  transaction_status: string;
+  fraud_status?: string;
+  transaction_id?: string;
+  payment_type?: string;
+}> {
+  if (!midtransConfigured) {
+    throw new Error("MIDTRANS_SERVER_KEY belum diisi");
+  }
+
+  const otorisasi = Buffer.from(`${serverKey}:`).toString("base64");
+  const response = await fetch(
+    `${coreBase}/v2/${encodeURIComponent(orderId)}/status`,
+    {
+      method: "GET",
+      headers: { Accept: "application/json", Authorization: `Basic ${otorisasi}` },
+      cache: "no-store",
+    },
+  );
+
+  if (response.status === 404) {
+    // Transaksi belum pernah dibuat di Midtrans.
+    throw new Error("Transaksi tidak ditemukan di Midtrans");
+  }
+  if (!response.ok) {
+    throw new Error(`Cek status gagal (${response.status})`);
+  }
+
+  const data = (await response.json()) as {
+    transaction_status?: string;
+    fraud_status?: string;
+    transaction_id?: string;
+    payment_type?: string;
+  };
+
+  if (!data.transaction_status) {
+    throw new Error("Respons Midtrans tidak lengkap");
+  }
+
+  return {
+    transaction_status: data.transaction_status,
+    fraud_status: data.fraud_status,
+    transaction_id: data.transaction_id,
+    payment_type: data.payment_type,
+  };
 }

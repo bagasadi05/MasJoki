@@ -26,6 +26,7 @@ Situs pemesanan jasa bantuan tugas berbahasa Indonesia. Model bisnisnya
 | `lib/auth.ts` | Sesi admin (cookie HMAC). |
 | `app/actions.ts` | Server action `submitOrder` dan `submitQuote`. |
 | `app/admin/(dashboard)/` | Dashboard admin, dilindungi layout. |
+| `app/admin/(dashboard)/actions.ts` | `ubahStatus` + `cekStatusPembayaran` (rekonsiliasi Midtrans). |
 | `app/api/pembayaran/route.ts` | Membuat transaksi Snap untuk satu pesanan. |
 | `app/api/midtrans/webhook/route.ts` | Verifikasi signature + update status. |
 | `app/pesanan/[kode]/page.tsx` | Halaman status & bayar untuk pelanggan. |
@@ -134,4 +135,3 @@ Seeder Supabase: jalankan `supabase/schema.sql` di SQL Editor.
 
 - Upload file langsung ke Supabase Storage (sekarang hanya tautan).
 - Autentikasi admin berlapis (Supabase Auth) kalau admin lebih dari satu.
-- Rekonsiliasi status manual: tombol "cek status Midtrans" di dashboard.

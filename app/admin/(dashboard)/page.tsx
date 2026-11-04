@@ -6,6 +6,7 @@ import { STATUS_LABEL, statusPesanan } from "@/lib/payment-status";
 import { supabaseAdmin } from "@/lib/supabase";
 import { waLink } from "@/lib/site";
 import { keluar } from "../login/actions";
+import { TombolCekBayar } from "./tombol-cek-bayar";
 import { ubahStatus } from "./actions";
 
 export const metadata: Metadata = {
@@ -234,6 +235,7 @@ export default async function Dashboard() {
                           Simpan
                         </button>
                       </form>
+                      <TombolCekBayar code={row.code} />
                     </td>
                   </tr>
                 ))}

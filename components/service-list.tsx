@@ -116,9 +116,10 @@ export function ServiceList() {
                 <Link
                   href={`/jasa/${service.id}`}
                   title={`Pelajari cakupan ${service.name}`}
+                  aria-label={`Pelajari cakupan lengkap layanan ${service.name}`}
                   className="inline-flex size-9.5 shrink-0 items-center justify-center rounded-xl border border-line bg-white text-muted transition-colors hover:border-brand hover:text-brand"
                 >
-                  <Info className="size-4" />
+                  <Info className="size-4" aria-hidden />
                 </Link>
               </div>
             </div>

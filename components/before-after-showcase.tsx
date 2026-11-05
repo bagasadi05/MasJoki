@@ -163,22 +163,26 @@ export function BeforeAfterShowcase() {
         </p>
 
         {/* Tab Selector */}
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-2">
+        <div role="tablist" aria-label="Kategori perbandingan naskah" className="mt-8 flex flex-wrap items-center justify-center gap-2">
           {CASES.map((item) => {
             const Icon = item.icon;
             const aktif = item.id === activeTab;
             return (
               <button
                 key={item.id}
+                id={`tab-${item.id}`}
                 type="button"
+                role="tab"
+                aria-selected={aktif}
+                aria-controls={`panel-${item.id}`}
                 onClick={() => setActiveTab(item.id)}
-                className={`inline-flex items-center gap-2 rounded-2xl border px-5 py-2.5 text-[0.86rem] font-bold transition-all duration-200 ${
+                className={`inline-flex items-center gap-2 rounded-2xl border px-5 py-2.5 text-[0.86rem] font-bold transition-all duration-200 cursor-pointer ${
                   aktif
                     ? "border-brand bg-brand text-white shadow-md shadow-brand/20 scale-102"
                     : "border-line bg-white text-ink-soft hover:border-brand/40 hover:text-ink hover:bg-paper-2"
                 }`}
               >
-                <Icon className="size-4" />
+                <Icon className="size-4" aria-hidden />
                 <span>{item.tabLabel}</span>
               </button>
             );
@@ -186,8 +190,13 @@ export function BeforeAfterShowcase() {
         </div>
       </div>
 
-      {/* Case Details Header */}
-      <div className="mt-10 rounded-2xl border border-line bg-white p-6 sm:p-8 shadow-sm">
+      {/* Case Details Header & Tabpanel */}
+      <div
+        id={`panel-${activeCase.id}`}
+        role="tabpanel"
+        aria-labelledby={`tab-${activeCase.id}`}
+        className="mt-10 rounded-2xl border border-line bg-white p-6 sm:p-8 shadow-sm"
+      >
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-line pb-6">
           <div>
             <h3 className="font-display text-xl font-bold text-ink sm:text-2xl">
@@ -199,11 +208,12 @@ export function BeforeAfterShowcase() {
           </div>
 
           {/* Toggle View on Small Screens */}
-          <div className="inline-flex rounded-xl border border-line bg-paper-2 p-1 text-xs font-bold">
+          <div role="group" aria-label="Pilihan tampilan perbandingan" className="inline-flex rounded-xl border border-line bg-paper-2 p-1 text-xs font-bold">
             <button
               type="button"
+              aria-pressed={viewMode === "both"}
               onClick={() => setViewMode("both")}
-              className={`rounded-lg px-3 py-1.5 transition-all ${
+              className={`rounded-lg px-3 py-1.5 transition-all cursor-pointer ${
                 viewMode === "both"
                   ? "bg-white text-brand shadow-2xs"
                   : "text-muted hover:text-ink"
@@ -213,8 +223,9 @@ export function BeforeAfterShowcase() {
             </button>
             <button
               type="button"
+              aria-pressed={viewMode === "before"}
               onClick={() => setViewMode("before")}
-              className={`rounded-lg px-3 py-1.5 transition-all ${
+              className={`rounded-lg px-3 py-1.5 transition-all cursor-pointer ${
                 viewMode === "before"
                   ? "bg-koral text-white shadow-2xs"
                   : "text-muted hover:text-ink"
@@ -224,8 +235,9 @@ export function BeforeAfterShowcase() {
             </button>
             <button
               type="button"
+              aria-pressed={viewMode === "after"}
               onClick={() => setViewMode("after")}
-              className={`rounded-lg px-3 py-1.5 transition-all ${
+              className={`rounded-lg px-3 py-1.5 transition-all cursor-pointer ${
                 viewMode === "after"
                   ? "bg-mint text-white shadow-2xs"
                   : "text-muted hover:text-ink"

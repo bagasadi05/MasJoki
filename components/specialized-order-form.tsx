@@ -303,6 +303,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                         <button
                           key={opt.value}
                           type="button"
+                          aria-pressed={aktif}
                           onClick={() => setCheckerTool(opt.value)}
                           className={`flex items-center justify-between rounded-2xl border p-3.5 text-left transition-all cursor-pointer ${
                             aktif
@@ -334,6 +335,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                         <button
                           key={opt.value}
                           type="button"
+                          aria-pressed={aktif}
                           onClick={() => setCurrentScore(opt.value)}
                           className={`flex flex-col items-start rounded-2xl border p-3.5 text-left transition-all cursor-pointer ${
                             aktif
@@ -367,6 +369,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                         <button
                           key={opt.value}
                           type="button"
+                          aria-pressed={aktif}
                           onClick={() => setTargetScore(opt.value)}
                           className={`flex flex-col justify-between rounded-2xl border p-3.5 text-left transition-all cursor-pointer ${
                             aktif
@@ -407,6 +410,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                         <button
                           key={opt.value}
                           type="button"
+                          aria-pressed={aktif}
                           onClick={() => setCitationStyle(opt.value)}
                           className={`flex items-center justify-between rounded-2xl border p-3.5 text-left transition-all cursor-pointer ${
                             aktif
@@ -438,6 +442,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                         <button
                           key={opt.value}
                           type="button"
+                          aria-pressed={aktif}
                           onClick={() => setCustomPreference(opt.value)}
                           className={`flex items-center justify-between rounded-2xl border p-3.5 text-left transition-all cursor-pointer ${
                             aktif
@@ -476,7 +481,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                         type="button"
                         onClick={() => sesuaikanJumlah(-1)}
                         className="grid size-11 place-items-center rounded-xl bg-white text-ink shadow-2xs transition-all hover:bg-brand hover:text-white active:scale-95 cursor-pointer"
-                        aria-label="Kurangi jumlah"
+                        aria-label={`Kurangi jumlah ${BASIS_LABEL[service.basis]}`}
                       >
                         <Minus className="size-4 stroke-[2.5]" />
                       </button>
@@ -494,7 +499,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                         type="button"
                         onClick={() => sesuaikanJumlah(1)}
                         className="grid size-11 place-items-center rounded-xl bg-white text-ink shadow-2xs transition-all hover:bg-brand hover:text-white active:scale-95 cursor-pointer"
-                        aria-label="Tambah jumlah"
+                        aria-label={`Tambah jumlah ${BASIS_LABEL[service.basis]}`}
                       >
                         <Plus className="size-4 stroke-[2.5]" />
                       </button>
@@ -531,6 +536,10 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                     onChange={(e) => ubahJumlah(Number(e.target.value))}
                     className="w-full accent-brand cursor-pointer"
                     aria-label={`Geser jumlah ${BASIS_LABEL[service.basis]}`}
+                    aria-valuemin={service.minQty}
+                    aria-valuemax={sliderMax}
+                    aria-valuenow={qty}
+                    aria-valuetext={`${qty} ${BASIS_LABEL[service.basis]}`}
                   />
                   <div className="flex justify-between text-[0.68rem] text-muted font-mono mt-1">
                     <span>
@@ -700,9 +709,9 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                     {availableAddons.map((addon) => {
                       const terpilih = selectedAddons.includes(addon.id);
                       return (
-                        <div
+                        <label
                           key={addon.id}
-                          onClick={() => toggleAddon(addon.id)}
+                          htmlFor={`addon-${addon.id}`}
                           className={`flex cursor-pointer items-start justify-between gap-3 rounded-2xl border p-4 transition-all ${
                             terpilih
                               ? "border-brand bg-brand-soft/60 ring-2 ring-brand/25 shadow-xs"
@@ -711,9 +720,10 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                         >
                           <div className="flex items-start gap-3">
                             <input
+                              id={`addon-${addon.id}`}
                               type="checkbox"
                               checked={terpilih}
-                              onChange={() => {}}
+                              onChange={() => toggleAddon(addon.id)}
                               className="mt-1 size-4 accent-brand rounded cursor-pointer"
                             />
                             <div>
@@ -728,7 +738,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                           <span className="shrink-0 rounded-lg bg-paper-2 px-2 py-1 font-mono text-[0.72rem] font-bold text-brand">
                             +{rupiah(addon.price)}
                           </span>
-                        </div>
+                        </label>
                       );
                     })}
                   </div>

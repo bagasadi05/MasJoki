@@ -8,7 +8,11 @@ export interface FaqItem {
 export const faq: FaqItem[] = [
   {
     q: "Apakah harga bisa berubah setelah saya pesan?",
-    a: "Tidak, selama jumlah, tenggat, dan tingkat kesulitan tidak berubah. Admin hanya menyesuaikan kalau file yang kamu kirim ternyata jauh berbeda dari yang kamu tulis di brief — dan itu pun harus kamu setujui dulu.",
+    a: "Tidak, selama jumlah halaman/kata, tenggat, dan instruksi tugas tidak berubah. Jika tugasmu memiliki kebutuhan analisis teknis khusus (misal olah data SPSS atau uji laboratorium), admin akan mengonfirmasi penyesuaian di awal sebelum kamu transfer — dan itu pun wajib kamu setujui dulu.",
+  },
+  {
+    q: "Apakah bisa bayar DP (uang muka) 50% dulu?",
+    a: "Bisa banget! Untuk pesanan mulai Rp 40.000, kamu cukup membayar DP 50% di awal agar tim kami langsung bekerja. Pelunasan 50% sisanya baru kamu bayarkan setelah tugas selesai dan kamu memeriksa preview hasilnya.",
   },
   {
     q: "Bagaimana cara membayarnya?",

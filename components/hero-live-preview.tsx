@@ -107,13 +107,15 @@ export function HeroLivePreview() {
           <p className="mb-2 text-[0.72rem] font-bold text-muted">
             Pilih Contoh Simulasi Tugas:
           </p>
-          <div className="grid grid-cols-3 gap-1.5 rounded-2xl border border-line bg-paper-2 p-1.5">
+          <div role="tablist" aria-label="Simulasi cepat tugas" className="grid grid-cols-3 gap-1.5 rounded-2xl border border-line bg-paper-2 p-1.5">
             {PRESETS.map((preset) => {
               const aktif = preset.id === selectedId;
               return (
                 <button
                   key={preset.id}
                   type="button"
+                  role="tab"
+                  aria-selected={aktif}
                   onClick={() => setSelectedId(preset.id)}
                   className={`rounded-xl py-2 px-1.5 text-center transition-all cursor-pointer ${
                     aktif

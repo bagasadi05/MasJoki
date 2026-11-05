@@ -105,29 +105,29 @@ export function Nota({
                 key={`${line.label}-${index}`}
                 className="flex items-baseline justify-between gap-3 text-[0.88rem]"
               >
-                <div className="min-w-0 pr-2">
-                  <dt
-                    className={`font-medium leading-snug flex items-center gap-1.5 ${
-                      isDiscount
-                        ? "font-bold text-mint"
-                        : isAddon
-                          ? "font-semibold text-brand-dark"
-                          : "text-ink"
-                    }`}
-                  >
-                    {isAddon ? <Sparkles className="size-3 text-brand shrink-0" /> : null}
+                <dt
+                  className={`min-w-0 pr-2 font-medium leading-snug ${
+                    isDiscount
+                      ? "font-bold text-mint"
+                      : isAddon
+                        ? "font-semibold text-brand-dark"
+                        : "text-ink"
+                  }`}
+                >
+                  <span className="flex items-center gap-1.5">
+                    {isAddon ? <Sparkles className="size-3 text-brand shrink-0" aria-hidden /> : null}
                     <span>{line.label}</span>
-                  </dt>
+                  </span>
                   {line.detail ? (
-                    <dd
-                      className={`mt-0.5 text-[0.74rem] leading-snug ${
+                    <span
+                      className={`mt-0.5 block text-[0.74rem] leading-snug font-normal ${
                         isDiscount ? "text-mint font-medium" : "text-muted"
                       }`}
                     >
                       {line.detail}
-                    </dd>
+                    </span>
                   ) : null}
-                </div>
+                </dt>
                 <dd
                   className={`shrink-0 font-mono text-[0.84rem] font-semibold tabular-nums ${
                     isDiscount

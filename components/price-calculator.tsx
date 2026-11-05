@@ -377,6 +377,7 @@ export function PriceCalculator() {
                         type="button"
                         onClick={() => pilihLayananLain(item.id)}
                         aria-pressed={aktif}
+                        aria-label={`${item.name}, ${priceLabel(item)}`}
                         className={`group relative flex flex-col items-start rounded-2xl border p-3.5 text-left transition-all duration-200 cursor-pointer ${
                           aktif
                             ? `${itemAksen.soft} ${itemAksen.border} ring-2 ${itemAksen.ring} shadow-md`
@@ -431,7 +432,7 @@ export function PriceCalculator() {
                         type="button"
                         onClick={() => sesuaikanJumlah(-1)}
                         className="grid size-11 place-items-center rounded-xl bg-white text-ink shadow-2xs transition-all hover:bg-brand hover:text-white active:scale-95 cursor-pointer"
-                        aria-label="Kurangi jumlah"
+                        aria-label={`Kurangi jumlah ${BASIS_LABEL[service.basis]}`}
                       >
                         <Minus className="size-4 stroke-[2.5]" />
                       </button>
@@ -451,7 +452,7 @@ export function PriceCalculator() {
                         type="button"
                         onClick={() => sesuaikanJumlah(1)}
                         className="grid size-11 place-items-center rounded-xl bg-white text-ink shadow-2xs transition-all hover:bg-brand hover:text-white active:scale-95 cursor-pointer"
-                        aria-label="Tambah jumlah"
+                        aria-label={`Tambah jumlah ${BASIS_LABEL[service.basis]}`}
                       >
                         <Plus className="size-4 stroke-[2.5]" />
                       </button>
@@ -488,6 +489,10 @@ export function PriceCalculator() {
                     onChange={(e) => ubahJumlah(e.target.value)}
                     className="w-full accent-brand cursor-pointer"
                     aria-label={`Geser jumlah ${BASIS_LABEL[service.basis]}`}
+                    aria-valuemin={service.minQty}
+                    aria-valuemax={sliderMax}
+                    aria-valuenow={currentQty}
+                    aria-valuetext={`${currentQty} ${BASIS_LABEL[service.basis]}`}
                   />
                   <div className="flex justify-between text-[0.68rem] text-muted font-mono mt-1">
                     <span>

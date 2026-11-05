@@ -1024,7 +1024,7 @@ function SuccessPanel({
       <div className="overflow-hidden rounded-3xl border border-line bg-white p-7 shadow-2xl shadow-brand/10 sm:p-9">
         <div role="status" aria-live="polite">
           <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3.5 py-1 text-[0.76rem] font-bold text-emerald-800">
-            <span aria-hidden className="size-2 rounded-full bg-emerald-500 live-pulse" />
+            <span aria-hidden className="size-2 rounded-full bg-emerald-500 " />
             Pesanan Siap Dikirim
           </span>
 

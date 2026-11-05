@@ -121,7 +121,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
 
       <main id="konten">
         {/* Hero Section Layanan */}
-        <section className={`border-b border-line bg-gradient-to-b from-paper via-white to-paper-2/40`}>
+        <section className={`border-b border-line ${aksen.wash}`}>
           <div className="mx-auto max-w-6xl px-5 pb-14 pt-10 sm:px-8 sm:pb-20 sm:pt-14">
             <nav aria-label="Remah roti" className="flex items-center gap-2 text-[0.8rem] font-medium text-muted">
               <Link href="/" className="transition-colors hover:text-brand">
@@ -365,7 +365,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
 
         {/* Banner CTA */}
         <section className="mx-auto max-w-6xl px-5 pb-18 sm:px-8 sm:pb-24">
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-ink via-slate-900 to-indigo-950 px-7 py-12 shadow-xl sm:px-12 sm:py-16">
+          <div className="relative overflow-hidden rounded-3xl bg-ink px-7 py-12 shadow-xl sm:px-12 sm:py-16">
             <div aria-hidden className="pita absolute inset-x-0 top-0 h-[4px]" />
             <div className="relative grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center lg:gap-10">
               <div>

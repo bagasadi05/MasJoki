@@ -47,7 +47,7 @@ const alasan = [
     iconBg: "bg-amber-100 text-amber-700",
   },
   {
-    judul: "Kerahasiaan Terjaga 100%",
+    judul: "Kerahasiaan Terjaga",
     isi: "Data mahasiswa, nama kampus, materi tugas, dan berkas yang kamu kirim dijamin aman, privat, dan tidak pernah dipublikasikan.",
     icon: ShieldCheck,
     bg: "bg-purple-50/70 border-purple-200 text-purple-950",
@@ -77,7 +77,7 @@ export default function Home() {
         {/* ---------------------------------------------------------- *
          * Hero Section (Inspirasi Modern Manuru + Ciri Khas Mas Joki)
          * ---------------------------------------------------------- */}
-        <section className="relative overflow-hidden border-b border-line bg-gradient-to-b from-paper via-white to-paper-2/40 aurora-bg">
+        <section className="relative overflow-hidden border-b border-line bg-white">
           <div
             aria-hidden
             className="kertas-titik pointer-events-none absolute inset-0 opacity-40 [mask-image:radial-gradient(75%_65%_at_50%_0%,#000,transparent)]"
@@ -103,7 +103,7 @@ export default function Home() {
 
               <h1 className="mt-5 font-display text-[2.6rem] leading-[1.05] tracking-[-0.035em] text-ink sm:text-[3.4rem] lg:text-[3.8rem]">
                 Tugas kuliah beres,{" "}
-                <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                <span className="garis-stabilo">
                   harga pasti kelihatan
                 </span>{" "}
                 di awal.
@@ -262,7 +262,7 @@ export default function Home() {
          * CTA Banner Akhir dengan Maskot Mas Joki
          * ---------------------------------------------------------- */}
         <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-ink via-slate-900 to-indigo-950 px-8 py-14 shadow-2xl sm:px-14 sm:py-18">
+          <div className="relative overflow-hidden rounded-3xl bg-ink px-8 py-14 shadow-2xl sm:px-14 sm:py-18">
             <div aria-hidden className="pita absolute inset-x-0 top-0 h-[4px]" />
             <div
               aria-hidden

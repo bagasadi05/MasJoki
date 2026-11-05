@@ -72,8 +72,8 @@ export default function HalamanFaq() {
           <div className="space-y-6">
             <div className="rounded-3xl border border-line bg-paper-2/80 p-6 sm:p-7 shadow-sm">
               <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-[0.7rem] font-bold text-emerald-800">
-                <span className="size-1.5 rounded-full bg-emerald-500 live-pulse" />
-                Admin Sedang Online
+                <span className="size-1.5 rounded-full bg-emerald-500 " />
+                Bantuan Langsung
               </span>
               <h2 className="mt-4 font-display text-xl font-bold text-ink">
                 Butuh Konsultasi Langsung?

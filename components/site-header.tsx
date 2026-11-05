@@ -44,7 +44,7 @@ export function SiteHeader() {
 
           {/* Status badge online */}
           <span className="hidden items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50/90 px-2.5 py-0.5 text-[0.7rem] font-bold text-emerald-800 md:inline-flex">
-            <span className="size-1.5 rounded-full bg-emerald-500 live-pulse" />
+            <span className="size-1.5 rounded-full bg-emerald-500 " />
             Admin Online
           </span>
         </div>

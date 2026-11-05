@@ -30,28 +30,28 @@ const langkah = [
     judul: "Atur Jumlah & Tenggat",
     isi: "Pilih jenis tugas, tentukan jumlah halaman atau kata, dan pilih tenggat yang kamu butuhkan. Total biaya keluar seketika di nota tanpa nunggu dibalas.",
     icon: SlidersHorizontal,
-    badge: "from-blue-600 to-indigo-600",
+    badge: "from-ink to-ink",
   },
   {
     nomor: "02",
     judul: "Kirim ke WhatsApp",
     isi: "Tempelkan tautan file tugasmu (Google Drive / OneDrive) dan nomor WhatsApp. Format pesanan langsung terisi otomatis di chat admin Mas Joki.",
     icon: Send,
-    badge: "from-amber-500 to-orange-500",
+    badge: "from-ink to-ink",
   },
   {
     nomor: "03",
     judul: "Bayar Lewat E-Wallet",
     isi: "Admin konfirmasi instruksi tugas dan mengunci harga total. Transfer via ShopeePay, GoPay, atau DANA, lalu kirim bukti di chat yang sama.",
     icon: Wallet,
-    badge: "from-emerald-500 to-teal-600",
+    badge: "from-ink to-ink",
   },
   {
     nomor: "04",
     judul: "Terima Hasil Jadi",
     isi: "Hasil dikirim tepat waktu dalam file yang bisa kamu edit (Word / PPT). Ada garansi 2× revisi gratis jika ada instruksi yang belum terpenuhi.",
     icon: Sparkles,
-    badge: "from-purple-600 to-pink-600",
+    badge: "from-ink to-ink",
   },
 ];
 

@@ -54,8 +54,8 @@ export const AKSEN: Record<AksenId, Aksen> = {
     wash: "bg-brand-soft/50",
     varName: "--color-brand",
     ikon: "🔄",
-    gradient: "from-blue-500/10 via-indigo-500/5 to-transparent",
-    hex: "#2563EB",
+    gradient: "",
+    hex: "#1f3be0",
   },
   mint: {
     dot: "bg-mint",
@@ -68,8 +68,8 @@ export const AKSEN: Record<AksenId, Aksen> = {
     wash: "bg-mint-soft/50",
     varName: "--color-mint",
     ikon: "✨",
-    gradient: "from-emerald-500/10 via-teal-500/5 to-transparent",
-    hex: "#059669",
+    gradient: "",
+    hex: "#2a6b55",
   },
   koral: {
     dot: "bg-koral",
@@ -82,8 +82,8 @@ export const AKSEN: Record<AksenId, Aksen> = {
     wash: "bg-koral-soft/50",
     varName: "--color-koral",
     ikon: "📚",
-    gradient: "from-orange-500/10 via-rose-500/5 to-transparent",
-    hex: "#EA580C",
+    gradient: "",
+    hex: "#9e4e42",
   },
   lilac: {
     dot: "bg-lilac",
@@ -96,8 +96,8 @@ export const AKSEN: Record<AksenId, Aksen> = {
     wash: "bg-lilac-soft/50",
     varName: "--color-lilac",
     ikon: "🎓",
-    gradient: "from-purple-500/10 via-violet-500/5 to-transparent",
-    hex: "#7C3AED",
+    gradient: "",
+    hex: "#6556a3",
   },
   amber: {
     dot: "bg-amber",
@@ -110,8 +110,8 @@ export const AKSEN: Record<AksenId, Aksen> = {
     wash: "bg-amber-soft/50",
     varName: "--color-amber",
     ikon: "📊",
-    gradient: "from-amber-500/10 via-yellow-500/5 to-transparent",
-    hex: "#D97706",
+    gradient: "",
+    hex: "#8a5d12",
   },
   langit: {
     dot: "bg-langit",
@@ -124,8 +124,8 @@ export const AKSEN: Record<AksenId, Aksen> = {
     wash: "bg-langit-soft/50",
     varName: "--color-langit",
     ikon: "📝",
-    gradient: "from-sky-500/10 via-cyan-500/5 to-transparent",
-    hex: "#0284C7",
+    gradient: "",
+    hex: "#2b6a97",
   },
   olive: {
     dot: "bg-olive",
@@ -138,8 +138,8 @@ export const AKSEN: Record<AksenId, Aksen> = {
     wash: "bg-olive-soft/50",
     varName: "--color-olive",
     ikon: "🌐",
-    gradient: "from-lime-500/10 via-emerald-500/5 to-transparent",
-    hex: "#65A30D",
+    gradient: "",
+    hex: "#5f6f2a",
   },
   rose: {
     dot: "bg-rose",
@@ -152,8 +152,8 @@ export const AKSEN: Record<AksenId, Aksen> = {
     wash: "bg-rose-soft/50",
     varName: "--color-rose",
     ikon: "🎨",
-    gradient: "from-pink-500/10 via-fuchsia-500/5 to-transparent",
-    hex: "#DB2777",
+    gradient: "",
+    hex: "#9d4d6b",
   },
 };
 

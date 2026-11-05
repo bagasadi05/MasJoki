@@ -47,7 +47,7 @@ export function PerbandinganJoki() {
 
       <div className="mt-12 grid gap-6 lg:grid-cols-2">
         {/* Kolom Joki Medsos Biasa */}
-        <div className="rounded-3xl border border-red-200 bg-gradient-to-b from-red-50/50 to-white p-7 sm:p-9 shadow-sm">
+        <div className="rounded-3xl border border-red-200 bg-red-50/50 p-7 sm:p-9 shadow-sm">
           <div className="flex items-center gap-3 border-b border-red-200 pb-5">
             <span className="grid size-11 place-items-center rounded-2xl bg-red-100 text-red-600">
               <ShieldAlert className="size-6" />
@@ -67,7 +67,7 @@ export function PerbandinganJoki() {
               <li key={item.kategori} className="flex items-start gap-3">
                 <XCircle className="mt-0.5 size-4 text-red-500 shrink-0" />
                 <div>
-                  <p className="text-[0.82rem] font-bold text-red-900 uppercase tracking-wider">
+                  <p className="text-[0.82rem] font-bold text-red-800">
                     {item.kategori}
                   </p>
                   <p className="mt-0.5 text-[0.86rem] leading-relaxed text-red-950/80">
@@ -80,7 +80,7 @@ export function PerbandinganJoki() {
         </div>
 
         {/* Kolom Mas Joki */}
-        <div className="relative rounded-3xl border-2 border-brand bg-gradient-to-b from-brand-soft/60 via-white to-brand-soft/30 p-7 sm:p-9 shadow-xl shadow-brand/10 ring-4 ring-brand/10">
+        <div className="relative rounded-3xl border-2 border-brand bg-brand-soft/40 p-7 sm:p-9 shadow-xl shadow-brand/10 ring-4 ring-brand/10">
           <span className="absolute -top-3.5 right-6 inline-flex items-center gap-1 rounded-full bg-brand px-3.5 py-1 font-display text-xs font-black uppercase tracking-wider text-white shadow-md">
             <Star className="size-3 fill-white" />
             <span>Pilihan Terpercaya</span>
@@ -105,7 +105,7 @@ export function PerbandinganJoki() {
               <li key={item.kategori} className="flex items-start gap-3">
                 <CheckCircle2 className="mt-0.5 size-4 text-emerald-600 shrink-0" />
                 <div>
-                  <p className="text-[0.82rem] font-bold text-brand uppercase tracking-wider">
+                  <p className="text-[0.82rem] font-bold text-brand">
                     {item.kategori}
                   </p>
                   <p className="mt-0.5 text-[0.86rem] leading-relaxed text-ink font-medium">

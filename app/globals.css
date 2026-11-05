@@ -18,21 +18,21 @@
   --color-stabilo: #fde047;
   --color-stabilo-soft: #fef9c3;
 
-  /* 8 Warna Layanan Mas Joki (Modern, Vivid, Ramah & Berkontras Tinggi) */
-  --color-mint: #059669;
-  --color-mint-soft: #ecfdf5;
-  --color-koral: #ea580c;
-  --color-koral-soft: #fff7ed;
-  --color-lilac: #7c3aed;
-  --color-lilac-soft: #f5f3ff;
-  --color-amber: #d97706;
-  --color-amber-soft: #fffbeb;
-  --color-langit: #0284c7;
-  --color-langit-soft: #f0f9ff;
-  --color-olive: #65a30d;
-  --color-olive-soft: #f7fee7;
-  --color-rose: #db2777;
-  --color-rose-soft: #fdf2f8;
+  /* 8 Warna Aksen Layanan — chroma rendah supaya kalem tapi colorful */
+  --color-mint: #2a6b55;
+  --color-mint-soft: #e6f1ea;
+  --color-koral: #9e4e42;
+  --color-koral-soft: #f6e7e2;
+  --color-lilac: #6556a3;
+  --color-lilac-soft: #ece7f7;
+  --color-amber: #8a5d12;
+  --color-amber-soft: #f7edd3;
+  --color-langit: #2b6a97;
+  --color-langit-soft: #e4eff7;
+  --color-olive: #5f6f2a;
+  --color-olive-soft: #eef1dc;
+  --color-rose: #9d4d6b;
+  --color-rose-soft: #f6e7ed;
 
   --font-display: var(--font-bricolage), system-ui, sans-serif;
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
@@ -178,18 +178,18 @@
   background-size: 24px 24px;
 }
 
-/* Pita warna: 8 spektrum warna layanan */
+  /* Pita warna: 8 spektrum warna layanan, solid per layanan (bukan gradasi). */
 .pita {
   background-image: linear-gradient(
     90deg,
-    #2563eb 0 12.5%,
-    #059669 12.5% 25%,
-    #ea580c 25% 37.5%,
-    #7c3aed 37.5% 50%,
-    #d97706 50% 62.5%,
-    #0284c7 62.5% 75%,
-    #65a30d 75% 87.5%,
-    #db2777 87.5% 100%
+    var(--color-brand) 0 12.5%,
+    var(--color-mint) 12.5% 25%,
+    var(--color-koral) 25% 37.5%,
+    var(--color-lilac) 37.5% 50%,
+    var(--color-amber) 50% 62.5%,
+    var(--color-langit) 62.5% 75%,
+    var(--color-olive) 75% 87.5%,
+    var(--color-rose) 87.5% 100%
   );
 }
 
@@ -206,17 +206,16 @@
 }
 
 /* Glow latar belakang halus */
-.aurora-bg {
-  background: radial-gradient(circle at 12% 15%, rgba(37, 99, 235, 0.09), transparent 45%),
-              radial-gradient(circle at 88% 22%, rgba(124, 58, 237, 0.09), transparent 42%),
-              radial-gradient(circle at 50% 80%, rgba(5, 150, 105, 0.08), transparent 48%);
-}
-
-.glass-panel {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+.garis-stabilo {
+  background-image: linear-gradient(
+    to top,
+    var(--color-stabilo) 0%,
+    var(--color-stabilo) 45%,
+    transparent 45%
+  );
+  background-repeat: no-repeat;
+  padding-inline: 0.2em;
+  border-radius: 4px;
 }
 
 /* ------------------------------------------------------------------ *

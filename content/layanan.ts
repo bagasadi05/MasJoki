@@ -12,7 +12,7 @@ export interface KontenLayanan {
 export const KONTEN_LAYANAN: Record<ServiceId, KontenLayanan> = {
   parafrase: {
     intro:
-      "Menyusun ulang kalimat dengan bahasa sendiri tanpa mengubah makna, istilah teknis, atau nomor sitasi. Cocok untuk bagian yang sudah lolos cek similaritas tapi masih terasa kaku.",
+      "Menyusun ulang kalimat dengan bahasa sendiri tanpa mengubah makna, istilah teknis, atau nomor sitasi. Cocok untuk bagian yang masih perlu dirapikan bahasanya tapi sudah sesuai pedoman kampus.",
     cakupan: [
       "Menyusun ulang per kalimat, bukan menukar sinonim otomatis",
       "Istilah teknis, nama teori, dan angka tetap seperti aslinya",

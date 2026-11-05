@@ -30,7 +30,7 @@ export const SERVICE_ORDER_SPECS: Record<ServiceId, ServiceOrderSpec> = {
     serviceId: "humanisasi",
     headline: "Form Pemesanan Humanisasi Teks AI",
     subheadline:
-      "Ubah teks hasil AI menjadi naskah mengalir alami yang lolos Turnitin AI, GPTZero, dan standar dosen.",
+      "Ubah teks hasil AI menjadi naskah mengalir alami yang mengalir alami dan sesuai standar dosen.",
     checkerTitle: "Alat Pengecek AI yang Digunakan Kampus",
     checkerOptions: [
       { value: "turnitin_ai", label: "Turnitin AI Writing", badge: "Paling Umum" },
@@ -50,7 +50,7 @@ export const SERVICE_ORDER_SPECS: Record<ServiceId, ServiceOrderSpec> = {
     targetScoreOptions: [
       {
         value: "<10%",
-        label: "Di Bawah 10% (Sangat Aman)",
+        label: "Di Bawah 10% (Target Ketat)",
         badge: "Rekomendasi",
         description: "Standar aman lolos uji skripsi & tesis",
       },
@@ -61,8 +61,8 @@ export const SERVICE_ORDER_SPECS: Record<ServiceId, ServiceOrderSpec> = {
       },
       {
         value: "0%",
-        label: "Murni 100% Manusiawi (0%)",
-        description: "Parafrase menyeluruh tanpa jejak bot",
+        label: "Target 0% — Penulisan Ulang Menyeluruh",
+        description: "Penulisan ulang menyeluruh sampai naskah terasa alami",
       },
     ],
     fileHelperText:
@@ -91,7 +91,7 @@ export const SERVICE_ORDER_SPECS: Record<ServiceId, ServiceOrderSpec> = {
     targetScoreOptions: [
       {
         value: "<15%",
-        label: "Di Bawah 15% (Sangat Aman)",
+        label: "Di Bawah 15% (Standar)",
         badge: "Rekomendasi",
         description: "Standar baku sidang skripsi/tesis",
       },

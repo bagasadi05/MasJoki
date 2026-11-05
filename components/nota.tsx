@@ -53,7 +53,7 @@ export function Nota({
           aria-hidden
           className="absolute -top-px left-0 right-0 z-10 h-[6px]"
           style={{
-            background: `linear-gradient(90deg, var(${aksen.varName}), ${aksen.hex})`,
+            background: `var(${aksen.varName})`,
             borderRadius: "var(--radius-nota) var(--radius-nota) 0 0",
           }}
         />

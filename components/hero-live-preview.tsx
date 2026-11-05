@@ -67,13 +67,13 @@ export function HeroLivePreview() {
   return (
     <div className="relative mx-auto w-full max-w-lg">
       {/* Top Floating Badge */}
-      <div className="absolute -top-4 -left-3 z-20 hidden sm:flex items-center gap-1.5 rounded-full border border-emerald-300 bg-white/95 px-3 py-1 shadow-md shadow-emerald-950/10 backdrop-blur text-[0.72rem] font-bold text-emerald-800 animate-float">
-        <span className="size-2 rounded-full bg-emerald-500 live-pulse" />
+      <div className="absolute -top-4 -left-3 z-20 hidden sm:flex items-center gap-1.5 rounded-full border border-emerald-300 bg-white/95 px-3 py-1 shadow-md shadow-emerald-950/10 backdrop-blur text-[0.72rem] font-bold text-emerald-800 ">
+        <span className="size-2 rounded-full bg-emerald-500 " />
         <span>Kalkulator Otomatis Live</span>
       </div>
 
       {/* Main Unified Showcase Card */}
-      <div className="relative overflow-hidden rounded-3xl border-2 border-brand/25 bg-gradient-to-b from-white via-brand-soft/20 to-brand-soft/40 p-5 shadow-2xl shadow-brand/15 sm:p-6 backdrop-blur-sm">
+      <div className="relative overflow-hidden rounded-3xl border-2 border-brand/25 bg-white p-5 shadow-2xl shadow-brand/15 sm:p-6 backdrop-blur-sm">
         {/* Mascot & Sapaan */}
         <div className="flex items-center gap-4 border-b border-dashed border-line pb-4">
           <div className="relative size-16 shrink-0 overflow-hidden rounded-2xl border-2 border-brand/30 bg-white shadow-md ring-4 ring-white">
@@ -92,7 +92,7 @@ export function HeroLivePreview() {
               <span className="font-display text-[0.98rem] font-black text-ink">
                 Mas Joki
               </span>
-              <span className="rounded-full bg-brand px-2 py-0.5 font-mono text-[0.62rem] font-bold text-white uppercase tracking-wider">
+              <span className="rounded-full bg-brand px-2 py-0.5 font-mono text-[0.62rem] font-bold text-white">
                 Resmi
               </span>
             </div>

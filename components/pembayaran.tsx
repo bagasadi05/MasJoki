@@ -49,7 +49,7 @@ export function Pembayaran() {
   }
 
   return (
-    <section id="bayar" className="border-y border-line bg-gradient-to-b from-sky-50/50 via-paper to-paper-2/40">
+    <section id="bayar" className="border-y border-line bg-langit-soft/50">
       <div className="mx-auto grid max-w-6xl gap-12 px-5 py-16 sm:px-8 sm:py-24 lg:grid-cols-[0.52fr_0.48fr] lg:gap-16">
         <div>
           <span className="inline-flex items-center gap-1.5 rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-[0.74rem] font-bold text-sky-800">

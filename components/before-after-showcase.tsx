@@ -61,7 +61,7 @@ const CASES: CaseItem[] = [
       badge: "Hasil Olahan Mas Joki",
       metrics: [
         { label: "Similarity Turnitin", value: "8% (Sangat Aman)", bad: false },
-        { label: "Deteksi AI Checker", value: "0% (100% Manusiawi)", bad: false },
+        { label: "Deteksi AI Checker", value: "Wajar & natural", bad: false },
       ],
       heading: "Naskah Akademik Mengalir:",
       snippet:
@@ -352,7 +352,7 @@ export function BeforeAfterShowcase() {
         {/* Bottom Callout */}
         <div className="mt-7 flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-paper-2 p-4 text-[0.82rem]">
           <div className="flex items-center gap-2.5 text-ink-soft">
-            <span className="size-2 rounded-full bg-brand live-pulse" />
+            <span className="size-2 rounded-full bg-brand " />
             <span>
               Ingin hasil tugasmu dibuat serapi ini? Dikerjakan cermat oleh tim profesional.
             </span>

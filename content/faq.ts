@@ -27,6 +27,10 @@ export const faq: FaqItem[] = [
     a: "Ya. Untuk makalah dan Word kamu menerima .docx, untuk slide menerima .pptx, dan untuk desain menerima file sumbernya. Kamu tidak terkunci pada PDF.",
   },
   {
+    q: "Bagaimana jika saya belum punya link Google Drive untuk melampirkan tugas?",
+    a: "Sangat fleksibel! Kamu cukup mengosongkan kolom link dokumen pada form pemesanan atau kalkulator. Setelah mengklik tombol pesan, kamu bisa langsung melampirkan file dokumen (Word, PPT, PDF, atau foto catatan materi) secara langsung di ruang chat WhatsApp kepada admin kami.",
+  },
+  {
     q: "Bisa pesan untuk tenggat hari ini?",
     a: "Bisa, dengan tarif kilat. Tapi tetap tergantung antrean yang sedang berjalan. Cara tercepat: kirim brief lewat mode penawaran, admin akan bilang jujur kalau memang tidak sempat.",
   },

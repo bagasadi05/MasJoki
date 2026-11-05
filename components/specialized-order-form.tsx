@@ -48,6 +48,19 @@ const fieldClass =
 
 const labelClass = "mb-2 block text-[0.84rem] font-bold text-ink";
 
+function PesanGalat({ id, pesan }: { id: string; pesan?: string }) {
+  if (!pesan) return null;
+  return (
+    <p
+      id={id}
+      role="alert"
+      className="mt-1.5 flex items-center gap-1.5 text-[0.78rem] font-medium leading-relaxed text-red-600"
+    >
+      <span>{pesan}</span>
+    </p>
+  );
+}
+
 const KONVERSI_HALAMAN_KATA = [
   { hal: 2, kata: 500 },
   { hal: 4, kata: 1000 },
@@ -90,6 +103,12 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
   const [result, setResult] = useState<ActionResult | null>(null);
   const [pending, startTransition] = useTransition();
   const formRef = useRef<HTMLFormElement>(null);
+  const stepContainerRef = useRef<HTMLDivElement>(null);
+  const galat = result?.fieldErrors;
+
+  useEffect(() => {
+    stepContainerRef.current?.focus({ preventScroll: true });
+  }, [step]);
 
   const availableAddons = useMemo(
     () => getAddonsForService(service.id),
@@ -145,6 +164,22 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
       setResult(jawaban);
       if (jawaban.status === "ok") {
         form.reset();
+      } else if (jawaban.fieldErrors) {
+        if (jawaban.fieldErrors.qty) {
+          setStep(1);
+          setTimeout(() => document.getElementById("jumlah-spesifik")?.focus(), 80);
+        } else if (jawaban.fieldErrors.deadlineId) {
+          setStep(2);
+        } else if (jawaban.fieldErrors.name) {
+          setStep(3);
+          setTimeout(() => document.getElementById("name-input")?.focus(), 80);
+        } else if (jawaban.fieldErrors.whatsapp) {
+          setStep(3);
+          setTimeout(() => document.getElementById("whatsapp-input")?.focus(), 80);
+        } else if (jawaban.fieldErrors.fileUrl) {
+          setStep(3);
+          setTimeout(() => document.getElementById("fileUrl-input")?.focus(), 80);
+        }
       }
     });
   }
@@ -167,9 +202,9 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
 
   return (
     <div className="relative">
-      {/* 3-Step Breadcrumb Stepper */}
-      <div className="mb-10">
-        <div className="grid grid-cols-3 gap-2 sm:gap-4">
+      {/* 3-Step Accessible Stepper */}
+      <nav aria-label="Tahapan formulir pemesanan" className="mb-10">
+        <ol className="grid grid-cols-3 gap-2 sm:gap-4">
           {[
             {
               num: 1,
@@ -192,47 +227,49 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
             const IconComponent = item.icon;
 
             return (
-              <button
-                key={item.num}
-                type="button"
-                onClick={() => setStep(item.num as 1 | 2 | 3)}
-                className={`flex items-center gap-2.5 rounded-2xl border p-3 sm:p-4 text-left transition-all ${
-                  aktif
-                    ? "border-brand bg-brand-soft/70 ring-2 ring-brand/20 shadow-xs"
-                    : lewat
-                      ? "border-mint/25 bg-mint-soft/50 text-mint"
-                      : "border-line bg-white text-muted hover:border-line-strong"
-                }`}
-              >
-                <div
-                  className={`grid size-8 place-items-center rounded-xl text-xs font-bold shrink-0 ${
+              <li key={item.num}>
+                <button
+                  type="button"
+                  aria-current={aktif ? "step" : undefined}
+                  onClick={() => setStep(item.num as 1 | 2 | 3)}
+                  className={`w-full flex items-center gap-2.5 rounded-2xl border p-3 sm:p-4 text-left transition-all cursor-pointer ${
                     aktif
-                      ? "bg-brand text-white shadow-2xs"
+                      ? "border-brand bg-brand-soft/70 ring-2 ring-brand/20 shadow-xs"
                       : lewat
-                        ? "bg-mint text-white"
-                        : "bg-paper-2 text-ink-soft"
+                        ? "border-mint/25 bg-mint-soft/50 text-mint"
+                        : "border-line bg-white text-muted hover:border-line-strong"
                   }`}
                 >
-                  {lewat ? <Check className="size-4 stroke-[3]" /> : item.num}
-                </div>
-                <div className="min-w-0 hidden sm:block">
-                  <p
-                    className={`text-[0.7rem] font-bold ${
-                      aktif ? "text-brand" : "text-muted"
+                  <div
+                    className={`grid size-8 place-items-center rounded-xl text-xs font-bold shrink-0 ${
+                      aktif
+                        ? "bg-brand text-white shadow-2xs"
+                        : lewat
+                          ? "bg-mint text-white"
+                          : "bg-paper-2 text-ink-soft"
                     }`}
                   >
-                    Langkah 0{item.num}
-                  </p>
-                  <p className="font-bold text-[0.84rem] text-ink truncate leading-tight mt-0.5">
-                    {item.title}
-                  </p>
-                </div>
-                <IconComponent className="size-4 ml-auto hidden sm:block opacity-40 shrink-0" />
-              </button>
+                    {lewat ? <Check className="size-4 stroke-[3]" /> : item.num}
+                  </div>
+                  <div className="min-w-0 hidden sm:block">
+                    <p
+                      className={`text-[0.7rem] font-bold ${
+                        aktif ? "text-brand" : "text-muted"
+                      }`}
+                    >
+                      Langkah 0{item.num}
+                    </p>
+                    <p className="font-bold text-[0.84rem] text-ink truncate leading-tight mt-0.5">
+                      {item.title}
+                    </p>
+                  </div>
+                  <IconComponent className="size-4 ml-auto hidden sm:block opacity-40 shrink-0" />
+                </button>
+              </li>
             );
           })}
-        </div>
-      </div>
+        </ol>
+      </nav>
 
       <form
         ref={formRef}
@@ -255,7 +292,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
         ))}
 
         {/* Kolom Kiri: Form Steps */}
-        <div className="space-y-8 lg:col-start-1">
+        <div ref={stepContainerRef} tabIndex={-1} className="space-y-8 lg:col-start-1 outline-none">
           {/* STEP 1: PARAMETER & JUMLAH */}
           {step === 1 && (
             <div className="space-y-8 animate-fade-in">
@@ -790,9 +827,13 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                     required
                     minLength={2}
                     maxLength={80}
+                    autoComplete="name"
                     placeholder="Contoh: Bagas"
+                    aria-invalid={galat?.name ? true : undefined}
+                    aria-describedby={galat?.name ? "galat-name-input" : undefined}
                     className={fieldClass}
                   />
+                  <PesanGalat id="galat-name-input" pesan={galat?.name} />
                 </div>
 
                 <div>
@@ -805,25 +846,32 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                     type="tel"
                     required
                     inputMode="tel"
+                    autoComplete="tel"
                     placeholder="0812 3456 7890"
+                    aria-invalid={galat?.whatsapp ? true : undefined}
+                    aria-describedby={galat?.whatsapp ? "galat-whatsapp-input" : undefined}
                     className={fieldClass}
                   />
+                  <PesanGalat id="galat-whatsapp-input" pesan={galat?.whatsapp} />
                 </div>
               </div>
 
               <div>
                 <label htmlFor="fileUrl-input" className={labelClass}>
-                  Tautan File Dokumen / Naskah
+                  Tautan File Dokumen / Naskah (Opsional)
                 </label>
                 <input
                   id="fileUrl-input"
                   name="fileUrl"
                   type="url"
-                  placeholder="https://drive.google.com/… (pastikan akses publik)"
+                  placeholder="https://drive.google.com/… (atau kirim file via WA)"
+                  aria-invalid={galat?.fileUrl ? true : undefined}
+                  aria-describedby={galat?.fileUrl ? "galat-fileUrl-input" : undefined}
                   className={fieldClass}
                 />
+                <PesanGalat id="galat-fileUrl-input" pesan={galat?.fileUrl} />
                 <p className="mt-1.5 text-[0.74rem] text-muted">
-                  {spec.fileHelperText}
+                  {spec.fileHelperText} <span className="block mt-0.5 text-ink-soft font-medium">💡 Belum punya link Drive? Jangan khawatir, kamu bisa langsung melampirkan file dokumen di chat WhatsApp nanti.</span>
                 </p>
               </div>
 
@@ -878,7 +926,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                       <span className="rounded-lg bg-white/20 px-2.5 py-0.5 font-mono text-sm font-bold">
                         {rupiah(price.total)}
                       </span>
-                      <span aria-hidden>→</span>
+                      <ArrowRight className="size-4" />
                     </>
                   )}
                 </button>

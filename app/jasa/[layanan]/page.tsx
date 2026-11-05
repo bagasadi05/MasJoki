@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { notFound } from "next/navigation";
 import { Nota } from "@/components/nota";
 import { SiteFooter } from "@/components/site-footer";
@@ -167,7 +168,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                     className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-7 py-4 text-[0.94rem] font-bold text-white shadow-lg shadow-brand/25 transition-all hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35"
                   >
                     <span>Pesan {service.name} Sekarang</span>
-                    <span aria-hidden>→</span>
+                    <ArrowRight className="size-4" />
                   </Link>
                   <Link
                     href={`/hitung?layanan=${service.id}`}
@@ -269,7 +270,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                     className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-brand px-5 py-3.5 text-[0.88rem] font-bold text-white shadow-sm transition-colors hover:bg-brand-dark"
                   >
                     <span>Lanjut ke Formulir Pemesanan</span>
-                    <span aria-hidden>→</span>
+                    <ArrowRight className="size-4" />
                   </Link>
                 </div>
               </div>
@@ -352,7 +353,10 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                 </div>
                 <div className="mt-4 border-t border-dashed border-line pt-3 flex items-baseline justify-between text-[0.76rem]">
                   <span className="text-muted">{priceLabel(item)}</span>
-                  <span className="font-bold text-brand group-hover:underline">Buka →</span>
+                  <span className="inline-flex items-center gap-1 font-bold text-brand group-hover:underline">
+                    <span>Buka Detail</span>
+                    <ArrowRight className="size-3.5" />
+                  </span>
                 </div>
               </Link>
             ))}
@@ -380,7 +384,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                   className="inline-flex items-center justify-center gap-2 rounded-xl bg-stabilo px-7 py-4 text-[0.94rem] font-bold text-ink shadow-md transition-all hover:bg-white"
                 >
                   <span>Pesan {service.name} Sekarang</span>
-                  <span aria-hidden>→</span>
+                  <ArrowRight className="size-4" />
                 </Link>
                 <a
                   href={waLink(

@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import {
+  ArrowRight,
   Calculator,
   Calendar,
   Check,
@@ -966,7 +967,8 @@ export function PriceCalculator() {
             <PesanGalat id="galat-fileUrl" pesan={galat?.fileUrl} />
             <p className="mt-1.5 text-[0.74rem] text-muted">
               Tautan Google Drive atau OneDrive. Pastikan izin berbagi diset{" "}
-              <em>&quot;Siapa saja yang memiliki link dapat melihat&quot;</em>.
+              <em>&quot;Siapa saja yang memiliki link dapat melihat&quot;</em>.{" "}
+              <span className="block mt-0.5 text-ink-soft font-medium">💡 Belum punya link Drive? Jangan khawatir, kamu bisa langsung melampirkan file dokumen di chat WhatsApp nanti.</span>
             </p>
           </div>
 
@@ -1024,13 +1026,13 @@ export function PriceCalculator() {
                 <span className="rounded-lg bg-white/20 px-2.5 py-0.5 font-mono text-sm font-bold">
                   {rupiah(price.total)}
                 </span>
-                <span aria-hidden>→</span>
+                <ArrowRight className="size-4" />
               </>
             ) : (
               <>
                 <Send className="size-4.5" />
                 <span>Kirim Permintaan Penawaran</span>
-                <span aria-hidden>→</span>
+                <ArrowRight className="size-4" />
               </>
             )}
           </button>

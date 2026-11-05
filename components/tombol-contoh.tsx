@@ -1,5 +1,6 @@
 "use client";
 
+import { ArrowRight } from "lucide-react";
 import { useCalculator } from "./calculator-context";
 import type { ServiceId } from "@/lib/services";
 
@@ -10,10 +11,10 @@ export function TombolContoh({ serviceId }: { serviceId: ServiceId }) {
     <button
       type="button"
       onClick={() => pilihLayanan(serviceId)}
-      className="mt-3.5 inline-flex items-center gap-1.5 text-[0.8rem] font-bold text-brand transition-colors hover:text-brand-dark"
+      className="mt-3.5 inline-flex items-center gap-1.5 text-[0.8rem] font-bold text-brand transition-colors hover:text-brand-dark cursor-pointer"
     >
       <span>Coba hitung tugas ini</span>
-      <span aria-hidden>→</span>
+      <ArrowRight className="size-3.5" />
     </button>
   );
 }

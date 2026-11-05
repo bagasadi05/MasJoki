@@ -45,9 +45,6 @@ export default function HalamanDaftarLayanan() {
 
         {/* Heading */}
         <div className="mt-6 max-w-3xl">
-          <span className="stempel">
-            KATALOG RESMI
-          </span>
           <h1 className="mt-3 font-display text-[2.4rem] leading-[1.06] tracking-[-0.03em] text-ink sm:text-[3.1rem]">
             Delapan layanan, satu standar kejujuran harga.
           </h1>
@@ -104,12 +101,6 @@ export default function HalamanDaftarLayanan() {
                             <span className="font-mono text-[0.66rem] font-bold text-muted/70 tracking-wider">
                               {kode}
                             </span>
-                            {service.popular ? (
-                              <span className="inline-flex items-center gap-1 rounded-full border border-amber-300 bg-amber-50 px-2 py-0.2 text-[0.64rem] font-bold text-amber-900 shadow-2xs">
-                                <Flame className="size-2.5 text-amber-600 fill-amber-500" />
-                                <span>Populer</span>
-                              </span>
-                            ) : null}
                           </div>
                           <h2 className="mt-0.5 font-display text-[1.3rem] font-extrabold leading-snug tracking-tight text-ink transition-colors group-hover:text-brand">
                             {service.name}
@@ -119,6 +110,13 @@ export default function HalamanDaftarLayanan() {
                           </span>
                         </div>
                       </div>
+
+                      {service.popular ? (
+                        <span className="shrink-0 inline-flex items-center gap-1 rounded-full border border-amber/25 bg-amber-soft px-2.5 py-1 text-[0.68rem] font-bold text-amber shadow-2xs">
+                          <Flame className="size-3 text-amber fill-amber" />
+                          <span>Populer</span>
+                        </span>
+                      ) : null}
                     </div>
 
                     <p className="mt-4 text-[0.88rem] leading-relaxed text-ink-soft/90">
@@ -131,7 +129,7 @@ export default function HalamanDaftarLayanan() {
                       <span className="block text-[0.68rem] font-bold uppercase tracking-wider text-muted">
                         Tarif Dasar
                       </span>
-                      <span className="font-mono text-[0.98rem] font-extrabold tabular-nums text-ink">
+                      <span className="font-mono text-[0.98rem] font-bold tabular-nums text-ink">
                         {priceLabel(service)}
                       </span>
                     </div>

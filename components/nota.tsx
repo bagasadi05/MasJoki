@@ -72,7 +72,7 @@ export function Nota({
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="grid size-9 -rotate-3 place-items-center rounded-xl border border-brand/20 bg-brand-soft text-brand shadow-xs">
-              <span className="font-display text-[0.82rem] font-black">MJ</span>
+              <span className="font-display text-[0.82rem] font-bold">MJ</span>
             </div>
             <div>
               <p className="font-display text-lg font-bold leading-none tracking-tight text-ink">
@@ -109,7 +109,7 @@ export function Nota({
                   <dt
                     className={`font-medium leading-snug flex items-center gap-1.5 ${
                       isDiscount
-                        ? "font-bold text-emerald-700"
+                        ? "font-bold text-mint"
                         : isAddon
                           ? "font-semibold text-brand-dark"
                           : "text-ink"
@@ -121,7 +121,7 @@ export function Nota({
                   {line.detail ? (
                     <dd
                       className={`mt-0.5 text-[0.74rem] leading-snug ${
-                        isDiscount ? "text-emerald-600 font-medium" : "text-muted"
+                        isDiscount ? "text-mint font-medium" : "text-muted"
                       }`}
                     >
                       {line.detail}
@@ -131,7 +131,7 @@ export function Nota({
                 <dd
                   className={`shrink-0 font-mono text-[0.84rem] font-semibold tabular-nums ${
                     isDiscount
-                      ? "font-bold text-emerald-700"
+                      ? "font-bold text-mint"
                       : isAddon
                         ? "text-brand"
                         : "text-ink-soft"
@@ -161,7 +161,7 @@ export function Nota({
                 : "Terkunci sebelum chat"}
             </p>
           </div>
-          <p className="font-display text-[1.85rem] font-extrabold leading-none tracking-tight text-brand tabular-nums">
+          <p className="font-display text-[1.85rem] font-bold leading-none tracking-tight text-brand tabular-nums">
             <AnimatedPrice value={total} />
           </p>
         </div>
@@ -202,7 +202,7 @@ export function Nota({
 
         {note ? (
           <p className="mt-3.5 text-[0.74rem] leading-relaxed text-muted">
-            ℹ️ {note}
+            {note}
           </p>
         ) : null}
 

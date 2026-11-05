@@ -1,33 +1,33 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Copy, ExternalLink, ShieldCheck } from "lucide-react";
+import { Check, Copy, CreditCard, ExternalLink, ShieldCheck, Smartphone, Wallet, type LucideIcon } from "lucide-react";
 import { pembayaran, waLink } from "@/lib/site";
 
 const METODE: Record<
   string,
-  { ikon: string; badge: string; border: string; bg: string; text: string }
+  { ikon: LucideIcon; badge: string; border: string; bg: string; text: string }
 > = {
   ShopeePay: {
-    ikon: "🛍️",
+    ikon: Wallet,
     badge: "bg-[#EE4D2D] text-white",
-    border: "border-orange-200",
-    bg: "bg-orange-50/70",
-    text: "text-orange-950",
+    border: "border-amber/25",
+    bg: "bg-amber-soft/60",
+    text: "text-amber",
   },
   GoPay: {
-    ikon: "💳",
+    ikon: CreditCard,
     badge: "bg-[#00AED6] text-white",
-    border: "border-sky-200",
-    bg: "bg-sky-50/70",
-    text: "text-sky-950",
+    border: "border-langit/25",
+    bg: "bg-langit-soft/60",
+    text: "text-langit",
   },
   DANA: {
-    ikon: "📱",
+    ikon: Smartphone,
     badge: "bg-[#118EEA] text-white",
-    border: "border-blue-200",
-    bg: "bg-blue-50/70",
-    text: "text-blue-950",
+    border: "border-brand/25",
+    bg: "bg-brand-soft/60",
+    text: "text-brand",
   },
 };
 
@@ -66,13 +66,13 @@ export function Pembayaran() {
           </p>
 
           {/* Payment Card Box */}
-          <div className="mt-7 rounded-3xl border border-line bg-white p-7 shadow-sm">
-            <p className="text-[0.72rem] font-bold uppercase tracking-wider text-muted">
-              Nomor Akun E-Wallet Mas Joki
+          <div className="mt-7 rounded-2xl border border-line bg-white p-6 shadow-md shadow-langit/5">
+            <p className="text-[0.74rem] font-bold uppercase tracking-wider text-muted">
+              Satu Nomor untuk Semua E-Wallet
             </p>
 
-            <div className="mt-3 flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-paper-2 p-4 border border-line">
-              <span className="font-mono text-2xl font-black tabular-nums tracking-tight text-ink sm:text-3xl">
+            <div className="mt-2 flex flex-wrap items-center justify-between gap-3 rounded-xl bg-paper-2/70 p-3.5 border border-line">
+              <span className="font-mono text-2xl font-bold tabular-nums tracking-tight text-ink sm:text-3xl">
                 {pembayaran.nomor}
               </span>
               <button
@@ -80,7 +80,7 @@ export function Pembayaran() {
                 onClick={salin}
                 className={`inline-flex items-center gap-1.5 rounded-xl px-4 py-2.5 text-[0.82rem] font-bold transition-all cursor-pointer ${
                   tersalin
-                    ? "bg-emerald-600 text-white shadow-xs"
+                    ? "bg-mint text-white shadow-xs"
                     : "bg-brand text-white hover:bg-brand-dark shadow-xs"
                 }`}
               >
@@ -112,8 +112,8 @@ export function Pembayaran() {
                     key={metode}
                     className={`flex flex-col items-center justify-center rounded-2xl border p-3 text-center ${info.border} ${info.bg}`}
                   >
-                    <span className="text-xl">{info.ikon}</span>
-                    <span className={`mt-1 font-display text-[0.82rem] font-bold ${info.text}`}>
+                    <info.ikon className="size-5" aria-hidden />
+                    <span className={`mt-1 font-display text-[0.8rem] font-bold ${info.text}`}>
                       {metode}
                     </span>
                   </div>
@@ -122,7 +122,7 @@ export function Pembayaran() {
             </div>
 
             <p className="mt-4 text-[0.76rem] leading-relaxed text-muted">
-              🔒 Nomor ini resmi atas nama admin Mas Joki. Tidak ada nomor rekening lain selain yang tercantum di atas.
+              Nomor ini resmi atas nama admin Mas Joki. Tidak ada nomor rekening lain selain yang tercantum di atas.
             </p>
           </div>
 
@@ -155,15 +155,15 @@ export function Pembayaran() {
               },
               {
                 nomor: "2",
-                warna: "bg-amber-600 text-white",
+                warna: "bg-amber text-white",
                 judul: "Admin konfirmasi & kunci total biaya",
                 isi: "Admin memeriksa file dan instruksi tugasmu, kemudian mengonfirmasi total biaya tetap tanpa biaya tambahan tersembunyi.",
               },
               {
                 nomor: "3",
-                warna: "bg-emerald-600 text-white",
-                judul: "Transfer e-wallet & kirim bukti chat",
-                isi: "Kirim pembayaran ke nomor di samping, kirim screenshot bukti transfer, dan pengerjaan tugas langsung dimulai tepat waktu.",
+                warna: "bg-mint text-white",
+                judul: "Transfer & kirim bukti chat",
+                isi: "Kirim pembayaran ke ShopeePay / GoPay / DANA di atas, kirim screenshot bukti transfer, dan pengerjaan segera dimulai!",
               },
             ].map((langkah) => (
               <li key={langkah.judul} className="relative">
@@ -183,14 +183,14 @@ export function Pembayaran() {
             ))}
           </ol>
 
-          <div className="mt-8 rounded-3xl border border-line bg-white p-6 shadow-xs">
-            <div className="flex items-center gap-3.5">
-              <div className="grid size-11 place-items-center rounded-2xl bg-emerald-50 text-emerald-700 border border-emerald-200">
-                <ShieldCheck className="size-6" />
+          <div className="mt-8 rounded-2xl border border-line bg-white p-5 shadow-2xs">
+            <div className="flex items-center gap-3">
+              <div className="grid size-10 place-items-center rounded-xl bg-mint-soft text-mint border border-mint/25">
+                <ShieldCheck className="size-5" />
               </div>
               <div>
-                <p className="text-[0.92rem] font-bold text-ink">
-                  Garansi Revisi &amp; File Asli Lengkap
+                <p className="text-[0.88rem] font-bold text-ink">
+                  Garansi Revisi 2× &amp; File Lengkap
                 </p>
                 <p className="mt-0.5 text-[0.8rem] text-muted">
                   Setiap pesanan mencakup 2× revisi gratis sesuai brief awal, plus seluruh file dokumen mentah (.docx / .pptx).

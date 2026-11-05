@@ -1,16 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import {
-  ArrowRight,
-  Calculator,
-  ExternalLink,
-  MessageCircle,
-  Send,
-  SlidersHorizontal,
-  Sparkles,
-  Wallet,
-  Zap,
-} from "lucide-react";
+import { ArrowRight, Calculator, ExternalLink, MessageCircle, Send, SlidersHorizontal, Sparkles, Wallet } from "lucide-react";
 import { Pembayaran } from "@/components/pembayaran";
 import { PerbandinganJoki } from "@/components/perbandingan-joki";
 import { SiteFooter } from "@/components/site-footer";
@@ -20,7 +10,7 @@ import { waLink, waPesanUmum } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Cara Kerja, Alur Pemesanan & Pembayaran E-Wallet Resmi",
   description:
-    "Pelajari alur pemesanan tugas di Mas Joki yang cepat, tanpa akun, bergaransi 2x revisi gratis, dan didukung metode pembayaran resmi e-wallet.",
+    "Pelajari alur pemesanan tugas di Mas Joki yang cepat, tanpa akun, dengan revisi 2x gratis, dan didukung metode pembayaran resmi e-wallet.",
   alternates: { canonical: "/cara-kerja" },
 };
 
@@ -49,7 +39,7 @@ const langkah = [
   {
     nomor: "04",
     judul: "Terima Hasil Jadi",
-    isi: "Hasil dikirim tepat waktu dalam file yang bisa kamu edit (Word / PPT). Ada garansi 2× revisi gratis jika ada instruksi yang belum terpenuhi.",
+    isi: "Hasil dikirim tepat waktu dalam file yang bisa kamu edit (Word / PPT). Ada revisi 2× gratis jika ada instruksi yang belum terpenuhi.",
     icon: Sparkles,
     badge: "from-ink to-ink",
   },
@@ -77,11 +67,7 @@ export default function HalamanCaraKerja() {
           </nav>
 
           <div className="mt-6 max-w-3xl">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-300 bg-amber-50 px-3 py-1 text-[0.74rem] font-bold text-amber-900 shadow-2xs">
-              <Zap className="size-3.5 text-amber-600 fill-amber-500" />
-              <span>Alur Pemesanan Cepat</span>
-            </span>
-            <h1 className="mt-3 font-display text-[2.3rem] leading-[1.08] tracking-[-0.03em] text-ink sm:text-[3.1rem]">
+                        <h1 className="mt-3 font-display text-[2.3rem] leading-[1.08] tracking-[-0.03em] text-ink sm:text-[3.1rem]">
               Empat langkah mudah, tugasmu langsung beres.
             </h1>
             <p className="mt-4 max-w-[62ch] text-[1.02rem] leading-relaxed text-ink-soft">
@@ -97,12 +83,12 @@ export default function HalamanCaraKerja() {
               return (
                 <li
                   key={item.nomor}
-                  className="group relative flex flex-col justify-between rounded-3xl border border-line bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-amber-300 hover:shadow-lg"
+                  className="group relative flex flex-col justify-between rounded-2xl border border-line bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-amber/25 hover:shadow-lg"
                 >
                   <div>
                     <div className="flex items-center justify-between">
                       <span
-                        className={`inline-flex items-center justify-center rounded-xl bg-gradient-to-r ${item.badge} px-3 py-1 font-mono text-xs font-black text-white shadow-xs`}
+                        className={`inline-flex items-center justify-center rounded-xl bg-gradient-to-r ${item.badge} px-3 py-1 font-mono text-xs font-bold text-white shadow-xs`}
                       >
                         {item.nomor}
                       </span>
@@ -134,9 +120,9 @@ export default function HalamanCaraKerja() {
 
         {/* CTA Bottom Banner */}
         <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
-          <div className="rounded-3xl border border-line bg-white p-8 sm:p-12 shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+          <div className="rounded-2xl border border-line bg-white p-8 sm:p-12 shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-6">
             <div className="max-w-xl">
-              <h2 className="font-display text-2xl font-extrabold text-ink sm:text-3xl">
+              <h2 className="font-display text-2xl font-bold text-ink sm:text-3xl">
                 Siap pesan tugasmu sekarang?
               </h2>
               <p className="mt-2 text-sm text-ink-soft leading-relaxed">
@@ -147,7 +133,7 @@ export default function HalamanCaraKerja() {
             <div className="flex flex-wrap items-center gap-3">
               <Link
                 href="/hitung"
-                className="inline-flex items-center gap-2 rounded-xl bg-brand px-6 py-3.5 text-sm font-extrabold text-white shadow-md shadow-brand/20 transition-all hover:bg-brand-dark"
+                className="inline-flex items-center gap-2 rounded-xl bg-brand px-6 py-3.5 text-sm font-bold text-white shadow-md shadow-brand/20 transition-all hover:bg-brand-dark"
               >
                 <Calculator className="size-4" />
                 <span>Buka Kalkulator Biaya</span>

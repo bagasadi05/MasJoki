@@ -1,4 +1,5 @@
 import { aksenLayanan, INISIAL } from "@/lib/aksen";
+import { ServiceIcon } from "./service-icon";
 import type { ServiceId } from "@/lib/services";
 
 interface StempelLayananProps {
@@ -31,7 +32,10 @@ export function StempelLayanan({
               : "size-9 text-base shadow-xs"
         } transition-transform duration-200 group-hover:scale-105`}
       >
-        <span>{aksen.ikon}</span>
+        <ServiceIcon
+          id={id}
+          className={ukuran === "kecil" ? "size-4" : ukuran === "besar" ? "size-6" : "size-4.5"}
+        />
       </span>
     );
   }
@@ -48,7 +52,7 @@ export function StempelLayanan({
           : besar
             ? "size-10 text-[0.88rem] shadow-xs"
             : "size-8 text-[0.74rem] shadow-2xs"
-      } font-display font-black leading-none transition-transform duration-200 group-hover:rotate-0`}
+      } font-display font-bold leading-none transition-transform duration-200 group-hover:rotate-0`}
     >
       <span className="tracking-wide">
         {INISIAL[id]}

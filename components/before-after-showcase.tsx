@@ -1,16 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  AlertTriangle,
-  ArrowRight,
-  CheckCircle2,
-  FileCheck2,
-  Layers,
-  Presentation,
-  Sparkles,
-  XCircle,
-} from "lucide-react";
+import { AlertTriangle, ArrowRight, CheckCircle2, FileCheck2, Presentation, Sparkles, XCircle } from "lucide-react";
 
 interface CaseItem {
   id: string;
@@ -39,7 +30,7 @@ const CASES: CaseItem[] = [
     id: "parafrase",
     tabLabel: "Parafrase & Turnitin",
     icon: Sparkles,
-    title: "Parafrase Natural & Bebas Deteksi AI Kaku",
+    title: "Parafrase Natural & Rapi",
     subtitle:
       "Mengubah kalimat pasif berulang hasil generator mentah menjadi prosa akademik yang elegan, logis, dan berbobot.",
     before: {
@@ -60,7 +51,7 @@ const CASES: CaseItem[] = [
     after: {
       badge: "Hasil Olahan Mas Joki",
       metrics: [
-        { label: "Similarity Turnitin", value: "8% (Sangat Aman)", bad: false },
+        { label: "Similarity Turnitin", value: "Lebih rendah", bad: false },
         { label: "Deteksi AI Checker", value: "Wajar & natural", bad: false },
       ],
       heading: "Naskah Akademik Mengalir:",
@@ -161,15 +152,14 @@ export function BeforeAfterShowcase() {
     <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
       {/* Header Section */}
       <div className="mx-auto max-w-3xl text-center">
-        <span className="inline-flex items-center gap-2 rounded-full border border-brand/20 bg-brand-soft px-4 py-1.5 text-xs font-bold text-brand shadow-2xs">
-          <Layers className="size-3.5" />
-          <span>Bukti Nyata Kualitas</span>
-        </span>
-        <h2 className="mt-3.5 font-display text-[2.1rem] font-black leading-tight tracking-[-0.02em] text-ink sm:text-[2.7rem]">
+                <h2 className="mt-3.5 font-display text-[2.1rem] font-bold leading-tight tracking-[-0.02em] text-ink sm:text-[2.7rem]">
           Lihat Langsung Standar Pengerjaan Mas Joki.
         </h2>
         <p className="mt-3.5 text-[0.98rem] leading-relaxed text-ink-soft">
           Bukan sekadar selesai, tapi memenuhi standar mutu akademik. Geser atau pilih contoh perbandingan di bawah ini.
+        </p>
+        <p className="mt-2 text-[0.8rem] text-muted">
+          Contoh ilustrasi. Hasil tiap naskah bisa berbeda, tergantung materi dan pedoman kampus.
         </p>
 
         {/* Tab Selector */}
@@ -182,7 +172,7 @@ export function BeforeAfterShowcase() {
                 key={item.id}
                 type="button"
                 onClick={() => setActiveTab(item.id)}
-                className={`inline-flex items-center gap-2 rounded-2xl border px-5 py-2.5 text-[0.86rem] font-extrabold transition-all duration-200 ${
+                className={`inline-flex items-center gap-2 rounded-2xl border px-5 py-2.5 text-[0.86rem] font-bold transition-all duration-200 ${
                   aktif
                     ? "border-brand bg-brand text-white shadow-md shadow-brand/20 scale-102"
                     : "border-line bg-white text-ink-soft hover:border-brand/40 hover:text-ink hover:bg-paper-2"
@@ -197,10 +187,10 @@ export function BeforeAfterShowcase() {
       </div>
 
       {/* Case Details Header */}
-      <div className="mt-10 rounded-3xl border border-line bg-white p-6 sm:p-8 shadow-sm">
+      <div className="mt-10 rounded-2xl border border-line bg-white p-6 sm:p-8 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-line pb-6">
           <div>
-            <h3 className="font-display text-xl font-extrabold text-ink sm:text-2xl">
+            <h3 className="font-display text-xl font-bold text-ink sm:text-2xl">
               {activeCase.title}
             </h3>
             <p className="mt-1 text-sm text-ink-soft">
@@ -226,7 +216,7 @@ export function BeforeAfterShowcase() {
               onClick={() => setViewMode("before")}
               className={`rounded-lg px-3 py-1.5 transition-all ${
                 viewMode === "before"
-                  ? "bg-red-500 text-white shadow-2xs"
+                  ? "bg-koral text-white shadow-2xs"
                   : "text-muted hover:text-ink"
               }`}
             >
@@ -237,7 +227,7 @@ export function BeforeAfterShowcase() {
               onClick={() => setViewMode("after")}
               className={`rounded-lg px-3 py-1.5 transition-all ${
                 viewMode === "after"
-                  ? "bg-emerald-600 text-white shadow-2xs"
+                  ? "bg-mint text-white shadow-2xs"
                   : "text-muted hover:text-ink"
               }`}
             >
@@ -250,19 +240,19 @@ export function BeforeAfterShowcase() {
         <div className="mt-6 grid gap-6 md:grid-cols-2">
           {/* Sisi Sebelum (Draft Awal) */}
           {(viewMode === "both" || viewMode === "before") && (
-            <div className="rounded-2xl border border-red-200/80 bg-red-50/40 p-6 flex flex-col justify-between">
+            <div className="rounded-2xl border border-koral/80 bg-koral-soft/40 p-6 flex flex-col justify-between">
               <div>
                 {/* Badge & Metrics */}
-                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-red-200 pb-3.5">
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-red-100 px-3 py-1 text-[0.72rem] font-bold text-red-800">
-                    <XCircle className="size-3.5 text-red-600" />
+                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-koral/25 pb-3.5">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-koral-soft px-3 py-1 text-[0.72rem] font-bold text-koral">
+                    <XCircle className="size-3.5 text-koral" />
                     <span>{activeCase.before.badge}</span>
                   </span>
                   <div className="flex items-center gap-2">
                     {activeCase.before.metrics.map((m) => (
                       <span
                         key={m.label}
-                        className="rounded-md border border-red-200 bg-white px-2 py-0.5 font-mono text-[0.68rem] font-bold text-red-700"
+                        className="rounded-md border border-koral/25 bg-white px-2 py-0.5 font-mono text-[0.68rem] font-bold text-koral"
                       >
                         {m.value}
                       </span>
@@ -272,23 +262,23 @@ export function BeforeAfterShowcase() {
 
                 {/* Content Snippet */}
                 <div className="mt-4">
-                  <p className="text-[0.78rem] font-bold uppercase tracking-wider text-red-900">
+                  <p className="text-[0.78rem] font-bold text-koral">
                     {activeCase.before.heading}
                   </p>
-                  <blockquote className="mt-2 rounded-xl border border-red-200 bg-white/90 p-4 font-mono text-[0.82rem] leading-relaxed text-red-950/80 italic">
+                  <blockquote className="mt-2 rounded-xl border border-koral/25 bg-white/90 p-4 font-mono text-[0.82rem] leading-relaxed text-ink-soft italic">
                     {activeCase.before.snippet}
                   </blockquote>
                 </div>
               </div>
 
               {/* Weak Points Notes */}
-              <ul className="mt-5 space-y-2 border-t border-dashed border-red-200 pt-3.5">
+              <ul className="mt-5 space-y-2 border-t border-dashed border-koral/25 pt-3.5">
                 {activeCase.before.notes.map((note) => (
                   <li
                     key={note}
-                    className="flex items-start gap-2 text-[0.78rem] text-red-900"
+                    className="flex items-start gap-2 text-[0.78rem] text-ink-soft"
                   >
-                    <AlertTriangle className="size-3.5 shrink-0 text-red-500 mt-0.5" />
+                    <AlertTriangle className="size-3.5 shrink-0 text-koral mt-0.5" />
                     <span>{note}</span>
                   </li>
                 ))}
@@ -298,23 +288,23 @@ export function BeforeAfterShowcase() {
 
           {/* Sisi Sesudah (Mas Joki) */}
           {(viewMode === "both" || viewMode === "after") && (
-            <div className="relative rounded-2xl border-2 border-emerald-500/80 bg-emerald-50/50 p-6 shadow-md shadow-emerald-500/5 flex flex-col justify-between">
-              <span className="absolute -top-3 right-5 rounded-full bg-emerald-600 px-3 py-0.5 text-[0.66rem] font-black uppercase tracking-wider text-white shadow-xs">
-                Standar Mas Joki ✓
+            <div className="relative rounded-2xl border-2 border-mint/80 bg-mint-soft/50 p-6 shadow-md shadow-mint/5 flex flex-col justify-between">
+              <span className="absolute -top-3 right-5 rounded-full bg-mint px-3 py-0.5 text-[0.66rem] font-bold text-white shadow-xs">
+                Standar Mas Joki
               </span>
 
               <div>
                 {/* Badge & Metrics */}
-                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-emerald-200 pb-3.5">
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-3 py-1 text-[0.72rem] font-bold text-emerald-800">
-                    <CheckCircle2 className="size-3.5 text-emerald-600" />
+                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-mint/25 pb-3.5">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-mint-soft px-3 py-1 text-[0.72rem] font-bold text-mint">
+                    <CheckCircle2 className="size-3.5 text-mint" />
                     <span>{activeCase.after.badge}</span>
                   </span>
                   <div className="flex items-center gap-2">
                     {activeCase.after.metrics.map((m) => (
                       <span
                         key={m.label}
-                        className="rounded-md border border-emerald-200 bg-white px-2 py-0.5 font-mono text-[0.68rem] font-bold text-emerald-800"
+                        className="rounded-md border border-mint/25 bg-white px-2 py-0.5 font-mono text-[0.68rem] font-bold text-mint"
                       >
                         {m.value}
                       </span>
@@ -324,23 +314,23 @@ export function BeforeAfterShowcase() {
 
                 {/* Content Snippet */}
                 <div className="mt-4">
-                  <p className="text-[0.78rem] font-bold uppercase tracking-wider text-emerald-950">
+                  <p className="text-[0.78rem] font-bold text-mint">
                     {activeCase.after.heading}
                   </p>
-                  <blockquote className="mt-2 rounded-xl border border-emerald-200 bg-white p-4 font-mono text-[0.82rem] leading-relaxed text-ink">
+                  <blockquote className="mt-2 rounded-xl border border-mint/25 bg-white p-4 font-mono text-[0.82rem] leading-relaxed text-ink">
                     {activeCase.after.snippet}
                   </blockquote>
                 </div>
               </div>
 
               {/* Superior Points Notes */}
-              <ul className="mt-5 space-y-2 border-t border-dashed border-emerald-200 pt-3.5">
+              <ul className="mt-5 space-y-2 border-t border-dashed border-mint/25 pt-3.5">
                 {activeCase.after.notes.map((note) => (
                   <li
                     key={note}
-                    className="flex items-start gap-2 text-[0.78rem] font-medium text-emerald-950"
+                    className="flex items-start gap-2 text-[0.78rem] font-medium text-ink-soft"
                   >
-                    <CheckCircle2 className="size-3.5 shrink-0 text-emerald-600 mt-0.5" />
+                    <CheckCircle2 className="size-3.5 shrink-0 text-mint mt-0.5" />
                     <span>{note}</span>
                   </li>
                 ))}

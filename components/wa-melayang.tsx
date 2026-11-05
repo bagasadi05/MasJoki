@@ -31,7 +31,7 @@ export function WaMelayang() {
       href={waLink(waPesanUmum)}
       target="_blank"
       rel="noopener noreferrer"
-      className={`fixed bottom-[max(1.2rem,env(safe-area-inset-bottom))] right-4 z-50 inline-flex items-center gap-2.5 rounded-full border border-emerald-300 bg-white/95 p-1.5 pr-4 text-[0.84rem] font-bold text-ink shadow-lg shadow-emerald-950/15 backdrop-blur transition-all duration-200 hover:-translate-y-1 hover:border-emerald-500 hover:shadow-xl hover:shadow-emerald-900/20 active:translate-y-0 sm:bottom-[max(1.8rem,env(safe-area-inset-bottom))] sm:right-6 ${
+      className={`fixed bottom-[max(1.2rem,env(safe-area-inset-bottom))] right-4 z-50 inline-flex items-center gap-2.5 rounded-full border border-mint/25 bg-white/95 p-1.5 pr-4 text-[0.84rem] font-bold text-ink shadow-lg shadow-mint/15 backdrop-blur transition-all duration-200 hover:-translate-y-1 hover:border-mint/40 hover:shadow-xl hover:shadow-mint/20 active:translate-y-0 sm:bottom-[max(1.8rem,env(safe-area-inset-bottom))] sm:right-6 ${
         sembunyi
           ? "pointer-events-none translate-y-3 opacity-0"
           : "translate-y-0 opacity-100"
@@ -41,7 +41,7 @@ export function WaMelayang() {
       aria-label="Chat Mas Joki di WhatsApp (buka tab baru)"
     >
       {/* 3D Mascot Avatar */}
-      <div className="relative size-8 shrink-0 overflow-hidden rounded-full border border-emerald-300 bg-emerald-50 shadow-2xs">
+      <div className="relative size-8 shrink-0 overflow-hidden rounded-full border border-mint/25 bg-mint-soft shadow-2xs">
         <Image
           src="/mas-joki.jpg"
           alt="Mas Joki Avatar"
@@ -49,14 +49,14 @@ export function WaMelayang() {
           height={32}
           className="size-full object-cover object-top"
         />
-        <span className="absolute bottom-0 right-0 size-2 rounded-full border border-white bg-emerald-500" />
+        <span className="absolute bottom-0 right-0 size-2 rounded-full border border-white bg-mint" />
       </div>
 
       <div className="flex flex-col text-left">
-        <span className="text-[0.82rem] font-extrabold text-ink leading-none">
+        <span className="text-[0.82rem] font-bold text-ink leading-none">
           Chat Mas Joki
         </span>
-        <span className="text-[0.66rem] font-semibold text-emerald-600 leading-tight">
+        <span className="text-[0.66rem] font-semibold text-mint leading-tight">
           Online 07:00 – 23:00
         </span>
       </div>

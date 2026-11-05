@@ -29,11 +29,11 @@ export function SiteHeader() {
                 className="size-full object-cover object-top"
                 priority
               />
-              <span className="absolute bottom-0 right-0 size-2.5 rounded-full border-2 border-white bg-emerald-500" />
+              <span className="absolute bottom-0 right-0 size-2.5 rounded-full border-2 border-white bg-mint" />
             </div>
 
             <div className="flex flex-col">
-              <span className="font-display text-[1.22rem] font-extrabold tracking-tight text-ink leading-tight">
+              <span className="font-display text-[1.22rem] font-bold tracking-tight text-ink leading-tight">
                 Mas Joki
               </span>
               <span className="hidden font-mono text-[0.62rem] font-medium text-muted sm:inline-block">
@@ -43,8 +43,8 @@ export function SiteHeader() {
           </Link>
 
           {/* Status badge online */}
-          <span className="hidden items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50/90 px-2.5 py-0.5 text-[0.7rem] font-bold text-emerald-800 md:inline-flex">
-            <span className="size-1.5 rounded-full bg-emerald-500 " />
+          <span className="hidden items-center gap-1.5 rounded-full border border-mint/25 bg-mint-soft/90 px-2.5 py-0.5 text-[0.7rem] font-bold text-mint md:inline-flex">
+            <span className="size-1.5 rounded-full bg-mint " />
             Admin Online
           </span>
         </div>

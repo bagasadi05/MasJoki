@@ -13,8 +13,8 @@ export function PerbandinganJoki() {
       masJoki: "Disunting cermat dengan rujukan literatur valid, alur penalaran runut, dan tata bahasa natural.",
     },
     {
-      kategori: "Garansi Revisi",
-      biasa: "Minta perbaikan malah slow respon, minta uang tambahan lagi, atau bahkan akun diblokir.",
+      kategori: "Revisi & Garansi",
+      biasa: "Minta perbaikan malah slow respon, minta biaya tambahan lagi, atau bahkan akun diblokir.",
       masJoki: "Dilindungi garansi 2× revisi gratis sesuai instruksi tugas atau pedoman format kampusmu.",
     },
     {
@@ -45,22 +45,22 @@ export function PerbandinganJoki() {
 
       <div className="mt-12 grid gap-8 lg:grid-cols-2">
         {/* Kolom Joki Medsos Biasa */}
-        <div className="relative rounded-3xl border-2 border-red-200/90 bg-[#FFFBFB] p-7 sm:p-9 shadow-xs">
-          <div className="flex items-start justify-between gap-3 border-b border-red-200 pb-5">
+        <div className="rounded-2xl border border-koral/30 bg-koral-soft/40 p-7 sm:p-9 shadow-sm">
+          <div className="flex items-start justify-between gap-3 border-b border-koral/25 pb-5">
             <div className="flex items-center gap-3">
-              <span className="grid size-11 place-items-center rounded-2xl bg-red-100 text-red-600">
+              <span className="grid size-11 place-items-center rounded-2xl bg-koral-soft text-koral">
                 <ShieldAlert className="size-6" />
               </span>
               <div>
-                <h3 className="font-display text-xl font-bold text-red-950">
+                <h3 className="font-display text-xl font-bold text-koral">
                   Joki Anonim di Medsos
                 </h3>
-                <p className="text-xs font-medium text-red-700/80">
-                  Twitter / Telegram / IG tanpa nama &amp; sistem jelas
+                <p className="text-xs font-medium text-koral/80">
+                  Twitter / Telegram / IG tanpa identitas jelas
                 </p>
               </div>
             </div>
-            <span className="stempel-merah">
+            <span className="stempel-merah shrink-0">
               ⚠ RISIKO TINGGI
             </span>
           </div>
@@ -68,12 +68,12 @@ export function PerbandinganJoki() {
           <ul className="mt-6 space-y-5">
             {perbandingan.map((item) => (
               <li key={item.kategori} className="flex items-start gap-3">
-                <XCircle className="mt-0.5 size-4 text-red-500 shrink-0" />
+                <XCircle className="mt-0.5 size-4 text-koral shrink-0" />
                 <div>
-                  <p className="text-[0.76rem] font-bold uppercase tracking-wider text-red-800">
+                  <p className="text-[0.76rem] font-bold uppercase tracking-wider text-koral">
                     {item.kategori}
                   </p>
-                  <p className="mt-0.5 text-[0.88rem] leading-relaxed text-red-950/85">
+                  <p className="mt-0.5 text-[0.86rem] leading-relaxed text-ink-soft">
                     {item.biasa}
                   </p>
                 </div>
@@ -83,7 +83,7 @@ export function PerbandinganJoki() {
         </div>
 
         {/* Kolom Mas Joki */}
-        <div className="relative rounded-3xl border-2 border-brand bg-white p-7 sm:p-9 shadow-xl shadow-brand/10 ring-4 ring-brand/5">
+        <div className="relative rounded-2xl border-2 border-brand bg-white p-7 sm:p-9 shadow-xl shadow-brand/10 ring-4 ring-brand/5">
           <div className="flex items-start justify-between gap-3 border-b border-brand/20 pb-5">
             <div className="flex items-center gap-3">
               <span className="grid size-11 place-items-center rounded-2xl bg-brand text-white shadow-xs">
@@ -98,7 +98,7 @@ export function PerbandinganJoki() {
                 </p>
               </div>
             </div>
-            <span className="stempel-hijau">
+            <span className="stempel-hijau shrink-0">
               ✓ TERVERIFIKASI
             </span>
           </div>
@@ -106,7 +106,7 @@ export function PerbandinganJoki() {
           <ul className="mt-6 space-y-5">
             {perbandingan.map((item) => (
               <li key={item.kategori} className="flex items-start gap-3">
-                <CheckCircle2 className="mt-0.5 size-4 text-emerald-600 shrink-0" />
+                <CheckCircle2 className="mt-0.5 size-4 text-mint shrink-0" />
                 <div>
                   <p className="text-[0.76rem] font-bold uppercase tracking-wider text-brand">
                     {item.kategori}

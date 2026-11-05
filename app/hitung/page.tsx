@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Calculator } from "lucide-react";
 import { CalculatorProvider } from "@/components/calculator-context";
 import { PriceCalculator } from "@/components/price-calculator";
 import { SimulasiContoh } from "@/components/simulasi-contoh";
@@ -36,10 +35,6 @@ export default function HalamanKalkulator() {
 
         {/* Heading */}
         <div className="mt-6 max-w-3xl">
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-brand/20 bg-brand-soft px-3 py-1 text-[0.74rem] font-bold text-brand">
-            <Calculator className="size-3.5" />
-            <span>Kalkulator Estimasi Biaya</span>
-          </span>
           <h1
             id="judul-hitung"
             tabIndex={-1}

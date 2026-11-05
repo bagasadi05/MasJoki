@@ -32,7 +32,7 @@ export function ServiceList() {
         return (
           <div
             key={service.id}
-            className="group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-line bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-brand/40 hover:shadow-xl hover:shadow-brand/5"
+            className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-line bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-brand/40 hover:shadow-xl hover:shadow-brand/5"
           >
             {/* Top colored accent line */}
             <span
@@ -63,8 +63,8 @@ export function ServiceList() {
                     {kode}
                   </span>
                   {service.popular ? (
-                    <span className="inline-flex items-center gap-1 rounded-full border border-amber-300 bg-amber-50 px-2 py-0.5 text-[0.66rem] font-bold text-amber-900 shadow-2xs">
-                      <Flame className="size-2.5 text-amber-600 fill-amber-500" />
+                    <span className="inline-flex items-center gap-1 rounded-full border border-amber/25 bg-amber-soft px-2 py-0.5 text-[0.66rem] font-bold text-amber shadow-2xs">
+                      <Flame className="size-2.5 text-amber fill-amber" />
                       <span>Populer</span>
                     </span>
                   ) : null}
@@ -72,7 +72,7 @@ export function ServiceList() {
               </div>
 
               {/* Title & Description */}
-              <h3 className="mt-4 font-display text-[1.22rem] font-extrabold leading-snug tracking-tight text-ink transition-colors group-hover:text-brand">
+              <h3 className="mt-4 font-display text-[1.22rem] font-bold leading-snug tracking-tight text-ink transition-colors group-hover:text-brand">
                 {service.name}
               </h3>
 
@@ -94,7 +94,7 @@ export function ServiceList() {
                   <span className="block text-[0.66rem] font-bold uppercase tracking-wider text-muted">
                     Tarif Dasar
                   </span>
-                  <span className="font-mono text-[0.94rem] font-extrabold tabular-nums text-ink">
+                  <span className="font-mono text-[0.94rem] font-bold tabular-nums text-ink">
                     {priceLabel(service)}
                   </span>
                 </div>

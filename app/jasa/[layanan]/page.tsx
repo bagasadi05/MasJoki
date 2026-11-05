@@ -139,9 +139,8 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
               <div>
                 <div className="flex items-center gap-3">
                   <StempelLayanan id={service.id} ukuran="sedang" />
-                  <span className="text-2xl" aria-hidden>{aksen.ikon}</span>
                   <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold ${aksen.chip}`}>
-                    <span>⚡</span> {priceLabel(service)}
+                    {priceLabel(service)}
                   </span>
                 </div>
 
@@ -155,17 +154,17 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
 
                 <div className="mt-5 flex flex-wrap items-center gap-3 text-[0.78rem] text-muted">
                   <span className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-white px-2.5 py-1">
-                    ⏱️ Estimasi pengerjaan: <strong className="text-ink">{service.turnaround}</strong>
+                    Estimasi pengerjaan: <strong className="text-ink">{service.turnaround}</strong>
                   </span>
                   <span className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-white px-2.5 py-1">
-                    🔄 Termasuk <strong>2× revisi</strong>
+                    Termasuk <strong>2× revisi</strong>
                   </span>
                 </div>
 
                 <div className="mt-8 flex flex-col gap-3.5 sm:flex-row">
                   <Link
                     href={`/jasa/${service.id}/order`}
-                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-7 py-4 text-[0.94rem] font-extrabold text-white shadow-lg shadow-brand/25 transition-all hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35"
+                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-7 py-4 text-[0.94rem] font-bold text-white shadow-lg shadow-brand/25 transition-all hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35"
                   >
                     <span>Pesan {service.name} Sekarang</span>
                     <span aria-hidden>→</span>
@@ -209,7 +208,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                       key={item}
                       className="flex items-start gap-3 text-[0.88rem] leading-relaxed text-ink-soft"
                     >
-                      <span className="mt-0.5 text-base text-emerald-600">✓</span>
+                      <span className="mt-0.5 text-base text-mint">✓</span>
                       <span>{item}</span>
                     </li>
                   ))}
@@ -226,7 +225,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                       key={item}
                       className="flex items-start gap-3 text-[0.88rem] leading-relaxed text-ink-soft"
                     >
-                      <span className="mt-0.5 text-base text-brand">📋</span>
+                      <span className="mt-0.5 text-brand" aria-hidden>•</span>
                       <span>{item}</span>
                     </li>
                   ))}
@@ -256,7 +255,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                         <span className="text-[0.92rem] font-semibold text-ink">
                           {qty} {BASIS_LABEL[service.basis]}
                         </span>
-                        <span className="font-mono text-[1rem] font-extrabold tabular-nums text-brand">
+                        <span className="font-mono text-[1rem] font-bold tabular-nums text-brand">
                           {rupiah(harga.total)}
                         </span>
                       </li>
@@ -281,10 +280,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
         {/* FAQ Layanan */}
         <section className="border-t border-line bg-paper-2/60">
           <div className="mx-auto max-w-3xl px-5 py-16 sm:px-8 sm:py-24">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-brand/20 bg-brand-soft px-3 py-1 text-[0.74rem] font-bold text-brand">
-              <span>❓</span> FAQ Layanan
-            </span>
-            <h2 className="mt-3 font-display text-[1.9rem] font-bold leading-tight tracking-tight text-ink sm:text-[2.2rem]">
+                        <h2 className="mt-3 font-display text-[1.9rem] font-bold leading-tight tracking-tight text-ink sm:text-[2.2rem]">
               Pertanyaan seputar {service.name.toLowerCase()}
             </h2>
 
@@ -365,7 +361,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
 
         {/* Banner CTA */}
         <section className="mx-auto max-w-6xl px-5 pb-18 sm:px-8 sm:pb-24">
-          <div className="relative overflow-hidden rounded-3xl bg-ink px-7 py-12 shadow-xl sm:px-12 sm:py-16">
+          <div className="relative overflow-hidden rounded-2xl bg-ink px-7 py-12 shadow-xl sm:px-12 sm:py-16">
             <div aria-hidden className="pita absolute inset-x-0 top-0 h-[4px]" />
             <div className="relative grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center lg:gap-10">
               <div>
@@ -381,7 +377,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
               <div className="flex flex-col gap-3 sm:flex-row">
                 <Link
                   href={`/jasa/${service.id}/order`}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-stabilo px-7 py-4 text-[0.94rem] font-extrabold text-ink shadow-md transition-all hover:bg-white"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-stabilo px-7 py-4 text-[0.94rem] font-bold text-ink shadow-md transition-all hover:bg-white"
                 >
                   <span>Pesan {service.name} Sekarang</span>
                   <span aria-hidden>→</span>

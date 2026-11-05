@@ -43,8 +43,11 @@ export function SiteHeader() {
           </Link>
 
           {/* Status badge online */}
-          <span className="hidden items-center gap-1.5 rounded-full border border-mint/25 bg-mint-soft/90 px-2.5 py-0.5 text-[0.7rem] font-bold text-mint md:inline-flex">
-            <span className="size-1.5 rounded-full bg-mint " />
+          <span className="hidden items-center gap-2 rounded-full border border-mint/25 bg-mint-soft/90 px-2.5 py-1 text-[0.7rem] font-bold text-mint md:inline-flex shadow-2xs">
+            <span className="relative flex size-1.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-mint opacity-75" />
+              <span className="relative inline-flex rounded-full size-1.5 bg-mint" />
+            </span>
             Admin Online
           </span>
         </div>

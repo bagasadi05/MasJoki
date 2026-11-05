@@ -67,8 +67,11 @@ export function HeroLivePreview() {
   return (
     <div className="relative mx-auto w-full max-w-lg">
       {/* Top Floating Badge */}
-      <div className="absolute -top-4 -left-3 z-20 hidden sm:flex items-center gap-1.5 rounded-full border border-mint/25 bg-white/95 px-3 py-1 shadow-md shadow-mint/10 backdrop-blur text-[0.72rem] font-bold text-mint ">
-        <span className="size-2 rounded-full bg-mint " />
+      <div className="absolute -top-4 -left-3 z-20 hidden sm:flex items-center gap-2 rounded-full border border-mint/25 bg-white/95 px-3.5 py-1.5 shadow-md shadow-mint/15 backdrop-blur text-[0.72rem] font-bold text-mint animate-float">
+        <span className="relative flex size-2">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-mint opacity-75" />
+          <span className="relative inline-flex rounded-full size-2 bg-mint" />
+        </span>
         <span>Kalkulator Otomatis Live</span>
       </div>
 
@@ -76,7 +79,7 @@ export function HeroLivePreview() {
       <div className="relative overflow-hidden rounded-2xl border-2 border-brand/25 bg-white p-5 shadow-2xl shadow-brand/15 sm:p-6 backdrop-blur-sm">
         {/* Mascot & Sapaan */}
         <div className="flex items-center gap-4 border-b border-dashed border-line pb-4">
-          <div className="relative size-16 shrink-0 overflow-hidden rounded-2xl border-2 border-brand/30 bg-white shadow-md ring-4 ring-white">
+          <div className="relative size-16 shrink-0 overflow-hidden rounded-2xl border-2 border-brand/30 bg-white shadow-md ring-4 ring-white animate-float-delayed">
             <Image
               src="/mas-joki.jpg"
               alt="Maskot Mas Joki Jempol"

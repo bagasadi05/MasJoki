@@ -84,10 +84,25 @@ export default function Home() {
         {/* ---------------------------------------------------------- *
          * Hero Section (Inspirasi Kwitansi & Transparansi Akademik)
          * ---------------------------------------------------------- */}
-        <section className="relative overflow-hidden border-b border-line bg-white">
+        <section className="relative overflow-hidden border-b border-line bg-[#fbf9f4]">
+          {/* Ambient Lighting Orbs */}
           <div
             aria-hidden
-            className="kertas-titik pointer-events-none absolute inset-0 opacity-40 [mask-image:radial-gradient(75%_65%_at_50%_0%,#000,transparent)]"
+            className="pointer-events-none absolute -top-24 -left-24 size-[28rem] rounded-full bg-amber-soft/90 blur-3xl opacity-60 animate-pulse-subtle"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute top-12 -right-24 size-[32rem] rounded-full bg-brand-soft blur-3xl opacity-75"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -bottom-16 left-1/4 size-[24rem] rounded-full bg-mint-soft/50 blur-3xl opacity-50"
+          />
+
+          {/* Academic Graph Grid Overlay */}
+          <div
+            aria-hidden
+            className="kertas-grafik-halus pointer-events-none absolute inset-0 opacity-60 [mask-image:radial-gradient(ellipse_75%_65%_at_50%_35%,#000_60%,transparent_100%)]"
           />
 
           <div className="relative mx-auto grid max-w-6xl gap-12 px-5 pb-16 pt-12 sm:px-8 lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:gap-14 lg:pb-24 lg:pt-16">
@@ -174,8 +189,13 @@ export default function Home() {
         {/* ---------------------------------------------------------- *
          * Layanan Kami (Katalog Grid Ceria & Penuh Warna)
          * ---------------------------------------------------------- */}
-        <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <section className="relative overflow-hidden border-b border-line bg-gradient-to-b from-paper via-paper-2/45 to-paper py-16 sm:py-24">
+          <div
+            aria-hidden
+            className="kertas-grafik pointer-events-none absolute inset-0 opacity-30"
+          />
+          <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div className="max-w-2xl">
               <h2 className="mt-3 font-display text-[2.1rem] leading-tight tracking-[-0.02em] text-ink sm:text-[2.7rem]">
                 Delapan Layanan Bantuan Tugas.
@@ -197,6 +217,7 @@ export default function Home() {
           <div className="mt-12">
             <ServiceList />
           </div>
+          </div>
         </section>
 
         {/* ---------------------------------------------------------- *
@@ -207,8 +228,20 @@ export default function Home() {
         {/* ---------------------------------------------------------- *
          * Kalkulator Biaya Utama & Simulasi Riil
          * ---------------------------------------------------------- */}
-        <section id="hitung" className="border-t border-line bg-white py-16 sm:py-24 scroll-mt-20">
-          <div className="mx-auto max-w-6xl px-5 sm:px-8">
+        <section id="hitung" className="relative overflow-hidden border-t border-line bg-gradient-to-b from-[#fcfbf7] via-white to-[#f5f0e6] py-16 sm:py-24 scroll-mt-20">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute top-0 right-0 size-96 rounded-full bg-brand-soft/70 blur-3xl opacity-60"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute bottom-0 left-0 size-96 rounded-full bg-amber-soft/60 blur-3xl opacity-50"
+          />
+          <div
+            aria-hidden
+            className="kertas-titik-jelas pointer-events-none absolute inset-0 opacity-35"
+          />
+          <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
             <div className="max-w-3xl">
               <span className="stempel">
                 KALKULATOR RESMI
@@ -239,15 +272,25 @@ export default function Home() {
         {/* ---------------------------------------------------------- *
          * Perbandingan: Mas Joki vs Joki Medsos Liar
          * ---------------------------------------------------------- */}
-        <div className="border-t border-line bg-paper-2/30">
-          <PerbandinganJoki />
+        <div className="relative overflow-hidden border-t border-line bg-gradient-to-b from-paper-2/50 via-paper to-paper-2/40">
+          <div
+            aria-hidden
+            className="kertas-grafik-halus pointer-events-none absolute inset-0 opacity-30"
+          />
+          <div className="relative">
+            <PerbandinganJoki />
+          </div>
         </div>
 
         {/* ---------------------------------------------------------- *
          * Piagam Komitmen Transparansi Mas Joki
          * ---------------------------------------------------------- */}
-        <section className="border-t border-line bg-white py-16 sm:py-24">
-          <div className="mx-auto max-w-6xl px-5 sm:px-8">
+        <section className="relative overflow-hidden border-t border-line bg-gradient-to-b from-white via-[#faf7ef] to-white py-16 sm:py-24">
+          <div
+            aria-hidden
+            className="kertas-titik pointer-events-none absolute inset-0 opacity-40"
+          />
+          <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
               <div className="max-w-xl">
                 <span className="stempel-hijau">
@@ -401,7 +444,7 @@ export default function Home() {
 
               {/* Avatar Mascot in final CTA */}
               <div className="hidden lg:flex justify-end">
-                <div className="relative size-56 overflow-hidden rounded-2xl border-4 border-white/20 bg-white/5 shadow-2xl backdrop-blur-sm transition-transform duration-300 hover:scale-105">
+                <div className="relative size-56 overflow-hidden rounded-2xl border-4 border-white/20 bg-white/5 shadow-2xl backdrop-blur-sm transition-transform duration-300 hover:scale-105 animate-float">
                   <Image
                     src="/mas-joki.jpg"
                     alt="Maskot Mas Joki Jempol"

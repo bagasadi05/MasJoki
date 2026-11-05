@@ -225,15 +225,25 @@
 .pita {
   background-image: linear-gradient(
     90deg,
-    var(--color-brand) 0 12.5%,
-    var(--color-mint) 12.5% 25%,
-    var(--color-koral) 25% 37.5%,
-    var(--color-lilac) 37.5% 50%,
-    var(--color-amber) 50% 62.5%,
-    var(--color-langit) 62.5% 75%,
-    var(--color-olive) 75% 87.5%,
-    var(--color-rose) 87.5% 100%
+    var(--color-brand) 0 6.25%,
+    var(--color-mint) 6.25% 12.5%,
+    var(--color-koral) 12.5% 18.75%,
+    var(--color-lilac) 18.75% 25%,
+    var(--color-amber) 25% 31.25%,
+    var(--color-langit) 31.25% 37.5%,
+    var(--color-olive) 37.5% 43.75%,
+    var(--color-rose) 43.75% 50%,
+    var(--color-brand) 50% 56.25%,
+    var(--color-mint) 56.25% 62.5%,
+    var(--color-koral) 62.5% 68.75%,
+    var(--color-lilac) 68.75% 75%,
+    var(--color-amber) 75% 81.25%,
+    var(--color-langit) 81.25% 87.5%,
+    var(--color-olive) 87.5% 93.75%,
+    var(--color-rose) 93.75% 100%
   );
+  background-size: 200% 100%;
+  animation: pita-geser 8s linear infinite;
 }
 
 .garis-stabilo {
@@ -288,13 +298,129 @@
   animation: stempel-turun 0.5s 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/* ------------------------------------------------------------------ *
+ * Animasi Berjalan & Ambient Motion
+ * ------------------------------------------------------------------ */
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marquee-reverse {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes float-gentle {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes pita-geser {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 32s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+.animate-marquee-reverse {
+  display: flex;
+  width: max-content;
+  animation: marquee-reverse 36s linear infinite;
+}
+
+.animate-marquee-reverse:hover {
+  animation-play-state: paused;
+}
+
+.animate-float {
+  animation: float-gentle 5s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float-gentle 5s ease-in-out 2.5s infinite;
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 5s ease-in-out infinite;
+}
+
+/* ------------------------------------------------------------------ *
+ * Tekstur & Layer Latar Belakang (Anti Polos Putih)
+ * ------------------------------------------------------------------ */
+
+.kertas-grafik {
+  background-image: 
+    linear-gradient(to right, rgba(15, 23, 42, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.kertas-grafik-halus {
+  background-image: 
+    linear-gradient(to right, rgba(37, 99, 235, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(37, 99, 235, 0.045) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.kertas-titik-jelas {
+  background-image: radial-gradient(
+    circle,
+    rgba(15, 23, 42, 0.09) 1.5px,
+    transparent 1.5px
+  );
+  background-size: 22px 22px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
 
   .nota-masuk,
-  .stempel-masuk {
-    animation: none;
+  .stempel-masuk,
+  .pita,
+  .animate-marquee,
+  .animate-marquee-reverse,
+  .animate-float,
+  .animate-float-delayed,
+  .animate-pulse-subtle {
+    animation: none !important;
   }
 }

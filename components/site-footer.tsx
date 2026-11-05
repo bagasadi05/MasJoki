@@ -13,7 +13,7 @@ export function SiteFooter() {
           {/* Brand Col */}
           <div>
             <div className="flex items-center gap-2.5">
-              <span className="grid size-9 -rotate-3 place-items-center rounded-xl border border-brand/25 bg-brand-soft font-display text-[0.85rem] font-black text-brand shadow-2xs">
+              <span className="grid size-9 -rotate-3 place-items-center rounded-xl border border-brand/25 bg-brand-soft font-display text-[0.85rem] font-bold text-brand shadow-2xs">
                 MJ
               </span>
               <span className="font-display text-2xl font-bold tracking-tight text-ink">
@@ -27,7 +27,7 @@ export function SiteFooter() {
             </p>
 
             <div className="mt-4 flex items-center gap-2 text-[0.78rem] text-muted">
-              <span>📍 {site.kota}</span>
+              <span>{site.kota}</span>
               <span>·</span>
               <span>⏰ {site.jamOperasional}</span>
             </div>
@@ -116,7 +116,7 @@ export function SiteFooter() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-[0.84rem] text-muted transition-colors hover:text-brand font-medium"
                 >
-                  <MessageCircle className="size-3.5 text-emerald-600" />
+                  <MessageCircle className="size-3.5 text-mint" />
                   <span>WhatsApp Official</span>
                   <ExternalLink className="size-3 opacity-60" />
                 </a>

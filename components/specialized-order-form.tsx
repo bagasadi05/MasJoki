@@ -10,6 +10,7 @@ import {
   Clock,
   Copy,
   ExternalLink,
+  Lightbulb,
   Minus,
   Plus,
   Rocket,
@@ -45,7 +46,7 @@ import type { ActionResult } from "@/lib/types";
 const fieldClass =
   "w-full rounded-2xl border border-line bg-white px-4 py-3.5 text-sm text-ink placeholder:text-muted/60 transition-all duration-150 hover:border-line-strong focus:border-brand focus:ring-3 focus:ring-brand/15 focus:outline-none";
 
-const labelClass = "mb-2 block text-[0.84rem] font-extrabold text-ink";
+const labelClass = "mb-2 block text-[0.84rem] font-bold text-ink";
 
 const KONVERSI_HALAMAN_KATA = [
   { hal: 2, kata: 500 },
@@ -199,16 +200,16 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                   aktif
                     ? "border-brand bg-brand-soft/70 ring-2 ring-brand/20 shadow-xs"
                     : lewat
-                      ? "border-emerald-300 bg-emerald-50/50 text-emerald-900"
+                      ? "border-mint/25 bg-mint-soft/50 text-mint"
                       : "border-line bg-white text-muted hover:border-line-strong"
                 }`}
               >
                 <div
-                  className={`grid size-8 place-items-center rounded-xl text-xs font-black shrink-0 ${
+                  className={`grid size-8 place-items-center rounded-xl text-xs font-bold shrink-0 ${
                     aktif
                       ? "bg-brand text-white shadow-2xs"
                       : lewat
-                        ? "bg-emerald-600 text-white"
+                        ? "bg-mint text-white"
                         : "bg-paper-2 text-ink-soft"
                   }`}
                 >
@@ -216,13 +217,13 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                 </div>
                 <div className="min-w-0 hidden sm:block">
                   <p
-                    className={`text-[0.7rem] font-bold uppercase tracking-wider ${
+                    className={`text-[0.7rem] font-bold ${
                       aktif ? "text-brand" : "text-muted"
                     }`}
                   >
                     Langkah 0{item.num}
                   </p>
-                  <p className="font-extrabold text-[0.84rem] text-ink truncate leading-tight mt-0.5">
+                  <p className="font-bold text-[0.84rem] text-ink truncate leading-tight mt-0.5">
                     {item.title}
                   </p>
                 </div>
@@ -260,7 +261,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
             <div className="space-y-8 animate-fade-in">
               {/* Header Box Layanan */}
               <div
-                className="rounded-3xl border p-6 flex items-start gap-4"
+                className="rounded-2xl border p-6 flex items-start gap-4"
                 style={{
                   backgroundColor: `${aksen.hex}08`,
                   borderColor: `${aksen.hex}30`,
@@ -336,11 +337,11 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                           onClick={() => setCurrentScore(opt.value)}
                           className={`flex flex-col items-start rounded-2xl border p-3.5 text-left transition-all cursor-pointer ${
                             aktif
-                              ? "border-amber-400 bg-amber-50/70 ring-2 ring-amber-300 font-bold text-amber-950 shadow-xs"
+                              ? "border-amber/40 bg-amber-soft/70 ring-2 ring-amber/25 font-bold text-amber shadow-xs"
                               : "border-line bg-white hover:border-line-strong text-ink-soft"
                           }`}
                         >
-                          <span className="text-[0.86rem] font-extrabold">
+                          <span className="text-[0.86rem] font-bold">
                             {opt.label}
                           </span>
                           {opt.description ? (
@@ -369,17 +370,17 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                           onClick={() => setTargetScore(opt.value)}
                           className={`flex flex-col justify-between rounded-2xl border p-3.5 text-left transition-all cursor-pointer ${
                             aktif
-                              ? "border-emerald-500 bg-emerald-50 ring-2 ring-emerald-300 text-emerald-950 shadow-xs"
+                              ? "border-mint/40 bg-mint-soft ring-2 ring-mint/25 text-mint shadow-xs"
                               : "border-line bg-white hover:border-line-strong text-ink-soft"
                           }`}
                         >
                           <div>
                             {opt.badge ? (
-                              <span className="inline-block rounded-md bg-emerald-600 px-2 py-0.5 text-[0.64rem] font-bold text-white mb-1">
+                              <span className="inline-block rounded-md bg-mint px-2 py-0.5 text-[0.64rem] font-bold text-white mb-1">
                                 {opt.badge}
                               </span>
                             ) : null}
-                            <span className="block text-[0.84rem] font-extrabold leading-snug">
+                            <span className="block text-[0.84rem] font-bold leading-snug">
                               {opt.label}
                             </span>
                           </div>
@@ -458,13 +459,13 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
               ) : null}
 
               {/* Jumlah Satuan Stepper & Slider */}
-              <div className="rounded-3xl border border-line bg-white p-6 shadow-sm">
+              <div className="rounded-2xl border border-line bg-white p-6 shadow-sm">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <label htmlFor="jumlah-spesifik" className={labelClass}>
                     Jumlah {BASIS_LABEL[service.basis]} yang Dikerjakan
                   </label>
                   <span className="rounded-full bg-paper-2 px-3 py-1 text-[0.72rem] font-bold text-ink-soft">
-                    📐 {price.equivalentLabel}
+                    {price.equivalentLabel}
                   </span>
                 </div>
 
@@ -487,7 +488,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                         onChange={(e) =>
                           ubahJumlah(Number(e.target.value.replace(/\D/g, "")) || service.minQty)
                         }
-                        className="w-28 bg-transparent text-center font-mono text-xl font-black tabular-nums text-ink focus:outline-none"
+                        className="w-28 bg-transparent text-center font-mono text-xl font-bold tabular-nums text-ink focus:outline-none"
                       />
                       <button
                         type="button"
@@ -543,19 +544,19 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
 
                 {/* Banner Diskon Kuantitas Otomatis */}
                 {price.discountAmount > 0 && price.discountLabel ? (
-                  <div className="mt-4 flex items-center justify-between gap-3 rounded-2xl border border-emerald-300 bg-emerald-50/90 px-4 py-2.5 text-[0.78rem] text-emerald-900">
+                  <div className="mt-4 flex items-center justify-between gap-3 rounded-2xl border border-mint/25 bg-mint-soft/90 px-4 py-2.5 text-[0.78rem] text-mint">
                     <div className="flex items-center gap-2 font-bold">
-                      <Sparkles className="size-4 text-emerald-600 fill-emerald-500" />
+                      <Sparkles className="size-4 text-mint fill-mint" />
                       <span>{price.discountLabel} aktif otomatis!</span>
                     </div>
-                    <span className="shrink-0 rounded-lg bg-emerald-600 px-2.5 py-0.5 font-mono text-[0.74rem] font-extrabold text-white">
+                    <span className="shrink-0 rounded-lg bg-mint px-2.5 py-0.5 font-mono text-[0.74rem] font-bold text-white">
                       Hemat {rupiah(price.discountAmount)}
                     </span>
                   </div>
                 ) : price.nextDiscountHint ? (
-                  <div className="mt-4 flex items-center justify-between gap-2 rounded-2xl border border-amber-200 bg-amber-50/70 px-4 py-2 text-[0.76rem] text-amber-900">
-                    <span>💡 {price.nextDiscountHint}</span>
-                    <span className="shrink-0 font-bold text-amber-800">
+                  <div className="mt-4 flex items-center justify-between gap-2 rounded-2xl border border-amber/25 bg-amber-soft/70 px-4 py-2 text-[0.76rem] text-amber">
+                    <span className="flex items-center gap-1.5"><Lightbulb className="size-3.5 shrink-0" />{price.nextDiscountHint}</span>
+                    <span className="shrink-0 font-bold text-amber">
                       Diskon Otomatis
                     </span>
                   </div>
@@ -565,7 +566,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                 {service.basis === "kata" ? (
                   <div className="mt-4 flex flex-wrap items-center gap-2 rounded-2xl bg-paper-2/70 p-3">
                     <span className="text-[0.72rem] font-bold text-ink-soft">
-                      📄 Pilihan cepat halaman A4:
+                      Pilihan cepat halaman A4:
                     </span>
                     <div className="flex flex-wrap gap-1.5">
                       {KONVERSI_HALAMAN_KATA.map((item) => (
@@ -583,7 +584,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                             {item.hal} Hal (≈{angka(item.kata)} kata)
                           </span>
                           {item.badge ? (
-                            <span className="rounded bg-emerald-100 px-1 py-0.2 text-[0.62rem] font-extrabold text-emerald-800">
+                            <span className="rounded bg-mint-soft px-1 py-0.2 text-[0.62rem] font-bold text-mint">
                               {item.badge}
                             </span>
                           ) : null}
@@ -598,7 +599,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
               <button
                 type="button"
                 onClick={() => setStep(2)}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-4 text-[0.94rem] font-extrabold text-white shadow-md shadow-brand/20 transition-all hover:bg-brand-dark cursor-pointer"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-4 text-[0.94rem] font-bold text-white shadow-md shadow-brand/20 transition-all hover:bg-brand-dark cursor-pointer"
               >
                 <span>Lanjut: Tentukan Tenggat &amp; Tambahan</span>
                 <ArrowRight className="size-4" />
@@ -613,7 +614,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
               <div>
                 <div className="flex items-center justify-between mb-3">
                   <label className={labelClass}>Kapan Tugas Ini Harus Selesai?</label>
-                  <span className="text-xs font-semibold text-emerald-700 flex items-center gap-1">
+                  <span className="text-xs font-semibold text-mint flex items-center gap-1">
                     <Clock className="size-3.5" />
                     <span>Estimasi: {price.estimatedTurnaround}</span>
                   </span>
@@ -653,7 +654,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                             <IconTenggat className="size-4.5" />
                           </div>
                           <div>
-                            <span className="block text-[0.88rem] font-extrabold text-ink">
+                            <span className="block text-[0.88rem] font-bold text-ink">
                               {item.label}
                             </span>
                             <span className="block text-[0.74rem] text-muted mt-0.5">
@@ -663,11 +664,11 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                         </div>
 
                         {item.mult > 1 ? (
-                          <span className="rounded-lg bg-amber-100 px-2 py-0.5 text-[0.68rem] font-extrabold text-amber-900">
+                          <span className="rounded-lg bg-amber-soft px-2 py-0.5 text-[0.68rem] font-bold text-amber">
                             +{Math.round((item.mult - 1) * 100)}%
                           </span>
                         ) : (
-                          <span className="rounded-lg bg-emerald-100 px-2 py-0.5 text-[0.68rem] font-extrabold text-emerald-900">
+                          <span className="rounded-lg bg-mint-soft px-2 py-0.5 text-[0.68rem] font-bold text-mint">
                             Normal
                           </span>
                         )}
@@ -679,7 +680,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
 
               {/* Catatan Transparansi Penilaian Tingkat Kerumitan */}
               <div className="flex items-start gap-3 rounded-2xl border border-line bg-paper-2/70 p-4 text-[0.78rem] text-ink-soft">
-                <span className="text-base select-none leading-none mt-0.5">💡</span>
+                <Lightbulb className="mt-0.5 size-4 shrink-0 text-amber" />
                 <p className="leading-relaxed">
                   <strong className="text-ink font-bold">Tentang Tingkat Kesulitan:</strong> Estimasi dihitung untuk pengerjaan tugas standar/umum. Jika tugasmu memiliki kebutuhan teknis khusus (olah data statistik, lab, atau coding), admin Mas Joki yang akan menilai dan mengonfirmasi kesepakatannya di WhatsApp setelah memeriksa file brief.
                 </p>
@@ -716,7 +717,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                               className="mt-1 size-4 accent-brand rounded cursor-pointer"
                             />
                             <div>
-                              <span className="block text-[0.84rem] font-extrabold text-ink leading-snug">
+                              <span className="block text-[0.84rem] font-bold text-ink leading-snug">
                                 {addon.label}
                               </span>
                               <span className="mt-1 block text-[0.72rem] leading-snug text-muted">
@@ -747,7 +748,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                 <button
                   type="button"
                   onClick={() => setStep(3)}
-                  className="flex-1 inline-flex items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-4 text-[0.94rem] font-extrabold text-white shadow-md shadow-brand/20 transition-all hover:bg-brand-dark cursor-pointer"
+                  className="flex-1 inline-flex items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-4 text-[0.94rem] font-bold text-white shadow-md shadow-brand/20 transition-all hover:bg-brand-dark cursor-pointer"
                 >
                   <span>Lanjut: Dokumen &amp; Kontak WhatsApp</span>
                   <ArrowRight className="size-4" />
@@ -758,9 +759,9 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
 
           {/* STEP 3: DOKUMEN & KONTAK WHATSAPP */}
           {step === 3 && (
-            <div className="space-y-6 animate-fade-in rounded-3xl border border-line bg-white p-7 shadow-sm">
+            <div className="space-y-6 animate-fade-in rounded-2xl border border-line bg-white p-7 shadow-sm">
               <div>
-                <h3 className="font-display text-xl font-extrabold text-ink">
+                <h3 className="font-display text-xl font-bold text-ink">
                   Data Kontak &amp; Tautan Dokumen
                 </h3>
                 <p className="mt-1 text-[0.82rem] text-muted">
@@ -856,7 +857,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                 <button
                   type="submit"
                   disabled={pending}
-                  className="flex-1 inline-flex items-center justify-center gap-2.5 rounded-2xl bg-brand px-7 py-4.5 text-[0.98rem] font-extrabold text-white shadow-lg shadow-brand/25 transition-all duration-200 hover:-translate-y-1 hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35 disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
+                  className="flex-1 inline-flex items-center justify-center gap-2.5 rounded-2xl bg-brand px-7 py-4.5 text-[0.98rem] font-bold text-white shadow-lg shadow-brand/25 transition-all duration-200 hover:-translate-y-1 hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35 disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
                 >
                   {pending ? (
                     <span>Sedang Memproses…</span>
@@ -874,7 +875,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
               </div>
 
               <p className="text-center text-[0.76rem] leading-relaxed text-muted">
-                🔒 Tanpa perlu buat akun. Format chat terisi otomatis di aplikasi WhatsApp kamu.
+                Tanpa perlu buat akun. Format chat terisi otomatis di aplikasi WhatsApp kamu.
               </p>
             </div>
           )}
@@ -897,25 +898,25 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
             />
 
             {/* Jaminan Layanan Box */}
-            <div className="mt-5 rounded-3xl border border-line bg-paper-2/90 p-5 text-[0.8rem] shadow-xs">
-              <p className="font-extrabold text-ink mb-2.5">
+            <div className="mt-5 rounded-2xl border border-line bg-paper-2/90 p-5 text-[0.8rem] shadow-xs">
+              <p className="font-bold text-ink mb-2.5">
                 Jaminan Mas Joki untuk Pesanan Ini:
               </p>
               <ul className="space-y-2 text-ink-soft">
                 <li className="flex items-center gap-2.5">
-                  <CheckCircle2 className="size-4 text-emerald-600 shrink-0" />
+                  <CheckCircle2 className="size-4 text-mint shrink-0" />
                   <span>
                     <strong>Bisa DP 50% Dulu:</strong> {rupiah(price.dpAmount)} di awal
                   </span>
                 </li>
                 <li className="flex items-center gap-2.5">
-                  <CheckCircle2 className="size-4 text-emerald-600 shrink-0" />
+                  <CheckCircle2 className="size-4 text-mint shrink-0" />
                   <span>
                     <strong>Gratis 2× Revisi</strong> sesuai brief awal
                   </span>
                 </li>
                 <li className="flex items-center gap-2.5">
-                  <CheckCircle2 className="size-4 text-emerald-600 shrink-0" />
+                  <CheckCircle2 className="size-4 text-mint shrink-0" />
                   <span>
                     <strong>File Asli Word (.docx)</strong> diserahkan permanen
                   </span>
@@ -949,7 +950,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
               <p className="text-[0.68rem] font-bold uppercase tracking-wider text-muted truncate">
                 Langkah {step}/3 · {service.name}
               </p>
-              <p className="font-display text-lg font-black leading-none text-brand tabular-nums">
+              <p className="font-display text-lg font-bold leading-none text-brand tabular-nums">
                 <AnimatedPrice value={price.total} />
               </p>
             </div>
@@ -1021,14 +1022,14 @@ function SuccessPanel({
 
   return (
     <div ref={panelRef} className="mx-auto max-w-xl py-6">
-      <div className="overflow-hidden rounded-3xl border border-line bg-white p-7 shadow-2xl shadow-brand/10 sm:p-9">
+      <div className="overflow-hidden rounded-2xl border border-line bg-white p-7 shadow-2xl shadow-brand/10 sm:p-9">
         <div role="status" aria-live="polite">
-          <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3.5 py-1 text-[0.76rem] font-bold text-emerald-800">
-            <span aria-hidden className="size-2 rounded-full bg-emerald-500 " />
+          <span className="inline-flex items-center gap-2 rounded-full border border-mint/25 bg-mint-soft px-3.5 py-1 text-[0.76rem] font-bold text-mint">
+            <span aria-hidden className="size-2 rounded-full bg-mint " />
             Pesanan Siap Dikirim
           </span>
 
-          <h3 className="mt-4 font-display text-2xl font-extrabold tracking-tight text-ink sm:text-3xl">
+          <h3 className="mt-4 font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
             Tinggal Kirim ke WhatsApp Admin!
           </h3>
 
@@ -1051,11 +1052,11 @@ function SuccessPanel({
             <dt className="text-muted text-[0.72rem] font-bold uppercase tracking-wider">
               Estimasi Biaya
             </dt>
-            <dd className="mt-1 font-mono text-base font-black tabular-nums text-brand">
+            <dd className="mt-1 font-mono text-base font-bold tabular-nums text-brand">
               {total ? rupiah(total) : "Menunggu Admin"}
             </dd>
             {dpAmount ? (
-              <dd className="mt-0.5 text-[0.72rem] font-semibold text-emerald-700">
+              <dd className="mt-0.5 text-[0.72rem] font-semibold text-mint">
                 Bisa DP 50%: {rupiah(dpAmount)}
               </dd>
             ) : null}
@@ -1082,7 +1083,7 @@ function SuccessPanel({
                 >
                   {tersalin ? (
                     <>
-                      <Check className="size-3.5 text-emerald-500" />
+                      <Check className="size-3.5 text-mint" />
                       <span>Tersalin!</span>
                     </>
                   ) : (
@@ -1115,7 +1116,7 @@ function SuccessPanel({
             </div>
 
             <p className="mt-3.5 text-center text-[0.76rem] leading-relaxed text-muted">
-              ✨ Format chat sudah tersusun rapi otomatis. Kamu cukup klik tombol kirim di WhatsApp.
+              Format chat sudah tersusun rapi otomatis. Kamu cukup klik tombol kirim di WhatsApp.
             </p>
           </>
         ) : (

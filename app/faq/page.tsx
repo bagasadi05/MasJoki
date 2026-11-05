@@ -1,13 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import {
-  ExternalLink,
-  HelpCircle,
-  MessageCircle,
-  RotateCcw,
-  ShieldCheck,
-  Zap,
-} from "lucide-react";
+import { ExternalLink, MessageCircle, RotateCcw, ShieldCheck, Zap } from "lucide-react";
 import { FaqList } from "@/components/faq-list";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -17,7 +10,7 @@ import { site, waLink, waPesanUmum } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Tanya Jawab & FAQ Lengkap Asistensi Tugas Kuliah",
   description:
-    "Pertanyaan seputar keamanan privasi, garansi 2x revisi gratis, metode pembayaran e-wallet, waktu pengerjaan tugas, dan format file di Mas Joki.",
+    "Pertanyaan seputar keamanan privasi, revisi 2x gratis, metode pembayaran e-wallet, waktu pengerjaan tugas, dan format file di Mas Joki.",
   alternates: { canonical: "/faq" },
 };
 
@@ -53,15 +46,11 @@ export default function HalamanFaq() {
 
         {/* Heading */}
         <div className="mt-6 max-w-3xl">
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-brand/20 bg-brand-soft px-3 py-1 text-[0.74rem] font-bold text-brand">
-            <HelpCircle className="size-3.5" />
-            <span>Pusat Bantuan &amp; FAQ</span>
-          </span>
-          <h1 className="mt-3 font-display text-[2.3rem] leading-[1.08] tracking-[-0.03em] text-ink sm:text-[3rem]">
+                    <h1 className="mt-3 font-display text-[2.3rem] leading-[1.08] tracking-[-0.03em] text-ink sm:text-[3rem]">
             Pertanyaan yang Sering Ditanyakan.
           </h1>
           <p className="mt-4 max-w-[62ch] text-[1.02rem] leading-relaxed text-ink-soft">
-            Semua hal yang perlu kamu ketahui seputar privasi dokumen, mekanisme garansi revisi,
+            Semua hal yang perlu kamu ketahui seputar privasi dokumen, mekanisme revisi,
             sistem pembayaran, hingga penyerahan file akhir.
           </p>
         </div>
@@ -70,9 +59,9 @@ export default function HalamanFaq() {
         <div className="mt-12 grid gap-12 lg:grid-cols-[0.4fr_0.6fr] lg:gap-16">
           {/* Kolom Kiri: Contact Box & Trust Highlights */}
           <div className="space-y-6">
-            <div className="rounded-3xl border border-line bg-paper-2/80 p-6 sm:p-7 shadow-sm">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-[0.7rem] font-bold text-emerald-800">
-                <span className="size-1.5 rounded-full bg-emerald-500 " />
+            <div className="rounded-2xl border border-line bg-paper-2/80 p-6 sm:p-7 shadow-sm">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-mint/25 bg-mint-soft px-2.5 py-0.5 text-[0.7rem] font-bold text-mint">
+                <span className="size-1.5 rounded-full bg-mint " />
                 Bantuan Langsung
               </span>
               <h2 className="mt-4 font-display text-xl font-bold text-ink">
@@ -80,14 +69,14 @@ export default function HalamanFaq() {
               </h2>
               <p className="mt-2 text-sm text-ink-soft leading-relaxed">
                 Punya pertanyaan di luar daftar ini atau tugas dengan format kampus yang sangat khusus?
-                Admin kami siap membalas dalam waktu &lt;15 menit.
+                Admin membalas pada jam operasional 07.00–23.00 WIB.
               </p>
 
               <a
                 href={waLink(waPesanUmum)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-4 text-sm font-extrabold text-white shadow-md shadow-brand/25 transition-all hover:bg-brand-dark hover:shadow-lg"
+                className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-4 text-sm font-bold text-white shadow-md shadow-brand/25 transition-all hover:bg-brand-dark hover:shadow-lg"
               >
                 <MessageCircle className="size-4.5" />
                 <span>Chat Admin Mas Joki via WhatsApp</span>
@@ -99,18 +88,18 @@ export default function HalamanFaq() {
               </p>
             </div>
 
-            {/* Quick Guarantees */}
-            <div className="rounded-3xl border border-line bg-white p-6 shadow-sm space-y-4">
-              <p className="font-extrabold text-ink text-sm uppercase tracking-wider">
-                Jaminan Ketenangan Kamu:
+            {/* Quick Revisions */}
+            <div className="rounded-2xl border border-line bg-white p-6 shadow-sm space-y-4">
+              <p className="font-bold text-ink text-sm">
+                Yang Kamu Dapat:
               </p>
 
               <div className="flex items-start gap-3">
-                <div className="grid size-9 place-items-center rounded-xl bg-purple-50 text-purple-700 shrink-0">
+                <div className="grid size-9 place-items-center rounded-xl bg-lilac-soft text-lilac shrink-0">
                   <ShieldCheck className="size-4.5" />
                 </div>
                 <div>
-                  <p className="font-bold text-ink text-sm">Privasi Dokumen 100%</p>
+                  <p className="font-bold text-ink text-sm">Privasi Dokumen Terjaga</p>
                   <p className="text-xs text-muted mt-0.5 leading-relaxed">
                     Data kampus, nama mahasiswa, dan materi tugas dienkripsi &amp; tidak pernah dipublikasikan.
                   </p>
@@ -118,11 +107,11 @@ export default function HalamanFaq() {
               </div>
 
               <div className="flex items-start gap-3 border-t border-line/60 pt-3">
-                <div className="grid size-9 place-items-center rounded-xl bg-emerald-50 text-emerald-700 shrink-0">
+                <div className="grid size-9 place-items-center rounded-xl bg-mint-soft text-mint shrink-0">
                   <RotateCcw className="size-4.5" />
                 </div>
                 <div>
-                  <p className="font-bold text-ink text-sm">Garansi 2× Revisi Gratis</p>
+                  <p className="font-bold text-ink text-sm">Revisi 2× Gratis</p>
                   <p className="text-xs text-muted mt-0.5 leading-relaxed">
                     Bila ada arahan awal dosen yang belum terpenuhi, admin langsung revisi tanpa biaya tambahan.
                   </p>
@@ -130,7 +119,7 @@ export default function HalamanFaq() {
               </div>
 
               <div className="flex items-start gap-3 border-t border-line/60 pt-3">
-                <div className="grid size-9 place-items-center rounded-xl bg-amber-50 text-amber-700 shrink-0">
+                <div className="grid size-9 place-items-center rounded-xl bg-amber-soft text-amber shrink-0">
                   <Zap className="size-4.5" />
                 </div>
                 <div>

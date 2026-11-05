@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, BookOpen, Calculator, ExternalLink, Flame } from "lucide-react";
+import { ArrowRight, Calculator, ExternalLink, Flame } from "lucide-react";
 import { BeforeAfterShowcase } from "@/components/before-after-showcase";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -34,11 +34,7 @@ export default function HalamanDaftarLayanan() {
 
         {/* Heading */}
         <div className="mt-6 max-w-3xl">
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-brand/20 bg-brand-soft px-3 py-1 text-[0.74rem] font-bold text-brand">
-            <BookOpen className="size-3.5" />
-            <span>Katalog Layanan</span>
-          </span>
-          <h1 className="mt-3 font-display text-[2.4rem] leading-[1.06] tracking-[-0.03em] text-ink sm:text-[3.1rem]">
+                    <h1 className="mt-3 font-display text-[2.4rem] leading-[1.06] tracking-[-0.03em] text-ink sm:text-[3.1rem]">
             Delapan layanan, satu standar kejujuran harga.
           </h1>
           <p className="mt-4 max-w-[62ch] text-[1.02rem] leading-relaxed text-ink-soft">
@@ -98,8 +94,8 @@ export default function HalamanDaftarLayanan() {
                       </div>
 
                       {service.popular ? (
-                        <span className="shrink-0 inline-flex items-center gap-1 rounded-full border border-amber-300 bg-amber-50 px-2.5 py-1 text-[0.68rem] font-bold text-amber-900 shadow-2xs">
-                          <Flame className="size-3 text-amber-600 fill-amber-500" />
+                        <span className="shrink-0 inline-flex items-center gap-1 rounded-full border border-amber/25 bg-amber-soft px-2.5 py-1 text-[0.68rem] font-bold text-amber shadow-2xs">
+                          <Flame className="size-3 text-amber fill-amber" />
                           <span>Populer</span>
                         </span>
                       ) : null}
@@ -115,7 +111,7 @@ export default function HalamanDaftarLayanan() {
                       <span className="block text-[0.68rem] font-bold uppercase tracking-wider text-muted">
                         Harga Dasar
                       </span>
-                      <span className="font-mono text-[0.95rem] font-extrabold tabular-nums text-ink">
+                      <span className="font-mono text-[0.95rem] font-bold tabular-nums text-ink">
                         {priceLabel(service)}
                       </span>
                     </div>

@@ -205,49 +205,9 @@
   border-radius: 4px;
 }
 
-/* Glow latar belakang halus */
-.garis-stabilo {
-  background-image: linear-gradient(
-    to top,
-    var(--color-stabilo) 0%,
-    var(--color-stabilo) 45%,
-    transparent 45%
-  );
-  background-repeat: no-repeat;
-  padding-inline: 0.2em;
-  border-radius: 4px;
-}
-
 /* ------------------------------------------------------------------ *
- * Animasi Halus & Dinamis
+ * Animasi Halus & Dinamis (hanya momen cetak nota & cap)
  * ------------------------------------------------------------------ */
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
-}
-
-@keyframes float-delayed {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
-}
-
-@keyframes marquee {
-  0% {
-    transform: translateX(0%);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
 
 @keyframes nota-cetak {
   from {
@@ -277,35 +237,6 @@
   }
 }
 
-@keyframes pulse-subtle {
-  0%, 100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.75;
-    transform: scale(1.08);
-  }
-}
-
-.animate-float {
-  animation: float 4s ease-in-out infinite;
-}
-
-.animate-float-delayed {
-  animation: float-delayed 4.5s 1.5s ease-in-out infinite;
-}
-
-.animate-marquee {
-  display: flex;
-  width: max-content;
-  animation: marquee 35s linear infinite;
-}
-
-.animate-marquee:hover {
-  animation-play-state: paused;
-}
-
 .nota-masuk {
   animation: nota-cetak 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
@@ -314,21 +245,13 @@
   animation: stempel-turun 0.5s 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-.live-pulse {
-  animation: pulse-subtle 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
 
-  .animate-float,
-  .animate-float-delayed,
-  .animate-marquee,
   .nota-masuk,
-  .stempel-masuk,
-  .live-pulse {
+  .stempel-masuk {
     animation: none;
   }
 }

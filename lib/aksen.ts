@@ -34,10 +34,6 @@ export interface Aksen {
   wash: string;
   /** Nama token untuk gaya inline (mis. pita atas nota). */
   varName: string;
-  /** Ikon representasi visual layanan (ramah & ekspresif). */
-  ikon: string;
-  /** Gradasi latar belakang modern untuk kartu. */
-  gradient: string;
   /** Warna aksen hex untuk style inline atau border highlight. */
   hex: string;
 }
@@ -53,9 +49,7 @@ export const AKSEN: Record<AksenId, Aksen> = {
     chip: "border-brand/30 bg-brand-soft text-brand",
     wash: "bg-brand-soft/50",
     varName: "--color-brand",
-    ikon: "🔄",
-    gradient: "",
-    hex: "#1f3be0",
+    hex: "#2563eb",
   },
   mint: {
     dot: "bg-mint",
@@ -67,8 +61,6 @@ export const AKSEN: Record<AksenId, Aksen> = {
     chip: "border-mint/30 bg-mint-soft text-mint",
     wash: "bg-mint-soft/50",
     varName: "--color-mint",
-    ikon: "✨",
-    gradient: "",
     hex: "#2a6b55",
   },
   koral: {
@@ -81,8 +73,6 @@ export const AKSEN: Record<AksenId, Aksen> = {
     chip: "border-koral/30 bg-koral-soft text-koral",
     wash: "bg-koral-soft/50",
     varName: "--color-koral",
-    ikon: "📚",
-    gradient: "",
     hex: "#9e4e42",
   },
   lilac: {
@@ -95,8 +85,6 @@ export const AKSEN: Record<AksenId, Aksen> = {
     chip: "border-lilac/30 bg-lilac-soft text-lilac",
     wash: "bg-lilac-soft/50",
     varName: "--color-lilac",
-    ikon: "🎓",
-    gradient: "",
     hex: "#6556a3",
   },
   amber: {
@@ -109,8 +97,6 @@ export const AKSEN: Record<AksenId, Aksen> = {
     chip: "border-amber/30 bg-amber-soft text-amber",
     wash: "bg-amber-soft/50",
     varName: "--color-amber",
-    ikon: "📊",
-    gradient: "",
     hex: "#8a5d12",
   },
   langit: {
@@ -123,8 +109,6 @@ export const AKSEN: Record<AksenId, Aksen> = {
     chip: "border-langit/30 bg-langit-soft text-langit",
     wash: "bg-langit-soft/50",
     varName: "--color-langit",
-    ikon: "📝",
-    gradient: "",
     hex: "#2b6a97",
   },
   olive: {
@@ -137,8 +121,6 @@ export const AKSEN: Record<AksenId, Aksen> = {
     chip: "border-olive/30 bg-olive-soft text-olive",
     wash: "bg-olive-soft/50",
     varName: "--color-olive",
-    ikon: "🌐",
-    gradient: "",
     hex: "#5f6f2a",
   },
   rose: {
@@ -151,8 +133,6 @@ export const AKSEN: Record<AksenId, Aksen> = {
     chip: "border-rose/30 bg-rose-soft text-rose",
     wash: "bg-rose-soft/50",
     varName: "--color-rose",
-    ikon: "🎨",
-    gradient: "",
     hex: "#9d4d6b",
   },
 };

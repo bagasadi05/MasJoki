@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Calculator, Lightbulb, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { CalculatorProvider } from "@/components/calculator-context";
 import { PriceCalculator } from "@/components/price-calculator";
 import { SiteFooter } from "@/components/site-footer";
@@ -79,11 +79,7 @@ export default function HalamanKalkulator() {
 
         {/* Heading */}
         <div className="mt-6 max-w-3xl">
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-brand/20 bg-brand-soft px-3 py-1 text-[0.74rem] font-bold text-brand">
-            <Calculator className="size-3.5" />
-            <span>Kalkulator Estimasi Biaya</span>
-          </span>
-          <h1 className="mt-3 font-display text-[2.3rem] leading-[1.08] tracking-[-0.03em] text-ink sm:text-[3rem]">
+                    <h1 className="mt-3 font-display text-[2.3rem] leading-[1.08] tracking-[-0.03em] text-ink sm:text-[3rem]">
             Hitung Biaya Tugasmu Secara Mandiri.
           </h1>
           <p className="mt-4 max-w-[62ch] text-[1.02rem] leading-relaxed text-ink-soft">
@@ -101,11 +97,7 @@ export default function HalamanKalkulator() {
         <section className="mt-20 border-t border-dashed border-line pt-14">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-purple-200 bg-purple-50 px-3.5 py-1 text-xs font-bold text-purple-900 shadow-2xs">
-                <Lightbulb className="size-3.5 text-purple-700" />
-                <span>Simulasi Contoh Nyata</span>
-              </span>
-              <h2 className="mt-3 font-display text-[1.8rem] leading-tight tracking-[-0.02em] text-ink sm:text-[2.2rem]">
+                            <h2 className="mt-3 font-display text-[1.8rem] leading-tight tracking-[-0.02em] text-ink sm:text-[2.2rem]">
                 Tiga Contoh Hitungan Biaya Nyata.
               </h2>
             </div>
@@ -121,7 +113,7 @@ export default function HalamanKalkulator() {
               return (
                 <li
                   key={item.judul}
-                  className="flex flex-col justify-between rounded-3xl border border-line bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                  className="flex flex-col justify-between rounded-2xl border border-line bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
                 >
                   <div>
                     <div className="flex items-center justify-between">
@@ -136,7 +128,7 @@ export default function HalamanKalkulator() {
                       </span>
                     </div>
 
-                    <h3 className="mt-5 font-display text-[1.25rem] font-extrabold leading-snug tracking-tight text-ink">
+                    <h3 className="mt-5 font-display text-[1.25rem] font-bold leading-snug tracking-tight text-ink">
                       {item.judul}
                     </h3>
                     <p className="mt-2 text-[0.84rem] leading-relaxed text-muted">
@@ -149,7 +141,7 @@ export default function HalamanKalkulator() {
                       <span className="text-[0.72rem] font-bold uppercase tracking-wider text-muted">
                         Total Estimasi
                       </span>
-                      <span className="font-display text-[1.55rem] font-black tracking-tight text-brand tabular-nums">
+                      <span className="font-display text-[1.55rem] font-bold tracking-tight text-brand tabular-nums">
                         {rupiah(item.price.total)}
                       </span>
                     </div>

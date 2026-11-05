@@ -2,12 +2,15 @@
 
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import {
+  Calculator,
   Calendar,
   Check,
   CheckCircle2,
   Clock,
   Copy,
   ExternalLink,
+  FileText,
+  Lightbulb,
   Minus,
   Plus,
   Rocket,
@@ -43,7 +46,7 @@ import type { ActionResult } from "@/lib/types";
 const fieldClass =
   "w-full rounded-2xl border border-line bg-white px-4 py-3.5 text-sm text-ink placeholder:text-muted/60 transition-all duration-150 hover:border-line-strong focus:border-brand focus:ring-3 focus:ring-brand/15 focus:outline-none";
 
-const labelClass = "mb-2.5 block text-[0.84rem] font-extrabold text-ink";
+const labelClass = "mb-2.5 block text-[0.84rem] font-bold text-ink";
 
 /** Kolom yang difokuskan untuk tiap kunci error dari zod. */
 const FOKUS_ERROR: Record<string, string> = {
@@ -117,7 +120,6 @@ function PesanGalat({ id, pesan }: { id: string; pesan?: string }) {
       role="alert"
       className="mt-1.5 flex items-center gap-1.5 text-[0.78rem] font-medium leading-relaxed text-red-600"
     >
-      <span aria-hidden>⚠️</span>
       <span>{pesan}</span>
     </p>
   );
@@ -316,13 +318,13 @@ export function PriceCalculator() {
               setResult(null);
             }}
             aria-pressed={mode === "hitung"}
-            className={`inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-[0.86rem] font-extrabold transition-all cursor-pointer ${
+            className={`inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-[0.86rem] font-bold transition-all cursor-pointer ${
               mode === "hitung"
                 ? "bg-brand text-white shadow-md shadow-brand/20"
                 : "text-ink-soft hover:bg-white hover:text-ink"
             }`}
           >
-            <span>🧮</span>
+            <Calculator className="size-4" />
             <span>Hitung Langsung</span>
           </button>
           <button
@@ -332,13 +334,13 @@ export function PriceCalculator() {
               setResult(null);
             }}
             aria-pressed={mode === "penawaran"}
-            className={`inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-[0.86rem] font-extrabold transition-all cursor-pointer ${
+            className={`inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-[0.86rem] font-bold transition-all cursor-pointer ${
               mode === "penawaran"
                 ? "bg-brand text-white shadow-md shadow-brand/20"
                 : "text-ink-soft hover:bg-white hover:text-ink"
             }`}
           >
-            <span>📝</span>
+            <FileText className="size-4" />
             <span>Minta Penawaran</span>
           </button>
         </div>
@@ -397,7 +399,7 @@ export function PriceCalculator() {
                             className={`size-2.5 rounded-full ${itemAksen.dot}`}
                           />
                         </div>
-                        <span className="mt-2.5 text-[0.84rem] font-extrabold text-ink leading-tight">
+                        <span className="mt-2.5 text-[0.84rem] font-bold text-ink leading-tight">
                           {item.name}
                         </span>
                         <span className="mt-1 font-mono text-[0.66rem] text-muted">
@@ -411,13 +413,13 @@ export function PriceCalculator() {
               </fieldset>
 
               {/* Jumlah Satuan & Slider & Stepper */}
-              <div className="rounded-3xl border border-line bg-white p-6 shadow-sm">
+              <div className="rounded-2xl border border-line bg-white p-6 shadow-sm">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <label htmlFor="jumlah" className={labelClass}>
                     2. Jumlah {BASIS_LABEL[service.basis]}
                   </label>
                   <span className="rounded-full bg-paper-2 px-3 py-1 text-[0.72rem] font-bold text-ink-soft">
-                    📐 {price.equivalentLabel}
+                    {price.equivalentLabel}
                   </span>
                 </div>
 
@@ -443,7 +445,7 @@ export function PriceCalculator() {
                         onChange={(event) => ubahJumlah(event.target.value)}
                         aria-invalid={galat?.qty ? true : undefined}
                         aria-describedby={galat?.qty ? "galat-jumlah" : undefined}
-                        className="w-28 bg-transparent text-center font-mono text-xl font-black tabular-nums text-ink focus:outline-none"
+                        className="w-28 bg-transparent text-center font-mono text-xl font-bold tabular-nums text-ink focus:outline-none"
                       />
                       <button
                         type="button"
@@ -499,19 +501,19 @@ export function PriceCalculator() {
 
                 {/* Banner Diskon Kuantitas Otomatis */}
                 {price.discountAmount > 0 && price.discountLabel ? (
-                  <div className="mt-4 flex items-center justify-between gap-3 rounded-2xl border border-emerald-300 bg-emerald-50/90 px-4 py-2.5 text-[0.78rem] text-emerald-900">
+                  <div className="mt-4 flex items-center justify-between gap-3 rounded-2xl border border-mint/25 bg-mint-soft/90 px-4 py-2.5 text-[0.78rem] text-mint">
                     <div className="flex items-center gap-2 font-bold">
-                      <Sparkles className="size-4 text-emerald-600 fill-emerald-500" />
+                      <Sparkles className="size-4 text-mint fill-mint" />
                       <span>{price.discountLabel} aktif otomatis!</span>
                     </div>
-                    <span className="shrink-0 rounded-lg bg-emerald-600 px-2.5 py-0.5 font-mono text-[0.74rem] font-extrabold text-white">
+                    <span className="shrink-0 rounded-lg bg-mint px-2.5 py-0.5 font-mono text-[0.74rem] font-bold text-white">
                       Hemat {rupiah(price.discountAmount)}
                     </span>
                   </div>
                 ) : price.nextDiscountHint ? (
-                  <div className="mt-4 flex items-center justify-between gap-2 rounded-2xl border border-amber-200 bg-amber-50/70 px-4 py-2 text-[0.76rem] text-amber-900">
-                    <span>💡 {price.nextDiscountHint}</span>
-                    <span className="shrink-0 font-bold text-amber-800">
+                  <div className="mt-4 flex items-center justify-between gap-2 rounded-2xl border border-amber/25 bg-amber-soft/70 px-4 py-2 text-[0.76rem] text-amber">
+                    <span className="flex items-center gap-1.5"><Lightbulb className="size-3.5 shrink-0" />{price.nextDiscountHint}</span>
+                    <span className="shrink-0 font-bold text-amber">
                       Diskon Otomatis
                     </span>
                   </div>
@@ -548,7 +550,7 @@ export function PriceCalculator() {
                 {service.basis === "kata" ? (
                   <div className="mt-3 flex flex-wrap items-center gap-2 rounded-2xl bg-paper-2/70 p-3">
                     <span className="text-[0.72rem] font-bold text-ink-soft">
-                      📄 Hanya tahu jumlah halaman A4? Pilih taksiran:
+                      Hanya tahu jumlah halaman A4? Pilih taksiran:
                     </span>
                     <div className="flex flex-wrap gap-1.5">
                       {KONVERSI_HALAMAN_KATA.map((item) => {
@@ -568,7 +570,7 @@ export function PriceCalculator() {
                               {item.hal} Hal (≈{angka(item.kata)} kata)
                             </span>
                             {item.badge ? (
-                              <span className="rounded bg-emerald-100 px-1 py-0.2 text-[0.62rem] font-extrabold text-emerald-800">
+                              <span className="rounded bg-mint-soft px-1 py-0.2 text-[0.62rem] font-bold text-mint">
                                 {item.badge}
                               </span>
                             ) : null}
@@ -586,10 +588,10 @@ export function PriceCalculator() {
               {/* Tenggat Waktu */}
               <fieldset id="tenggat-hitung" tabIndex={-1}>
                 <div className="flex items-center justify-between mb-2.5">
-                  <legend className="text-[0.84rem] font-extrabold text-ink">
+                  <legend className="text-[0.84rem] font-bold text-ink">
                     3. Kapan tugas ini dibutuhkan?
                   </legend>
-                  <span className="text-[0.74rem] font-semibold text-emerald-700 flex items-center gap-1">
+                  <span className="text-[0.74rem] font-semibold text-mint flex items-center gap-1">
                     <Clock className="size-3.5" />
                     <span>Estimasi: {price.estimatedTurnaround}</span>
                   </span>
@@ -634,7 +636,7 @@ export function PriceCalculator() {
                             <IconTenggat className="size-4.5" />
                           </div>
                           <div>
-                            <span className="block text-[0.88rem] font-extrabold text-ink">
+                            <span className="block text-[0.88rem] font-bold text-ink">
                               {item.label}
                             </span>
                             <span className="block text-[0.74rem] text-muted mt-0.5">
@@ -644,11 +646,11 @@ export function PriceCalculator() {
                         </div>
 
                         {item.mult > 1 ? (
-                          <span className="rounded-lg bg-amber-100 px-2 py-0.5 text-[0.68rem] font-extrabold text-amber-900">
+                          <span className="rounded-lg bg-amber-soft px-2 py-0.5 text-[0.68rem] font-bold text-amber">
                             +{Math.round((item.mult - 1) * 100)}%
                           </span>
                         ) : (
-                          <span className="rounded-lg bg-emerald-100 px-2 py-0.5 text-[0.68rem] font-extrabold text-emerald-900">
+                          <span className="rounded-lg bg-mint-soft px-2 py-0.5 text-[0.68rem] font-bold text-mint">
                             Normal
                           </span>
                         )}
@@ -661,7 +663,7 @@ export function PriceCalculator() {
 
               {/* Catatan Transparansi Penilaian Tingkat Kerumitan */}
               <div className="flex items-start gap-3 rounded-2xl border border-line bg-paper-2/70 p-4 text-[0.78rem] text-ink-soft">
-                <span className="text-base select-none leading-none mt-0.5">💡</span>
+                <Lightbulb className="mt-0.5 size-4 shrink-0 text-amber" />
                 <p className="leading-relaxed">
                   <strong className="text-ink font-bold">Tentang Tingkat Kesulitan:</strong> Estimasi dihitung otomatis untuk pengerjaan tugas standar/umum. Jika tugasmu memiliki kebutuhan analisis data teknis khusus (seperti olah data SPSS, coding, atau uji laboratorium), admin Mas Joki yang akan menilai dan mengonfirmasi kesepakatannya di WhatsApp setelah memeriksa file brief.
                 </p>
@@ -673,7 +675,7 @@ export function PriceCalculator() {
               {availableAddons.length > 0 ? (
                 <fieldset>
                   <div className="flex items-center justify-between mb-2.5">
-                    <legend className="text-[0.84rem] font-extrabold text-ink">
+                    <legend className="text-[0.84rem] font-bold text-ink">
                       4. Opsi Pendamping Tambahan (Opsional)
                     </legend>
                     <span className="text-[0.72rem] font-semibold text-muted">
@@ -702,7 +704,7 @@ export function PriceCalculator() {
                               className="mt-1 size-4 accent-brand rounded cursor-pointer"
                             />
                             <div>
-                              <span className="block text-[0.84rem] font-extrabold text-ink leading-snug">
+                              <span className="block text-[0.84rem] font-bold text-ink leading-snug">
                                 {addon.label}
                               </span>
                               <span className="mt-1 block text-[0.72rem] leading-snug text-muted">
@@ -852,31 +854,31 @@ export function PriceCalculator() {
             </div>
 
             {/* Benefit Box */}
-            <div className="mt-5 rounded-3xl border border-line bg-paper-2/90 p-5 text-[0.8rem] shadow-xs">
-              <p className="font-extrabold text-ink mb-2.5">
+            <div className="mt-5 rounded-2xl border border-line bg-paper-2/90 p-5 text-[0.8rem] shadow-xs">
+              <p className="font-bold text-ink mb-2.5">
                 Jaminan Layanan Mas Joki:
               </p>
               <ul className="space-y-2 text-ink-soft">
                 <li className="flex items-center gap-2.5">
-                  <CheckCircle2 className="size-4 text-emerald-600 shrink-0" />
+                  <CheckCircle2 className="size-4 text-mint shrink-0" />
                   <span>
                     <strong>Bisa DP 50% Dulu</strong>, pelunasan saat tugas beres
                   </span>
                 </li>
                 <li className="flex items-center gap-2.5">
-                  <CheckCircle2 className="size-4 text-emerald-600 shrink-0" />
+                  <CheckCircle2 className="size-4 text-mint shrink-0" />
                   <span>
                     <strong>Gratis 2× Revisi</strong> sesuai brief awal
                   </span>
                 </li>
                 <li className="flex items-center gap-2.5">
-                  <CheckCircle2 className="size-4 text-emerald-600 shrink-0" />
+                  <CheckCircle2 className="size-4 text-mint shrink-0" />
                   <span>
                     <strong>File Sumber Diserahkan</strong> (Word, PPT, dll.)
                   </span>
                 </li>
                 <li className="flex items-center gap-2.5">
-                  <CheckCircle2 className="size-4 text-emerald-600 shrink-0" />
+                  <CheckCircle2 className="size-4 text-mint shrink-0" />
                   <span>
                     <strong>Bayar via E-Wallet</strong>: ShopeePay, GoPay, DANA
                   </span>
@@ -889,10 +891,10 @@ export function PriceCalculator() {
         {/* Kolom Kiri Bawah: Form Kontak & Submit CTA */}
         <div
           id="kontak-pesan"
-          className="space-y-5 rounded-3xl border border-line bg-white p-7 shadow-sm lg:col-start-1 lg:row-start-2"
+          className="space-y-5 rounded-2xl border border-line bg-white p-7 shadow-sm lg:col-start-1 lg:row-start-2"
         >
           <div>
-            <h3 className="font-display text-xl font-extrabold text-ink">
+            <h3 className="font-display text-xl font-bold text-ink">
               Data Kontak &amp; Pengiriman
             </h3>
             <p className="mt-1 text-[0.82rem] text-muted">
@@ -1006,7 +1008,7 @@ export function PriceCalculator() {
             type="submit"
             disabled={pending}
             aria-busy={pending}
-            className="w-full inline-flex items-center justify-center gap-2.5 rounded-2xl bg-brand px-7 py-4.5 text-[0.98rem] font-extrabold text-white shadow-lg shadow-brand/25 transition-all duration-200 hover:-translate-y-1 hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35 disabled:cursor-not-allowed disabled:opacity-60 active:translate-y-0 cursor-pointer"
+            className="w-full inline-flex items-center justify-center gap-2.5 rounded-2xl bg-brand px-7 py-4.5 text-[0.98rem] font-bold text-white shadow-lg shadow-brand/25 transition-all duration-200 hover:-translate-y-1 hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35 disabled:cursor-not-allowed disabled:opacity-60 active:translate-y-0 cursor-pointer"
           >
             {pending ? (
               <span>Sedang Memproses…</span>
@@ -1029,7 +1031,7 @@ export function PriceCalculator() {
           </button>
 
           <p className="text-center text-[0.76rem] leading-relaxed text-muted">
-            🔒 Tanpa buat akun. Pesan akan terbuka otomatis di aplikasi WhatsApp kamu.
+            Tanpa buat akun. Pesan akan terbuka otomatis di aplikasi WhatsApp kamu.
           </p>
         </div>
       </form>
@@ -1052,7 +1054,7 @@ export function PriceCalculator() {
                 <p className="text-[0.68rem] font-bold uppercase tracking-wider text-muted truncate">
                   {service.name} ({price.qty} {BASIS_LABEL[service.basis]})
                 </p>
-                <p className="font-display text-lg font-black leading-none text-brand tabular-nums">
+                <p className="font-display text-lg font-bold leading-none text-brand tabular-nums">
                   <AnimatedPrice value={price.total} />
                 </p>
               </div>
@@ -1079,7 +1081,7 @@ function NotaPenawaran() {
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="grid size-10 -rotate-3 place-items-center rounded-2xl border border-brand/20 bg-brand-soft text-brand shadow-xs">
-              <span className="font-display text-[0.88rem] font-black">MJ</span>
+              <span className="font-display text-[0.88rem] font-bold">MJ</span>
             </div>
             <div>
               <p className="font-display text-lg font-bold leading-none tracking-tight text-ink">
@@ -1121,7 +1123,7 @@ function NotaPenawaran() {
         </div>
 
         <p className="mt-3.5 text-[0.74rem] leading-relaxed text-muted">
-          ⚡ Admin akan membaca brief kamu dan memberikan penawaran terbaik dalam &lt;1 jam kerja.
+          Admin akan membaca brief kamu dan memberikan penawaran terbaik dalam &lt;1 jam kerja.
         </p>
 
         <div className="mt-5 flex justify-end">
@@ -1175,14 +1177,14 @@ function SuccessPanel({
 
   return (
     <div ref={panelRef} className="mx-auto max-w-xl">
-      <div className="overflow-hidden rounded-3xl border border-line bg-white p-7 shadow-2xl shadow-brand/10 sm:p-9">
+      <div className="overflow-hidden rounded-2xl border border-line bg-white p-7 shadow-2xl shadow-brand/10 sm:p-9">
         <div role="status" aria-live="polite">
-          <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3.5 py-1 text-[0.76rem] font-bold text-emerald-800">
-            <span aria-hidden className="size-2 rounded-full bg-emerald-500 " />
+          <span className="inline-flex items-center gap-2 rounded-full border border-mint/25 bg-mint-soft px-3.5 py-1 text-[0.76rem] font-bold text-mint">
+            <span aria-hidden className="size-2 rounded-full bg-mint " />
             {mode === "hitung" ? "Pesanan Siap Dikirim" : "Brief Siap Dikirim"}
           </span>
 
-          <h3 className="mt-4 font-display text-2xl font-extrabold tracking-tight text-ink sm:text-3xl">
+          <h3 className="mt-4 font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
             {mode === "hitung"
               ? "Tinggal Kirim ke WhatsApp Admin!"
               : "Tinggal Kirimkan Brief Kamu!"}
@@ -1207,11 +1209,11 @@ function SuccessPanel({
             <dt className="text-muted text-[0.72rem] font-bold uppercase tracking-wider">
               {mode === "hitung" ? "Estimasi Biaya" : "Status Harga"}
             </dt>
-            <dd className="mt-1 font-mono text-base font-black tabular-nums text-brand">
+            <dd className="mt-1 font-mono text-base font-bold tabular-nums text-brand">
               {total ? rupiah(total) : "Menunggu Admin"}
             </dd>
             {dpAmount ? (
-              <dd className="mt-0.5 text-[0.72rem] font-semibold text-emerald-700">
+              <dd className="mt-0.5 text-[0.72rem] font-semibold text-mint">
                 Bisa DP 50%: {rupiah(dpAmount)}
               </dd>
             ) : null}
@@ -1238,7 +1240,7 @@ function SuccessPanel({
                 >
                   {tersalin ? (
                     <>
-                      <Check className="size-3.5 text-emerald-500" />
+                      <Check className="size-3.5 text-mint" />
                       <span>Tersalin!</span>
                     </>
                   ) : (
@@ -1271,7 +1273,7 @@ function SuccessPanel({
             </div>
 
             <p className="mt-3.5 text-center text-[0.76rem] leading-relaxed text-muted">
-              ✨ Format chat sudah tersusun rapi otomatis. Kamu cukup klik tombol kirim di WhatsApp.
+              Format chat sudah tersusun rapi otomatis. Kamu cukup klik tombol kirim di WhatsApp.
             </p>
           </>
         ) : (

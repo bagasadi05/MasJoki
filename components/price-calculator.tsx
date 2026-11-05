@@ -1221,7 +1221,7 @@ function NotaPenawaran() {
             Estimasi Biaya
           </p>
           <p className="font-display text-xl font-bold tracking-tight text-brand">
-            Dihitung Bagas
+            Dihitung Mas Joki
           </p>
         </div>
 
@@ -1313,7 +1313,7 @@ function SuccessPanel({
               {mode === "hitung" ? "Estimasi Biaya" : "Status Harga"}
             </dt>
             <dd className="mt-1 font-mono text-base font-bold tabular-nums text-brand">
-              {total ? rupiah(total) : "Menunggu Bagas"}
+              {total ? rupiah(total) : "Dihitung Mas Joki"}
             </dd>
             {dpAmount ? (
               <dd className="mt-0.5 text-xs font-semibold text-mint">

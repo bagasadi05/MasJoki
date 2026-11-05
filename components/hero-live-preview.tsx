@@ -105,9 +105,9 @@ export function HeroLivePreview() {
         {/* Tab Pilihan Simulasi Cepat */}
         <div className="mt-4">
           <p className="mb-2 text-[0.72rem] font-bold uppercase tracking-wider text-muted">
-            Pilih Contoh Simulasi Tugas:
+            Pilih Contoh Tugas Populer:
           </p>
-          <div className="grid grid-cols-3 gap-1.5 rounded-xl border border-line bg-paper-2 p-1">
+          <div className="grid grid-cols-3 gap-1.5 rounded-2xl border border-line bg-paper-2 p-1.5">
             {PRESETS.map((preset) => {
               const aktif = preset.id === selectedId;
               return (
@@ -115,13 +115,18 @@ export function HeroLivePreview() {
                   key={preset.id}
                   type="button"
                   onClick={() => setSelectedId(preset.id)}
-                  className={`rounded-lg py-2 px-1 text-center font-display text-[0.74rem] font-bold transition-all ${
+                  className={`rounded-xl py-2 px-1.5 text-center transition-all cursor-pointer ${
                     aktif
-                      ? "bg-white text-brand shadow-xs ring-1 ring-brand/20"
+                      ? "bg-white text-ink shadow-sm ring-2 ring-brand/25"
                       : "text-ink-soft hover:bg-white/60 hover:text-ink"
                   }`}
                 >
-                  <span className="block truncate">{preset.label}</span>
+                  <span className="block font-display text-[0.74rem] font-black truncate leading-tight">
+                    {preset.label}
+                  </span>
+                  <span className="block font-mono text-[0.62rem] text-muted truncate mt-0.5">
+                    {preset.tag}
+                  </span>
                 </button>
               );
             })}
@@ -144,19 +149,19 @@ export function HeroLivePreview() {
         </div>
 
         {/* Action: Bawa Ke Kalkulator */}
-        <div className="mt-5 flex items-center justify-between gap-3 rounded-2xl bg-white/90 p-3.5 border border-line shadow-xs">
+        <div className="mt-5 flex items-center justify-between gap-3 rounded-2xl bg-paper-2/70 p-3.5 border border-line">
           <div>
-            <p className="text-[0.72rem] font-bold uppercase tracking-wider text-muted">
-              Punya jumlah tugas berbeda?
+            <p className="text-[0.7rem] font-bold uppercase tracking-wider text-muted">
+              Punya kuantitas tugas sendiri?
             </p>
             <p className="font-display text-[0.84rem] font-bold text-ink">
-              Hitung nominal persismu sekarang
+              Hitung biaya persismu sekarang
             </p>
           </div>
           <button
             type="button"
             onClick={() => pilihLayanan(service.id)}
-            className="inline-flex items-center gap-1.5 rounded-xl bg-brand px-3.5 py-2.5 text-[0.78rem] font-bold text-white shadow-xs transition-all hover:bg-brand-dark hover:shadow-md cursor-pointer"
+            className="inline-flex items-center gap-1.5 rounded-xl bg-brand px-4 py-2.5 text-[0.8rem] font-bold text-white shadow-xs transition-all hover:bg-brand-dark hover:shadow-md cursor-pointer"
           >
             <span>Buka Kalkulator</span>
             <ArrowRight className="size-3.5" />

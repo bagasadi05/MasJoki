@@ -85,8 +85,8 @@ export function Nota({
           </div>
 
           <div className="text-right">
-            <span className="inline-block rounded-md bg-paper-2 px-2 py-0.5 font-mono text-[0.66rem] font-semibold uppercase tracking-wider text-muted">
-              {code}
+            <span className="inline-block rounded-md bg-paper-2 px-2.5 py-1 font-mono text-[0.66rem] font-extrabold uppercase tracking-wider text-muted border border-line">
+              REC-{code}
             </span>
           </div>
         </div>
@@ -150,7 +150,7 @@ export function Nota({
         <div className="my-5 border-t border-dashed border-line" />
 
         {/* Total Akhir dengan Animasi Angka Berputar Halus */}
-        <div className="flex items-end justify-between gap-3 rounded-xl bg-paper-2/70 p-3.5 border border-line/60">
+        <div className="flex items-end justify-between gap-3 rounded-2xl bg-paper-2/70 p-4 border border-line/60">
           <div>
             <p className="text-[0.72rem] font-bold uppercase tracking-wider text-muted">
               Total Akhir
@@ -158,7 +158,7 @@ export function Nota({
             <p className="text-[0.68rem] text-muted">
               {effectiveUnitLabel
                 ? `Rata-rata ${effectiveUnitLabel}`
-                : "Terkunci setelah file dicek"}
+                : "Terkunci sebelum chat"}
             </p>
           </div>
           <p className="font-display text-[1.85rem] font-extrabold leading-none tracking-tight text-brand tabular-nums">
@@ -168,7 +168,7 @@ export function Nota({
 
         {/* Info Opsi DP 50% & Estimasi Pengerjaan */}
         {dpAmount || estimatedTurnaround || equivalentLabel ? (
-          <div className="mt-3.5 space-y-2 rounded-xl border border-brand/15 bg-brand-soft/40 p-3 text-[0.75rem]">
+          <div className="mt-3.5 space-y-2 rounded-2xl border border-brand/15 bg-brand-soft/40 p-3.5 text-[0.75rem]">
             {dpAmount ? (
               <div className="flex items-center justify-between gap-2">
                 <span className="flex items-center gap-1.5 font-semibold text-ink-soft">
@@ -206,18 +206,36 @@ export function Nota({
           </p>
         ) : null}
 
-        {/* Stempel verifikasi */}
-        {stamp ? (
-          <div className="mt-5 flex items-center justify-between">
-            <div className="flex items-center gap-1 font-mono text-[0.65rem] tracking-widest text-muted/60 uppercase">
-              ||| |||| | ||||| ||
-            </div>
-            <span className={`stempel ${animate ? "stempel-masuk" : ""}`}>
-              <Check className="size-3.5 inline mr-1 stroke-[3]" />
-              {stamp}
+        {/* Stempel verifikasi & Barcode Kwitansi Fisik */}
+        <div className="mt-5 flex items-center justify-between gap-2 pt-2 border-t border-dashed border-line">
+          <div className="flex flex-col">
+            <span
+              aria-hidden
+              className="font-mono text-[0.78rem] tracking-[0.22em] text-muted/60 select-none uppercase font-bold"
+            >
+              ||||| ||| |||| || |||||
+            </span>
+            <span className="font-mono text-[0.58rem] text-muted tracking-wider">
+              VERIFIED LEDGER #MJ-2026
             </span>
           </div>
-        ) : null}
+
+          {stamp ? (
+            <span className={`stempel ${animate ? "stempel-masuk" : ""}`}>
+              <Check className="size-3 inline mr-1 stroke-[3]" />
+              {stamp}
+            </span>
+          ) : null}
+        </div>
+
+        {/* Sobekan Fisik Kwitansi */}
+        <div className="mt-4 pt-2.5 border-t border-dotted border-line/60 flex items-center justify-between text-[0.6rem] text-muted/50 font-mono select-none">
+          <span className="flex items-center gap-1">
+            <span>✂</span>
+            <span>BATAS POTONG RESMI</span>
+          </span>
+          <span>MAS JOKI ACADEMIC</span>
+        </div>
       </div>
     </div>
   );

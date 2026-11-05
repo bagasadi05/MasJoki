@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Copy, CreditCard, ExternalLink, ShieldCheck } from "lucide-react";
+import { Check, Copy, ExternalLink, ShieldCheck } from "lucide-react";
 import { pembayaran, waLink } from "@/lib/site";
 
 const METODE: Record<
@@ -12,21 +12,21 @@ const METODE: Record<
     ikon: "🛍️",
     badge: "bg-[#EE4D2D] text-white",
     border: "border-orange-200",
-    bg: "bg-orange-50/60",
+    bg: "bg-orange-50/70",
     text: "text-orange-950",
   },
   GoPay: {
     ikon: "💳",
     badge: "bg-[#00AED6] text-white",
     border: "border-sky-200",
-    bg: "bg-sky-50/60",
+    bg: "bg-sky-50/70",
     text: "text-sky-950",
   },
   DANA: {
     ikon: "📱",
     badge: "bg-[#118EEA] text-white",
     border: "border-blue-200",
-    bg: "bg-blue-50/60",
+    bg: "bg-blue-50/70",
     text: "text-blue-950",
   },
 };
@@ -49,37 +49,36 @@ export function Pembayaran() {
   }
 
   return (
-    <section id="bayar" className="border-y border-line bg-langit-soft/50">
+    <section id="bayar" className="border-t border-line bg-paper-2/40">
       <div className="mx-auto grid max-w-6xl gap-12 px-5 py-16 sm:px-8 sm:py-24 lg:grid-cols-[0.52fr_0.48fr] lg:gap-16">
         <div>
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-[0.74rem] font-bold text-sky-800">
-            <CreditCard className="size-3.5 text-sky-700" />
-            <span>Pembayaran Praktis</span>
+          <span className="stempel">
+            SATU NOMOR RESMI
           </span>
 
-          <h2 className="mt-3 font-display text-[1.95rem] leading-tight tracking-[-0.02em] text-ink sm:text-[2.6rem]">
-            Bayar gampang lewat <span className="text-sky-600">e-wallet</span>.
+          <h2 className="mt-3 font-display text-[2rem] leading-tight tracking-[-0.02em] text-ink sm:text-[2.6rem]">
+            Pembayaran praktis lewat e-wallet resmi.
           </h2>
 
-          <p className="mt-4 max-w-[46ch] text-[0.96rem] leading-relaxed text-ink-soft">
+          <p className="mt-4 max-w-[46ch] text-[0.98rem] leading-relaxed text-ink-soft">
             ShopeePay, GoPay, atau DANA — cukup transfer ke satu nomor yang sama.
-            Bebas repot tanpa perlu token bank atau ribet scan QR.
+            Bebas repot tanpa perlu token bank atau scan QR yang sering gagal.
           </p>
 
           {/* Payment Card Box */}
-          <div className="mt-7 rounded-2xl border border-line bg-white p-6 shadow-md shadow-sky-900/5">
-            <p className="text-[0.74rem] font-bold uppercase tracking-wider text-muted">
-              Satu Nomor untuk Semua E-Wallet
+          <div className="mt-7 rounded-3xl border border-line bg-white p-7 shadow-sm">
+            <p className="text-[0.72rem] font-bold uppercase tracking-wider text-muted">
+              Nomor Akun E-Wallet Mas Joki
             </p>
 
-            <div className="mt-2 flex flex-wrap items-center justify-between gap-3 rounded-xl bg-paper-2/70 p-3.5 border border-line">
-              <span className="font-mono text-2xl font-extrabold tabular-nums tracking-tight text-ink sm:text-3xl">
+            <div className="mt-3 flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-paper-2 p-4 border border-line">
+              <span className="font-mono text-2xl font-black tabular-nums tracking-tight text-ink sm:text-3xl">
                 {pembayaran.nomor}
               </span>
               <button
                 type="button"
                 onClick={salin}
-                className={`inline-flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-[0.8rem] font-bold transition-all cursor-pointer ${
+                className={`inline-flex items-center gap-1.5 rounded-xl px-4 py-2.5 text-[0.82rem] font-bold transition-all cursor-pointer ${
                   tersalin
                     ? "bg-emerald-600 text-white shadow-xs"
                     : "bg-brand text-white hover:bg-brand-dark shadow-xs"
@@ -87,12 +86,12 @@ export function Pembayaran() {
               >
                 {tersalin ? (
                   <>
-                    <Check className="size-3.5" />
+                    <Check className="size-4" />
                     <span>Tersalin!</span>
                   </>
                 ) : (
                   <>
-                    <Copy className="size-3.5" />
+                    <Copy className="size-4" />
                     <span>Salin Nomor</span>
                   </>
                 )}
@@ -111,10 +110,10 @@ export function Pembayaran() {
                 return (
                   <div
                     key={metode}
-                    className={`flex flex-col items-center justify-center rounded-xl border p-2.5 text-center ${info.border} ${info.bg}`}
+                    className={`flex flex-col items-center justify-center rounded-2xl border p-3 text-center ${info.border} ${info.bg}`}
                   >
                     <span className="text-xl">{info.ikon}</span>
-                    <span className={`mt-1 font-display text-[0.8rem] font-bold ${info.text}`}>
+                    <span className={`mt-1 font-display text-[0.82rem] font-bold ${info.text}`}>
                       {metode}
                     </span>
                   </div>
@@ -132,7 +131,7 @@ export function Pembayaran() {
               href={waKonfirmasi}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-xl border border-ink bg-white px-5 py-3 text-[0.86rem] font-bold text-ink shadow-xs transition-colors hover:bg-ink hover:text-white"
+              className="inline-flex items-center gap-2 rounded-2xl border-2 border-ink bg-white px-6 py-3.5 text-[0.88rem] font-bold text-ink shadow-xs transition-colors hover:bg-ink hover:text-white"
             >
               <span>Konfirmasi Pembayaran di WhatsApp</span>
               <ExternalLink className="size-3.5 opacity-60" />
@@ -146,55 +145,55 @@ export function Pembayaran() {
             Alur Konfirmasi &amp; Pembayaran
           </h3>
 
-          <ol className="mt-6 space-y-5 border-l-2 border-brand/20 pl-6">
+          <ol className="mt-6 space-y-6 border-l-2 border-brand/20 pl-6">
             {[
               {
                 nomor: "1",
                 warna: "bg-brand text-white",
-                judul: "Kirim pesanan via formulir / WhatsApp",
+                judul: "Kirim pesanan via kalkulator / WhatsApp",
                 isi: "Lengkapi kalkulator, lalu klik kirim. Teks pesanan beserta estimasi biaya langsung masuk ke chat admin.",
               },
               {
                 nomor: "2",
-                warna: "bg-amber-500 text-white",
+                warna: "bg-amber-600 text-white",
                 judul: "Admin konfirmasi & kunci total biaya",
-                isi: "Admin memeriksa file dan instruksi tugasmu, kemudian memastikan total biaya tetap tanpa biaya tambahan tersembunyi.",
+                isi: "Admin memeriksa file dan instruksi tugasmu, kemudian mengonfirmasi total biaya tetap tanpa biaya tambahan tersembunyi.",
               },
               {
                 nomor: "3",
                 warna: "bg-emerald-600 text-white",
-                judul: "Transfer & kirim bukti chat",
-                isi: "Kirim pembayaran ke ShopeePay / GoPay / DANA di atas, kirim screenshot bukti transfer, dan pengerjaan segera dimulai!",
+                judul: "Transfer e-wallet & kirim bukti chat",
+                isi: "Kirim pembayaran ke nomor di samping, kirim screenshot bukti transfer, dan pengerjaan tugas langsung dimulai tepat waktu.",
               },
             ].map((langkah) => (
               <li key={langkah.judul} className="relative">
                 <span
                   aria-hidden
-                  className={`absolute -left-[2.15rem] top-0.5 grid size-6 place-items-center rounded-full font-mono text-xs font-bold shadow-xs ${langkah.warna}`}
+                  className={`absolute -left-[2.2rem] top-0.5 grid size-6 place-items-center rounded-full font-mono text-xs font-bold shadow-xs ${langkah.warna}`}
                 >
                   {langkah.nomor}
                 </span>
-                <p className="font-display text-[0.98rem] font-bold text-ink">
+                <p className="font-display text-[1rem] font-bold text-ink">
                   {langkah.judul}
                 </p>
-                <p className="mt-1 text-[0.84rem] leading-relaxed text-muted">
+                <p className="mt-1 text-[0.86rem] leading-relaxed text-ink-soft/85">
                   {langkah.isi}
                 </p>
               </li>
             ))}
           </ol>
 
-          <div className="mt-8 rounded-2xl border border-line bg-white p-5 shadow-2xs">
-            <div className="flex items-center gap-3">
-              <div className="grid size-10 place-items-center rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-200">
-                <ShieldCheck className="size-5" />
+          <div className="mt-8 rounded-3xl border border-line bg-white p-6 shadow-xs">
+            <div className="flex items-center gap-3.5">
+              <div className="grid size-11 place-items-center rounded-2xl bg-emerald-50 text-emerald-700 border border-emerald-200">
+                <ShieldCheck className="size-6" />
               </div>
               <div>
-                <p className="text-[0.84rem] font-bold text-ink">
-                  Garansi Revisi &amp; File Lengkap
+                <p className="text-[0.92rem] font-bold text-ink">
+                  Garansi Revisi &amp; File Asli Lengkap
                 </p>
-                <p className="text-[0.76rem] text-muted">
-                  Setiap pesanan mencakup 2× revisi gratis sesuai brief awal, plus seluruh file dokumen mentah (bisa diedit).
+                <p className="mt-0.5 text-[0.8rem] text-muted">
+                  Setiap pesanan mencakup 2× revisi gratis sesuai brief awal, plus seluruh file dokumen mentah (.docx / .pptx).
                 </p>
               </div>
             </div>

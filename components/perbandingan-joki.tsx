@@ -1,30 +1,30 @@
-import { CheckCircle2, Scale, ShieldAlert, Star, XCircle } from "lucide-react";
+import { CheckCircle2, ShieldAlert, ShieldCheck, XCircle } from "lucide-react";
 
 export function PerbandinganJoki() {
   const perbandingan = [
     {
       kategori: "Transparansi Biaya",
-      biasa: "Harga ditembak sesuka hati lewat DM, sering minta biaya tambahan tak jelas di akhir.",
-      masJoki: "Harga dihitung terbuka di kalkulator nota resmi sebelum chat. Terkunci tanpa biaya tersembunyi.",
+      biasa: "Harga ditembak sesuka hati lewat DM, sering mendadak minta biaya tambahan di tengah jalan.",
+      masJoki: "Harga dihitung terbuka di nota resmi sebelum chat. Angka terkunci tanpa biaya siluman.",
     },
     {
       kategori: "Kualitas & Integritas",
-      biasa: "Asal generate dari bot AI mentah tanpa disunting, berantakan dan rawan terdeteksi.",
-      masJoki: "Dikerjakan dan disunting secara cermat dengan rujukan literatur valid dan tata bahasa natural.",
+      biasa: "Asal generate dari bot AI mentah tanpa disunting, berantakan dan langsung dicurigai dosen.",
+      masJoki: "Disunting cermat dengan rujukan literatur valid, alur penalaran runut, dan tata bahasa natural.",
     },
     {
       kategori: "Garansi Revisi",
-      biasa: "Minta perbaikan malah slow respon, minta biaya tambahan lagi, atau bahkan akun diblokir.",
-      masJoki: "Garansi 2× revisi gratis sesuai arahan awal atau pedoman format kampusmu.",
+      biasa: "Minta perbaikan malah slow respon, minta uang tambahan lagi, atau bahkan akun diblokir.",
+      masJoki: "Dilindungi garansi 2× revisi gratis sesuai instruksi tugas atau pedoman format kampusmu.",
     },
     {
-      kategori: "Format File Akhir",
-      biasa: "Hanya dikirim PDF terkunci yang tidak bisa kamu perbaiki atau tambahkan lagi.",
-      masJoki: "File asli sumber diserahkan (Word .docx, PowerPoint .pptx) sehingga kamu bebas mengeditnya.",
+      kategori: "Format Penyerahan File",
+      biasa: "Hanya dikirim PDF terkunci yang tidak bisa kamu ubah atau kembangkan lagi.",
+      masJoki: "File mentah asli diserahkan (.docx, .pptx, dsb.) sehingga kamu bebas mengeditnya kapan pun.",
     },
     {
       kategori: "Keamanan Pembayaran",
-      biasa: "Rekening ganti-ganti atas nama perorangan tak jelas, rawan penipuan.",
+      biasa: "Rekening ganti-ganti atas nama perorangan tak dikenal, rawan modus penipuan online.",
       masJoki: "Satu nomor pembayaran resmi untuk ShopeePay, GoPay, dan DANA atas nama admin Mas Joki.",
     },
   ];
@@ -32,34 +32,37 @@ export function PerbandinganJoki() {
   return (
     <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
       <div className="text-center max-w-2xl mx-auto">
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-brand/20 bg-brand-soft px-3.5 py-1 text-xs font-bold text-brand shadow-2xs">
-          <Scale className="size-3.5" />
-          <span>Bandingkan Sendiri</span>
+        <span className="stempel">
+          BERITA ACARA KOMPARASI
         </span>
         <h2 className="mt-3 font-display text-[2.1rem] leading-tight tracking-[-0.02em] text-ink sm:text-[2.7rem]">
-          Beda Mas Joki vs Joki Medsos Liar.
+          Beda Mas Joki vs Joki Anonim Medsos.
         </h2>
         <p className="mt-3.5 text-[0.98rem] leading-relaxed text-ink-soft">
-          Jangan korbankan nilai semestermu pada joki anonim yang tidak bertanggung jawab.
-          Inilah alasan kenapa mahasiswa selalu mempercayakan tugasnya ke Mas Joki.
+          Jangan pertaruhkan nilai mata kuliahmu pada joki medsos yang tidak jelas identitas dan tanggung jawabnya.
         </p>
       </div>
 
-      <div className="mt-12 grid gap-6 lg:grid-cols-2">
+      <div className="mt-12 grid gap-8 lg:grid-cols-2">
         {/* Kolom Joki Medsos Biasa */}
-        <div className="rounded-3xl border border-red-200 bg-red-50/50 p-7 sm:p-9 shadow-sm">
-          <div className="flex items-center gap-3 border-b border-red-200 pb-5">
-            <span className="grid size-11 place-items-center rounded-2xl bg-red-100 text-red-600">
-              <ShieldAlert className="size-6" />
-            </span>
-            <div>
-              <h3 className="font-display text-xl font-bold text-red-950">
-                Joki Anonim di Medsos
-              </h3>
-              <p className="text-xs font-medium text-red-700">
-                Twitter / Telegram / IG tanpa identitas jelas
-              </p>
+        <div className="relative rounded-3xl border-2 border-red-200/90 bg-[#FFFBFB] p-7 sm:p-9 shadow-xs">
+          <div className="flex items-start justify-between gap-3 border-b border-red-200 pb-5">
+            <div className="flex items-center gap-3">
+              <span className="grid size-11 place-items-center rounded-2xl bg-red-100 text-red-600">
+                <ShieldAlert className="size-6" />
+              </span>
+              <div>
+                <h3 className="font-display text-xl font-bold text-red-950">
+                  Joki Anonim di Medsos
+                </h3>
+                <p className="text-xs font-medium text-red-700/80">
+                  Twitter / Telegram / IG tanpa nama &amp; sistem jelas
+                </p>
+              </div>
             </div>
+            <span className="stempel-merah">
+              ⚠ RISIKO TINGGI
+            </span>
           </div>
 
           <ul className="mt-6 space-y-5">
@@ -67,10 +70,10 @@ export function PerbandinganJoki() {
               <li key={item.kategori} className="flex items-start gap-3">
                 <XCircle className="mt-0.5 size-4 text-red-500 shrink-0" />
                 <div>
-                  <p className="text-[0.82rem] font-bold text-red-800">
+                  <p className="text-[0.76rem] font-bold uppercase tracking-wider text-red-800">
                     {item.kategori}
                   </p>
-                  <p className="mt-0.5 text-[0.86rem] leading-relaxed text-red-950/80">
+                  <p className="mt-0.5 text-[0.88rem] leading-relaxed text-red-950/85">
                     {item.biasa}
                   </p>
                 </div>
@@ -80,24 +83,24 @@ export function PerbandinganJoki() {
         </div>
 
         {/* Kolom Mas Joki */}
-        <div className="relative rounded-3xl border-2 border-brand bg-brand-soft/40 p-7 sm:p-9 shadow-xl shadow-brand/10 ring-4 ring-brand/10">
-          <span className="absolute -top-3.5 right-6 inline-flex items-center gap-1 rounded-full bg-brand px-3.5 py-1 font-display text-xs font-black uppercase tracking-wider text-white shadow-md">
-            <Star className="size-3 fill-white" />
-            <span>Pilihan Terpercaya</span>
-          </span>
-
-          <div className="flex items-center gap-3 border-b border-brand/20 pb-5">
-            <span className="grid size-11 place-items-center rounded-2xl bg-brand text-white shadow-xs">
-              <CheckCircle2 className="size-6" />
-            </span>
-            <div>
-              <h3 className="font-display text-xl font-extrabold text-brand">
-                Mas Joki (Asisten Terbuka)
-              </h3>
-              <p className="text-xs font-semibold text-brand/80">
-                Sistem transparan, aman, dan bergaransi
-              </p>
+        <div className="relative rounded-3xl border-2 border-brand bg-white p-7 sm:p-9 shadow-xl shadow-brand/10 ring-4 ring-brand/5">
+          <div className="flex items-start justify-between gap-3 border-b border-brand/20 pb-5">
+            <div className="flex items-center gap-3">
+              <span className="grid size-11 place-items-center rounded-2xl bg-brand text-white shadow-xs">
+                <ShieldCheck className="size-6" />
+              </span>
+              <div>
+                <h3 className="font-display text-xl font-extrabold text-brand">
+                  Standar Layanan Mas Joki
+                </h3>
+                <p className="text-xs font-semibold text-brand/80">
+                  Sistem nota terbuka, harga terkunci, &amp; bergaransi
+                </p>
+              </div>
             </div>
+            <span className="stempel-hijau">
+              ✓ TERVERIFIKASI
+            </span>
           </div>
 
           <ul className="mt-6 space-y-5">
@@ -105,10 +108,10 @@ export function PerbandinganJoki() {
               <li key={item.kategori} className="flex items-start gap-3">
                 <CheckCircle2 className="mt-0.5 size-4 text-emerald-600 shrink-0" />
                 <div>
-                  <p className="text-[0.82rem] font-bold text-brand">
+                  <p className="text-[0.76rem] font-bold uppercase tracking-wider text-brand">
                     {item.kategori}
                   </p>
-                  <p className="mt-0.5 text-[0.86rem] leading-relaxed text-ink font-medium">
+                  <p className="mt-0.5 text-[0.88rem] leading-relaxed text-ink font-medium">
                     {item.masJoki}
                   </p>
                 </div>

@@ -356,7 +356,7 @@ export function BeforeAfterShowcase() {
           <div className="flex items-center gap-2.5 text-ink-soft">
             <span className="size-2 rounded-full bg-brand " />
             <span>
-              Ingin hasil tugasmu dibuat serapi ini? Dikerjakan cermat oleh tim profesional.
+              Ingin hasil tugasmu dibuat serapi ini? Dikerjakan langsung oleh Bagas — tanpa perantara.
             </span>
           </div>
           <a

@@ -141,11 +141,15 @@ export const WARNA_LAYANAN: Record<ServiceId, AksenId> = {
   parafrase: "biru",
   humanisasi: "mint",
   makalah: "koral",
+  artikel_ilmiah: "lilac",
+  jurnal_submit: "biru",
   jurnal: "lilac",
   powerpoint: "amber",
   word: "langit",
   terjemah: "olive",
+  paket_abstrak: "olive",
   desain: "rose",
+  turnitin_ai: "mint",
 };
 
 /** Inisial dua huruf untuk cap/stempel kecil, gaya nota. */
@@ -153,13 +157,17 @@ export const INISIAL: Record<ServiceId, string> = {
   parafrase: "Pa",
   humanisasi: "Hu",
   makalah: "Ma",
+  artikel_ilmiah: "AI",
+  jurnal_submit: "JS",
   jurnal: "Ju",
   powerpoint: "PP",
   word: "Wo",
   terjemah: "Te",
+  paket_abstrak: "Ab",
   desain: "De",
+  turnitin_ai: "Tu",
 };
 
 export function aksenLayanan(id: ServiceId): Aksen {
-  return AKSEN[WARNA_LAYANAN[id]];
+  return AKSEN[WARNA_LAYANAN[id] ?? "biru"];
 }

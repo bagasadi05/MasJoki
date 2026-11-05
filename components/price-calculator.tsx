@@ -36,16 +36,17 @@ import {
 } from "@/lib/pricing";
 import {
   BASIS_LABEL,
+  CALCULABLE_SERVICES,
   getService,
   priceLabel,
   SERVICES,
   type ServiceId,
 } from "@/lib/services";
-import { pembayaran } from "@/lib/site";
+import { pembayaran, waLink } from "@/lib/site";
 import type { ActionResult } from "@/lib/types";
 
 const fieldClass =
-  "w-full rounded-2xl border border-line bg-white px-4 py-3.5 text-sm text-ink placeholder:text-muted/60 transition-all duration-150 hover:border-line-strong focus:border-brand focus:ring-3 focus:ring-brand/15 focus:outline-none";
+  "w-full rounded-2xl border border-line bg-white px-4 py-3.5 text-base sm:text-sm text-ink placeholder:text-muted/60 transition-all duration-150 hover:border-line-strong focus:border-brand focus:ring-3 focus:ring-brand/15 focus:outline-none";
 
 const labelClass = "mb-2.5 block text-[0.84rem] font-bold text-ink";
 
@@ -127,9 +128,15 @@ function PesanGalat({ id, pesan }: { id: string; pesan?: string }) {
 }
 
 function defaultQtys(): Record<string, string> {
-  return Object.fromEntries(
-    SERVICES.map((service) => [service.id, String(service.defaultQty)]),
-  );
+  return {
+    ...Object.fromEntries(
+      SERVICES.map((service) => [service.id, String(service.defaultQty)]),
+    ),
+    artikel_ilmiah: "2000",
+    jurnal_submit: "4000",
+    paket_abstrak: "250",
+    word: "25",
+  };
 }
 
 const KONVERSI_HALAMAN_KATA = [
@@ -146,7 +153,7 @@ export function PriceCalculator() {
   const aksen = aksenLayanan(service.id);
 
   const [qtyInput, setQtyInput] = useState<Record<string, string>>(defaultQtys);
-  const [deadlineId, setDeadlineId] = useState<DeadlineId>("normal");
+  const [deadlineId, setDeadlineId] = useState<DeadlineId>("santai");
   const difficultyId: DifficultyId = "standar";
   const [selectedAddons, setSelectedAddons] = useState<
     Record<string, AddonId[]>
@@ -154,6 +161,10 @@ export function PriceCalculator() {
   const [quoteService, setQuoteService] = useState<ServiceId | "lainnya">(
     serviceId,
   );
+
+  useEffect(() => {
+    setQuoteService(serviceId);
+  }, [serviceId]);
 
   const [result, setResult] = useState<ActionResult | null>(null);
   const [pending, startTransition] = useTransition();
@@ -187,14 +198,32 @@ export function PriceCalculator() {
   );
 
   const sliderMax =
-    service.basis === "kata"
-      ? 10000
-      : service.basis === "halaman"
-        ? 80
-        : service.basis === "slide"
-          ? 50
-          : 10;
-  const sliderStep = service.chunk > 1 ? service.chunk : 1;
+    service.id === "artikel_ilmiah"
+      ? 4000
+      : service.id === "jurnal_submit"
+        ? 8000
+        : service.id === "paket_abstrak"
+          ? 500
+          : service.id === "word"
+            ? 150
+            : service.basis === "kata"
+              ? 10000
+              : service.basis === "halaman"
+                ? 80
+                : service.basis === "slide"
+                  ? 50
+                  : 10;
+
+  const sliderStep =
+    service.id === "word"
+      ? 1
+      : service.id === "paket_abstrak"
+        ? 10
+        : service.id === "artikel_ilmiah" || service.id === "jurnal_submit"
+          ? 100
+          : service.chunk > 1
+            ? service.chunk
+            : 1;
 
   function ubahJumlah(value: string) {
     setQtyInput((prev) => ({
@@ -206,7 +235,16 @@ export function PriceCalculator() {
   function sesuaikanJumlah(selisih: number) {
     const nilaiLama =
       Number(qtyInput[service.id] ?? service.defaultQty) || service.defaultQty;
-    const langkah = service.chunk > 1 ? service.chunk : 1;
+    const langkah =
+      service.id === "word"
+        ? 1
+        : service.id === "paket_abstrak"
+          ? 25
+          : service.id === "artikel_ilmiah" || service.id === "jurnal_submit"
+            ? 250
+            : service.chunk > 1
+              ? service.chunk
+              : 1;
     const nilaiBaru = Math.max(service.minQty, nilaiLama + selisih * langkah);
     ubahJumlah(String(nilaiBaru));
   }
@@ -223,6 +261,13 @@ export function PriceCalculator() {
   }
 
   function pilihLayananLain(id: ServiceId) {
+    const target = getService(id);
+    if (target.customQuoteOnly) {
+      setMode("penawaran");
+      setQuoteService(id);
+      setResult(null);
+      return;
+    }
     setServiceId(id);
     setQuoteService(id);
     setResult(null);
@@ -368,7 +413,7 @@ export function PriceCalculator() {
                 </div>
 
                 <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
-                  {SERVICES.map((item) => {
+                  {CALCULABLE_SERVICES.map((item) => {
                     const aktif = item.id === service.id;
                     const itemAksen = aksenLayanan(item.id);
 
@@ -404,7 +449,7 @@ export function PriceCalculator() {
                         <span className="mt-2.5 text-[0.84rem] font-bold text-ink leading-tight">
                           {item.name}
                         </span>
-                        <span className="mt-1 font-mono text-[0.66rem] text-muted">
+                        <span className="mt-1 font-mono text-xs text-slate-600 font-medium">
                           {priceLabel(item)}
                         </span>
                       </button>
@@ -418,7 +463,16 @@ export function PriceCalculator() {
               <div className="rounded-2xl border border-line bg-white p-6 shadow-sm">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <label htmlFor="jumlah" className={labelClass}>
-                    2. Jumlah {BASIS_LABEL[service.basis]}
+                    2.{" "}
+                    {service.id === "artikel_ilmiah"
+                      ? "Perkiraan Jumlah Kata Naskah (Maks. 3.000 kata)"
+                      : service.id === "jurnal_submit"
+                        ? "Perkiraan Jumlah Kata Naskah (Maks. 6.000 kata)"
+                        : service.id === "paket_abstrak"
+                          ? "Jumlah Kata per Versi (Maks. 300 kata)"
+                          : service.id === "word"
+                            ? "Jumlah Halaman Dokumen Word"
+                            : `Jumlah ${BASIS_LABEL[service.basis]}`}
                   </label>
                   <span className="rounded-full bg-paper-2 px-3 py-1 text-[0.72rem] font-bold text-ink-soft">
                     {price.equivalentLabel}
@@ -522,6 +576,20 @@ export function PriceCalculator() {
                     <span className="shrink-0 font-bold text-amber">
                       Diskon Otomatis
                     </span>
+                  </div>
+                ) : null}
+
+                {/* Banner Peringatan Melebihi Batas Hitungan Otomatis */}
+                {price.isOverLimit ? (
+                  <div className="mt-4 rounded-2xl border border-amber/35 bg-amber-soft/85 p-4 text-[0.82rem] text-ink-soft">
+                    <p className="font-bold text-amber-950 flex items-center gap-2">
+                      <Lightbulb className="size-4 shrink-0 text-amber" />
+                      <span>Dialihkan ke Mode Penawaran Khusus</span>
+                    </p>
+                    <p className="mt-1.5 leading-relaxed text-ink-soft">
+                      {price.overLimitMessage ??
+                        "Jumlah naskah melebihi batas perhitungan otomatis. Silakan kirimkan brief ke Bagas untuk penawaran waktu & biaya khusus."}
+                    </p>
                   </div>
                 ) : null}
 
@@ -671,7 +739,7 @@ export function PriceCalculator() {
               <div className="flex items-start gap-3 rounded-2xl border border-line bg-paper-2/70 p-4 text-[0.78rem] text-ink-soft">
                 <Lightbulb className="mt-0.5 size-4 shrink-0 text-amber" />
                 <p className="leading-relaxed">
-                  <strong className="text-ink font-bold">Tentang Tingkat Kesulitan:</strong> Estimasi dihitung otomatis untuk pengerjaan tugas standar/umum. Jika tugasmu memiliki kebutuhan analisis data teknis khusus (seperti olah data SPSS, coding, atau uji laboratorium), admin Mas Joki yang akan menilai dan mengonfirmasi kesepakatannya di WhatsApp setelah memeriksa file brief.
+                  <strong className="text-ink font-bold">Tentang Tingkat Kesulitan:</strong> Estimasi dihitung otomatis untuk pengerjaan tugas standar/umum. Jika tugasmu memiliki kebutuhan analisis data teknis khusus (seperti olah data SPSS, coding, atau uji laboratorium), Bagas yang akan menilai dan mengonfirmasi kesepakatannya di WhatsApp setelah memeriksa file brief.
                 </p>
               </div>
 
@@ -777,8 +845,8 @@ export function PriceCalculator() {
                   className={`${fieldClass} resize-y leading-relaxed`}
                 />
                 <PesanGalat id="galat-detail" pesan={galat?.detail} />
-                <p className="mt-1.5 text-[0.76rem] text-muted">
-                  Semakin rinci brief yang kamu berikan, semakin akurat dan cepat admin memberikan harga penawaran.
+                <p className="mt-1.5 text-xs text-slate-600">
+                  Semakin rinci brief yang kamu berikan, semakin akurat dan cepat Bagas memberikan harga penawaran.
                 </p>
               </div>
 
@@ -849,10 +917,11 @@ export function PriceCalculator() {
                   effectiveUnitLabel={price.effectiveUnitLabel}
                   estimatedTurnaround={price.estimatedTurnaround}
                   equivalentLabel={price.equivalentLabel}
-                  note="Harga terkunci setelah file dicek admin. Tidak ada biaya tersembunyi."
+                  note="Harga terkunci setelah file dicek Bagas. Tidak ada biaya tersembunyi."
                   stamp="Harga Transparan"
                   code="EST-LIVE"
                   aksen={aksen}
+                  minimumAdjustmentNote={price.minimumAdjustmentNote}
                 />
               ) : (
                 <NotaPenawaran />
@@ -903,8 +972,8 @@ export function PriceCalculator() {
             <h3 className="font-display text-xl font-bold text-ink">
               Data Kontak &amp; Pengiriman
             </h3>
-            <p className="mt-1 text-[0.82rem] text-muted">
-              Hanya digunakan admin untuk konfirmasi pengerjaan dan mengirim hasil file.
+            <p className="mt-1 text-xs sm:text-sm text-slate-600">
+              Hanya digunakan Bagas untuk konfirmasi pengerjaan dan mengirim hasil file.
             </p>
           </div>
 
@@ -1011,31 +1080,58 @@ export function PriceCalculator() {
           ) : null}
 
           {/* Submit Button */}
-          <button
-            type="submit"
-            disabled={pending}
-            aria-busy={pending}
-            className="w-full inline-flex items-center justify-center gap-2.5 rounded-2xl bg-brand px-7 py-4.5 text-[0.98rem] font-bold text-white shadow-lg shadow-brand/25 transition-all duration-200 hover:-translate-y-1 hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35 disabled:cursor-not-allowed disabled:opacity-60 active:translate-y-0 cursor-pointer"
-          >
-            {pending ? (
-              <span>Sedang Memproses…</span>
-            ) : mode === "hitung" ? (
-              <>
+          {mode === "hitung" && price.isOverLimit ? (
+            <div className="space-y-3">
+              <a
+                href={waLink(
+                  `Halo Mas Joki (Bagas), saya mau minta penawaran untuk layanan ${service.name} dengan jumlah perkiraan ${price.qty} ${BASIS_LABEL[service.basis]}. Tenggat: ${price.deadline.label}. Mohon info estimasi biaya dan waktu pengerjaannya!`
+                )}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full inline-flex items-center justify-center gap-2.5 rounded-2xl bg-brand px-7 py-4.5 text-[0.98rem] font-bold text-white shadow-lg shadow-brand/25 transition-all duration-200 hover:-translate-y-1 hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35 cursor-pointer"
+              >
                 <Send className="size-4.5" />
-                <span>Kirim Pesanan ke WhatsApp</span>
-                <span className="rounded-lg bg-white/20 px-2.5 py-0.5 font-mono text-sm font-bold">
-                  {rupiah(price.total)}
-                </span>
+                <span>Kirim Penawaran via WhatsApp</span>
                 <ArrowRight className="size-4" />
-              </>
-            ) : (
-              <>
-                <Send className="size-4.5" />
-                <span>Kirim Permintaan Penawaran</span>
-                <ArrowRight className="size-4" />
-              </>
-            )}
-          </button>
+              </a>
+              <button
+                type="button"
+                onClick={() => {
+                  setMode("penawaran");
+                  setQuoteService(service.id);
+                }}
+                className="w-full py-2 text-center text-xs font-bold text-brand hover:underline cursor-pointer"
+              >
+                Atau isi formulir detail di mode Minta Penawaran →
+              </button>
+            </div>
+          ) : (
+            <button
+              type="submit"
+              disabled={pending}
+              aria-busy={pending}
+              className="w-full inline-flex items-center justify-center gap-2.5 rounded-2xl bg-brand px-7 py-4.5 text-[0.98rem] font-bold text-white shadow-lg shadow-brand/25 transition-all duration-200 hover:-translate-y-1 hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35 disabled:cursor-not-allowed disabled:opacity-60 active:translate-y-0 cursor-pointer"
+            >
+              {pending ? (
+                <span>Sedang Memproses…</span>
+              ) : mode === "hitung" ? (
+                <>
+                  <Send className="size-4.5" />
+                  <span>Kirim Pesanan ke WhatsApp</span>
+                  <span className="rounded-lg bg-white/20 px-2.5 py-0.5 font-mono text-sm font-bold">
+                    {rupiah(price.total)}
+                  </span>
+                  <ArrowRight className="size-4" />
+                </>
+              ) : (
+                <>
+                  <Send className="size-4.5" />
+                  <span>Kirim Permintaan Penawaran</span>
+                  <ArrowRight className="size-4" />
+                </>
+              )}
+            </button>
+          )}
 
           <p className="text-center text-[0.76rem] leading-relaxed text-muted">
             Tanpa buat akun. Pesan akan terbuka otomatis di aplikasi WhatsApp kamu.
@@ -1121,16 +1217,16 @@ function NotaPenawaran() {
         <div className="my-5 border-t border-dashed border-line" />
 
         <div className="flex items-end justify-between gap-3 rounded-2xl bg-paper-2/70 p-4">
-          <p className="text-[0.74rem] font-bold uppercase tracking-wider text-ink">
+          <p className="text-xs font-bold uppercase tracking-wider text-ink">
             Estimasi Biaya
           </p>
           <p className="font-display text-xl font-bold tracking-tight text-brand">
-            Dihitung Admin
+            Dihitung Bagas
           </p>
         </div>
 
-        <p className="mt-3.5 text-[0.74rem] leading-relaxed text-muted">
-          Admin akan membaca brief kamu dan memberikan penawaran terbaik dalam &lt;1 jam kerja.
+        <p className="mt-3.5 text-xs leading-relaxed text-slate-600">
+          Bagas akan membaca brief kamu dan memberikan penawaran terbaik dalam &lt;1 jam kerja.
         </p>
 
         <div className="mt-5 flex justify-end">
@@ -1193,7 +1289,7 @@ function SuccessPanel({
 
           <h3 className="mt-4 font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
             {mode === "hitung"
-              ? "Tinggal Kirim ke WhatsApp Admin!"
+              ? "Tinggal Kirim ke WhatsApp Bagas!"
               : "Tinggal Kirimkan Brief Kamu!"}
           </h3>
 
@@ -1202,25 +1298,25 @@ function SuccessPanel({
           </p>
         </div>
 
-        <dl className="mt-6 grid grid-cols-2 gap-4 rounded-2xl border border-dashed border-line bg-paper-2/60 p-4.5 text-[0.84rem]">
+        <dl className="mt-6 grid grid-cols-2 gap-4 rounded-2xl border border-dashed border-line bg-paper-2/60 p-4.5 text-xs sm:text-sm">
           <div>
-            <dt className="text-muted text-[0.72rem] font-bold uppercase tracking-wider">
+            <dt className="text-slate-600 text-xs font-bold uppercase tracking-wider">
               Layanan
             </dt>
             <dd className="mt-1 font-bold text-ink">{serviceName}</dd>
             {detail ? (
-              <dd className="mt-0.5 text-[0.72rem] text-muted">{detail}</dd>
+              <dd className="mt-0.5 text-xs text-slate-600">{detail}</dd>
             ) : null}
           </div>
           <div>
-            <dt className="text-muted text-[0.72rem] font-bold uppercase tracking-wider">
+            <dt className="text-slate-600 text-xs font-bold uppercase tracking-wider">
               {mode === "hitung" ? "Estimasi Biaya" : "Status Harga"}
             </dt>
             <dd className="mt-1 font-mono text-base font-bold tabular-nums text-brand">
-              {total ? rupiah(total) : "Menunggu Admin"}
+              {total ? rupiah(total) : "Menunggu Bagas"}
             </dd>
             {dpAmount ? (
-              <dd className="mt-0.5 text-[0.72rem] font-semibold text-mint">
+              <dd className="mt-0.5 text-xs font-semibold text-mint">
                 Bisa DP 50%: {rupiah(dpAmount)}
               </dd>
             ) : null}
@@ -1230,10 +1326,10 @@ function SuccessPanel({
         {result.waUrl ? (
           <>
             <div className="mt-6 rounded-2xl border border-line bg-brand-soft/40 p-4.5">
-              <p className="text-[0.84rem] font-bold text-ink">
-                Metode Pembayaran (Setelah Dikonfirmasi Admin):
+              <p className="text-xs sm:text-sm font-bold text-ink">
+                Metode Pembayaran (Setelah Dikonfirmasi Bagas):
               </p>
-              <p className="mt-1 text-[0.76rem] text-muted">
+              <p className="mt-1 text-xs text-slate-600">
                 {pembayaran.metode.join(" · ")}
               </p>
               <div className="mt-3 flex flex-wrap items-center justify-between gap-3 rounded-xl bg-white p-3 border border-brand/20">

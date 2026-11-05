@@ -32,7 +32,7 @@ const METODE: Record<
 };
 
 const waKonfirmasi = waLink(
-  "Halo Mas Joki, saya mau konfirmasi pembayaran pesanan saya.",
+  "Halo Bagas Mas Joki, saya mau konfirmasi pembayaran pesanan saya.",
 );
 
 export function Pembayaran() {
@@ -60,14 +60,14 @@ export function Pembayaran() {
             Pembayaran praktis lewat e-wallet resmi.
           </h2>
 
-          <p className="mt-4 max-w-[46ch] text-[0.98rem] leading-relaxed text-ink-soft">
+          <p className="mt-4 max-w-[46ch] text-[0.98rem] leading-relaxed text-slate-600 font-medium">
             ShopeePay, GoPay, atau DANA — cukup transfer ke satu nomor yang sama.
             Bebas repot tanpa perlu token bank atau scan QR yang sering gagal.
           </p>
 
           {/* Payment Card Box */}
           <div className="mt-7 rounded-2xl border border-line bg-white p-6 shadow-md shadow-langit/5">
-            <p className="text-[0.74rem] font-bold uppercase tracking-wider text-muted">
+            <p className="text-xs font-bold uppercase tracking-wider text-slate-600">
               Satu Nomor untuk Semua E-Wallet
             </p>
 
@@ -121,8 +121,8 @@ export function Pembayaran() {
               })}
             </div>
 
-            <p className="mt-4 text-[0.76rem] leading-relaxed text-muted">
-              Nomor ini resmi atas nama admin Mas Joki. Tidak ada nomor rekening lain selain yang tercantum di atas.
+            <p className="mt-4 text-xs leading-relaxed text-slate-600">
+              Nomor ini resmi atas nama Bagas (Mas Joki). Tidak ada nomor rekening lain selain yang tercantum di atas.
             </p>
           </div>
 
@@ -151,19 +151,19 @@ export function Pembayaran() {
                 nomor: "1",
                 warna: "bg-brand text-white",
                 judul: "Kirim pesanan via kalkulator / WhatsApp",
-                isi: "Lengkapi kalkulator, lalu klik kirim. Teks pesanan beserta estimasi biaya langsung masuk ke chat admin.",
+                isi: "Lengkapi kalkulator, lalu klik kirim. Teks pesanan beserta estimasi biaya langsung masuk ke chat WhatsApp Bagas.",
               },
               {
                 nomor: "2",
                 warna: "bg-amber text-white",
-                judul: "Admin konfirmasi & kunci total biaya",
-                isi: "Admin memeriksa file dan instruksi tugasmu, kemudian mengonfirmasi total biaya tetap tanpa biaya tambahan tersembunyi.",
+                judul: "Bagas konfirmasi & kunci total biaya",
+                isi: "Bagas memeriksa file dan instruksi tugasmu, kemudian mengonfirmasi total biaya tetap tanpa biaya tambahan tersembunyi.",
               },
               {
                 nomor: "3",
                 warna: "bg-mint text-white",
                 judul: "Transfer & kirim bukti chat",
-                isi: "Kirim pembayaran ke ShopeePay / GoPay / DANA di atas, kirim screenshot bukti transfer, dan pengerjaan segera dimulai!",
+                isi: "Kirim pembayaran ke ShopeePay / GoPay / DANA di atas, kirim tangkapan layar bukti transfer, dan pengerjaan segera dimulai!",
               },
             ].map((langkah) => (
               <li key={langkah.judul} className="relative">
@@ -176,7 +176,7 @@ export function Pembayaran() {
                 <p className="font-display text-[1rem] font-bold text-ink">
                   {langkah.judul}
                 </p>
-                <p className="mt-1 text-[0.86rem] leading-relaxed text-ink-soft/85">
+                <p className="mt-1 text-xs sm:text-sm leading-relaxed text-slate-600">
                   {langkah.isi}
                 </p>
               </li>
@@ -192,7 +192,7 @@ export function Pembayaran() {
                 <p className="text-[0.88rem] font-bold text-ink">
                   Garansi Revisi 2× &amp; File Lengkap
                 </p>
-                <p className="mt-0.5 text-[0.8rem] text-muted">
+                <p className="mt-0.5 text-xs text-slate-600">
                   Setiap pesanan mencakup 2× revisi gratis sesuai brief awal, plus seluruh file dokumen mentah (.docx / .pptx).
                 </p>
               </div>

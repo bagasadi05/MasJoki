@@ -48,7 +48,7 @@ export function SiteHeader() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-mint opacity-75" />
               <span className="relative inline-flex rounded-full size-1.5 bg-mint" />
             </span>
-            Admin Online
+            Bagas Online
           </span>
         </div>
 
@@ -92,7 +92,6 @@ export function SiteHeader() {
           <MenuSeluler items={navigasi} />
         </div>
       </div>
-      <div aria-hidden className="pita h-[3px]" />
     </header>
   );
 }

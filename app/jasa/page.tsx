@@ -1,31 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Calculator, ExternalLink, Flame } from "lucide-react";
+import { ArrowRight, Calculator, ExternalLink } from "lucide-react";
 import { BeforeAfterShowcase } from "@/components/before-after-showcase";
+import { ServiceList } from "@/components/service-list";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { StempelLayanan } from "@/components/stempel-layanan";
-import { aksenLayanan } from "@/lib/aksen";
-import { rupiah } from "@/lib/format";
-import { SERVICES, priceLabel, type ServiceId } from "@/lib/services";
 import { waLink, waPesanUmum } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Daftar Layanan & Harga Lengkap",
   description:
-    "Delapan layanan Mas Joki dengan harga per satuan yang transparan: parafrase, humanisasi teks AI, makalah, artikel jurnal, PowerPoint, rapikan Word, terjemahan, dan desain visual.",
+    "Sembilan layanan Mas Joki dengan standar transparansi harga: parafrase, humanisasi teks AI, makalah, artikel jurnal, PowerPoint, rapikan Word, terjemahan, desain visual, dan penurunan skor Turnitin & AI.",
   alternates: { canonical: "/jasa" },
-};
-
-const KODE_LAYANAN: Record<ServiceId, string> = {
-  parafrase: "PF-01",
-  humanisasi: "HM-02",
-  makalah: "MK-03",
-  jurnal: "JR-04",
-  powerpoint: "PT-05",
-  word: "WD-06",
-  terjemah: "TJ-07",
-  desain: "DS-08",
 };
 
 export default function HalamanDaftarLayanan() {
@@ -35,120 +21,53 @@ export default function HalamanDaftarLayanan() {
 
       <main id="konten" className="mx-auto max-w-6xl px-5 py-12 sm:px-8 sm:py-18">
         {/* Breadcrumb */}
-        <nav aria-label="Remah roti" className="flex items-center gap-2 text-[0.8rem] font-medium text-muted">
+        <nav aria-label="Remah roti" className="flex items-center gap-2 text-xs font-semibold text-slate-600">
           <Link href="/" className="transition-colors hover:text-brand">
             Beranda
           </Link>
-          <span aria-hidden className="text-muted/50">/</span>
+          <span aria-hidden className="text-slate-400">/</span>
           <span className="font-bold text-ink">Semua Layanan</span>
         </nav>
 
-        {/* Heading */}
-        <div className="mt-6 max-w-3xl">
-          <h1 className="mt-3 font-display text-[2.4rem] leading-[1.06] tracking-[-0.03em] text-ink sm:text-[3.1rem]">
-            Delapan layanan, satu standar kejujuran harga.
-          </h1>
-          <p className="mt-4 max-w-[62ch] text-[1.02rem] leading-relaxed text-ink-soft">
-            Semua nominal di bawah adalah tarif dasar per satuan. Total akhir menyesuaikan
-            kuantitas, tenggat, dan tingkat kesulitan — dan selalu terlihat jelas di nota sebelum kamu order.
-          </p>
+        {/* Hero Title */}
+        <div className="mt-8 flex flex-col sm:flex-row sm:items-end justify-between gap-6 border-b border-line pb-10">
+          <div className="max-w-2xl">
+            <span className="stempel-hijau">
+              ✓ HARGA TRANSPARAN DI AWAL
+            </span>
+            <h1 className="mt-3 font-display text-[2.5rem] leading-[1.08] tracking-[-0.03em] text-ink sm:text-[3.2rem]">
+              Sembilan Layanan Bantuan Tugas.
+            </h1>
+            <p className="mt-4 max-w-[56ch] text-xs sm:text-sm md:text-base leading-relaxed text-slate-600 font-medium">
+              Semua dikerjakan langsung oleh Bagas tanpa perantara. Harga terkunci di awal dan dihitung otomatis lewat kalkulator tanpa biaya siluman.
+            </p>
+          </div>
 
-          <div className="mt-8 flex flex-col gap-3.5 sm:flex-row">
+          <div className="flex flex-col gap-3 sm:flex-row shrink-0">
             <Link
               href="/hitung"
-              className="inline-flex items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-3.5 text-[0.92rem] font-bold text-white shadow-md shadow-brand/25 transition-all hover:bg-brand-dark"
+              className="inline-flex items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-3.5 text-sm font-bold text-white shadow-md shadow-brand/20 transition-all hover:bg-brand-dark hover:shadow-lg"
             >
-              <Calculator className="size-4.5" />
-              <span>Hitung Biaya Tugasku</span>
+              <Calculator className="size-4" />
+              <span>Buka Kalkulator Biaya</span>
               <ArrowRight className="size-4" />
             </Link>
             <a
               href={waLink(waPesanUmum)}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 rounded-2xl border-2 border-ink bg-white px-6 py-3.5 text-[0.92rem] font-bold text-ink shadow-2xs transition-colors hover:bg-ink hover:text-white"
+              className="inline-flex items-center justify-center gap-2 rounded-2xl border-2 border-ink bg-white px-6 py-3.5 text-sm font-bold text-ink shadow-2xs transition-colors hover:bg-ink hover:text-white"
             >
-              <span>Tanya Admin via WhatsApp</span>
+              <span>Tanya Bagas via WhatsApp</span>
               <ExternalLink className="size-3.5 opacity-60" />
             </a>
           </div>
         </div>
 
-        {/* Grid Cards */}
-        <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
-          {SERVICES.map((service) => {
-            const aksen = aksenLayanan(service.id);
-            const kode = KODE_LAYANAN[service.id];
-
-            return (
-              <li key={service.id}>
-                <Link
-                  href={`/jasa/${service.id}`}
-                  className="group relative flex h-full flex-col justify-between overflow-hidden rounded-3xl border border-line bg-white p-7 shadow-xs transition-all duration-300 hover:-translate-y-1.5 hover:border-brand/40 hover:shadow-xl"
-                >
-                  <span
-                    aria-hidden
-                    className="absolute inset-x-0 top-0 h-1.5"
-                    style={{ backgroundColor: aksen.hex }}
-                  />
-
-                  <div>
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex items-center gap-3">
-                        <StempelLayanan id={service.id} ukuran="sedang" />
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <span className="font-mono text-[0.66rem] font-bold text-muted/70 tracking-wider">
-                              {kode}
-                            </span>
-                          </div>
-                          <h2 className="mt-0.5 font-display text-[1.3rem] font-extrabold leading-snug tracking-tight text-ink transition-colors group-hover:text-brand">
-                            {service.name}
-                          </h2>
-                          <span className="text-[0.74rem] text-muted">
-                            Estimasi pengerjaan: <strong>{service.turnaround}</strong>
-                          </span>
-                        </div>
-                      </div>
-
-                      {service.popular ? (
-                        <span className="shrink-0 inline-flex items-center gap-1 rounded-full border border-amber/25 bg-amber-soft px-2.5 py-1 text-[0.68rem] font-bold text-amber shadow-2xs">
-                          <Flame className="size-3 text-amber fill-amber" />
-                          <span>Populer</span>
-                        </span>
-                      ) : null}
-                    </div>
-
-                    <p className="mt-4 text-[0.88rem] leading-relaxed text-ink-soft/90">
-                      {service.promise}
-                    </p>
-                  </div>
-
-                  <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-dashed border-line pt-4">
-                    <div>
-                      <span className="block text-[0.68rem] font-bold uppercase tracking-wider text-muted">
-                        Tarif Dasar
-                      </span>
-                      <span className="font-mono text-[0.98rem] font-bold tabular-nums text-ink">
-                        {priceLabel(service)}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <span className="text-[0.76rem] font-medium text-muted">
-                        Mulai {rupiah(service.minPrice)}
-                      </span>
-                      <span className="inline-flex items-center gap-1.5 rounded-xl bg-paper-2 px-3.5 py-2 text-[0.78rem] font-bold text-brand group-hover:bg-brand group-hover:text-white transition-colors">
-                        <span>Buka Detail</span>
-                        <ArrowRight className="size-3.5" />
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+        {/* Grid Cards Berformat Seragam */}
+        <div className="mt-12">
+          <ServiceList isCatalogPage={true} />
+        </div>
 
         {/* Bukti Mutu Sebelum vs Sesudah */}
         <div className="mt-16 border-t border-line pt-12">
@@ -162,17 +81,21 @@ export default function HalamanDaftarLayanan() {
               <h3 className="font-display text-xl font-bold text-ink">
                 Punya tugas kombinasi atau topik riset spesifik?
               </h3>
-              <p className="mt-1.5 text-[0.88rem] text-ink-soft">
-                Admin siap membantu menganalisis brief tugasmu secara personal tanpa biaya konsultasi.
+              <p className="mt-1.5 text-xs sm:text-sm text-slate-600 font-medium max-w-xl">
+                Bagas bisa menyesuaikan pengerjaan dengan pedoman dosen atau instansi kampusmu. Kirimkan brief via chat WhatsApp untuk penawaran khusus.
               </p>
             </div>
-            <Link
-              href="/hitung"
-              className="inline-flex items-center gap-1.5 justify-center rounded-2xl bg-ink px-6 py-3.5 text-[0.88rem] font-bold text-white transition-colors hover:bg-brand shrink-0"
+            <a
+              href={waLink(
+                "Halo Bagas Mas Joki, saya mau konsultasi tugas dengan kebutuhan khusus.",
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-3.5 text-sm font-bold text-white shadow-sm hover:bg-brand-dark transition-colors shrink-0"
             >
-              <span>Hitung Biaya Sekarang</span>
-              <ArrowRight className="size-3.5" />
-            </Link>
+              <span>Konsultasi Khusus via WhatsApp</span>
+              <ArrowRight className="size-4" />
+            </a>
           </div>
         </div>
       </main>

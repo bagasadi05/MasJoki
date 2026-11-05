@@ -44,7 +44,7 @@ import { pembayaran } from "@/lib/site";
 import type { ActionResult } from "@/lib/types";
 
 const fieldClass =
-  "w-full rounded-2xl border border-line bg-white px-4 py-3.5 text-sm text-ink placeholder:text-muted/60 transition-all duration-150 hover:border-line-strong focus:border-brand focus:ring-3 focus:ring-brand/15 focus:outline-none";
+  "w-full rounded-2xl border border-line bg-white px-4 py-3.5 text-base sm:text-sm text-ink placeholder:text-muted/60 transition-all duration-150 hover:border-line-strong focus:border-brand focus:ring-3 focus:ring-brand/15 focus:outline-none";
 
 const labelClass = "mb-2 block text-[0.84rem] font-bold text-ink";
 
@@ -728,7 +728,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
               <div className="flex items-start gap-3 rounded-2xl border border-line bg-paper-2/70 p-4 text-[0.78rem] text-ink-soft">
                 <Lightbulb className="mt-0.5 size-4 shrink-0 text-amber" />
                 <p className="leading-relaxed">
-                  <strong className="text-ink font-bold">Tentang Tingkat Kesulitan:</strong> Estimasi dihitung untuk pengerjaan tugas standar/umum. Jika tugasmu memiliki kebutuhan teknis khusus (olah data statistik, lab, atau coding), admin Mas Joki yang akan menilai dan mengonfirmasi kesepakatannya di WhatsApp setelah memeriksa file brief.
+                  <strong className="text-ink font-bold">Tentang Tingkat Kesulitan:</strong> Estimasi dihitung untuk pengerjaan tugas standar/umum. Jika tugasmu memiliki kebutuhan teknis khusus (olah data statistik, lab, atau coding), Bagas yang akan menilai dan mengonfirmasi kesepakatannya di WhatsApp setelah memeriksa file brief.
                 </p>
               </div>
 
@@ -811,8 +811,8 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                 <h3 className="font-display text-xl font-bold text-ink">
                   Data Kontak &amp; Tautan Dokumen
                 </h3>
-                <p className="mt-1 text-[0.82rem] text-muted">
-                  Digunakan admin untuk konfirmasi pengerjaan dan mengirim hasil jadi file.
+                <p className="mt-1 text-xs sm:text-sm text-slate-600">
+                  Digunakan Bagas untuk konfirmasi pengerjaan dan mengirim hasil jadi file.
                 </p>
               </div>
 
@@ -877,7 +877,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
 
               <div>
                 <label htmlFor="notes-input" className={labelClass}>
-                  Catatan Khusus untuk Admin (Opsional)
+                  Catatan Khusus untuk Bagas (Opsional)
                 </label>
                 <textarea
                   id="notes-input"
@@ -949,7 +949,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
               effectiveUnitLabel={price.effectiveUnitLabel}
               estimatedTurnaround={price.estimatedTurnaround}
               equivalentLabel={price.equivalentLabel}
-              note="Harga terkunci setelah file dicek admin. Tidak ada biaya tersembunyi."
+              note="Harga terkunci setelah file dicek Bagas. Tidak ada biaya tersembunyi."
               stamp="Harga Transparan"
               code="ORDER-SPECS"
               aksen={aksen}
@@ -1088,7 +1088,7 @@ function SuccessPanel({
           </span>
 
           <h3 className="mt-4 font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
-            Tinggal Kirim ke WhatsApp Admin!
+            Tinggal Kirim ke WhatsApp Bagas!
           </h3>
 
           <p className="mt-2.5 text-[0.94rem] leading-relaxed text-ink-soft">
@@ -1096,25 +1096,25 @@ function SuccessPanel({
           </p>
         </div>
 
-        <dl className="mt-6 grid grid-cols-2 gap-4 rounded-2xl border border-dashed border-line bg-paper-2/60 p-4.5 text-[0.84rem]">
+        <dl className="mt-6 grid grid-cols-2 gap-4 rounded-2xl border border-dashed border-line bg-paper-2/60 p-4.5 text-xs sm:text-sm">
           <div>
-            <dt className="text-muted text-[0.72rem] font-bold uppercase tracking-wider">
+            <dt className="text-slate-600 text-xs font-bold uppercase tracking-wider">
               Layanan
             </dt>
             <dd className="mt-1 font-bold text-ink">{serviceName}</dd>
             {detail ? (
-              <dd className="mt-0.5 text-[0.72rem] text-muted">{detail}</dd>
+              <dd className="mt-0.5 text-xs text-slate-600">{detail}</dd>
             ) : null}
           </div>
           <div>
-            <dt className="text-muted text-[0.72rem] font-bold uppercase tracking-wider">
+            <dt className="text-slate-600 text-xs font-bold uppercase tracking-wider">
               Estimasi Biaya
             </dt>
             <dd className="mt-1 font-mono text-base font-bold tabular-nums text-brand">
-              {total ? rupiah(total) : "Menunggu Admin"}
+              {total ? rupiah(total) : "Menunggu Bagas"}
             </dd>
             {dpAmount ? (
-              <dd className="mt-0.5 text-[0.72rem] font-semibold text-mint">
+              <dd className="mt-0.5 text-xs font-semibold text-mint">
                 Bisa DP 50%: {rupiah(dpAmount)}
               </dd>
             ) : null}
@@ -1124,10 +1124,10 @@ function SuccessPanel({
         {result.waUrl ? (
           <>
             <div className="mt-6 rounded-2xl border border-line bg-brand-soft/40 p-4.5">
-              <p className="text-[0.84rem] font-bold text-ink">
-                Metode Pembayaran (Setelah Dikonfirmasi Admin):
+              <p className="text-xs sm:text-sm font-bold text-ink">
+                Metode Pembayaran (Setelah Dikonfirmasi Bagas):
               </p>
-              <p className="mt-1 text-[0.76rem] text-muted">
+              <p className="mt-1 text-xs text-slate-600">
                 {pembayaran.metode.join(" · ")}
               </p>
               <div className="mt-3 flex flex-wrap items-center justify-between gap-3 rounded-xl bg-white p-3 border border-brand/20">

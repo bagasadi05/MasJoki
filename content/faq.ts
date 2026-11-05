@@ -6,44 +6,55 @@ export interface FaqItem {
 }
 
 export const faq: FaqItem[] = [
+  // 1. CARA PESAN
   {
-    q: "Apakah harga bisa berubah setelah saya pesan?",
-    a: "Tidak, selama jumlah halaman/kata, tenggat, dan instruksi tugas tidak berubah. Jika tugasmu memiliki kebutuhan analisis teknis khusus (misal olah data SPSS atau uji laboratorium), admin akan mengonfirmasi penyesuaian di awal sebelum kamu transfer — dan itu pun wajib kamu setujui dulu.",
+    q: "Bagaimana cara memesan tugas jika belum punya link Google Drive?",
+    a: "Sangat fleksibel! Kamu cukup mengosongkan kolom link dokumen pada kalkulator atau formulir. Setelah menekan tombol pesan, kamu bisa langsung melampirkan file dokumen (Word, PPT, PDF, atau foto catatan materi) di ruang chat WhatsApp langsung kepada Bagas.",
   },
+  // 2. DP 50%
   {
     q: "Apakah bisa bayar DP (uang muka) 50% dulu?",
-    a: "Bisa banget! Untuk pesanan mulai Rp 40.000, kamu cukup membayar DP 50% di awal agar tim kami langsung bekerja. Pelunasan 50% sisanya baru kamu bayarkan setelah tugas selesai dan kamu memeriksa preview hasilnya.",
+    a: "Bisa banget! Kamu cukup membayar DP 50% di awal (dibulatkan ke atas ke kelipatan Rp500 terdekat) agar Bagas langsung mulai bekerja. Pelunasan 50% sisanya baru dibayarkan setelah tugas selesai dan kamu memeriksa preview hasilnya.",
   },
-  {
-    q: "Bagaimana cara membayarnya?",
-    a: `Bayar lewat ShopeePay, GoPay, atau DANA ke nomor yang sama dengan admin: ${pembayaran.nomor}. Kirim bukti transfer di chat WhatsApp yang sama. Pengerjaan mulai setelah pembayaran dikonfirmasi.`,
-  },
+  // 3. REVISI
   {
     q: "Berapa kali saya boleh minta revisi?",
-    a: "Dua kali, gratis. Revisi berlaku untuk hal yang memang menyimpang dari brief atau pedoman kampusmu. Kalau kamu ingin mengubah arah tulisan setelah hasil pertama jadi, itu dihitung pesanan baru.",
+    a: "Dua kali revisi gratis. Revisi berlaku jika ada bagian yang belum sesuai dengan brief awal atau pedoman format kampusmu. Jika ingin mengubah arah topik tugas secara menyeluruh setelah pengerjaan selesai, hal itu dihitung sebagai pesanan baru.",
+  },
+  // 4. KEAMANAN FILE
+  {
+    q: "Apakah file dan berkas tugas saya dijamin aman?",
+    a: "Dijamin 100% aman dan privat. Berkas naskah, nama kampus, dan data mahasiswa tidak pernah dibagikan atau dipublikasikan ke pihak ketiga mana pun tanpa izin tertulis darimu.",
+  },
+  // 5. TURNITIN & AI
+  {
+    q: "Apakah bisa membantu menurunkan skor Turnitin atau deteksi AI?",
+    a: "Bisa. Naskah diperiksa terlebih dahulu untuk mengecek skor kemiripan (similarity Turnitin) dan indikasi AI. Penurunan skor dikerjakan manual oleh Bagas lewat parafrase mendalam dan restrukturisasi kalimat agar naskah tetap ilmiah dan berbobot.",
+  },
+  // 6. KETEPATAN WAKTU
+  {
+    q: "Bisa pesan untuk tenggat hari ini dan apakah tepat waktu?",
+    a: "Bisa, tersedia opsi tenggat kilat (kurang dari 24 jam). Bagas berkomitmen pada ketepatan waktu pengiriman. Jika antrean sedang padat dan tidak memungkinkan, Bagas akan menyampaikannya secara jujur di awal sebelum kamu melakukan transfer.",
+  },
+  // PERTANYAAN LAINNYA (TAMPIL DI /faq)
+  {
+    q: "Apakah harga bisa berubah setelah saya memesan?",
+    a: "Tidak, selama jumlah kata/halaman, tenggat waktu, dan brief instruksi tugas tidak berubah. Angka total pada nota kwitansi terkunci sejak awal tanpa biaya siluman.",
   },
   {
-    q: "Apakah file yang saya terima bisa diedit?",
-    a: "Ya. Untuk makalah dan Word kamu menerima .docx, untuk slide menerima .pptx, dan untuk desain menerima file sumbernya. Kamu tidak terkunci pada PDF.",
+    q: "Bagaimana cara melakukan pembayarannya?",
+    a: `Pembayaran dilakukan lewat ShopeePay, GoPay, atau DANA ke nomor resmi: ${pembayaran.nomor} (a.n. Mas Joki). Kirimkan bukti transfer di chat WhatsApp, pengerjaan langsung dimulai setelah konfirmasi.`,
   },
   {
-    q: "Bagaimana jika saya belum punya link Google Drive untuk melampirkan tugas?",
-    a: "Sangat fleksibel! Kamu cukup mengosongkan kolom link dokumen pada form pemesanan atau kalkulator. Setelah mengklik tombol pesan, kamu bisa langsung melampirkan file dokumen (Word, PPT, PDF, atau foto catatan materi) secara langsung di ruang chat WhatsApp kepada admin kami.",
+    q: "Apakah file hasil tugas yang saya terima bisa diedit?",
+    a: "Tentu bisa. Dokumen diserahkan dalam bentuk file sumber asli: format Word (.docx) untuk makalah/laporan, PowerPoint (.pptx) untuk presentasi, dan format desain asli. Kamu tidak terkunci pada format PDF mati.",
   },
   {
-    q: "Bisa pesan untuk tenggat hari ini?",
-    a: "Bisa, dengan tarif kilat. Tapi tetap tergantung antrean yang sedang berjalan. Cara tercepat: kirim brief lewat mode penawaran, admin akan bilang jujur kalau memang tidak sempat.",
+    q: "Tugas saya tidak ada di daftar pilihan layanan. Bagaimana?",
+    a: "Gunakan mode Minta Penawaran, pilih kategori tugas, lalu ceritakan kebutuhanmu. Bagas akan memeriksa brief dan memberikan estimasi biaya transparan dalam waktu di bawah satu jam kerja.",
   },
   {
-    q: "Tugas saya tidak ada di daftar layanan. Bagaimana?",
-    a: "Pakai mode minta penawaran, pilih “Lainnya”, lalu jelaskan tugasnya. Admin akan membaca brief dan memberi harga, biasanya di bawah satu jam kerja.",
-  },
-  {
-    q: "Apakah file saya akan dipublikasikan?",
-    a: "Tidak. File yang kamu kirim hanya dipakai untuk mengerjakan pesanan itu. Kami juga tidak menampilkan hasil kerja pelanggan di portofolio tanpa izin.",
-  },
-  {
-    q: "Apakah ini termasuk pelanggaran akademik?",
-    a: "Mas Joki menyediakan bantuan penulisan, penyuntingan, dan perapian format. Setiap kampus punya aturan berbeda, dan keputusan memakai layanan ini ada di tanganmu. Kalau ragu, tanyakan dulu ke dosen atau pedoman akademik kampusmu.",
+    q: "Apakah layanan ini melanggar kode etik akademik?",
+    a: "Mas Joki menyediakan pendampingan belajar, perapian format dokumen, penyuntingan bahasa, parafrase naskah, dan pembuatan presentasi. Setiap kampus memiliki pedoman akademik masing-masing, dan keputusan pemanfaatannya berada di tangan mahasiswa secara bijak.",
   },
 ];

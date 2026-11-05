@@ -10,7 +10,7 @@ import { waLink, waPesanUmum } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Cara Kerja, Alur Pemesanan & Pembayaran E-Wallet Resmi",
   description:
-    "Pelajari alur pemesanan tugas di Mas Joki yang cepat, tanpa akun, dengan revisi 2x gratis, dan didukung metode pembayaran resmi e-wallet.",
+    "Pelajari alur pemesanan tugas di Mas Joki yang cepat, tanpa perantara langsung ke Bagas, dengan garansi 2x revisi gratis dan uang kembali 100%.",
   alternates: { canonical: "/cara-kerja" },
 };
 
@@ -25,14 +25,14 @@ const langkah = [
   {
     nomor: "02",
     judul: "Kirim ke WhatsApp",
-    isi: "Tempelkan tautan file tugasmu (Google Drive / OneDrive) dan nomor WhatsApp. Format pesanan langsung terisi otomatis di chat admin Mas Joki.",
+    isi: "Tempelkan tautan file tugasmu (Google Drive / OneDrive) atau kirim berkas langsung. Format pesanan langsung terisi otomatis di chat WhatsApp Bagas.",
     icon: Send,
     badge: "from-ink to-ink",
   },
   {
     nomor: "03",
     judul: "Bayar Lewat E-Wallet",
-    isi: "Admin konfirmasi instruksi tugas dan mengunci harga total. Transfer via ShopeePay, GoPay, atau DANA, lalu kirim bukti di chat yang sama.",
+    isi: "Bagas mengonfirmasi instruksi tugas dan mengunci harga total. Transfer via ShopeePay, GoPay, atau DANA, lalu kirim bukti di chat yang sama.",
     icon: Wallet,
     badge: "from-ink to-ink",
   },
@@ -55,7 +55,7 @@ export default function HalamanCaraKerja() {
         <section className="mx-auto max-w-6xl px-5 pt-12 pb-16 sm:px-8 sm:pt-16 sm:pb-20">
           <nav
             aria-label="Remah roti"
-            className="flex items-center gap-2 text-[0.8rem] font-medium text-muted"
+            className="flex items-center gap-2 text-xs font-medium text-slate-600"
           >
             <Link href="/" className="transition-colors hover:text-brand">
               Beranda
@@ -67,12 +67,12 @@ export default function HalamanCaraKerja() {
           </nav>
 
           <div className="mt-6 max-w-3xl">
-                        <h1 className="mt-3 font-display text-[2.3rem] leading-[1.08] tracking-[-0.03em] text-ink sm:text-[3.1rem]">
+            <h1 className="mt-3 font-display text-[2.3rem] leading-[1.08] tracking-[-0.03em] text-ink sm:text-[3.1rem]">
               Empat langkah mudah, tugasmu langsung beres.
             </h1>
-            <p className="mt-4 max-w-[62ch] text-[1.02rem] leading-relaxed text-ink-soft">
+            <p className="mt-4 max-w-[62ch] text-[1.02rem] leading-relaxed text-slate-600 font-medium">
               Tanpa ribet bikin akun atau mengisi biodata panjang. Cukup hitung di kalkulator,
-              kirimkan brief tugas ke WhatsApp resmi kami, dan pantau progresnya dengan tenang.
+              kirimkan brief tugas langsung ke WhatsApp Bagas tanpa perantara, dan pantau progresnya dengan tenang.
             </p>
           </div>
 
@@ -100,7 +100,7 @@ export default function HalamanCaraKerja() {
                     <h2 className="mt-6 font-display text-[1.25rem] font-bold leading-snug tracking-tight text-ink group-hover:text-brand transition-colors">
                       {item.judul}
                     </h2>
-                    <p className="mt-2.5 text-[0.86rem] leading-relaxed text-muted">
+                    <p className="mt-2.5 text-xs sm:text-sm leading-relaxed text-slate-600">
                       {item.isi}
                     </p>
                   </div>
@@ -110,23 +110,23 @@ export default function HalamanCaraKerja() {
           </ol>
         </section>
 
-        {/* Komparasi: Mas Joki vs Joki Medsos Liar */}
+        {/* Komparasi: Mas Joki vs Joki Medsos Liar (TUGAS 9: Hanya tampil lengkap di /cara-kerja) */}
         <div className="border-t border-line bg-paper-2/40">
           <PerbandinganJoki />
         </div>
 
-        {/* Pembayaran E-Wallet Resmi */}
+        {/* Pembayaran E-Wallet Resmi (TUGAS 9: Blok pembayaran lengkap dengan salin nomor) */}
         <Pembayaran />
 
         {/* CTA Bottom Banner */}
-        <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
+        <section id="cta-bawah" className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
           <div className="rounded-2xl border border-line bg-white p-8 sm:p-12 shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-6">
             <div className="max-w-xl">
               <h2 className="font-display text-2xl font-bold text-ink sm:text-3xl">
                 Siap pesan tugasmu sekarang?
               </h2>
-              <p className="mt-2 text-sm text-ink-soft leading-relaxed">
-                Gunakan kalkulator kami untuk menghitung nominal pasti sebelum chat admin.
+              <p className="mt-2 text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+                Gunakan kalkulator kami untuk menghitung nominal pasti sebelum chat Bagas.
               </p>
             </div>
 
@@ -146,7 +146,7 @@ export default function HalamanCaraKerja() {
                 className="inline-flex items-center gap-2 rounded-xl border border-line bg-white px-5 py-3.5 text-sm font-bold text-ink transition-colors hover:bg-paper-2"
               >
                 <MessageCircle className="size-4" />
-                <span>Chat Admin</span>
+                <span>Chat Bagas</span>
                 <ExternalLink className="size-3.5 opacity-60" />
               </a>
             </div>

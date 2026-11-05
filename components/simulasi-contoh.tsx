@@ -25,13 +25,13 @@ const CONTOH_DATA = [
       "Tenggat hari ini, visual slide rapi, lengkap catatan pembicara presenter.",
   },
   {
-    judul: "Artikel Jurnal 1 Judul",
-    serviceId: "jurnal" as const,
-    qty: 1,
+    judul: "Artikel Ilmiah (Tugas Kuliah)",
+    serviceId: "artikel_ilmiah" as const,
+    qty: 2000,
     deadlineId: "normal" as const,
     difficultyId: "standar" as const,
     keterangan:
-      "Tenggat 4–6 hari, format baku IMRAD dan struktur naskah siap submit.",
+      "Tenggat 4–6 hari (+10%), struktur naskah lengkap dengan sitasi dan daftar pustaka.",
   },
 ];
 

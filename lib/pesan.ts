@@ -39,16 +39,17 @@ export function pesanPesanan({
       : null;
 
   return rapikan([
-    "Halo Mas Joki, saya mau pesan:",
+    "Halo Mas Joki (Bagas), saya mau pesan:",
     "",
     `Layanan: ${service.name}`,
     `Jumlah: ${price.qty} ${BASIS_LABEL[service.basis]} (${price.equivalentLabel})`,
     `Tenggat: ${price.deadline.label} (Estimasi: ${price.estimatedTurnaround})`,
-    "Tingkat: Standar (dikonfirmasi setelah admin cek brief)",
+    "Tingkat: Standar (dikonfirmasi setelah Bagas cek brief)",
     daftarTambahan ? `Opsi Tambahan: ${daftarTambahan}` : false,
     price.discountAmount > 0 && price.discountLabel
       ? `Potongan: -${rupiah(price.discountAmount)} (${price.discountLabel})`
       : false,
+    price.minimumAdjustmentNote ? `Catatan: ${price.minimumAdjustmentNote}` : false,
     `Estimasi Total: ${rupiah(price.total)} (Bisa DP 50%: ${rupiah(price.dpAmount)})`,
     "",
     `Nama: ${name}`,
@@ -56,7 +57,7 @@ export function pesanPesanan({
     fileUrl ? `File: ${fileUrl}` : false,
     notes ? `Catatan: ${notes}` : false,
     "",
-    `Pembayaran via ${pembayaran.metode.join("/")} ke ${pembayaran.nomor} setelah admin konfirmasi.`,
+    `Pembayaran via ${pembayaran.metode.join("/")} ke ${pembayaran.nomor} setelah Bagas konfirmasi.`,
   ]);
 }
 
@@ -93,7 +94,7 @@ export function pesanOrderSpesifik({
       : null;
 
   return rapikan([
-    `Halo Mas Joki, saya mau pesan order khusus ${service.name}:`,
+    `Halo Mas Joki (Bagas), saya mau pesan order khusus ${service.name}:`,
     "",
     `Layanan: ${service.name}`,
     `Jumlah: ${price.qty} ${BASIS_LABEL[service.basis]} (${price.equivalentLabel})`,
@@ -103,11 +104,12 @@ export function pesanOrderSpesifik({
     citationStyle ? `Format Sitasi/Rujukan: ${citationStyle}` : false,
     customPreference ? `Spesifikasi Khusus: ${customPreference}` : false,
     `Tenggat: ${price.deadline.label} (Estimasi: ${price.estimatedTurnaround})`,
-    "Tingkat: Standar (dikonfirmasi setelah admin cek brief)",
+    "Tingkat: Standar (dikonfirmasi setelah Bagas cek brief)",
     daftarTambahan ? `Opsi Tambahan: ${daftarTambahan}` : false,
     price.discountAmount > 0 && price.discountLabel
       ? `Potongan: -${rupiah(price.discountAmount)} (${price.discountLabel})`
       : false,
+    price.minimumAdjustmentNote ? `Catatan: ${price.minimumAdjustmentNote}` : false,
     `Estimasi Total: ${rupiah(price.total)} (Bisa DP 50%: ${rupiah(price.dpAmount)})`,
     "",
     `Nama: ${name}`,
@@ -115,7 +117,7 @@ export function pesanOrderSpesifik({
     fileUrl ? `File Dokumen: ${fileUrl}` : false,
     notes ? `Catatan Khusus: ${notes}` : false,
     "",
-    `Pembayaran via ${pembayaran.metode.join("/")} ke ${pembayaran.nomor} setelah admin konfirmasi.`,
+    `Pembayaran via ${pembayaran.metode.join("/")} ke ${pembayaran.nomor} setelah Bagas konfirmasi.`,
   ]);
 }
 
@@ -139,7 +141,7 @@ export function pesanPenawaran({
   const deadline = getDeadline(deadlineId);
 
   return rapikan([
-    "Halo Mas Joki, saya mau minta penawaran:",
+    "Halo Mas Joki (Bagas), saya mau minta penawaran:",
     "",
     `Jenis tugas: ${layanan}`,
     `Tenggat: ${deadline.label}`,

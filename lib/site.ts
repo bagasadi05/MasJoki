@@ -1,11 +1,21 @@
+import {
+  SITE_EMAIL,
+  SITE_LOCATION,
+  SITE_NAME,
+  SITE_OPERATIONAL_HOURS,
+  WA_NUMBER,
+  WA_NUMBER_INTL,
+  getWhatsAppUrl,
+} from "./config";
+
 export const site = {
-  name: "Mas Joki",
+  name: SITE_NAME,
   tagline: "Bantuan tugas, harga kelihatan di awal.",
-  whatsapp: process.env.NEXT_PUBLIC_WHATSAPP ?? "6289619774116",
-  email: process.env.NEXT_PUBLIC_EMAIL ?? "halo@masjoki.id",
-  instagram: process.env.NEXT_PUBLIC_INSTAGRAM ?? "masjoki.id",
-  jamOperasional: "Setiap hari, 07.00–23.00 WIB",
-  kota: "Yogyakarta",
+  whatsapp: WA_NUMBER_INTL,
+  email: SITE_EMAIL,
+  instagram: "masjoki.id",
+  jamOperasional: SITE_OPERATIONAL_HOURS,
+  kota: SITE_LOCATION,
 } as const;
 
 /**
@@ -15,13 +25,13 @@ export const site = {
 export const pembayaran = {
   metode: ["ShopeePay", "GoPay", "DANA"] as const,
   /** Format yang ditampilkan ke pengunjung. */
-  nomor: "089619774116",
+  nomor: WA_NUMBER,
   /** Format internasional untuk tautan WhatsApp. */
-  nomorWhatsapp: "6289619774116",
+  nomorWhatsapp: WA_NUMBER_INTL,
 } as const;
 
 export function waLink(pesan: string): string {
-  return `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(pesan)}`;
+  return getWhatsAppUrl(pesan);
 }
 
 export const waPesanUmum =

@@ -21,22 +21,27 @@ export const metadata: Metadata = {
     template: "%s · Mas Joki",
   },
   description:
-    "Parafrase, humanisasi teks, makalah, PowerPoint, artikel jurnal, sampai rapikan Word. Masukkan jumlah halaman, lihat totalnya sebelum chat.",
+    "Parafrase, humanisasi teks AI, makalah, PowerPoint, artikel jurnal, sampai rapikan Word. Masukkan jumlah halaman, lihat totalnya sebelum chat.",
   keywords: [
     "jasa parafrase",
     "jasa makalah",
     "jasa powerpoint",
     "rapikan file word",
     "jasa artikel jurnal",
+    "penurunan turnitin",
     "bantuan tugas mahasiswa",
   ],
+  icons: {
+    icon: "/mas-joki.jpg",
+    apple: "/mas-joki.jpg",
+  },
   openGraph: {
     type: "website",
     locale: "id_ID",
     siteName: "Mas Joki",
     title: "Mas Joki — Bantuan tugas, harga kelihatan di awal",
     description:
-      "Hitung sendiri biaya parafrase, makalah, PowerPoint, dan artikel jurnal. Tanpa nunggu balasan chat.",
+      "Hitung sendiri biaya parafrase, makalah, PowerPoint, artikel jurnal, dan penurunan Turnitin. Tanpa nunggu balasan chat.",
   },
   robots: { index: true, follow: true },
 };

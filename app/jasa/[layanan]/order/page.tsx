@@ -90,8 +90,8 @@ export default async function HalamanOrderSpesifik({ params }: OrderPageProps) {
           <h1 className="mt-3 font-display text-[2.2rem] leading-[1.08] tracking-[-0.03em] text-ink sm:text-[2.8rem]">
             {spec.headline}
           </h1>
-          <p className="mt-3 text-[1rem] leading-relaxed text-ink-soft">
-            {spec.subheadline} Lengkapi 3 langkah cepat di bawah ini untuk mendapatkan estimasi terkunci dan mengirim naskah ke admin.
+          <p className="mt-3 text-xs sm:text-sm md:text-base leading-relaxed text-slate-600">
+            {spec.subheadline} Lengkapi 3 langkah cepat di bawah ini untuk mendapatkan estimasi terkunci dan mengirim naskah langsung ke Bagas.
           </p>
         </div>
 

@@ -55,18 +55,24 @@ export function CalculatorProvider({
 
     const layanan = params.get("layanan");
     if (layanan && SERVICES.some((service) => service.id === layanan)) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setServiceId(layanan as ServiceId);
+      if (layanan === "turnitin_ai") {
+        setMode("penawaran");
+      }
     }
 
-    if (params.get("mode") === "penawaran") {
+    if (params.get("mode") === "penawaran" || params.get("tab") === "penawaran") {
       setMode("penawaran");
     }
   }, []);
 
   const pilihLayanan = useCallback((id: ServiceId) => {
     setServiceId(id);
-    setMode("hitung");
+    if (id === "turnitin_ai") {
+      setMode("penawaran");
+    } else {
+      setMode("hitung");
+    }
     scrollKeKalkulator(id);
   }, []);
 
@@ -80,6 +86,10 @@ export function CalculatorProvider({
       {children}
     </CalculatorContext.Provider>
   );
+}
+
+export function useOptionalCalculator(): CalculatorState | null {
+  return useContext(CalculatorContext);
 }
 
 export function useCalculator(): CalculatorState {

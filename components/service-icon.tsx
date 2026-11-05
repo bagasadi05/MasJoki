@@ -1,4 +1,15 @@
-import { BookOpen, FileCheck, GraduationCap, Languages, Palette, Presentation, RefreshCw, Sparkles } from "lucide-react";
+import {
+  BookOpen,
+  FileCheck,
+  FileText,
+  GraduationCap,
+  Languages,
+  Palette,
+  Presentation,
+  RefreshCw,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { ServiceId } from "@/lib/services";
 
@@ -6,11 +17,15 @@ export const SERVICE_ICONS: Record<ServiceId, LucideIcon> = {
   parafrase: RefreshCw,
   humanisasi: Sparkles,
   makalah: BookOpen,
+  artikel_ilmiah: GraduationCap,
+  jurnal_submit: FileText,
   jurnal: GraduationCap,
   powerpoint: Presentation,
   word: FileCheck,
   terjemah: Languages,
+  paket_abstrak: Languages,
   desain: Palette,
+  turnitin_ai: ShieldCheck,
 };
 
 interface ServiceIconProps {

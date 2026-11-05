@@ -4,11 +4,15 @@ const SERVICE_IDS = [
   "parafrase",
   "humanisasi",
   "makalah",
+  "artikel_ilmiah",
+  "jurnal_submit",
   "jurnal",
   "powerpoint",
   "word",
   "terjemah",
+  "paket_abstrak",
   "desain",
+  "turnitin_ai",
 ] as const;
 
 const DEADLINE_IDS = ["santai", "normal", "cepat", "kilat"] as const;

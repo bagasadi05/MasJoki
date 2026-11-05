@@ -48,125 +48,137 @@ export const SERVICE_ORDER_SPECS: Record<ServiceId, ServiceOrderSpec> = {
     ],
     targetScoreTitle: "Target Penurunan Skor yang Diinginkan",
     targetScoreOptions: [
-      {
-        value: "<10%",
-        label: "Di Bawah 10% (Target Ketat)",
-        badge: "Rekomendasi",
-        description: "Standar aman lolos uji skripsi & tesis",
-      },
-      {
-        value: "<20%",
-        label: "Di Bawah 20% (Aman)",
-        description: "Standar umum tugas mata kuliah reguler",
-      },
-      {
-        value: "0%",
-        label: "Target 0% — Penulisan Ulang Menyeluruh",
-        description: "Penulisan ulang menyeluruh sampai naskah terasa alami",
-      },
+      { value: "<20%", label: "Target <20%", badge: "Sangat Aman" },
+      { value: "<10%", label: "Target <10%", badge: "Bebas Cemas" },
+      { value: "0%", label: "Mendekati 0%", badge: "Maksimal" },
     ],
     fileHelperText:
-      "Tautan Google Drive dokumen Word naskah asli (.docx) atau PDF laporan hasil cek AI (pastikan izin berbagi publik).",
+      "Tautan Google Drive naskah tugas/skripsi (.docx) dan hasil pengecekan AI sebelumnya (jika ada).",
   },
   parafrase: {
     serviceId: "parafrase",
-    headline: "Form Pemesanan Parafrase & Penurunan Turnitin",
+    headline: "Form Pemesanan Parafrase & Penurunan Plagiasi",
     subheadline:
-      "Turunkan persentase kesamaan Turnitin dengan penulisan ulang manual tanpa merusak substansi kalimat.",
-    checkerTitle: "Sistem Pengecek Plagiasi",
+      "Susun ulang kalimat tugas secara alami per paragraf dengan makna dan kutipan sitasi tetap utuh.",
+    checkerTitle: "Alat Pengecek Plagiasi Kampus",
     checkerOptions: [
-      { value: "turnitin", label: "Turnitin (No-Repository)", badge: "Standar Kampus" },
-      { value: "drillbit", label: "Drillbit Plagiarism" },
-      { value: "plagscan", label: "PlagScan" },
-      { value: "dosen_kampus", label: "Arahan Dosen Penguji" },
+      { value: "turnitin", label: "Turnitin No-Repository", badge: "Standar Kampus" },
+      { value: "plagiarism_checker", label: "Plagiarism Checker X" },
+      { value: "dosen", label: "Review Dosen" },
     ],
-    currentScoreTitle: "Persentase Kemiripan (Similarity) Saat Ini",
+    currentScoreTitle: "Estimasi Similarity Skor Awal",
     currentScoreOptions: [
-      { value: "25-40%", label: "25% – 40% Similarity", description: "Perlu parafrase bab tertentu" },
-      { value: "41-60%", label: "41% – 60% Similarity", description: "Perlu parafrase menyeluruh" },
-      { value: ">60%", label: "Di Atas 60%", description: "Perombakan struktur mayor" },
-      { value: "belum_tahu", label: "Belum Punya Laporan", description: "Admin bantu cek awal" },
+      { value: "25-40%", label: "25% – 40% Similarity" },
+      { value: "41-60%", label: "41% – 60% Similarity" },
+      { value: ">60%", label: "Lebih dari 60% Similarity" },
+      { value: "belum_tahu", label: "Belum Dicek" },
     ],
-    targetScoreTitle: "Target Persentase Akhir",
+    targetScoreTitle: "Target Batas Similarity Kampus",
     targetScoreOptions: [
-      {
-        value: "<15%",
-        label: "Di Bawah 15% (Standar)",
-        badge: "Rekomendasi",
-        description: "Standar baku sidang skripsi/tesis",
-      },
-      {
-        value: "<20%",
-        label: "Di Bawah 20% (Standar Kampus)",
-        description: "Batas wajar makalah/laporan",
-      },
-      {
-        value: "<10%",
-        label: "Di Bawah 10% (Super Aman)",
-        description: "Standar jurnal terakreditasi SINTA",
-      },
+      { value: "<20%", label: "Di bawah 20%", badge: "Standar Skripsi" },
+      { value: "<15%", label: "Di bawah 15%", badge: "Standar Tesis/Jurnal" },
+      { value: "<25%", label: "Di bawah 25%", badge: "Tugas Harian" },
     ],
     fileHelperText:
-      "Tautan Google Drive dokumen naskah Word (.docx) dan PDF laporan Turnitin sebelumnya jika ada.",
+      "Tautan Google Drive naskah Word (.docx) dan PDF hasil cek Turnitin (jika ada).",
   },
   makalah: {
     serviceId: "makalah",
     headline: "Form Pemesanan Makalah & Laporan Akademik",
     subheadline:
-      "Penyusunan naskah makalah lengkap sitasi, referensi jurnal terindeks, dan format rapi.",
-    citationTitle: "Format Sitasi & Gaya Rujukan yang Diminta Dosen",
+      "Penyusunan naskah makalah terstruktur, argumen ilmiah solid, dan rujukan jurnal tervalidasi.",
+    citationTitle: "Gaya Sitasi & Format Daftar Pustaka",
     citationOptions: [
-      { value: "apa_7", label: "APA Style 7th Edition", badge: "Paling Banyak" },
-      { value: "ieee", label: "IEEE (Teknik/Komputer)" },
-      { value: "harvard", label: "Harvard Style" },
+      { value: "apa", label: "APA Style 7th Edition", badge: "Paling Banyak" },
+      { value: "harvard", label: "Harvard Referencing" },
+      { value: "ieee", label: "IEEE (Teknik/Informatika)" },
       { value: "chicago", label: "Chicago / Turabian" },
-      { value: "vancouver", label: "Vancouver (Kesehatan/Kedokteran)" },
+      { value: "bebas", label: "Standar Umum Kampus" },
     ],
-    customQuestionTitle: "Kebutuhan Elemen Tambahan",
+    customQuestionTitle: "Kebutuhan Khusus Penulisan",
     customQuestionOptions: [
-      { value: "abstrak_dua_bahasa", label: "Abstrak ID + EN", badge: "Gratis" },
-      { value: "jurnal_5_tahun", label: "Wajib Jurnal 5 Tahun Terakhir", badge: "Standar" },
-      { value: "lampiran_kuesioner", label: "Disertai Lampiran / Tabel Data" },
+      { value: "bab_lengkap", label: "Lengkap Bab I s/d Bab III/IV", badge: "Utuh" },
+      { value: "pembahasan_saja", label: "Fokus Bab Pembahasan & Analisis" },
+      { value: "revisi_makalah", label: "Revisi Perbaikan Makalah Lama" },
     ],
     fileHelperText:
-      "Tautan Google Drive berisi silabus tugas, petunjuk penulisan dosen, atau draft kasar makalah.",
+      "Tautan Google Drive silabus/instruksi dosen, materi kuliah, atau buku rujukan wajib.",
   },
   jurnal: {
     serviceId: "jurnal",
     headline: "Form Pemesanan Artikel Jurnal Ilmiah",
     subheadline:
-      "Penyusunan artikel jurnal standar IMRAD lengkap dengan analisis literatur dan sitasi baku.",
-    citationTitle: "Sasaran Publikasi & Format Naskah",
+      "Penyusunan manuskrip artikel ilmiah standar IMRAD, abstrak dwibahasa, dan sitasi jurnal terakreditasi.",
+    citationTitle: "Template & Gaya Sitasi Jurnal Target",
     citationOptions: [
-      { value: "sinta_3_4", label: "Jurnal Nasional SINTA 3–4", badge: "Populer" },
-      { value: "sinta_2", label: "Jurnal Nasional Bereputasi SINTA 2" },
-      { value: "prosiding_konferensi", label: "Prosiding Seminar Nasional" },
-      { value: "internasional", label: "Jurnal Internasional Terindeks" },
+      { value: "sinta", label: "Jurnal Nasional Terakreditasi SINTA", badge: "SINTA 2-4" },
+      { value: "scopus", label: "Jurnal Internasional / Prosiding" },
+      { value: "internal_kampus", label: "Jurnal Mahasiswa Internal Kampus" },
     ],
-    customQuestionTitle: "Gaya Sitasi Rujukan",
+    customQuestionTitle: "Kelengkapan Naskah Awal",
     customQuestionOptions: [
-      { value: "apa_7", label: "APA 7th Edition" },
-      { value: "ieee", label: "IEEE Style" },
-      { value: "vancouver", label: "Vancouver" },
-      { value: "mendeley", label: "Sesuai Template Jurnal Sasaran" },
+      { value: "draft_kasar", label: "Sudah Ada Draft Kasar / Skripsi", badge: "Konversi Skripsi" },
+      { value: "data_mentah", label: "Hanya Ada Data Hasil Penelitian" },
+      { value: "tinjauan_pustaka", label: "Literature Review / Systematic Review" },
     ],
     fileHelperText:
-      "Tautan Google Drive naskah draft atau link website jurnal tujuan beserta template Word jurnal.",
+      "Tautan Google Drive naskah skripsi/data penelitian, template jurnal target (jika ada), dan pedoman author.",
+  },
+  artikel_ilmiah: {
+    serviceId: "artikel_ilmiah",
+    headline: "Form Pemesanan Artikel Ilmiah (Tugas Kuliah)",
+    subheadline:
+      "Penyusunan artikel ilmiah lengkap struktur baku, sitasi dan rujukan akademik untuk tugas kuliah.",
+    citationTitle: "Gaya Sitasi / Rujukan",
+    citationOptions: [
+      { value: "apa", label: "APA 7th Edition", badge: "Paling Umum" },
+      { value: "harvard", label: "Harvard Style" },
+      { value: "ieee", label: "IEEE Style" },
+    ],
+    fileHelperText:
+      "Tautan Google Drive materi brief tugas, petunjuk dosen, atau draft kasar yang ingin dikembangkan.",
+  },
+  jurnal_submit: {
+    serviceId: "jurnal_submit",
+    headline: "Form Pemesanan Artikel Jurnal Siap Submit",
+    subheadline:
+      "Standar publikasi IMRAD lengkap, rujukan mutakhir, template jurnal tujuan, termasuk cek kemiripan.",
+    citationTitle: "Target Jurnal & Template",
+    citationOptions: [
+      { value: "sinta", label: "Jurnal Terakreditasi SINTA", badge: "SINTA 2-4" },
+      { value: "scopus", label: "Jurnal Internasional Scopus" },
+      { value: "prosiding", label: "Prosiding Konferensi Nasional/Internasional" },
+    ],
+    fileHelperText:
+      "Tautan Google Drive naskah draft/skripsi, template jurnal target, dan panduan author.",
+  },
+  paket_abstrak: {
+    serviceId: "paket_abstrak",
+    headline: "Form Pemesanan Paket Abstrak (ID+EN)",
+    subheadline:
+      "Pasangan abstrak dua versi (Bahasa Indonesia & English Abstract) siap tempel ke skripsi atau artikel jurnal.",
+    customQuestionTitle: "Jenis Naskah Abstrak",
+    customQuestionOptions: [
+      { value: "skripsi", label: "Abstrak Skripsi / Tugas Akhir", badge: "Paling Banyak" },
+      { value: "jurnal", label: "Abstrak Artikel Jurnal Ilmiah" },
+      { value: "tesis", label: "Abstrak Tesis / Proposal" },
+    ],
+    fileHelperText:
+      "Tautan Google Drive atau teks dokumen Word bab ringkasan/draft abstrak yang mau diterjemahkan.",
   },
   powerpoint: {
     serviceId: "powerpoint",
-    headline: "Form Pemesanan Slide Presentasi PowerPoint",
+    headline: "Form Pemesanan Presentasi PowerPoint",
     subheadline:
-      "Desain slide modern rasio 16:9, visual bersih, dan lengkap dengan naskah bicara presenter.",
-    customQuestionTitle: "Arah Gaya Visual Slide yang Diinginkan",
+      "Slide modern, visual rapi, tidak menumpuk teks, dan siap dipresentasikan di depan dosen.",
+    customQuestionTitle: "Tujuan Presentasi",
     customQuestionOptions: [
-      { value: "minimalis_akademik", label: "Minimalis Akademik Rapi", badge: "Pilihan Dosen" },
-      { value: "infografis_modern", label: "Infografis & Visual Card", badge: "Populer" },
-      { value: "corporate_clean", label: "Modern Corporate / Professional" },
-      { value: "kreatif_penuh_warna", label: "Ceria & Berwarna (Eye-catching)" },
+      { value: "sidang_skripsi", label: "Sidang Skripsi / Tesis / Sempro", badge: "Krusial" },
+      { value: "tugas_kelompok", label: "Tugas Mingguan Kuliah" },
+      { value: "lomba_pitching", label: "Lomba Karya Ilmiah / Business Plan" },
     ],
     fileHelperText:
-      "Tautan Google Drive makalah, naskah Word, atau poin-poin materi yang ingin dijadikan slide.",
+      "Tautan Google Drive naskah makalah/skripsi yang akan diringkas ke slide dan template PPT kampus jika ada.",
   },
   word: {
     serviceId: "word",
@@ -210,6 +222,30 @@ export const SERVICE_ORDER_SPECS: Record<ServiceId, ServiceOrderSpec> = {
     ],
     fileHelperText:
       "Tautan Google Drive naskah materi, logo kampus, dan contoh poster referensi jika ada.",
+  },
+  turnitin_ai: {
+    serviceId: "turnitin_ai",
+    headline: "Form Penawaran Penurunan Skor Turnitin & AI",
+    subheadline:
+      "Turunkan persentase similaritas Turnitin dan deteksi AI naskahmu hingga target aman di bawah 30%.",
+    checkerTitle: "Uji yang Ingin Diturunkan",
+    checkerOptions: [
+      { value: "turnitin_similarity", label: "Turnitin Similarity (Plagiasi)", badge: "Paling Umum" },
+      { value: "turnitin_ai", label: "Turnitin AI Writing Detection" },
+      { value: "kombinasi", label: "Keduanya (Similarity + AI Detection)", badge: "Paket Lengkap" },
+      { value: "gptzero", label: "GPTZero / ZeroGPT" },
+    ],
+    currentScoreTitle: "Berapa Skor Naskahmu Saat Ini?",
+    currentScorePlaceholder: "Contoh: Similarity 42%, AI 65%",
+    targetScoreTitle: "Target Skor yang Diinginkan Kampus",
+    targetScoreOptions: [
+      { value: "<20%", label: "Di bawah 20%", badge: "Standar Skripsi" },
+      { value: "<15%", label: "Di bawah 15%", badge: "Standar Jurnal" },
+      { value: "<10%", label: "Di bawah 10%", badge: "Super Aman" },
+      { value: "<30%", label: "Di bawah 30%", badge: "Tugas Umum" },
+    ],
+    fileHelperText:
+      "Kirimkan file naskah Word (.docx) beserta file laporan/PDF Turnitin sebelumnya (bila ada).",
   },
 };
 

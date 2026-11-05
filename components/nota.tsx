@@ -26,6 +26,10 @@ interface NotaProps {
   className?: string;
   /** Warna layanan aktif: menggambar pita warna di atas nota. */
   aksen?: Aksen;
+  /** TUGAS 8: Varian ringkas khusus hero agar tidak terpotong di viewport 1080p dan 768p */
+  ringkas?: boolean;
+  /** REVISI 4: Catatan penyesuaian batas minimum transaksi Rp15.000 */
+  minimumAdjustmentNote?: string | null;
 }
 
 /**
@@ -45,13 +49,17 @@ export function Nota({
   animate = false,
   className = "",
   aksen,
+  ringkas = false,
+  minimumAdjustmentNote,
 }: NotaProps) {
+  const displayLines = ringkas ? lines.slice(0, 2) : lines;
+
   return (
     <div className={`nota ${animate ? "nota-masuk" : ""} ${className}`}>
       {aksen ? (
         <span
           aria-hidden
-          className="absolute -top-px left-0 right-0 z-10 h-[6px]"
+          className="absolute -top-px left-0 right-0 z-10 h-[5px]"
           style={{
             background: `var(${aksen.varName})`,
             borderRadius: "var(--radius-nota) var(--radius-nota) 0 0",
@@ -67,7 +75,7 @@ export function Nota({
         />
       )}
 
-      <div className="p-6 sm:p-7">
+      <div className={ringkas ? "p-4 sm:p-5" : "p-6 sm:p-7"}>
         {/* Header Nota */}
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-center gap-3">
@@ -75,35 +83,35 @@ export function Nota({
               <span className="font-display text-[0.82rem] font-bold">MJ</span>
             </div>
             <div>
-              <p className="font-display text-lg font-bold leading-none tracking-tight text-ink">
+              <p className="font-display text-base sm:text-lg font-bold leading-none tracking-tight text-ink">
                 Mas Joki
               </p>
-              <p className="mt-1 text-[0.72rem] font-medium text-muted">
+              <p className="mt-1 text-xs font-semibold text-slate-600">
                 Estimasi Biaya Transparan
               </p>
             </div>
           </div>
 
           <div className="text-right">
-            <span className="inline-block rounded-md bg-paper-2 px-2.5 py-1 font-mono text-[0.66rem] font-extrabold uppercase tracking-wider text-muted border border-line">
+            <span className="inline-block rounded-md bg-paper-2 px-2.5 py-1 font-mono text-xs font-extrabold uppercase tracking-wider text-slate-600 border border-line">
               REC-{code}
             </span>
           </div>
         </div>
 
         {/* Garis batas putus-putus */}
-        <div className="my-5 border-t border-dashed border-line" />
+        <div className={`border-t border-dashed border-line ${ringkas ? "my-3.5" : "my-5"}`} />
 
         {/* Rincian item */}
-        <dl className="space-y-3.5">
-          {lines.map((line, index) => {
+        <dl className={ringkas ? "space-y-2.5" : "space-y-3.5"}>
+          {displayLines.map((line, index) => {
             const isDiscount = line.amount < 0 || line.kind === "discount";
             const isAddon = line.kind === "addon";
 
             return (
               <div
                 key={`${line.label}-${index}`}
-                className="flex items-baseline justify-between gap-3 text-[0.88rem]"
+                className="flex items-baseline justify-between gap-3 text-sm"
               >
                 <dt
                   className={`min-w-0 pr-2 font-medium leading-snug ${
@@ -120,8 +128,8 @@ export function Nota({
                   </span>
                   {line.detail ? (
                     <span
-                      className={`mt-0.5 block text-[0.74rem] leading-snug font-normal ${
-                        isDiscount ? "text-mint font-medium" : "text-muted"
+                      className={`mt-0.5 block text-xs leading-snug ${
+                        isDiscount ? "text-mint font-semibold" : "text-slate-600 font-medium"
                       }`}
                     >
                       {line.detail}
@@ -129,12 +137,12 @@ export function Nota({
                   ) : null}
                 </dt>
                 <dd
-                  className={`shrink-0 font-mono text-[0.84rem] font-semibold tabular-nums ${
+                  className={`shrink-0 font-mono text-sm font-bold tabular-nums ${
                     isDiscount
-                      ? "font-bold text-mint"
+                      ? "text-mint"
                       : isAddon
                         ? "text-brand"
-                        : "text-ink-soft"
+                        : "text-ink"
                   }`}
                 >
                   {isDiscount
@@ -147,42 +155,54 @@ export function Nota({
         </dl>
 
         {/* Garis batas putus-putus */}
-        <div className="my-5 border-t border-dashed border-line" />
+        <div className={`border-t border-dashed border-line ${ringkas ? "my-3.5" : "my-5"}`} />
 
         {/* Total Akhir dengan Animasi Angka Berputar Halus */}
-        <div className="flex items-end justify-between gap-3 rounded-2xl bg-paper-2/70 p-4 border border-line/60">
+        <div className="flex items-end justify-between gap-3 rounded-2xl bg-paper-2/80 p-3.5 sm:p-4 border border-line/70">
           <div>
-            <p className="text-[0.72rem] font-bold uppercase tracking-wider text-muted">
+            <p className="text-xs font-bold uppercase tracking-wider text-slate-600">
               Total Akhir
             </p>
-            <p className="text-[0.68rem] text-muted">
+            <p className="text-xs font-semibold text-slate-600 mt-0.5">
               {effectiveUnitLabel
                 ? `Rata-rata ${effectiveUnitLabel}`
                 : "Terkunci sebelum chat"}
             </p>
           </div>
-          <p className="font-display text-[1.85rem] font-bold leading-none tracking-tight text-brand tabular-nums">
+          <p className="font-display text-2xl sm:text-[1.85rem] font-bold leading-none tracking-tight text-brand tabular-nums">
             <AnimatedPrice value={total} />
           </p>
         </div>
 
-        {/* Info Opsi DP 50% & Estimasi Pengerjaan */}
+        {/* REVISI 4: Catatan penyesuaian minimum transaksi Rp15.000 */}
+        {minimumAdjustmentNote ? (
+          <p className="mt-2 text-center text-xs font-semibold text-amber bg-amber-soft/60 border border-amber/20 rounded-xl py-1.5 px-3">
+            ✦ {minimumAdjustmentNote}
+          </p>
+        ) : null}
+
+        {/* TUGAS 3: Info Opsi DP 50% & Estimasi Pengerjaan */}
         {dpAmount || estimatedTurnaround || equivalentLabel ? (
-          <div className="mt-3.5 space-y-2 rounded-2xl border border-brand/15 bg-brand-soft/40 p-3.5 text-[0.75rem]">
+          <div className="mt-3 space-y-2 rounded-2xl border border-brand/15 bg-brand-soft/50 p-3 sm:p-3.5 text-xs">
             {dpAmount ? (
-              <div className="flex items-center justify-between gap-2">
-                <span className="flex items-center gap-1.5 font-semibold text-ink-soft">
-                  <CreditCard className="size-3.5 text-brand" />
-                  <span>Opsi DP 50% (Uang Muka):</span>
-                </span>
-                <span className="font-mono font-bold text-ink tabular-nums">
-                  <AnimatedPrice value={dpAmount} />
-                </span>
+              <div className="space-y-0.5">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="flex items-center gap-1.5 font-bold text-ink-soft">
+                    <CreditCard className="size-3.5 text-brand" />
+                    <span>Opsi DP 50% (Uang Muka):</span>
+                  </span>
+                  <span className="font-mono font-extrabold text-ink tabular-nums">
+                    <AnimatedPrice value={dpAmount} />
+                  </span>
+                </div>
+                <p className="text-[0.72rem] text-slate-600 pl-5 font-medium leading-tight">
+                  Sudah dibulatkan ke kelipatan Rp500 terdekat.
+                </p>
               </div>
             ) : null}
 
             {estimatedTurnaround ? (
-              <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center justify-between gap-2 border-t border-brand/10 pt-1.5">
                 <span className="flex items-center gap-1.5 font-semibold text-ink-soft">
                   <Clock className="size-3.5 text-brand" />
                   <span>Estimasi Selesai:</span>
@@ -191,51 +211,57 @@ export function Nota({
               </div>
             ) : null}
 
-            {equivalentLabel ? (
-              <div className="flex items-center gap-1.5 border-t border-brand/10 pt-1.5 text-[0.71rem] text-muted">
-                <Ruler className="size-3 text-muted shrink-0" />
+            {equivalentLabel && !ringkas ? (
+              <div className="flex items-center gap-1.5 border-t border-brand/10 pt-1.5 text-xs text-slate-600 font-medium">
+                <Ruler className="size-3 text-slate-500 shrink-0" />
                 <span>{equivalentLabel}</span>
               </div>
             ) : null}
           </div>
         ) : null}
 
-        {note ? (
-          <p className="mt-3.5 text-[0.74rem] leading-relaxed text-muted">
+        {note && !ringkas ? (
+          <p className="mt-3.5 text-xs leading-relaxed text-slate-600 font-medium">
             {note}
           </p>
         ) : null}
 
-        {/* Stempel verifikasi & Barcode Kwitansi Fisik */}
-        <div className="mt-5 flex items-center justify-between gap-2 pt-2 border-t border-dashed border-line">
-          <div className="flex flex-col">
-            <span
+        {/* TUGAS 8: Stempel & Sobekan Fisik hanya tampil di nota lengkap, bukan di hero ringkas */}
+        {!ringkas ? (
+          <>
+            <div className="mt-5 flex items-center justify-between gap-2 pt-2 border-t border-dashed border-line">
+              <div className="flex flex-col">
+                <span
+                  aria-hidden
+                  className="font-mono text-[0.62rem] tracking-[0.25em] text-slate-500 uppercase select-none"
+                >
+                  ||||| | |||| || ||| |
+                </span>
+                <span className="mt-0.5 font-mono text-[0.65rem] text-slate-600">
+                  REF-{code}-OK
+                </span>
+              </div>
+
+              {stamp ? (
+                <span className="stempel-merah -rotate-2 transform text-xs">
+                  ✓ {stamp}
+                </span>
+              ) : null}
+            </div>
+
+            <div
               aria-hidden
-              className="font-mono text-[0.78rem] tracking-[0.22em] text-muted/60 select-none uppercase font-bold"
+              className="mt-5 flex items-center justify-between gap-1 overflow-hidden opacity-60"
             >
-              ||||| ||| |||| || |||||
-            </span>
-            <span className="font-mono text-[0.58rem] text-muted tracking-wider">
-              VERIFIED LEDGER #MJ-2026
-            </span>
-          </div>
-
-          {stamp ? (
-            <span className={`stempel ${animate ? "stempel-masuk" : ""}`}>
-              <Check className="size-3 inline mr-1 stroke-[3]" />
-              {stamp}
-            </span>
-          ) : null}
-        </div>
-
-        {/* Sobekan Fisik Kwitansi */}
-        <div className="mt-4 pt-2.5 border-t border-dotted border-line/60 flex items-center justify-between text-[0.6rem] text-muted/50 font-mono select-none">
-          <span className="flex items-center gap-1">
-            <span>✂</span>
-            <span>BATAS POTONG RESMI</span>
-          </span>
-          <span>MAS JOKI ACADEMIC</span>
-        </div>
+              {Array.from({ length: 24 }).map((_, i) => (
+                <span
+                  key={i}
+                  className="size-1.5 rounded-full bg-line"
+                />
+              ))}
+            </div>
+          </>
+        ) : null}
       </div>
     </div>
   );

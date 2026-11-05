@@ -8,7 +8,7 @@ import type { navigasi } from "@/lib/nav";
 import { pembayaran, waLink } from "@/lib/site";
 
 const waAdmin = waLink(
-  "Halo Mas Joki, saya mau tanya dulu sebelum pesan.",
+  "Halo Bagas Mas Joki, saya mau tanya dulu sebelum pesan.",
 );
 
 export function MenuSeluler({
@@ -106,11 +106,12 @@ export function MenuSeluler({
             </ul>
 
             <div className="mt-4 border-t border-line pt-4">
-              <p className="text-[0.72rem] leading-relaxed text-muted">
+              <p className="text-xs leading-relaxed text-slate-600">
                 Pembayaran resmi {pembayaran.metode.join(" · ")} ke{" "}
                 <span className="font-mono font-bold text-ink">
                   {pembayaran.nomor}
-                </span>
+                </span>{" "}
+                (a.n. Mas Joki)
               </p>
               <a
                 href={waAdmin}
@@ -119,7 +120,7 @@ export function MenuSeluler({
                 onClick={() => setBuka(false)}
                 className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-brand px-4 py-3 text-[0.86rem] font-bold text-white shadow-md shadow-brand/20 transition-colors hover:bg-brand-dark"
               >
-                <span>Tanya Admin di WhatsApp</span>
+                <span>Tanya Bagas di WhatsApp</span>
                 <ExternalLink className="size-3.5 opacity-70" />
               </a>
             </div>

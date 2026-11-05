@@ -5,14 +5,15 @@ import { useEffect, useState } from "react";
 import { waLink, waPesanUmum } from "@/lib/site";
 
 /**
- * Tombol WhatsApp melayang dengan Maskot 3D Mas Joki:
- * Sangat ramah, bersahabat, dan khas!
+ * Tombol WhatsApp melayang dengan Maskot Mas Joki:
+ * Otomatis bersembunyi saat area form kalkulator, pembayaran, CTA bawah, atau footer terlihat
+ * agar tidak menutupi tombol aksi utama (TUGAS 13f).
  */
 export function WaMelayang() {
   const [sembunyi, setSembunyi] = useState(false);
 
   useEffect(() => {
-    const bagian = document.querySelectorAll("#hitung, #bayar");
+    const bagian = document.querySelectorAll("#hitung, #bayar, #cta-bawah, footer");
     if (bagian.length === 0) return;
 
     const pengamat = new IntersectionObserver(
@@ -38,7 +39,7 @@ export function WaMelayang() {
       } print:hidden`}
       aria-hidden={sembunyi}
       tabIndex={sembunyi ? -1 : undefined}
-      aria-label="Chat Mas Joki di WhatsApp (buka tab baru)"
+      aria-label="Chat Bagas di WhatsApp (buka tab baru)"
     >
       {/* 3D Mascot Avatar */}
       <div className="relative size-8 shrink-0 overflow-hidden rounded-full border border-mint/25 bg-mint-soft shadow-2xs">
@@ -48,13 +49,14 @@ export function WaMelayang() {
           width={32}
           height={32}
           className="size-full object-cover object-top"
+          priority
         />
         <span className="absolute bottom-0 right-0 size-2 rounded-full border border-white bg-mint" />
       </div>
 
       <div className="flex flex-col text-left">
         <span className="text-[0.82rem] font-bold text-ink leading-none">
-          Chat Mas Joki
+          Chat Bagas
         </span>
         <span className="text-[0.66rem] font-semibold text-mint leading-tight">
           Online 07:00 – 23:00

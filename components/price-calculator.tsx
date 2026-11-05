@@ -1084,7 +1084,7 @@ export function PriceCalculator() {
             <div className="space-y-3">
               <a
                 href={waLink(
-                  `Halo Mas Joki (Bagas), saya mau minta penawaran untuk layanan ${service.name} dengan jumlah perkiraan ${price.qty} ${BASIS_LABEL[service.basis]}. Tenggat: ${price.deadline.label}. Mohon info estimasi biaya dan waktu pengerjaannya!`
+                  `Halo Mas Joki, saya mau minta penawaran untuk layanan ${service.name} dengan jumlah perkiraan ${price.qty} ${BASIS_LABEL[service.basis]}. Tenggat: ${price.deadline.label}. Mohon info estimasi biaya dan waktu pengerjaannya!`
                 )}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -1190,12 +1190,12 @@ function NotaPenawaran() {
               <p className="font-display text-lg font-bold leading-none tracking-tight text-ink">
                 Mas Joki
               </p>
-              <p className="mt-1 text-[0.72rem] font-medium text-muted">
+              <p className="mt-1 text-[11px] font-semibold text-slate-600">
                 Penawaran Khusus
               </p>
             </div>
           </div>
-          <span className="rounded-md bg-paper-2 px-2 py-0.5 font-mono text-[0.66rem] font-semibold uppercase text-muted">
+          <span className="rounded-md bg-paper-2 px-2 py-0.5 font-mono text-[11px] font-bold uppercase text-slate-600 border border-line">
             CUSTOM
           </span>
         </div>
@@ -1208,7 +1208,7 @@ function NotaPenawaran() {
               <div key={label} className="flex items-baseline justify-between gap-3">
                 <p className="font-medium text-ink">{label}</p>
                 <span className="h-px flex-1 translate-y-[-3px] border-b border-dotted border-line-strong" />
-                <p className="font-mono text-[0.78rem] text-muted">Disesuaikan</p>
+                <p className="font-mono text-xs text-slate-600 font-medium">Disesuaikan</p>
               </div>
             ),
           )}

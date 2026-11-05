@@ -26,7 +26,7 @@ import { SimulasiContoh } from "@/components/simulasi-contoh";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { Testimonials } from "@/components/testimonials";
-import { SITE_OWNER } from "@/lib/config";
+import { QRIS_ENABLED, SITE_OWNER } from "@/lib/config";
 import { pembayaran, site, waLink, waPesanUmum } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -80,6 +80,7 @@ const jsonLd = {
   areaServed: "ID",
   priceRange: "Rp15.000–Rp400.000",
   email: site.email,
+  sameAs: ["https://www.threads.com/@adis.shop29"],
   address: { "@type": "PostalAddress", addressLocality: site.kota },
   openingHours: "Mo-Su 07:00-23:00",
 };
@@ -423,17 +424,22 @@ export default function Home() {
         </section>
 
         {/* ========================================================== *
-         * 8. STRIP PEMBAYARAN RINGKAS (TUGAS 2: Satu Baris E-Wallet)
+         * 8. STRIP PEMBAYARAN RINGKAS (TUGAS 2 & 6: Satu Baris E-Wallet & Slot QRIS)
          * ========================================================== */}
         <section className="border-b border-line bg-paper-2/60 py-5">
           <div className="mx-auto max-w-6xl px-5 sm:px-8">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs sm:text-sm text-slate-700">
-              <div>
+              <div className="flex flex-wrap items-center gap-2">
                 <span>Pembayaran via </span>
                 <strong className="text-ink">ShopeePay, GoPay, atau DANA</strong>
                 <span> ke </span>
                 <strong className="font-mono text-ink font-bold">{pembayaran.nomor}</strong>
                 <span> a.n. {SITE_OWNER} (tanpa biaya admin).</span>
+                {QRIS_ENABLED && (
+                  <span className="ml-1 rounded-md bg-emerald-50 px-2 py-0.5 text-xs font-bold text-emerald-700 border border-emerald-200">
+                    QRIS — bisa dari e-wallet &amp; m-banking apa pun
+                  </span>
+                )}
               </div>
 
               <Link
@@ -442,6 +448,50 @@ export default function Home() {
               >
                 <span>Lihat cara pembayaran →</span>
               </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* ========================================================== *
+         * BLOK PERKENALAN SINGKAT PEMILIK (TUGAS 7: Bagas, S.Pd)
+         * ========================================================== */}
+        <section id="profil-pemilik" className="border-b border-line bg-gradient-to-b from-[#fcfbf7] to-white py-12 sm:py-16">
+          <div className="mx-auto max-w-4xl px-5 sm:px-8">
+            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-8 rounded-3xl border border-line bg-white p-6 sm:p-8 shadow-sm">
+              <div className="relative size-24 sm:size-28 shrink-0 overflow-hidden rounded-2xl border-2 border-line shadow-xs">
+                <Image
+                  src="/mas-joki.jpg"
+                  alt="Bagas — Pemilik & Pengerja Mas Joki"
+                  width={112}
+                  height={112}
+                  className="size-full object-cover object-top"
+                />
+              </div>
+
+              <div className="flex-1 text-center sm:text-left">
+                <span className="stempel-hijau text-[0.72rem] py-0.5 px-2.5">
+                  ✓ DIKERJAKAN LANGSUNG
+                </span>
+                <h3 className="mt-2.5 font-display text-lg sm:text-xl font-bold text-ink">
+                  Bagas, S.Pd — Pengelola &amp; Pengerja Mas Joki
+                </h3>
+                <p className="mt-2 text-xs sm:text-sm leading-relaxed text-slate-700 font-medium">
+                  Halo, saya Bagas — guru aktif bergelar S.Pd yang mengerjakan sendiri semua pesanan di Mas Joki. Tanpa perantara, tanpa tim bayangan. Latar belakang pendidikan membuat saya paham persis format akademik yang diminta dosen: sitasi rapi, struktur benar, bahasa yang lolos dibaca manusia.
+                </p>
+
+                <div className="mt-4">
+                  <a
+                    href={waLink("Halo Mas Joki, saya mau tanya soal biaya tugas saya.")}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-brand hover:underline"
+                  >
+                    <MessageCircle className="size-4" />
+                    <span>Chat Bagas</span>
+                    <ArrowRight className="size-3.5" />
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </section>

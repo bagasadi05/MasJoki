@@ -233,11 +233,11 @@ export function Nota({
               <div className="flex flex-col">
                 <span
                   aria-hidden
-                  className="font-mono text-[0.62rem] tracking-[0.25em] text-slate-500 uppercase select-none"
+                  className="font-mono text-[11px] tracking-[0.25em] text-slate-600 uppercase select-none"
                 >
                   ||||| | |||| || ||| |
                 </span>
-                <span className="mt-0.5 font-mono text-[0.65rem] text-slate-600">
+                <span className="mt-0.5 font-mono text-[11px] font-bold text-slate-600">
                   REF-{code}-OK
                 </span>
               </div>

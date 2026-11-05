@@ -87,7 +87,7 @@ export default function HalamanDaftarLayanan() {
             </div>
             <a
               href={waLink(
-                "Halo Bagas Mas Joki, saya mau konsultasi tugas dengan kebutuhan khusus.",
+                "Halo Mas Joki, saya mau tanya soal tugas dengan kebutuhan khusus.",
               )}
               target="_blank"
               rel="noopener noreferrer"

@@ -8,7 +8,7 @@ import type { navigasi } from "@/lib/nav";
 import { pembayaran, waLink } from "@/lib/site";
 
 const waAdmin = waLink(
-  "Halo Bagas Mas Joki, saya mau tanya dulu sebelum pesan.",
+  "Halo Mas Joki, saya mau tanya soal biaya tugas saya.",
 );
 
 export function MenuSeluler({

@@ -39,7 +39,7 @@ export function pesanPesanan({
       : null;
 
   return rapikan([
-    "Halo Mas Joki (Bagas), saya mau pesan:",
+    "Halo Mas Joki, saya mau pesan:",
     "",
     `Layanan: ${service.name}`,
     `Jumlah: ${price.qty} ${BASIS_LABEL[service.basis]} (${price.equivalentLabel})`,
@@ -94,7 +94,7 @@ export function pesanOrderSpesifik({
       : null;
 
   return rapikan([
-    `Halo Mas Joki (Bagas), saya mau pesan order khusus ${service.name}:`,
+    `Halo Mas Joki, saya mau pesan order khusus ${service.name}:`,
     "",
     `Layanan: ${service.name}`,
     `Jumlah: ${price.qty} ${BASIS_LABEL[service.basis]} (${price.equivalentLabel})`,
@@ -141,7 +141,7 @@ export function pesanPenawaran({
   const deadline = getDeadline(deadlineId);
 
   return rapikan([
-    "Halo Mas Joki (Bagas), saya mau minta penawaran:",
+    "Halo Mas Joki, saya mau minta penawaran:",
     "",
     `Jenis tugas: ${layanan}`,
     `Tenggat: ${deadline.label}`,

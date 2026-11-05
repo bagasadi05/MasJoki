@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Plus_Jakarta_Sans } from "next/font/google";
+import { SITE_URL } from "@/lib/config";
 import { WaMelayang } from "@/components/wa-melayang";
 import "./globals.css";
 
@@ -16,6 +17,7 @@ const sans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Mas Joki — Bantuan tugas, harga kelihatan di awal",
     template: "%s · Mas Joki",
@@ -32,13 +34,23 @@ export const metadata: Metadata = {
     "bantuan tugas mahasiswa",
   ],
   icons: {
-    icon: "/mas-joki.jpg",
-    apple: "/mas-joki.jpg",
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/icon.png", type: "image/png" },
+    ],
+    apple: "/apple-icon.png",
   },
   openGraph: {
     type: "website",
     locale: "id_ID",
     siteName: "Mas Joki",
+    url: SITE_URL,
+    title: "Mas Joki — Bantuan tugas, harga kelihatan di awal",
+    description:
+      "Hitung sendiri biaya parafrase, makalah, PowerPoint, artikel jurnal, dan penurunan Turnitin. Tanpa nunggu balasan chat.",
+  },
+  twitter: {
+    card: "summary_large_image",
     title: "Mas Joki — Bantuan tugas, harga kelihatan di awal",
     description:
       "Hitung sendiri biaya parafrase, makalah, PowerPoint, artikel jurnal, dan penurunan Turnitin. Tanpa nunggu balasan chat.",

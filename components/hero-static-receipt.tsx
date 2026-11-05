@@ -32,12 +32,12 @@ export function HeroStaticReceipt() {
               <p className="font-display text-base font-bold leading-none tracking-tight text-ink">
                 Mas Joki
               </p>
-              <p className="mt-1 text-[0.72rem] font-semibold text-slate-500">
+              <p className="mt-1 text-[11px] font-semibold text-slate-600">
                 Kwitansi Transparan
               </p>
             </div>
           </div>
-          <span className="rounded-md bg-paper-2 px-2 py-0.5 font-mono text-[0.66rem] font-bold uppercase text-slate-500 border border-line">
+          <span className="rounded-md bg-paper-2 px-2 py-0.5 font-mono text-[11px] font-bold uppercase text-slate-600 border border-line">
             CONTOH
           </span>
         </div>
@@ -59,14 +59,14 @@ export function HeroStaticReceipt() {
         {/* Total & Opsi DP 50% */}
         <div className="rounded-xl bg-paper-2/80 p-3 border border-line/60">
           <div className="flex items-baseline justify-between">
-            <span className="text-[0.7rem] font-bold uppercase tracking-wider text-slate-600">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-600">
               Total Akhir
             </span>
             <span className="font-display text-xl font-black tracking-tight text-brand tabular-nums">
               {rupiah(price.total)}
             </span>
           </div>
-          <div className="mt-2 flex items-baseline justify-between border-t border-dashed border-line pt-2 text-[0.75rem]">
+          <div className="mt-2 flex items-baseline justify-between border-t border-dashed border-line pt-2 text-xs">
             <span className="font-bold text-slate-600">Opsi DP 50%:</span>
             <span className="font-mono font-bold text-mint tabular-nums">
               {rupiah(price.dpAmount)}
@@ -76,10 +76,10 @@ export function HeroStaticReceipt() {
 
         {/* Stempel */}
         <div className="mt-4 flex items-center justify-between">
-          <span className="text-[0.68rem] text-slate-500 font-medium">
+          <span className="text-[11px] text-slate-600 font-medium">
             *Dihitung dari modul harga
           </span>
-          <span className="stempel text-[0.7rem] py-0.5 px-2">
+          <span className="stempel text-[11px] py-0.5 px-2">
             HARGA TRANSPARAN
           </span>
         </div>

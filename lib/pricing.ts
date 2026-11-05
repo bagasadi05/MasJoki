@@ -308,6 +308,8 @@ export interface PriceResult {
   difficultyFee: number;
   addonsTotal: number;
   selectedAddons: Addon[];
+  /** Total hitungan murni sebelum penyesuaian batas minimum belanja Rp15.000 */
+  totalSebelumMinimum: number;
   total: number;
   /** Opsi DP 50%, dibulatkan KE ATAS ke kelipatan Rp500 terdekat */
   dpAmount: number;
@@ -383,6 +385,15 @@ export function hitungKonversiEkuivalen(service: Service, qty: number): string {
   }
 }
 
+export interface ComputePriceOptions {
+  /**
+   * Terapkan batas minimum transaksi Rp15.000.
+   * Default: true (untuk kalkulator /hitung dan formulir pemesanan).
+   * Set ke false untuk tabel gambaran biaya contoh agar menampilkan angka murni.
+   */
+  applyMinimum?: boolean;
+}
+
 /**
  * Satu-satunya fungsi perhitungan harga resmi untuk seluruh situs Mas Joki.
  */
@@ -392,6 +403,7 @@ export function computePrice(
   deadlineId: string = "santai",
   difficultyId: string = "standar",
   addonIds: string[] = [],
+  options?: ComputePriceOptions,
 ): PriceResult {
   const qty = clampQty(service, rawQty);
   const deadline = getDeadline(deadlineId);
@@ -491,7 +503,7 @@ export function computePrice(
 
   const activeTier = tiers.find((t) => qty >= t.minQty) ?? null;
   const discountRate = activeTier ? activeTier.rate : 0;
-  const discountAmount = activeTier ? bulatkan(subtotal * discountRate) : 0;
+  const discountAmount = activeTier ? Math.round(subtotal * discountRate) : 0;
   const discountLabel = activeTier ? activeTier.label : null;
 
   const nextTier = [...tiers]
@@ -503,25 +515,27 @@ export function computePrice(
 
   const effectiveBase = subtotal - discountAmount;
 
-  // Hitung biaya tenggat (+0% santai/normal 7 hari+, +10% normal 4-6 hari, +30% cepat, +60% kilat)
+  // Hitung biaya tenggat (+0% santai 7 hari+, +10% normal 4-6 hari, +30% cepat, +60% kilat)
   const deadlineFee =
-    deadline.mult > 1 ? bulatkan(effectiveBase * (deadline.mult - 1)) : 0;
+    deadline.mult > 1 ? Math.round(effectiveBase * (deadline.mult - 1)) : 0;
   const afterDeadline = effectiveBase + deadlineFee;
 
   // Pengali tingkat kesulitan jika ada (standar = 0)
   const difficultyFee =
-    difficulty.mult > 1 ? bulatkan(afterDeadline * (difficulty.mult - 1)) : 0;
+    difficulty.mult > 1 ? Math.round(afterDeadline * (difficulty.mult - 1)) : 0;
 
   const addonsTotal = selectedAddons.reduce((acc, item) => acc + item.price, 0);
 
   const totalSebelumMinimum = effectiveBase + deadlineFee + difficultyFee + addonsTotal;
 
-  // REVISI 4: Minimum transaksi Rp15.000 untuk semua layanan di kalkulator
+  // REVISI 4: Minimum transaksi Rp15.000 untuk kalkulator dan formulir order
   let minimumAdjustment = 0;
   let minimumAdjustmentNote: string | null = null;
   let total = totalSebelumMinimum;
 
-  if (!isOverLimit && totalSebelumMinimum < MINIMUM_TRANSACTION) {
+  const shouldApplyMinimum = options?.applyMinimum !== false;
+
+  if (shouldApplyMinimum && !isOverLimit && totalSebelumMinimum < MINIMUM_TRANSACTION) {
     minimumAdjustment = MINIMUM_TRANSACTION - totalSebelumMinimum;
     total = MINIMUM_TRANSACTION;
     minimumAdjustmentNote = "Disesuaikan dengan minimum transaksi Rp15.000.";
@@ -615,6 +629,7 @@ export function computePrice(
     difficultyFee,
     addonsTotal,
     selectedAddons,
+    totalSebelumMinimum,
     total,
     dpAmount,
     pelunasanAmount,

@@ -1,7 +1,8 @@
 import type { MetadataRoute } from "next";
+import { SITE_URL } from "@/lib/config";
 import { SERVICES } from "@/lib/services";
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://masjoki.id";
+const baseUrl = SITE_URL;
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
@@ -38,7 +39,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...SERVICES.map((service) => ({
       url: `${baseUrl}/jasa/${service.id}/order`,
       changeFrequency: "monthly" as const,
-      priority: 0.85,
+      priority: 0.7,
     })),
   ];
 }

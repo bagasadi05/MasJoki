@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Check, Copy, CreditCard, ExternalLink, ShieldCheck, Smartphone, Wallet, type LucideIcon } from "lucide-react";
+import { QRIS_ENABLED } from "@/lib/config";
 import { pembayaran, waLink } from "@/lib/site";
 
 const METODE: Record<
@@ -32,7 +34,7 @@ const METODE: Record<
 };
 
 const waKonfirmasi = waLink(
-  "Halo Bagas Mas Joki, saya mau konfirmasi pembayaran pesanan saya.",
+  "Halo Mas Joki, saya mau konfirmasi pembayaran pesanan saya.",
 );
 
 export function Pembayaran() {
@@ -120,6 +122,27 @@ export function Pembayaran() {
                 );
               })}
             </div>
+
+            {/* Slot QRIS bila QRIS_ENABLED = true */}
+            {QRIS_ENABLED && (
+              <div className="mt-5 rounded-2xl border border-line bg-paper-2/60 p-4 text-center">
+                <span className="inline-block rounded-md bg-brand text-white px-2.5 py-0.5 text-[0.7rem] font-bold uppercase tracking-wider">
+                  QRIS
+                </span>
+                <p className="mt-1.5 text-xs sm:text-sm font-bold text-ink">
+                  QRIS — bisa dari e-wallet &amp; m-banking apa pun
+                </p>
+                <div className="mt-3 flex justify-center">
+                  <Image
+                    src="/qris.png"
+                    alt="QRIS Pembayaran Mas Joki"
+                    width={220}
+                    height={220}
+                    className="rounded-xl border border-line bg-white p-2.5 shadow-xs"
+                  />
+                </div>
+              </div>
+            )}
 
             <p className="mt-4 text-xs leading-relaxed text-slate-600">
               Nomor ini resmi atas nama Bagas (Mas Joki). Tidak ada nomor rekening lain selain yang tercantum di atas.

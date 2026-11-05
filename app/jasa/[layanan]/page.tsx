@@ -459,7 +459,9 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
 
                   <ul className="mt-6 divide-y divide-line border-y border-line">
                     {service.presets.map((qty) => {
-                      const harga = computePrice(service, qty, "normal", "standar");
+                      const harga = computePrice(service, qty, "normal", "standar", [], {
+                        applyMinimum: false,
+                      });
                       return (
                         <li
                           key={qty}
@@ -475,6 +477,10 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                       );
                     })}
                   </ul>
+
+                  <p className="mt-3 text-[11px] sm:text-xs text-slate-600 font-medium">
+                    *Total di bawah Rp15.000 disesuaikan menjadi Rp15.000 (minimum transaksi) saat pemesanan.
+                  </p>
 
                   {service.id === "terjemah" && (
                     <div className="mt-6 rounded-2xl border-2 border-brand/20 bg-brand-soft/40 p-4.5">
@@ -563,7 +569,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
               Masih ada hal yang ingin ditanyakan?{" "}
               <a
                 href={waLink(
-                  `Halo Bagas Mas Joki, saya mau tanya soal ${service.name.toLowerCase()}.`,
+                  `Halo Mas Joki, saya mau tanya soal ${service.name.toLowerCase()}.`,
                 )}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -630,7 +636,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                 </Link>
                 <a
                   href={waLink(
-                    `Halo Bagas Mas Joki, saya mau pesan ${service.name.toLowerCase()}.`,
+                    `Halo Mas Joki, saya mau pesan ${service.name.toLowerCase()}.`,
                   )}
                   target="_blank"
                   rel="noopener noreferrer"

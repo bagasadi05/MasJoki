@@ -187,7 +187,7 @@ export default function Home() {
          * ========================================================== */}
         <section className="border-b border-line bg-white py-4 shadow-2xs">
           <div className="mx-auto max-w-6xl px-5 sm:px-8">
-            <div className="flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm font-bold text-ink">
+            <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:items-center sm:justify-between text-xs sm:text-sm font-bold text-ink">
               <div className="flex items-center gap-2">
                 <span className="grid size-6 place-items-center rounded-full bg-brand-soft text-brand text-xs">
                   <Tag className="size-3.5 text-brand" />
@@ -322,13 +322,14 @@ export default function Home() {
         <section id="profil-pemilik" className="border-b border-line bg-gradient-to-b from-paper to-paper-2/40 py-12 sm:py-16">
           <div className="mx-auto max-w-4xl px-5 sm:px-8">
             <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-8 rounded-3xl border border-line bg-white p-6 sm:p-8 shadow-sm">
-              <div className="relative size-24 sm:size-28 shrink-0 overflow-hidden rounded-2xl border-2 border-line shadow-xs">
+              <div className="relative size-24 sm:size-28 shrink-0 overflow-hidden rounded-2xl border-2 border-line shadow-xs mx-auto sm:mx-0">
                 <Image
                   src="/mas-joki.jpg"
                   alt="Mas Joki — Pemilik & Pengerja"
                   width={112}
                   height={112}
-                  className="size-full object-cover object-top"
+                  className="size-full object-cover object-[center_18%]"
+                  priority
                 />
               </div>
 

@@ -1,7 +1,6 @@
 import { rupiah } from "./format";
 import {
   BASIS_LABEL,
-  SERVICES,
   type Service,
   type ServiceId,
 } from "./services";
@@ -108,69 +107,69 @@ export const TURNAROUND_ESTIMATES: Record<
   Record<DeadlineId, string>
 > = {
   parafrase: {
-    santai: "2–3 hari kerja",
-    normal: "6–12 jam",
-    cepat: "12–24 jam",
-    kilat: "8–14 jam",
+    santai: "5–7 hari kerja",
+    normal: "3–5 hari kerja",
+    cepat: "1–2 hari kerja",
+    kilat: "6–12 jam",
   },
   humanisasi: {
-    santai: "2–3 hari kerja",
-    normal: "6–12 jam",
-    cepat: "12–24 jam",
-    kilat: "8–14 jam",
+    santai: "5–7 hari kerja",
+    normal: "3–5 hari kerja",
+    cepat: "1–2 hari kerja",
+    kilat: "6–12 jam",
   },
   makalah: {
-    santai: "3–5 hari kerja",
-    normal: "1–2 hari kerja",
-    cepat: "12–24 jam",
-    kilat: "8–14 jam",
-  },
-  artikel_ilmiah: {
-    santai: "4–6 hari kerja",
-    normal: "3–5 hari kerja",
-    cepat: "2–3 hari kerja",
-    kilat: "24–48 jam",
-  },
-  jurnal_submit: {
-    santai: "6–8 hari kerja",
-    normal: "4–7 hari kerja",
-    cepat: "3–5 hari kerja",
-    kilat: "2–3 hari kerja",
-  },
-  jurnal: {
     santai: "5–7 hari kerja",
     normal: "3–5 hari kerja",
     cepat: "2–3 hari kerja",
-    kilat: "24–48 jam",
+    kilat: "8–16 jam",
+  },
+  artikel_ilmiah: {
+    santai: "6–7 hari kerja",
+    normal: "4–5 hari kerja",
+    cepat: "2–3 hari kerja",
+    kilat: "20–24 jam prioritas",
+  },
+  jurnal_submit: {
+    santai: "7–8 hari kerja",
+    normal: "5–6 hari kerja",
+    cepat: "2–3 hari kerja",
+    kilat: "24 jam prioritas",
+  },
+  jurnal: {
+    santai: "6–7 hari kerja",
+    normal: "4–5 hari kerja",
+    cepat: "2–3 hari kerja",
+    kilat: "20–24 jam prioritas",
   },
   powerpoint: {
-    santai: "2–3 hari kerja",
-    normal: "12–24 jam",
-    cepat: "8–16 jam",
+    santai: "5–7 hari kerja",
+    normal: "3–4 hari kerja",
+    cepat: "1–2 hari kerja",
     kilat: "6–12 jam",
   },
   word: {
-    santai: "1–2 hari kerja",
-    normal: "2–6 jam",
-    cepat: "2–4 jam",
-    kilat: "1–3 jam",
+    santai: "5–7 hari kerja",
+    normal: "2–4 hari kerja",
+    cepat: "1–2 hari kerja",
+    kilat: "3–8 jam",
   },
   terjemah: {
-    santai: "2–3 hari kerja",
-    normal: "6–12 jam",
-    cepat: "12–24 jam",
-    kilat: "6–10 jam",
+    santai: "5–7 hari kerja",
+    normal: "3–5 hari kerja",
+    cepat: "1–2 hari kerja",
+    kilat: "6–12 jam",
   },
   paket_abstrak: {
-    santai: "2–3 hari kerja",
-    normal: "6–12 jam",
-    cepat: "12–24 jam",
-    kilat: "6–10 jam",
+    santai: "5–7 hari kerja",
+    normal: "2–4 hari kerja",
+    cepat: "1–2 hari kerja",
+    kilat: "4–8 jam",
   },
   desain: {
-    santai: "2–3 hari kerja",
-    normal: "12–24 jam",
-    cepat: "8–16 jam",
+    santai: "5–7 hari kerja",
+    normal: "3–4 hari kerja",
+    cepat: "1–2 hari kerja",
     kilat: "6–12 jam",
   },
   turnitin_ai: {
@@ -185,7 +184,7 @@ export function getTurnaroundEstimate(
   serviceId: ServiceId,
   deadlineId: DeadlineId,
 ): string {
-  return TURNAROUND_ESTIMATES[serviceId]?.[deadlineId] ?? "1–2 hari kerja";
+  return TURNAROUND_ESTIMATES[serviceId]?.[deadlineId] ?? "3–5 hari kerja";
 }
 
 export function getDeadline(id: string): Deadline {

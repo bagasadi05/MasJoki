@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Star, MessageSquareQuote } from "lucide-react";
+import { Star } from "lucide-react";
 import {
   TESTIMONIALS_ENABLED,
   TESTIMONIALS_DATA,

@@ -3,7 +3,7 @@
 import { rupiah } from "@/lib/format";
 import type { Aksen } from "@/lib/aksen";
 import { AnimatedPrice } from "./animated-number";
-import { Check, Clock, CreditCard, Ruler, Sparkles } from "lucide-react";
+import { Clock, CreditCard, Ruler, Sparkles } from "lucide-react";
 
 export interface NotaLine {
   label: string;

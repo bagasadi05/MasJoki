@@ -65,7 +65,6 @@ interface ServiceListProps {
 }
 
 export function ServiceList({
-  isCatalogPage = false,
   hanyaHighlight = false,
 }: ServiceListProps) {
   const services = hanyaHighlight

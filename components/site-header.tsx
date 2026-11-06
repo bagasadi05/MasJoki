@@ -87,7 +87,7 @@ export function SiteHeader() {
           <ThemeToggle />
           <Link
             href="/hitung"
-            className="inline-flex items-center gap-1.5 rounded-xl bg-brand px-4 py-2.5 text-[0.82rem] font-bold text-white shadow-sm shadow-brand/25 transition-all duration-150 hover:-translate-y-0.5 hover:bg-brand-dark hover:shadow-md hover:shadow-brand/30 active:translate-y-0"
+            className="hidden sm:inline-flex items-center gap-1.5 rounded-xl bg-brand px-4 py-2.5 text-[0.82rem] font-bold text-white shadow-sm shadow-brand/25 transition-all duration-150 hover:-translate-y-0.5 hover:bg-brand-dark hover:shadow-md hover:shadow-brand/30 active:translate-y-0"
           >
             <Calculator className="size-3.5" />
             <span>Hitung Biaya</span>

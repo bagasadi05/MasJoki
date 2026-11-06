@@ -24,7 +24,6 @@ import { submitOrder, submitQuote } from "@/app/actions";
 import { useCalculator } from "./calculator-context";
 import { Nota } from "./nota";
 import { ServiceIcon } from "./service-icon";
-import { AnimatedPrice } from "./animated-number";
 import { aksenLayanan } from "@/lib/aksen";
 import { angka, rupiah } from "@/lib/format";
 import {
@@ -170,6 +169,7 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
   const [quoteService, setQuoteService] = useState<ServiceId | "lainnya">(
     serviceId,
   );
+  const [kategoriFilter, setKategoriFilter] = useState<string>("semua");
 
   useEffect(() => {
     setQuoteService(serviceId);
@@ -225,6 +225,16 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
   );
 
   useEffect(() => {
+    if (mode === "penawaran") {
+      setEstimasiRingkas({
+        total: 0,
+        label: service.name,
+        qtyLabel: "Penawaran Khusus",
+      });
+      return () => {
+        setEstimasiRingkas(null);
+      };
+    }
     setEstimasiRingkas({
       total: price.total,
       label: service.name,
@@ -233,7 +243,7 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
     return () => {
       setEstimasiRingkas(null);
     };
-  }, [price.total, service.name, price.qty, service.basis, setEstimasiRingkas]);
+  }, [mode, price.total, service.name, price.qty, service.basis, setEstimasiRingkas]);
 
   const sliderMax =
     service.id === "artikel_ilmiah"
@@ -450,35 +460,70 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
                   </span>
                 </div>
 
+                {/* Filter Kategori Cepat untuk Navigasi Mobile Ringkas */}
+                <div className="flex items-center gap-1.5 overflow-x-auto pb-2 -mx-1 px-1 sm:overflow-visible sm:flex-wrap mb-2">
+                  {[
+                    { id: "semua", label: "Semua (11)" },
+                    { id: "penulisan", label: "Penulisan & AI" },
+                    { id: "makalah_jurnal", label: "Makalah & Jurnal" },
+                    { id: "dokumen", label: "Format Dokumen" },
+                    { id: "bahasa_desain", label: "Bahasa & Desain" },
+                  ].map((cat) => {
+                    const aktif = kategoriFilter === cat.id;
+                    return (
+                      <button
+                        key={cat.id}
+                        type="button"
+                        onClick={() => setKategoriFilter(cat.id)}
+                        className={`shrink-0 rounded-xl px-3 py-1.5 text-xs font-bold transition-all cursor-pointer ${
+                          aktif
+                            ? "bg-brand text-white shadow-xs"
+                            : "bg-paper-2 text-slate-600 hover:bg-paper-2/80 hover:text-ink border border-line"
+                        }`}
+                      >
+                        {cat.label}
+                      </button>
+                    );
+                  })}
+                </div>
+
                 <div className="space-y-4">
                   {[
                     {
+                      id: "penulisan",
                       category: "Parafrase & Humanisasi Teks",
                       services: ["parafrase", "humanisasi"],
                     },
                     {
+                      id: "makalah_jurnal",
                       category: "Kepenulisan Makalah",
                       services: ["makalah"],
                     },
                     {
+                      id: "makalah_jurnal",
                       category: "Artikel Jurnal",
                       badge: "2 Pilihan Tingkat",
                       services: ["artikel_ilmiah", "jurnal_submit"],
                     },
                     {
+                      id: "dokumen",
                       category: "Presentasi & Format Dokumen",
                       services: ["powerpoint", "word"],
                     },
                     {
+                      id: "bahasa_desain",
                       category: "Bahasa & Terjemahan",
                       badge: "Termasuk Paket Abstrak",
                       services: ["terjemah", "paket_abstrak"],
                     },
                     {
+                      id: "bahasa_desain",
                       category: "Desain & Khusus",
                       services: ["desain", "turnitin_ai"],
                     },
-                  ].map((grp) => {
+                  ]
+                    .filter((grp) => kategoriFilter === "semua" || grp.id === kategoriFilter)
+                    .map((grp) => {
                     const groupItems = CALCULABLE_SERVICES.filter((item) =>
                       grp.services.includes(item.id),
                     );
@@ -728,7 +773,7 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
                     <span className="text-xs font-bold text-ink-soft">
                       Hanya tahu jumlah halaman A4? Pilih taksiran:
                     </span>
-                    <div className="flex flex-wrap gap-1.5">
+                    <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-1.5">
                       {KONVERSI_HALAMAN_KATA.map((item) => {
                         const aktif = price.qty === item.kata;
                         return (
@@ -772,7 +817,7 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
                     <span>Estimasi: {price.estimatedTurnaround}</span>
                   </span>
                 </div>
-                <div className="grid gap-3 sm:grid-cols-2">
+                <div className="grid grid-cols-2 gap-2 sm:gap-3">
                   {DEADLINES.map((item) => {
                     const aktif = deadlineId === item.id;
                     const IconTenggat =
@@ -1004,7 +1049,7 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
         </div>
 
         {/* Kolom Kanan: Nota Kwitansi Transparan (Sticky) */}
-        <div id="ringkasan-nota" className="lg:col-start-2 lg:row-span-2 lg:row-start-1">
+        <div id="ringkasan-nota" className="scroll-mt-20 lg:col-start-2 lg:row-span-2 lg:row-start-1">
           <div className="lg:sticky lg:top-24">
             <p className="sr-only" aria-live="polite" aria-atomic="true">
               {mode === "hitung" ? `Total ${rupiah(price.total)}` : ""}
@@ -1026,7 +1071,10 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
                   minimumAdjustmentNote={price.minimumAdjustmentNote}
                 />
               ) : (
-                <NotaPenawaran />
+                <NotaPenawaran
+                  serviceName={service.name}
+                  deadlineLabel={DEADLINES.find((d) => d.id === deadlineId)?.label}
+                />
               )}
 
               {/* CTA Ringkas untuk Beranda (Task 3b) */}
@@ -1085,7 +1133,7 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
         {!ringkas && (
           <div
             id="kontak-pesan"
-            className="space-y-5 rounded-2xl border border-line bg-white p-7 shadow-sm lg:col-start-1 lg:row-start-2"
+            className="scroll-mt-20 space-y-5 rounded-2xl border border-line bg-white p-5 sm:p-7 shadow-sm lg:col-start-1 lg:row-start-2"
           >
           <div>
             <h3 className="font-display text-xl font-bold text-ink">
@@ -1264,7 +1312,20 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
   );
 }
 
-function NotaPenawaran() {
+function NotaPenawaran({
+  serviceName,
+  deadlineLabel,
+}: {
+  serviceName?: string;
+  deadlineLabel?: string;
+} = {}) {
+  const barisPenawaran = [
+    { label: "Jenis tugas", val: serviceName ?? "Disesuaikan" },
+    { label: "Jumlah satuan", val: "Disesuaikan" },
+    { label: "Tenggat", val: deadlineLabel ?? "Disesuaikan" },
+    { label: "Tingkat kerumitan", val: "Sesuai brief" },
+  ];
+
   return (
     <div className="nota">
       <div className="p-6 sm:p-7">
@@ -1290,15 +1351,13 @@ function NotaPenawaran() {
         <div className="my-5 border-t border-dashed border-line" />
 
         <div className="space-y-3.5 text-[0.88rem]">
-          {["Jenis tugas", "Jumlah satuan", "Tenggat", "Tingkat kerumitan"].map(
-            (label) => (
-              <div key={label} className="flex items-baseline justify-between gap-3">
-                <p className="font-medium text-ink">{label}</p>
-                <span className="h-px flex-1 translate-y-[-3px] border-b border-dotted border-line-strong" />
-                <p className="font-mono text-xs text-slate-600 font-medium">Disesuaikan</p>
-              </div>
-            ),
-          )}
+          {barisPenawaran.map((item) => (
+            <div key={item.label} className="flex items-baseline justify-between gap-3">
+              <p className="font-medium text-ink">{item.label}</p>
+              <span className="h-px flex-1 translate-y-[-3px] border-b border-dotted border-line-strong" />
+              <p className="font-mono text-xs text-slate-600 font-medium">{item.val}</p>
+            </div>
+          ))}
         </div>
 
         <div className="my-5 border-t border-dashed border-line" />

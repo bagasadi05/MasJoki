@@ -1,4 +1,4 @@
-import { CheckCircle2, Calculator, MessageSquare, CreditCard, Sparkles } from "lucide-react";
+import { Calculator, MessageSquare, CreditCard, Sparkles } from "lucide-react";
 
 export const LANGKAH_PEMESANAN = [
   {

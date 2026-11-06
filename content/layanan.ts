@@ -14,7 +14,7 @@ export const KONTEN_LAYANAN: Record<ServiceId, KontenLayanan> = {
     intro:
       "Menyusun ulang kalimat dengan bahasa sendiri tanpa mengubah makna, istilah teknis, atau nomor sitasi. Cocok untuk naskah yang masih perlu dirapikan bahasanya dan disesuaikan dengan pedoman kampus.",
     cakupan: [
-      "Menyusun ulang per kalimat langsung oleh Bagas, bukan sinonim bot otomatis",
+      "Menyusun ulang per kalimat langsung oleh Mas Joki, bukan sinonim bot otomatis",
       "Istilah teknis, nama teori, dan angka tetap seperti aslinya",
       "Sitasi dan daftar pustaka tidak diubah",
       "Hasil dikirim sebagai .docx yang bebas kamu edit",
@@ -31,7 +31,7 @@ export const KONTEN_LAYANAN: Record<ServiceId, KontenLayanan> = {
       },
       {
         q: "Apakah makna tulisan bisa berubah?",
-        a: "Tidak, selama brief-nya jelas. Kalau ada kalimat yang ambigu, Bagas akan bertanya dulu sebelum mengubahnya.",
+        a: "Tidak, selama brief-nya jelas. Kalau ada kalimat yang ambigu, Mas Joki akan bertanya dulu sebelum mengubahnya.",
       },
     ],
   },
@@ -118,7 +118,7 @@ export const KONTEN_LAYANAN: Record<ServiceId, KontenLayanan> = {
       "Struktur artikel ilmiah lengkap (Pendahuluan, Metode/Ulasan, Pembahasan, Kesimpulan)",
       "Kutipan dan sitasi sesuai pedoman (APA 7, IEEE, Harvard)",
       "Batas maksimal 3.000 kata naskah tugas kuliah",
-      "Dikerjakan langsung oleh Bagas tanpa perantara",
+      "Dikerjakan langsung oleh Mas Joki tanpa perantara",
     ],
     siapkan: [
       "Tema atau topik tugas dari dosen",
@@ -288,7 +288,7 @@ export const KONTEN_LAYANAN: Record<ServiceId, KontenLayanan> = {
   },
   turnitin_ai: {
     intro:
-      "Membantu menurunkan skor kemiripan Turnitin dan deteksi AI sampai target yang disepakati, umumnya di bawah 30%. Pengerjaan dilakukan manual oleh Bagas lewat parafrase mendalam dan restrukturisasi kalimat agar naskah tetap ilmiah dan berbobot.",
+      "Membantu menurunkan skor kemiripan Turnitin dan deteksi AI sampai target yang disepakati, umumnya di bawah 30%. Pengerjaan dilakukan manual oleh Mas Joki lewat parafrase mendalam dan restrukturisasi kalimat agar naskah tetap ilmiah dan berbobot.",
     cakupan: [
       "Pemeriksaan naskah awal dan telaah persentase kemiripan",
       "Penyusunan ulang kalimat yang terdeteksi similar / AI secara manual",
@@ -303,7 +303,7 @@ export const KONTEN_LAYANAN: Record<ServiceId, KontenLayanan> = {
     faq: [
       {
         q: "Berapa lama proses penurunan skor?",
-        a: "Waktu disepakati di awal setelah Bagas memeriksa panjang dokumen dan skor awal. Rata-rata 12–24 jam untuk bab skripsi atau makalah standar.",
+        a: "Waktu disepakati di awal setelah Mas Joki memeriksa panjang dokumen dan skor awal. Rata-rata 12–24 jam untuk bab skripsi atau makalah standar.",
       },
       {
         q: "Bagaimana sistem penentuan biayanya?",

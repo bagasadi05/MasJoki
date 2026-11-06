@@ -48,10 +48,10 @@ export function StempelLayanan({
       aria-hidden
       className={`inline-flex -rotate-2 shrink-0 select-none items-center justify-center rounded-lg border-2 ${aksen.border} ${aksen.soft} ${aksen.text} ${
         kecil
-          ? "size-6.5 text-[0.66rem]"
+          ? "size-7 text-xs"
           : besar
             ? "size-10 text-[0.88rem] shadow-xs"
-            : "size-8 text-[0.74rem] shadow-2xs"
+            : "size-8 text-xs shadow-2xs"
       } font-display font-bold leading-none transition-transform duration-200 group-hover:rotate-0`}
     >
       <span className="tracking-wide">

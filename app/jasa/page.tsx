@@ -36,10 +36,10 @@ export default function HalamanDaftarLayanan() {
               ✓ HARGA TRANSPARAN DI AWAL
             </span>
             <h1 className="mt-3 font-display text-[2.5rem] leading-[1.08] tracking-[-0.03em] text-ink sm:text-[3.2rem]">
-              Sembilan Layanan Bantuan Tugas.
+              Layanan Bantuan Tugas.
             </h1>
-            <p className="mt-4 max-w-[56ch] text-xs sm:text-sm md:text-base leading-relaxed text-slate-600 font-medium">
-              Semua dikerjakan langsung oleh Bagas tanpa perantara. Harga terkunci di awal dan dihitung otomatis lewat kalkulator tanpa biaya siluman.
+            <p className="mt-4 max-w-[56ch] text-sm md:text-base leading-relaxed text-slate-600 font-medium">
+              9 kategori utama yang dikerjakan langsung oleh Mas Joki tanpa perantara. Tersedia varian tingkat artikel jurnal dan paket abstrak. Harga terkunci di awal dan dihitung otomatis lewat kalkulator tanpa biaya siluman.
             </p>
           </div>
 
@@ -56,9 +56,9 @@ export default function HalamanDaftarLayanan() {
               href={waLink(waPesanUmum)}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 rounded-2xl border-2 border-ink bg-white px-6 py-3.5 text-sm font-bold text-ink shadow-2xs transition-colors hover:bg-ink hover:text-white"
+              className="inline-flex items-center justify-center gap-2 rounded-2xl border-2 border-line dark:border-line-strong bg-white dark:bg-[#162035] px-6 py-3.5 text-sm font-bold text-ink dark:text-slate-100 shadow-2xs transition-colors hover:bg-brand dark:hover:bg-brand hover:text-white dark:hover:border-brand"
             >
-              <span>Tanya Bagas via WhatsApp</span>
+              <span>Tanya Mas Joki via WhatsApp</span>
               <ExternalLink className="size-3.5 opacity-60" />
             </a>
           </div>
@@ -82,7 +82,7 @@ export default function HalamanDaftarLayanan() {
                 Punya tugas kombinasi atau topik riset spesifik?
               </h3>
               <p className="mt-1.5 text-xs sm:text-sm text-slate-600 font-medium max-w-xl">
-                Bagas bisa menyesuaikan pengerjaan dengan pedoman dosen atau instansi kampusmu. Kirimkan brief via chat WhatsApp untuk penawaran khusus.
+                Mas Joki bisa menyesuaikan pengerjaan dengan pedoman dosen atau instansi kampusmu. Kirimkan brief via chat WhatsApp untuk penawaran khusus.
               </p>
             </div>
             <a

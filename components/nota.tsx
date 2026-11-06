@@ -195,7 +195,7 @@ export function Nota({
                     <AnimatedPrice value={dpAmount} />
                   </span>
                 </div>
-                <p className="text-[0.72rem] text-slate-600 pl-5 font-medium leading-tight">
+                <p className="text-xs text-slate-600 pl-5 font-medium leading-tight">
                   Sudah dibulatkan ke kelipatan Rp500 terdekat.
                 </p>
               </div>

@@ -60,7 +60,7 @@ export default function HalamanFaq() {
           {/* Kolom Kiri: Contact Box & Trust Highlights */}
           <div className="space-y-6">
             <div className="rounded-2xl border border-line bg-paper-2/80 p-6 sm:p-7 shadow-sm">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-mint/25 bg-mint-soft px-2.5 py-0.5 text-[0.7rem] font-bold text-mint">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-mint/25 bg-mint-soft px-2.5 py-0.5 text-xs font-bold text-mint">
                 <span className="size-1.5 rounded-full bg-mint " />
                 Bantuan Langsung
               </span>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowRight, Calculator } from "lucide-react";
 import { MenuSeluler } from "./menu-seluler";
+import { ThemeToggle } from "./theme-toggle";
 import { navigasi } from "@/lib/nav";
 
 export function SiteHeader() {
@@ -36,19 +37,19 @@ export function SiteHeader() {
               <span className="font-display text-[1.22rem] font-bold tracking-tight text-ink leading-tight">
                 Mas Joki
               </span>
-              <span className="hidden font-mono text-[0.62rem] font-medium text-muted sm:inline-block">
+              <span className="hidden font-mono text-xs font-medium text-slate-500 sm:inline-block">
                 Asisten Akademik Transparan
               </span>
             </div>
           </Link>
 
           {/* Status badge online */}
-          <span className="hidden items-center gap-2 rounded-full border border-mint/25 bg-mint-soft/90 px-2.5 py-1 text-[0.7rem] font-bold text-mint md:inline-flex shadow-2xs">
+          <span className="hidden items-center gap-2 rounded-full border border-mint/25 bg-mint-soft/90 px-2.5 py-1 text-xs font-bold text-mint md:inline-flex shadow-2xs">
             <span className="relative flex size-1.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-mint opacity-75" />
               <span className="relative inline-flex rounded-full size-1.5 bg-mint" />
             </span>
-            Bagas Online
+            Mas Joki Online
           </span>
         </div>
 
@@ -59,7 +60,9 @@ export function SiteHeader() {
               const aktif =
                 item.href === "/"
                   ? pathname === "/"
-                  : pathname.startsWith(item.href);
+                  : item.href === "/cara-kerja"
+                    ? pathname.startsWith("/cara-kerja") || pathname.startsWith("/faq")
+                    : pathname.startsWith(item.href);
 
               return (
                 <li key={item.href}>
@@ -80,7 +83,8 @@ export function SiteHeader() {
         </nav>
 
         {/* CTA & Mobile Trigger */}
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2 sm:gap-2.5">
+          <ThemeToggle />
           <Link
             href="/hitung"
             className="inline-flex items-center gap-1.5 rounded-xl bg-brand px-4 py-2.5 text-[0.82rem] font-bold text-white shadow-sm shadow-brand/25 transition-all duration-150 hover:-translate-y-0.5 hover:bg-brand-dark hover:shadow-md hover:shadow-brand/30 active:translate-y-0"

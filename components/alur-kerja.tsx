@@ -12,7 +12,7 @@ export const LANGKAH_PEMESANAN = [
     nomor: "02",
     tahap: "LANGKAH 02",
     judul: "Kirim pesanan via WhatsApp",
-    isi: "Rincian tugas tersusun rapi otomatis, langsung kirim ke Bagas.",
+    isi: "Rincian tugas tersusun rapi otomatis, langsung kirim ke Mas Joki.",
     icon: MessageSquare,
   },
   {
@@ -41,7 +41,7 @@ export function AlurKerja() {
             Empat Langkah Pesan Tugas.
           </h2>
           <p className="mt-2 text-xs sm:text-sm text-slate-600 font-medium">
-            Proses ringkas tanpa perlu bikin akun, langsung terhubung ke WhatsApp Bagas.
+            Proses ringkas tanpa perlu bikin akun, langsung terhubung ke WhatsApp Mas Joki.
           </p>
         </div>
 
@@ -56,7 +56,7 @@ export function AlurKerja() {
               >
                 <div>
                   <div className="flex items-center justify-between">
-                    <span className="font-mono text-[0.7rem] font-bold text-brand bg-brand-soft border border-brand/20 px-2 py-0.5 rounded-md">
+                    <span className="font-mono text-xs font-bold text-brand bg-brand-soft border border-brand/20 px-2 py-0.5 rounded-md">
                       {item.nomor}
                     </span>
                     <div className="grid size-9 place-items-center rounded-xl bg-paper-2 text-ink group-hover:bg-brand group-hover:text-white transition-colors">

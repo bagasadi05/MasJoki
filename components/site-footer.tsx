@@ -35,7 +35,7 @@ export function SiteFooter() {
             </div>
 
             <p className="mt-3 max-w-[34ch] text-xs sm:text-sm leading-relaxed text-slate-600">
-              Layanan bantuan penulisan, perapian format, dan penyuntingan tugas akademik langsung oleh Bagas tanpa perantara.
+              Layanan bantuan penulisan, perapian format, dan penyuntingan tugas akademik langsung oleh Mas Joki tanpa perantara.
               Hitung biaya sendiri di awal tanpa tawar-menawar berbelit.
             </p>
 
@@ -105,12 +105,12 @@ export function SiteFooter() {
               </li>
               <li>
                 <Link href="/cara-kerja" className="text-slate-600 transition-colors hover:text-brand">
-                  Cara Kerja &amp; Alur
+                  Cara Kerja &amp; FAQ
                 </Link>
               </li>
               <li>
                 <Link href="/faq" className="text-slate-600 transition-colors hover:text-brand">
-                  FAQ &amp; Bantuan
+                  Pusat Bantuan (FAQ)
                 </Link>
               </li>
             </ul>
@@ -119,7 +119,7 @@ export function SiteFooter() {
           {/* Kontak & Bayar */}
           <nav aria-label="Bantuan dan Pembayaran">
             <p className="font-display text-sm font-bold text-ink">
-              Hubungi Bagas
+              Hubungi Mas Joki
             </p>
             <ul className="mt-3.5 space-y-2.5">
               <li>
@@ -174,7 +174,7 @@ export function SiteFooter() {
         <div className="mt-12 flex flex-col gap-3 border-t border-line pt-6 text-xs leading-relaxed text-slate-600 sm:flex-row sm:items-center sm:justify-between">
           <p>© Mas Joki — Madiun, Jawa Timur. Hak cipta dilindungi.</p>
           <p className="max-w-[50ch] sm:text-right">
-            Dikerjakan langsung oleh Bagas tanpa perantara untuk asistensi penulisan dan penyuntingan naskah akademik.
+            Dikerjakan langsung oleh Mas Joki tanpa perantara untuk asistensi penulisan dan penyuntingan naskah akademik.
           </p>
         </div>
       </div>

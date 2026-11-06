@@ -1,17 +1,29 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Calculator, ExternalLink, MessageCircle, Send, SlidersHorizontal, Sparkles, Wallet } from "lucide-react";
+import { FaqList } from "@/components/faq-list";
 import { Pembayaran } from "@/components/pembayaran";
 import { PerbandinganJoki } from "@/components/perbandingan-joki";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { faq } from "@/content/faq";
 import { waLink, waPesanUmum } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Cara Kerja, Alur Pemesanan & Pembayaran E-Wallet Resmi",
+  title: "Cara Kerja, Alur Pemesanan & FAQ Bantuan",
   description:
-    "Pelajari alur pemesanan tugas di Mas Joki yang cepat, tanpa perantara langsung ke Bagas, dengan garansi 2x revisi gratis dan uang kembali 100%.",
+    "Pelajari alur pemesanan tugas di Mas Joki yang cepat, tanpa perantara langsung ke Mas Joki, dengan garansi 2x revisi gratis, pembayaran e-wallet, dan FAQ lengkap.",
   alternates: { canonical: "/cara-kerja" },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: { "@type": "Answer", text: item.a },
+  })),
 };
 
 const langkah = [
@@ -25,14 +37,14 @@ const langkah = [
   {
     nomor: "02",
     judul: "Kirim ke WhatsApp",
-    isi: "Tempelkan tautan file tugasmu (Google Drive / OneDrive) atau kirim berkas langsung. Format pesanan langsung terisi otomatis di chat WhatsApp Bagas.",
+    isi: "Tempelkan tautan file tugasmu (Google Drive / OneDrive) atau kirim berkas langsung. Format pesanan langsung terisi otomatis di chat WhatsApp Mas Joki.",
     icon: Send,
     badge: "from-ink to-ink",
   },
   {
     nomor: "03",
     judul: "Bayar Lewat E-Wallet",
-    isi: "Bagas mengonfirmasi instruksi tugas dan mengunci harga total. Transfer via ShopeePay, GoPay, atau DANA, lalu kirim bukti di chat yang sama.",
+    isi: "Mas Joki mengonfirmasi instruksi tugas dan mengunci harga total. Transfer via ShopeePay, GoPay, atau DANA, lalu kirim bukti di chat yang sama.",
     icon: Wallet,
     badge: "from-ink to-ink",
   },
@@ -63,7 +75,7 @@ export default function HalamanCaraKerja() {
             <span aria-hidden className="text-muted/50">
               /
             </span>
-            <span className="font-bold text-ink">Cara Kerja &amp; Pembayaran</span>
+            <span className="font-bold text-ink">Cara Kerja &amp; FAQ</span>
           </nav>
 
           <div className="mt-6 max-w-3xl">
@@ -72,7 +84,7 @@ export default function HalamanCaraKerja() {
             </h1>
             <p className="mt-4 max-w-[62ch] text-[1.02rem] leading-relaxed text-slate-600 font-medium">
               Tanpa ribet bikin akun atau mengisi biodata panjang. Cukup hitung di kalkulator,
-              kirimkan brief tugas langsung ke WhatsApp Bagas tanpa perantara, dan pantau progresnya dengan tenang.
+              kirimkan brief tugas langsung ke WhatsApp Mas Joki tanpa perantara, dan pantau progresnya dengan tenang.
             </p>
           </div>
 
@@ -118,6 +130,33 @@ export default function HalamanCaraKerja() {
         {/* Pembayaran E-Wallet Resmi (TUGAS 9: Blok pembayaran lengkap dengan salin nomor) */}
         <Pembayaran />
 
+        {/* Tanya Jawab (FAQ) Lengkap */}
+        <section id="faq" className="border-t border-line bg-paper-2/40 py-16 sm:py-20">
+          <div className="mx-auto max-w-6xl px-5 sm:px-8">
+            <div className="max-w-3xl">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-brand/25 bg-brand-soft px-3 py-1 text-xs font-bold text-brand">
+                Pertanyaan Populer
+              </span>
+              <h2 className="mt-3 font-display text-[2rem] leading-tight font-bold text-ink sm:text-[2.6rem]">
+                Tanya Jawab &amp; Hal yang Sering Ditanyakan.
+              </h2>
+              <p className="mt-3 max-w-[62ch] text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+                Semua hal yang perlu kamu ketahui seputar privasi dokumen, mekanisme revisi 2× gratis,
+                sistem pembayaran, hingga penyerahan file akhir.
+              </p>
+            </div>
+
+            <div className="mt-10 max-w-4xl">
+              <FaqList />
+            </div>
+          </div>
+        </section>
+
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+
         {/* CTA Bottom Banner */}
         <section id="cta-bawah" className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
           <div className="rounded-2xl border border-line bg-white p-8 sm:p-12 shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-6">
@@ -126,7 +165,7 @@ export default function HalamanCaraKerja() {
                 Siap pesan tugasmu sekarang?
               </h2>
               <p className="mt-2 text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
-                Gunakan kalkulator kami untuk menghitung nominal pasti sebelum chat Bagas.
+                Gunakan kalkulator kami untuk menghitung nominal pasti sebelum chat Mas Joki.
               </p>
             </div>
 
@@ -146,7 +185,7 @@ export default function HalamanCaraKerja() {
                 className="inline-flex items-center gap-2 rounded-xl border border-line bg-white px-5 py-3.5 text-sm font-bold text-ink transition-colors hover:bg-paper-2"
               >
                 <MessageCircle className="size-4" />
-                <span>Chat Bagas</span>
+                <span>Chat Mas Joki</span>
                 <ExternalLink className="size-3.5 opacity-60" />
               </a>
             </div>

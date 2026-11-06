@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Plus_Jakarta_Sans } from "next/font/google";
 import { SITE_URL } from "@/lib/config";
+import { CalculatorProvider } from "@/components/calculator-context";
+import { MobileStickyBar } from "@/components/mobile-sticky-bar";
 import { WaMelayang } from "@/components/wa-melayang";
 import "./globals.css";
 
@@ -59,8 +61,11 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#fbfaf6",
-  colorScheme: "light",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#fcfbf7" },
+    { media: "(prefers-color-scheme: dark)", color: "#0b1120" },
+  ],
+  colorScheme: "light dark",
 };
 
 export default function RootLayout({
@@ -74,18 +79,29 @@ export default function RootLayout({
       className={`${display.variable} ${sans.variable}`}
       suppressHydrationWarning
     >
+      <head>
+        <meta name="color-scheme" content="light dark" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var s=localStorage.getItem("color-scheme");var m=document.querySelector('meta[name="color-scheme"]');var d=false;if(s==="dark"){d=true;if(m)m.content="dark";}else if(s==="light"){d=false;if(m)m.content="light";}else{d=window.matchMedia("(prefers-color-scheme: dark)").matches;if(m)m.content="light dark";}if(d){document.documentElement.classList.add("dark");}else{document.documentElement.classList.remove("dark");}}catch(e){}})()`,
+          }}
+        />
+      </head>
       <body
-        className="min-h-dvh bg-paper font-sans text-ink antialiased"
+        className="min-h-dvh bg-paper font-sans text-ink antialiased pb-24 lg:pb-0"
         suppressHydrationWarning
       >
         <a
           href="#konten"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-ink focus:px-4 focus:py-2 focus:text-[0.82rem] focus:font-semibold focus:text-paper"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-ink focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-paper"
         >
           Lewati ke konten
         </a>
-        {children}
-        <WaMelayang />
+        <CalculatorProvider>
+          {children}
+          <MobileStickyBar />
+          <WaMelayang />
+        </CalculatorProvider>
       </body>
     </html>
   );

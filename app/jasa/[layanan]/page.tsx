@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { notFound } from "next/navigation";
 import { Nota } from "@/components/nota";
+import { ServiceIcon } from "@/components/service-icon";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { StempelLayanan } from "@/components/stempel-layanan";
@@ -48,7 +50,7 @@ export async function generateMetadata({
 
   return {
     title: `${judul} — ${tarif}`,
-    description: `${service.promise} Dikerjakan langsung oleh Bagas tanpa perantara. Harga ${priceLabel(service)}, total dihitung di depan sebelum kamu memesan.`,
+    description: `${service.promise} Dikerjakan langsung oleh Mas Joki tanpa perantara. Harga ${priceLabel(service)}, total dihitung di depan sebelum kamu memesan.`,
     alternates: { canonical: `/jasa/${service.id}` },
     openGraph: {
       title: `${judul} · ${site.name}`,
@@ -140,7 +142,9 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
             <div className="mt-8 grid gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:gap-16">
               <div>
                 <div className="flex items-center gap-3">
-                  <StempelLayanan id={service.id} ukuran="sedang" />
+                  <div className="grid size-11 place-items-center rounded-2xl border border-brand/20 bg-white shadow-2xs">
+                    <ServiceIcon id={service.id} className="size-6" />
+                  </div>
                   <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold ${aksen.chip}`}>
                     {priceLabel(service)}
                   </span>
@@ -162,7 +166,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                     Termasuk <strong>2× revisi</strong>
                   </span>
                   <span className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-white px-2.5 py-1">
-                    Dikerjakan langsung <strong>Bagas</strong>
+                    Dikerjakan langsung <strong>Mas Joki</strong>
                   </span>
                 </div>
 
@@ -230,7 +234,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                       },
                     ]}
                     total={0}
-                    note="Biaya ditentukan langsung secara transparan lewat formulir penawaran setelah Bagas memeriksa panjang dokumen dan skor awal."
+                    note="Biaya ditentukan langsung secara transparan lewat formulir penawaran setelah Mas Joki memeriksa panjang dokumen dan skor awal."
                     stamp="Harga Transparan"
                     code="QUOTE-TI"
                     aksen={aksen}
@@ -256,6 +260,52 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
             </div>
           </div>
         </section>
+
+        {/* Bukti Hasil Scan Asli untuk Layanan Humanisasi, Turnitin, & Parafrase */}
+        {(service.id === "humanisasi" || service.id === "turnitin_ai" || service.id === "parafrase") && (
+          <section className="border-b border-line bg-paper-2/50 py-12 sm:py-16">
+            <div className="mx-auto max-w-6xl px-5 sm:px-8">
+              <div className="rounded-3xl border border-line bg-white p-6 sm:p-10 shadow-sm">
+                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 border-b border-line pb-6">
+                  <div className="max-w-2xl">
+                    <span className="stempel-hijau">✓ BUKTI PEMINDAIAN RESMI</span>
+                    <h2 className="mt-2.5 font-display text-xl sm:text-2xl font-bold text-ink">
+                      Hasil Uji Nyata: 98% Human di GPTZero (Model 4.1m)
+                    </h2>
+                    <p className="mt-1.5 text-xs sm:text-sm text-slate-600 font-medium">
+                      Tangkapan layar hasil pemindaian langsung pada naskah hukum &amp; pemasyarakatan setelah disunting manual oleh Mas Joki. Terbukti lolos detektor AI kampus dengan skor <strong>98% Human</strong>, <strong>1% AI</strong>, dan <strong>1% Mixed</strong>.
+                    </p>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-2 shrink-0">
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-mint/30 bg-mint-soft px-3 py-1 text-xs font-bold text-mint shadow-2xs">
+                      <span className="size-1.5 rounded-full bg-mint animate-pulse" />
+                      Entirely Human (98%)
+                    </span>
+                    <span className="rounded-full border border-line bg-paper-2 px-3 py-1 font-mono text-xs font-semibold text-slate-700">
+                      1.085 kata · 8.109 karakter
+                    </span>
+                  </div>
+                </div>
+
+                <div className="mt-6 overflow-hidden rounded-2xl border border-line shadow-sm bg-paper-2">
+                  <Image
+                    src="/bukti/bukti-humanizer-gptzero.jpg"
+                    alt="Bukti Asli Scan AI Humanizer Mas Joki di GPTZero 98% Human"
+                    width={1024}
+                    height={463}
+                    className="w-full object-cover transition-transform duration-300 hover:scale-[1.01]"
+                  />
+                </div>
+
+                <div className="mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-slate-500">
+                  <span>Dokumen uji riil: &ldquo;Sistem pemasyarakatan merupakan bagian dari sistem hukum pidana di Indonesia&rdquo;.</span>
+                  <span className="font-semibold text-mint">✓ Pengerjaan manual langsung tanpa perantara</span>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Scope & Presets Grid */}
         <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
@@ -323,7 +373,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                     Dua Pilihan Tingkat Layanan Artikel Jurnal
                   </h2>
                   <p className="mt-2 text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
-                    Pilih tingkat layanan yang sesuai dengan tujuan naskahmu. Dikerjakan langsung oleh Bagas tanpa perantara.
+                    Pilih tingkat layanan yang sesuai dengan tujuan naskahmu. Dikerjakan langsung oleh Mas Joki tanpa perantara.
                   </p>
 
                   <div className="mt-6 space-y-4">
@@ -478,7 +528,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                     })}
                   </ul>
 
-                  <p className="mt-3 text-[11px] sm:text-xs text-slate-600 font-medium">
+                  <p className="mt-3 text-[13px] text-slate-600 font-medium leading-relaxed">
                     *Total di bawah Rp15.000 disesuaikan menjadi Rp15.000 (minimum transaksi) saat pemesanan.
                   </p>
 
@@ -486,7 +536,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                     <div className="mt-6 rounded-2xl border-2 border-brand/20 bg-brand-soft/40 p-4.5">
                       <div className="flex items-start justify-between gap-3">
                         <div>
-                          <span className="inline-block rounded-md bg-brand text-white px-2 py-0.5 text-[0.7rem] font-bold">
+                          <span className="inline-block rounded-md bg-brand text-white px-2 py-0.5 text-xs font-bold">
                             Paket Hemat Flat
                           </span>
                           <h3 className="mt-1 font-display text-sm sm:text-base font-bold text-ink">
@@ -575,7 +625,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                 rel="noopener noreferrer"
                 className="font-bold text-brand underline decoration-brand/30 underline-offset-4 hover:decoration-brand"
               >
-                Chat Bagas Langsung via WhatsApp ↗
+                Chat Mas Joki Langsung via WhatsApp ↗
               </a>
             </p>
           </div>
@@ -614,7 +664,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
 
         {/* Banner CTA */}
         <section className="mx-auto max-w-6xl px-5 pb-18 sm:px-8 sm:pb-24">
-          <div className="relative overflow-hidden rounded-2xl bg-ink px-7 py-12 shadow-xl sm:px-12 sm:py-16">
+          <div className="relative overflow-hidden rounded-2xl bg-[#0b1329] dark:bg-[#0c1527] dark:border dark:border-white/10 px-7 py-12 shadow-xl sm:px-12 sm:py-16">
             <div aria-hidden className="pita absolute inset-x-0 top-0 h-[4px]" />
             <div className="relative grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center lg:gap-10">
               <div>
@@ -622,14 +672,14 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                   Siap menyelesaikan {service.name.toLowerCase()} sekarang?
                 </h2>
                 <p className="mt-2.5 max-w-[48ch] text-xs sm:text-sm leading-relaxed text-white/80">
-                  Dikerjakan langsung oleh Bagas tanpa perantara. Nominal biaya, tenggat, dan nomor pembayaran resmi langsung terkunci di awal.
+                  Dikerjakan langsung oleh Mas Joki tanpa perantara. Nominal biaya, tenggat, dan nomor pembayaran resmi langsung terkunci di awal.
                 </p>
               </div>
 
               <div className="flex flex-col gap-3 sm:flex-row">
                 <Link
                   href={service.customQuoteOnly ? "/hitung?mode=penawaran&layanan=turnitin_ai" : `/jasa/${service.id}/order`}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-stabilo px-7 py-4 text-sm font-bold text-ink shadow-md transition-all hover:bg-white"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-stabilo px-7 py-4 text-sm font-black text-slate-950 shadow-md transition-all hover:bg-amber-300"
                 >
                   <span>{service.customQuoteOnly ? "Minta Penawaran Sekarang" : `Pesan ${service.name} Sekarang`}</span>
                   <ArrowRight className="size-4" />

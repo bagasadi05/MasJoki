@@ -44,7 +44,7 @@ export function pesanPesanan({
     `Layanan: ${service.name}`,
     `Jumlah: ${price.qty} ${BASIS_LABEL[service.basis]} (${price.equivalentLabel})`,
     `Tenggat: ${price.deadline.label} (Estimasi: ${price.estimatedTurnaround})`,
-    "Tingkat: Standar (dikonfirmasi setelah Bagas cek brief)",
+    "Tingkat: Standar (dikonfirmasi setelah Mas Joki cek brief)",
     daftarTambahan ? `Opsi Tambahan: ${daftarTambahan}` : false,
     price.discountAmount > 0 && price.discountLabel
       ? `Potongan: -${rupiah(price.discountAmount)} (${price.discountLabel})`
@@ -57,7 +57,7 @@ export function pesanPesanan({
     fileUrl ? `File: ${fileUrl}` : false,
     notes ? `Catatan: ${notes}` : false,
     "",
-    `Pembayaran via ${pembayaran.metode.join("/")} ke ${pembayaran.nomor} setelah Bagas konfirmasi.`,
+    `Pembayaran via ${pembayaran.metode.join("/")} ke ${pembayaran.nomor} setelah Mas Joki konfirmasi.`,
   ]);
 }
 
@@ -104,7 +104,7 @@ export function pesanOrderSpesifik({
     citationStyle ? `Format Sitasi/Rujukan: ${citationStyle}` : false,
     customPreference ? `Spesifikasi Khusus: ${customPreference}` : false,
     `Tenggat: ${price.deadline.label} (Estimasi: ${price.estimatedTurnaround})`,
-    "Tingkat: Standar (dikonfirmasi setelah Bagas cek brief)",
+    "Tingkat: Standar (dikonfirmasi setelah Mas Joki cek brief)",
     daftarTambahan ? `Opsi Tambahan: ${daftarTambahan}` : false,
     price.discountAmount > 0 && price.discountLabel
       ? `Potongan: -${rupiah(price.discountAmount)} (${price.discountLabel})`
@@ -117,7 +117,7 @@ export function pesanOrderSpesifik({
     fileUrl ? `File Dokumen: ${fileUrl}` : false,
     notes ? `Catatan Khusus: ${notes}` : false,
     "",
-    `Pembayaran via ${pembayaran.metode.join("/")} ke ${pembayaran.nomor} setelah Bagas konfirmasi.`,
+    `Pembayaran via ${pembayaran.metode.join("/")} ke ${pembayaran.nomor} setelah Mas Joki konfirmasi.`,
   ]);
 }
 

@@ -15,7 +15,7 @@ export function Testimonials() {
     <section
       id="kata-mereka"
       aria-label="Ulasan dan Testimoni Pelanggan"
-      className="relative overflow-hidden border-t border-line bg-gradient-to-b from-paper via-white to-paper py-16 sm:py-24 scroll-mt-20"
+      className="relative overflow-hidden border-t border-line bg-gradient-to-b from-paper via-paper-2/40 to-paper py-16 sm:py-24 scroll-mt-20"
     >
       <div
         aria-hidden
@@ -30,7 +30,7 @@ export function Testimonials() {
             Ulasan Pengguna Nyata Mas Joki.
           </h2>
           <p className="mt-3.5 text-[0.98rem] leading-relaxed text-slate-600">
-            Komentar transparan dari mahasiswa yang telah mempercayakan tugas kuliahnya langsung kepada Bagas tanpa perantara.
+            Komentar transparan dari mahasiswa yang telah mempercayakan tugas kuliahnya langsung kepada Mas Joki tanpa perantara.
           </p>
         </div>
 
@@ -68,13 +68,13 @@ export function Testimonials() {
                     <span className="block text-xs font-bold text-ink">
                       {t.initial}
                     </span>
-                    <span className="block text-[0.7rem] text-slate-500 font-medium">
+                    <span className="block text-xs text-slate-500 font-medium">
                       {t.service}
                     </span>
                   </div>
                 </div>
                 {t.roleOrCity ? (
-                  <p className="mt-2 text-[0.68rem] text-slate-500">
+                  <p className="mt-2 text-xs text-slate-500">
                     {t.roleOrCity}
                   </p>
                 ) : null}

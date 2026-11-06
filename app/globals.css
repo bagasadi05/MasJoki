@@ -1,12 +1,17 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ------------------------------------------------------------------ *
- * Token Tema
+ * Token Tema & Mode Gelap (Modern Web Standards)
  * ------------------------------------------------------------------ */
 
-@theme {
+:root {
+  color-scheme: light dark;
+
   --color-paper: #fcfbf7;
   --color-paper-2: #f4f1e8;
+  --color-card: #ffffff;
   --color-ink: #0b1329;
   --color-ink-soft: #334155;
   --color-muted: #54637a;
@@ -18,7 +23,6 @@
   --color-stabilo: #fde047;
   --color-stabilo-soft: #fef9c3;
 
-  /* 8 Warna Aksen Layanan — chroma rendah supaya kalem tapi colorful */
   --color-mint: #2a6b55;
   --color-mint-soft: #e6f1ea;
   --color-koral: #9e4e42;
@@ -33,6 +37,117 @@
   --color-olive-soft: #eef1dc;
   --color-rose: #9d4d6b;
   --color-rose-soft: #f6e7ed;
+
+  --color-nota-bg: #ffffff;
+
+  &:has(> head > meta[name="color-scheme"][content="dark"]) {
+    color-scheme: dark;
+  }
+  &:has(> head > meta[name="color-scheme"][content="light"]) {
+    color-scheme: light;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light):not(:has(> head > meta[name="color-scheme"][content="light"])) {
+    --color-paper: #0b1120;
+    --color-paper-2: #111a2e;
+    --color-card: #131c31;
+    --color-ink: #f8fafc;
+    --color-ink-soft: #94a3b8;
+    --color-muted: #64748b;
+    --color-line: #1e293b;
+    --color-line-strong: #334155;
+    --color-brand: #3b82f6;
+    --color-brand-dark: #60a5fa;
+    --color-brand-soft: rgba(59, 130, 246, 0.15);
+    --color-stabilo: #eab308;
+    --color-stabilo-soft: rgba(234, 179, 8, 0.2);
+
+    --color-mint: #34d399;
+    --color-mint-soft: rgba(52, 211, 153, 0.15);
+    --color-koral: #f87171;
+    --color-koral-soft: rgba(248, 113, 113, 0.15);
+    --color-lilac: #a78bfa;
+    --color-lilac-soft: rgba(167, 139, 250, 0.15);
+    --color-amber: #fbbf24;
+    --color-amber-soft: rgba(251, 191, 36, 0.15);
+    --color-langit: #38bdf8;
+    --color-langit-soft: rgba(56, 189, 248, 0.15);
+    --color-olive: #a3e635;
+    --color-olive-soft: rgba(163, 230, 53, 0.15);
+    --color-rose: #f472b6;
+    --color-rose-soft: rgba(244, 114, 182, 0.15);
+
+    --color-nota-bg: #131c31;
+  }
+}
+
+html.dark,
+:root.dark,
+:root:has(> head > meta[name="color-scheme"][content="dark"]) {
+  color-scheme: dark;
+
+  --color-paper: #0b1120;
+  --color-paper-2: #111a2e;
+  --color-card: #131c31;
+  --color-ink: #f8fafc;
+  --color-ink-soft: #94a3b8;
+  --color-muted: #64748b;
+  --color-line: #1e293b;
+  --color-line-strong: #334155;
+  --color-brand: #3b82f6;
+  --color-brand-dark: #60a5fa;
+  --color-brand-soft: rgba(59, 130, 246, 0.15);
+  --color-stabilo: #eab308;
+  --color-stabilo-soft: rgba(234, 179, 8, 0.2);
+
+  --color-mint: #34d399;
+  --color-mint-soft: rgba(52, 211, 153, 0.15);
+  --color-koral: #f87171;
+  --color-koral-soft: rgba(248, 113, 113, 0.15);
+  --color-lilac: #a78bfa;
+  --color-lilac-soft: rgba(167, 139, 250, 0.15);
+  --color-amber: #fbbf24;
+  --color-amber-soft: rgba(251, 191, 36, 0.15);
+  --color-langit: #38bdf8;
+  --color-langit-soft: rgba(56, 189, 248, 0.15);
+  --color-olive: #a3e635;
+  --color-olive-soft: rgba(163, 230, 53, 0.15);
+  --color-rose: #f472b6;
+  --color-rose-soft: rgba(244, 114, 182, 0.15);
+
+  --color-nota-bg: #131c31;
+}
+
+@theme {
+  --color-paper: var(--color-paper);
+  --color-paper-2: var(--color-paper-2);
+  --color-ink: var(--color-ink);
+  --color-ink-soft: var(--color-ink-soft);
+  --color-muted: var(--color-muted);
+  --color-line: var(--color-line);
+  --color-line-strong: var(--color-line-strong);
+  --color-brand: var(--color-brand);
+  --color-brand-dark: var(--color-brand-dark);
+  --color-brand-soft: var(--color-brand-soft);
+  --color-stabilo: var(--color-stabilo);
+  --color-stabilo-soft: var(--color-stabilo-soft);
+
+  --color-mint: var(--color-mint);
+  --color-mint-soft: var(--color-mint-soft);
+  --color-koral: var(--color-koral);
+  --color-koral-soft: var(--color-koral-soft);
+  --color-lilac: var(--color-lilac);
+  --color-lilac-soft: var(--color-lilac-soft);
+  --color-amber: var(--color-amber);
+  --color-amber-soft: var(--color-amber-soft);
+  --color-langit: var(--color-langit);
+  --color-langit-soft: var(--color-langit-soft);
+  --color-olive: var(--color-olive);
+  --color-olive-soft: var(--color-olive-soft);
+  --color-rose: var(--color-rose);
+  --color-rose-soft: var(--color-rose-soft);
 
   --font-display: var(--font-bricolage), system-ui, sans-serif;
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
@@ -100,12 +215,92 @@
 }
 
 /* ------------------------------------------------------------------ *
+ * Overrides Kartu & Teks di Mode Gelap
+ * ------------------------------------------------------------------ */
+
+html.dark .bg-white,
+:root:has(> head > meta[name="color-scheme"][content="dark"]) .bg-white {
+  background-color: var(--color-card, #131c31) !important;
+}
+
+html.dark .bg-white\/95,
+:root:has(> head > meta[name="color-scheme"][content="dark"]) .bg-white\/95 {
+  background-color: rgba(19, 28, 49, 0.95) !important;
+}
+
+html.dark .bg-white\/90,
+:root:has(> head > meta[name="color-scheme"][content="dark"]) .bg-white\/90 {
+  background-color: rgba(19, 28, 49, 0.9) !important;
+}
+
+html.dark .bg-white\/80,
+:root:has(> head > meta[name="color-scheme"][content="dark"]) .bg-white\/80 {
+  background-color: rgba(19, 28, 49, 0.8) !important;
+}
+
+html.dark .text-slate-800,
+:root:has(> head > meta[name="color-scheme"][content="dark"]) .text-slate-800 {
+  color: #f1f5f9 !important;
+}
+
+html.dark .text-slate-700,
+:root:has(> head > meta[name="color-scheme"][content="dark"]) .text-slate-700 {
+  color: #cbd5e1 !important;
+}
+
+html.dark .text-slate-600,
+:root:has(> head > meta[name="color-scheme"][content="dark"]) .text-slate-600 {
+  color: #94a3b8 !important;
+}
+
+html.dark .text-slate-500,
+:root:has(> head > meta[name="color-scheme"][content="dark"]) .text-slate-500 {
+  color: #94a3b8 !important;
+}
+
+html.dark .bg-\[\#FBFAF6\],
+html.dark .bg-\[\#fbf9f4\],
+html.dark .bg-\[\#faf7ef\],
+html.dark .bg-\[\#fcfbf7\],
+:root:has(> head > meta[name="color-scheme"][content="dark"]) .bg-\[\#FBFAF6\],
+:root:has(> head > meta[name="color-scheme"][content="dark"]) .bg-\[\#fbf9f4\],
+:root:has(> head > meta[name="color-scheme"][content="dark"]) .bg-\[\#faf7ef\],
+:root:has(> head > meta[name="color-scheme"][content="dark"]) .bg-\[\#fcfbf7\] {
+  background-color: var(--color-paper, #0b1120) !important;
+}
+
+/* Fallback pelindung bila ada elemen dark-container menggunakan token ink */
+html.dark .bg-ink,
+:root:has(> head > meta[name="color-scheme"][content="dark"]) .bg-ink {
+  background-color: #0c1527 !important;
+  color: #f8fafc;
+}
+
+html.dark .border-ink,
+:root:has(> head > meta[name="color-scheme"][content="dark"]) .border-ink {
+  border-color: #334155 !important;
+}
+
+/* Tombol stabilo kuning wajib selalu bertulisan gelap agar terbaca jelas (rasio kontras tinggi) */
+.bg-stabilo,
+a.bg-stabilo,
+button.bg-stabilo {
+  color: #0b1329 !important;
+}
+
+.bg-stabilo *,
+a.bg-stabilo *,
+button.bg-stabilo * {
+  color: #0b1329 !important;
+}
+
+/* ------------------------------------------------------------------ *
  * Nota: Kwitansi Modern Interaktif
  * ------------------------------------------------------------------ */
 
 .nota {
   position: relative;
-  background-color: #ffffff;
+  background-color: var(--color-nota-bg, #ffffff);
   border: 1px solid var(--color-line);
   border-radius: var(--radius-nota) var(--radius-nota) 0 0;
   box-shadow:
@@ -113,6 +308,13 @@
     0 20px 35px -10px rgba(37, 99, 235, 0.12),
     0 1px 3px 0 rgba(0, 0, 0, 0.05);
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+}
+
+html.dark .nota {
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.3),
+    0 20px 35px -10px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.06);
 }
 
 .nota:hover {
@@ -127,7 +329,7 @@
   inset-inline: -1px;
   bottom: -11px;
   height: 12px;
-  background: #ffffff;
+  background: var(--color-nota-bg, #ffffff);
   border-inline: 1px solid var(--color-line);
   -webkit-mask-image: radial-gradient(circle at 8px 0, transparent 7px, #000 7.5px);
   mask-image: radial-gradient(circle at 8px 0, transparent 7px, #000 7.5px);
@@ -161,6 +363,12 @@
   white-space: nowrap;
 }
 
+html.dark .stempel {
+  background-color: rgba(37, 99, 235, 0.2);
+  color: #60a5fa;
+  box-shadow: 0 2px 8px -2px rgba(59, 130, 246, 0.3);
+}
+
 .stempel-hijau {
   display: inline-block;
   border: 2px dashed #059669;
@@ -178,6 +386,12 @@
   white-space: nowrap;
 }
 
+html.dark .stempel-hijau {
+  background-color: rgba(5, 150, 105, 0.2);
+  color: #34d399;
+  border-color: #059669;
+}
+
 .stempel-merah {
   display: inline-block;
   border: 2px dashed #dc2626;
@@ -193,6 +407,12 @@
   text-transform: uppercase;
   transform: rotate(3deg);
   white-space: nowrap;
+}
+
+html.dark .stempel-merah {
+  background-color: rgba(220, 38, 38, 0.2);
+  color: #f87171;
+  border-color: #dc2626;
 }
 
 .leader {
@@ -219,6 +439,35 @@
     rgba(226, 222, 213, 0.7) 94%
   );
   background-size: 100% 28px;
+}
+
+html.dark .kertas-grafik {
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+}
+
+html.dark .kertas-grafik-halus {
+  background-image: 
+    linear-gradient(to right, rgba(96, 165, 250, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(96, 165, 250, 0.05) 1px, transparent 1px);
+}
+
+html.dark .kertas-titik,
+html.dark .kertas-titik-jelas {
+  background-image: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.07) 1.5px,
+    transparent 1.5px
+  );
+}
+
+html.dark .kertas-garis {
+  background-image: linear-gradient(
+    to bottom,
+    transparent 94%,
+    rgba(255, 255, 255, 0.05) 94%
+  );
 }
 
 /* Pita warna: 8 spektrum warna layanan, solid per layanan (bukan gradasi). */

@@ -35,7 +35,11 @@ const CONTOH_DATA = [
   },
 ];
 
-export function SimulasiContoh() {
+export function SimulasiContoh({
+  tanpaBorderAtas = false,
+}: {
+  tanpaBorderAtas?: boolean;
+} = {}) {
   const contoh = CONTOH_DATA.map((item) => {
     const service = getService(item.serviceId);
     const price = computePrice(
@@ -48,7 +52,7 @@ export function SimulasiContoh() {
   });
 
   return (
-    <div className="border-t border-dashed border-line pt-14">
+    <div className={tanpaBorderAtas ? "" : "border-t border-dashed border-line pt-14"}>
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <span className="inline-flex items-center gap-1.5 rounded-full border border-purple-200 bg-purple-50 px-3.5 py-1 text-xs font-bold text-purple-900 shadow-2xs">
@@ -59,7 +63,7 @@ export function SimulasiContoh() {
             Tiga Contoh Hitungan Biaya Nyata.
           </h3>
         </div>
-        <p className="text-[0.84rem] font-semibold text-muted">
+        <p className="text-sm font-medium text-slate-600">
           Angka riil langsung dari mesin hitung Mas Joki tanpa estimasi fiktif.
         </p>
       </div>
@@ -76,12 +80,12 @@ export function SimulasiContoh() {
               <div>
                 <div className="flex items-center justify-between">
                   <span
-                    className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[0.72rem] font-bold ${aksen.chip}`}
+                    className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold ${aksen.chip}`}
                   >
                     <Sparkles className="size-3" />
                     {item.service.name}
                   </span>
-                  <span className="text-[0.74rem] font-bold text-muted">
+                  <span className="text-xs font-bold text-slate-500">
                     Simulasi
                   </span>
                 </div>
@@ -89,14 +93,14 @@ export function SimulasiContoh() {
                 <h4 className="mt-5 font-display text-[1.25rem] font-extrabold leading-snug tracking-tight text-ink">
                   {item.judul}
                 </h4>
-                <p className="mt-2 text-[0.84rem] leading-relaxed text-muted">
+                <p className="mt-2 text-sm leading-relaxed text-slate-600">
                   {item.keterangan}
                 </p>
               </div>
 
               <div className="mt-8 border-t border-dashed border-line pt-5">
                 <div className="flex items-baseline justify-between">
-                  <span className="text-[0.72rem] font-bold uppercase tracking-wider text-muted">
+                  <span className="text-xs font-bold uppercase tracking-wider text-slate-600">
                     Total Estimasi
                   </span>
                   <span className="font-display text-[1.55rem] font-black tracking-tight text-brand tabular-nums">
@@ -104,7 +108,11 @@ export function SimulasiContoh() {
                   </span>
                 </div>
 
-                <TombolContoh serviceId={item.service.id} />
+                <TombolContoh
+                  serviceId={item.service.id}
+                  qty={item.qty}
+                  deadlineId={item.deadlineId}
+                />
               </div>
             </li>
           );

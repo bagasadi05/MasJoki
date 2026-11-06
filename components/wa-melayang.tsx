@@ -32,14 +32,14 @@ export function WaMelayang() {
       href={waLink(waPesanUmum)}
       target="_blank"
       rel="noopener noreferrer"
-      className={`fixed bottom-[max(1.2rem,env(safe-area-inset-bottom))] right-4 z-50 inline-flex items-center gap-2.5 rounded-full border border-mint/25 bg-white/95 p-1.5 pr-4 text-[0.84rem] font-bold text-ink shadow-lg shadow-mint/15 backdrop-blur transition-all duration-200 hover:-translate-y-1 hover:border-mint/40 hover:shadow-xl hover:shadow-mint/20 active:translate-y-0 sm:bottom-[max(1.8rem,env(safe-area-inset-bottom))] sm:right-6 ${
+      className={`fixed bottom-[max(1.2rem,env(safe-area-inset-bottom))] right-4 z-50 hidden lg:inline-flex items-center gap-2.5 rounded-full border border-mint/25 bg-white/95 p-1.5 pr-4 text-sm font-bold text-ink shadow-lg shadow-mint/15 backdrop-blur transition-all duration-200 hover:-translate-y-1 hover:border-mint/40 hover:shadow-xl hover:shadow-mint/20 active:translate-y-0 sm:bottom-[max(1.8rem,env(safe-area-inset-bottom))] sm:right-6 ${
         sembunyi
           ? "pointer-events-none translate-y-3 opacity-0"
           : "translate-y-0 opacity-100"
       } print:hidden`}
       aria-hidden={sembunyi}
       tabIndex={sembunyi ? -1 : undefined}
-      aria-label="Chat Bagas di WhatsApp (buka tab baru)"
+      aria-label="Chat Mas Joki di WhatsApp (buka tab baru)"
     >
       {/* 3D Mascot Avatar */}
       <div className="relative size-8 shrink-0 overflow-hidden rounded-full border border-mint/25 bg-mint-soft shadow-2xs">
@@ -55,10 +55,10 @@ export function WaMelayang() {
       </div>
 
       <div className="flex flex-col text-left">
-        <span className="text-[0.82rem] font-bold text-ink leading-none">
-          Chat Bagas
+        <span className="text-sm font-bold text-ink leading-none">
+          Chat Mas Joki
         </span>
-        <span className="text-[0.66rem] font-semibold text-mint leading-tight">
+        <span className="text-xs font-semibold text-mint leading-tight">
           Online 07:00 – 23:00
         </span>
       </div>

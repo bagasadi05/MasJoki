@@ -84,7 +84,9 @@ export function MenuSeluler({
                 const aktif =
                   item.href === "/"
                     ? pathname === "/"
-                    : pathname.startsWith(item.href);
+                    : item.href === "/cara-kerja"
+                      ? pathname.startsWith("/cara-kerja") || pathname.startsWith("/faq")
+                      : pathname.startsWith(item.href);
 
                 return (
                   <li key={item.href}>
@@ -120,7 +122,7 @@ export function MenuSeluler({
                 onClick={() => setBuka(false)}
                 className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-brand px-4 py-3 text-[0.86rem] font-bold text-white shadow-md shadow-brand/20 transition-colors hover:bg-brand-dark"
               >
-                <span>Tanya Bagas di WhatsApp</span>
+                <span>Tanya Mas Joki di WhatsApp</span>
                 <ExternalLink className="size-3.5 opacity-70" />
               </a>
             </div>

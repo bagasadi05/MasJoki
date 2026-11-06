@@ -91,7 +91,7 @@ export default async function HalamanOrderSpesifik({ params }: OrderPageProps) {
             {spec.headline}
           </h1>
           <p className="mt-3 text-xs sm:text-sm md:text-base leading-relaxed text-slate-600">
-            {spec.subheadline} Lengkapi 3 langkah cepat di bawah ini untuk mendapatkan estimasi terkunci dan mengirim naskah langsung ke Bagas.
+            {spec.subheadline} Lengkapi 3 langkah cepat di bawah ini untuk mendapatkan estimasi terkunci dan mengirim naskah langsung ke Mas Joki.
           </p>
         </div>
 

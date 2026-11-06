@@ -253,14 +253,25 @@ export const SERVICES: Service[] = [
 ];
 
 /** Layanan utama yang ditampilkan di katalog halaman /jasa dan grid beranda */
-export const CATALOG_SERVICES = SERVICES.filter(
-  (s) => s.id !== "artikel_ilmiah" && s.id !== "jurnal_submit" && s.id !== "paket_abstrak",
-);
+const CATALOG_ORDER: ServiceId[] = [
+  "humanisasi",
+  "turnitin_ai",
+  "parafrase",
+  "makalah",
+  "jurnal",
+  "powerpoint",
+  "word",
+  "terjemah",
+  "desain",
+];
+
+export const CATALOG_SERVICES = CATALOG_ORDER.map((id) => SERVICES.find((s) => s.id === id)!).filter(Boolean);
 
 /** Layanan yang dapat dipilih langsung di kalkulator biaya (/hitung) */
 export const CALCULABLE_SERVICES = SERVICES.filter(
   (s) => s.id !== "jurnal", // Di kalkulator, opsi jurnal dipecah menjadi artikel_ilmiah & jurnal_submit
 );
+
 
 export function getService(id: string): Service {
   return SERVICES.find((s) => s.id === id) ?? SERVICES[0];

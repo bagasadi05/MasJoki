@@ -1,33 +1,32 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CalculatorProvider } from "@/components/calculator-context";
 import { PriceCalculator } from "@/components/price-calculator";
 import { SimulasiContoh } from "@/components/simulasi-contoh";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 
 export const metadata: Metadata = {
-  title: "Kalkulator Biaya Tugas Kuliah & Cek Nota Transparan",
+  title: "Kalkulator Biaya Bantuan Tugas",
   description:
-    "Hitung estimasi biaya tugas kuliahmu secara mandiri. Pilih layanan, atur jumlah kata/halaman dan tenggat waktu. Total harga langsung terkunci di nota resmi.",
+    "Hitung estimasi biaya bantuan tugas kuliahmu secara mandiri. Pilih layanan, sesuaikan jumlah kata/halaman, tentukan tenggat, dan dapatkan rincian nota kwitansi transparan di awal.",
   alternates: { canonical: "/hitung" },
 };
 
 export default function HalamanKalkulator() {
   return (
-    <CalculatorProvider>
+    <>
       <SiteHeader />
 
       <main id="konten" className="mx-auto max-w-6xl px-5 py-12 sm:px-8 sm:py-16">
         {/* Breadcrumb */}
         <nav
           aria-label="Remah roti"
-          className="flex items-center gap-2 text-[0.8rem] font-medium text-muted"
+          className="flex items-center gap-2 text-xs font-semibold text-slate-600"
         >
           <Link href="/" className="transition-colors hover:text-brand">
             Beranda
           </Link>
-          <span aria-hidden className="text-muted/50">
+          <span aria-hidden className="text-slate-400">
             /
           </span>
           <span className="font-bold text-ink">Kalkulator Biaya</span>
@@ -42,7 +41,7 @@ export default function HalamanKalkulator() {
           >
             Hitung Biaya Tugasmu Secara Mandiri.
           </h1>
-          <p className="mt-4 max-w-[62ch] text-[1.02rem] leading-relaxed text-ink-soft">
+          <p className="mt-4 max-w-[62ch] text-base leading-relaxed text-slate-600 font-medium">
             Pilih jenis tugas, geser jumlah kata atau halaman, dan pilih tenggat yang kamu butuhkan.
             Total biaya dan rincian nota kwitansi langsung keluar seketika tanpa perlu nunggu chat admin dibalas.
           </p>
@@ -60,6 +59,6 @@ export default function HalamanKalkulator() {
       </main>
 
       <SiteFooter />
-    </CalculatorProvider>
+    </>
   );
 }

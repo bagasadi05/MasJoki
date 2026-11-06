@@ -5,34 +5,31 @@ import {
   ArrowRight,
   Calculator,
   CheckCircle2,
-  Clock,
+  CreditCard,
   ExternalLink,
   FolderArchive,
   Lock,
   MessageCircle,
+  RefreshCcw,
   RotateCcw,
   ShieldCheck,
-  Star,
-  Users,
+  Sparkles,
+  Tag,
+  Zap,
 } from "lucide-react";
 import { AlurKerja } from "@/components/alur-kerja";
-import { BeforeAfterShowcase } from "@/components/before-after-showcase";
-import { CalculatorProvider } from "@/components/calculator-context";
-import { FaqList } from "@/components/faq-list";
 import { HeroStaticReceipt } from "@/components/hero-static-receipt";
-import { PriceCalculator } from "@/components/price-calculator";
 import { ServiceList } from "@/components/service-list";
 import { SimulasiContoh } from "@/components/simulasi-contoh";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { Testimonials } from "@/components/testimonials";
 import { QRIS_ENABLED, SITE_OWNER } from "@/lib/config";
 import { pembayaran, site, waLink, waPesanUmum } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Mas Joki — Bantuan Tugas Kuliah Transparan, Harga Terbuka di Awal",
   description:
-    "Hitung estimasi biaya tugas kuliahmu secara mandiri. Parafrase, humanisasi teks AI, makalah, artikel jurnal, PPT, rapikan Word, hingga penurunan Turnitin langsung oleh Bagas tanpa perantara.",
+    "Hitung estimasi biaya tugas kuliahmu secara mandiri. Parafrase, humanisasi teks AI, makalah, artikel jurnal, PPT, rapikan Word, hingga penurunan Turnitin langsung oleh Mas Joki tanpa perantara.",
   alternates: { canonical: "/" },
 };
 
@@ -56,7 +53,7 @@ const garansiList = [
   {
     kode: "PASAL 03",
     judul: "File Sumber Lengkap & Siap Edit",
-    isi: "Bagas selalu menyerahkan file sumber (file mentah asli: .docx atau .pptx) yang bebas kamu edit dan simpan kapan pun.",
+    isi: "Mas Joki selalu menyerahkan file sumber (file mentah asli: .docx atau .pptx) yang bebas kamu edit dan simpan kapan pun.",
     icon: FolderArchive,
     bg: "bg-amber-soft/70 border-amber/25 text-ink",
     iconBg: "bg-amber-soft text-amber",
@@ -87,14 +84,14 @@ const jsonLd = {
 
 export default function Home() {
   return (
-    <CalculatorProvider>
+    <>
       <SiteHeader />
 
       <main id="konten">
         {/* ========================================================== *
-         * 1. HERO RINGKAS (TUGAS 1: Tanpa Simulator Interaktif)
+         * 1. HERO UTAMA (NILAI JUAL: Harga Terbuka di Awal & Nota Transparan)
          * ========================================================== */}
-        <section className="relative overflow-hidden border-b border-line bg-[#fbf9f4]">
+        <section className="relative overflow-hidden border-b border-line bg-paper">
           {/* Ambient Lighting Orbs */}
           <div
             aria-hidden
@@ -113,38 +110,44 @@ export default function Home() {
 
           <div className="relative mx-auto grid max-w-6xl gap-10 px-5 pb-14 pt-12 sm:px-8 lg:grid-cols-[1.12fr_0.88fr] lg:items-center lg:gap-12 lg:pb-20 lg:pt-16">
             <div>
-              {/* Badge Kecil Tetap */}
-              <div className="inline-flex items-center gap-2 rounded-full border border-line bg-paper-2/90 px-3.5 py-1 text-xs font-bold text-ink shadow-2xs">
-                <span className="size-2 rounded-full bg-mint animate-pulse" />
-                <span>Jasa Bantuan Tugas</span>
-                <span className="text-muted/40">•</span>
-                <span className="text-slate-600 font-medium">Bagas</span>
+              {/* Badge Kecil & Flagship Tag */}
+              <div className="flex flex-wrap items-center gap-2">
+                <div className="inline-flex items-center gap-2 rounded-full border border-line bg-paper-2/90 px-3.5 py-1 text-xs font-bold text-ink shadow-2xs">
+                  <span className="size-2 rounded-full bg-mint animate-pulse" />
+                  <span>Jasa Bantuan Tugas</span>
+                  <span className="text-muted/40">•</span>
+                  <span className="text-slate-600 font-medium">Online</span>
+                </div>
+                <div className="inline-flex items-center gap-1.5 rounded-full border border-mint/30 bg-mint-soft px-3 py-1 text-xs font-bold text-mint shadow-2xs">
+                  <Sparkles className="size-3 text-mint" />
+                  <span>Produk Unggulan: Humanisasi Teks AI (GPTZero 98%) &amp; Turnitin</span>
+                </div>
               </div>
 
-              {/* Headline & Sub-headline (Teks Tetap Tidak Berubah) */}
+              {/* Headline & Sub-headline */}
               <h1 className="mt-5 font-display text-[2.5rem] leading-[1.06] tracking-[-0.035em] text-ink sm:text-[3.2rem] lg:text-[3.6rem]">
                 Tugas kuliah beres, harga pasti kelihatan di awal.
               </h1>
 
               <p className="mt-4 max-w-[48ch] text-sm sm:text-base leading-relaxed text-slate-600 font-medium">
-                Dikerjakan langsung oleh Bagas tanpa perantara. Masukkan jumlah kata atau halaman, pilih tenggat, dan kunci estimasi nota sebelum kamu mengetik satu baris pesan pun.
+                Dikerjakan langsung oleh Mas Joki tanpa perantara. Buka kalkulator biaya untuk menghitung perkiraan biaya tugasmu seketika sebelum menghubungi kami.
               </p>
 
-              {/* Dua Tombol CTA Sederhana: Hitung Biaya Tugasmu & Lihat Layanan */}
+              {/* Dua Tombol CTA Utama: Buka Kalkulator Biaya & Lihat Layanan */}
               <div className="mt-8 flex flex-col gap-3.5 sm:flex-row">
-                <a
-                  href="#kalkulator"
+                <Link
+                  href="/hitung"
                   className="inline-flex items-center justify-center gap-2 rounded-2xl bg-brand px-7 py-4 text-sm font-extrabold text-white shadow-lg shadow-brand/25 transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35 active:translate-y-0 cursor-pointer"
                 >
                   <Calculator className="size-4.5" />
-                  <span>Hitung Biaya Tugasmu</span>
+                  <span>Buka Kalkulator Biaya</span>
                   <ArrowRight className="size-4" />
-                </a>
+                </Link>
                 <a
                   href="#layanan"
-                  className="inline-flex items-center justify-center gap-2 rounded-2xl border-2 border-ink bg-white px-7 py-4 text-sm font-bold text-ink shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:bg-ink hover:text-white active:translate-y-0"
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl border-2 border-line dark:border-line-strong bg-white dark:bg-[#162035] px-7 py-4 text-sm font-bold text-ink dark:text-slate-100 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand dark:hover:bg-brand hover:text-white dark:hover:border-brand active:translate-y-0"
                 >
-                  <span>Lihat Layanan</span>
+                  <span>Lihat Layanan Unggulan</span>
                   <ArrowRight className="size-4" />
                 </a>
               </div>
@@ -160,19 +163,19 @@ export default function Home() {
                 </span>
                 <span className="inline-flex items-center gap-1.5">
                   <CheckCircle2 className="size-3.5 text-brand shrink-0" />
-                  <span>Dikerjakan langsung oleh Bagas</span>
+                  <span>Dikerjakan langsung oleh Mas Joki</span>
                 </span>
                 <span className="text-slate-300 hidden sm:inline" aria-hidden>
                   •
                 </span>
                 <span className="inline-flex items-center gap-1.5">
                   <CheckCircle2 className="size-3.5 text-amber shrink-0" />
-                  <span>File sumber (file mentah asli) selalu disertakan</span>
+                  <span>File sumber (.docx / .pptx) disertakan</span>
                 </span>
               </div>
             </div>
 
-            {/* Sisi Kanan: Nota Mini Statis (Pajangan Brand, Non-Interaktif) */}
+            {/* Sisi Kanan: Nota Mini Statis (Pajangan Nilai Jual) */}
             <div className="relative">
               <HeroStaticReceipt />
             </div>
@@ -180,14 +183,14 @@ export default function Home() {
         </section>
 
         {/* ========================================================== *
-         * 2. STRIP RINGKASAN CEPAT (TUGAS 2: 4 Info Kunci dalam 10 Detik)
+         * 2. STRIP RINGKASAN CEPAT (4 Nilai Jual Kunci)
          * ========================================================== */}
         <section className="border-b border-line bg-white py-4 shadow-2xs">
           <div className="mx-auto max-w-6xl px-5 sm:px-8">
             <div className="flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm font-bold text-ink">
               <div className="flex items-center gap-2">
                 <span className="grid size-6 place-items-center rounded-full bg-brand-soft text-brand text-xs">
-                  🏷️
+                  <Tag className="size-3.5 text-brand" />
                 </span>
                 <span>Mulai Rp15.000</span>
               </div>
@@ -196,7 +199,7 @@ export default function Home() {
               </span>
               <div className="flex items-center gap-2">
                 <span className="grid size-6 place-items-center rounded-full bg-amber-soft text-amber text-xs">
-                  ⚡
+                  <Zap className="size-3.5 text-amber" />
                 </span>
                 <span>Pengerjaan mulai 6 jam</span>
               </div>
@@ -205,7 +208,7 @@ export default function Home() {
               </span>
               <div className="flex items-center gap-2">
                 <span className="grid size-6 place-items-center rounded-full bg-mint-soft text-mint text-xs">
-                  💳
+                  <CreditCard className="size-3.5 text-mint" />
                 </span>
                 <span>DP 50% dulu, lunas setelah selesai</span>
               </div>
@@ -213,8 +216,8 @@ export default function Home() {
                 •
               </span>
               <div className="flex items-center gap-2">
-                <span className="grid size-6 place-items-center rounded-full bg-blue-50 text-brand text-xs">
-                  🔄
+                <span className="grid size-6 place-items-center rounded-full bg-brand-soft text-brand text-xs">
+                  <RefreshCcw className="size-3.5 text-brand" />
                 </span>
                 <span>Revisi 2× gratis</span>
               </div>
@@ -223,7 +226,7 @@ export default function Home() {
         </section>
 
         {/* ========================================================== *
-         * 3. SECTION LAYANAN (TUGAS 2 & 3: Sebelum Kalkulator & Sebelum B/A)
+         * 3. HIGHLIGHT LAYANAN UNGGULAN (Hanya Populer, Lainnya di /jasa)
          * ========================================================== */}
         <section
           id="layanan"
@@ -236,12 +239,12 @@ export default function Home() {
           <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
               <div className="max-w-2xl">
-                <span className="stempel">PILIHAN LAYANAN</span>
+                <span className="stempel">PRODUK UNGGULAN &amp; PILIHAN UTAMA</span>
                 <h2 className="mt-3 font-display text-[2rem] leading-tight tracking-[-0.02em] text-ink sm:text-[2.6rem]">
-                  Sembilan Layanan Bantuan Tugas.
+                  Layanan Unggulan &amp; Paling Banyak Dipesan.
                 </h2>
                 <p className="mt-2 text-xs sm:text-sm leading-relaxed text-slate-600 font-medium">
-                  Pilih layanan yang kamu butuhkan. Hitung estimasi biaya langsung di kalkulator atau buka detail formatnya.
+                  Spesialisasi utama: Humanisasi teks AI (terbukti lolos GPTZero 98% Human), penurunan Turnitin manual, dan asistensi tugas akademik tanpa perantara.
                 </p>
               </div>
 
@@ -249,132 +252,23 @@ export default function Home() {
                 href="/jasa"
                 className="inline-flex items-center gap-2 rounded-xl border border-line bg-white px-4 py-2.5 text-xs font-bold text-ink hover:border-brand hover:text-brand shadow-2xs transition-colors shrink-0"
               >
-                <span>Katalog Layanan Lengkap</span>
+                <span>Buka Katalog Lengkap</span>
                 <ArrowRight className="size-3.5" />
               </Link>
             </div>
 
             <div className="mt-10">
-              <ServiceList />
+              <ServiceList hanyaHighlight={true} />
             </div>
           </div>
         </section>
 
         {/* ========================================================== *
-         * 4. SECTION CARA PESAN (TUGAS 2: 4 Kartu Bernomor Tanpa Paragraf)
-         * ========================================================== */}
-        <AlurKerja />
-
-        {/* ========================================================== *
-         * 5. SECTION BUKTI & KEPERCAYAAN (TUGAS 2: Gabungan B/A, Testimoni, Statistik)
+         * 4. NILAI JUAL: EMPAT GARANSI INTEGRITAS
          * ========================================================== */}
         <section
-          id="bukti-kepercayaan"
-          className="relative overflow-hidden border-b border-line bg-gradient-to-b from-white via-paper-2/30 to-white py-14 sm:py-20 scroll-mt-16"
-        >
-          <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
-            {/* Strip Statistik Bukti Sosial */}
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 rounded-3xl border border-line bg-white p-5 sm:p-7 shadow-xs">
-              <div className="text-center p-2">
-                <p className="font-display text-2xl sm:text-3xl font-black text-brand tabular-nums">
-                  2.400+
-                </p>
-                <p className="mt-1 text-xs font-bold text-slate-600">
-                  Tugas Tertangani
-                </p>
-              </div>
-              <div className="text-center p-2 border-l border-line">
-                <p className="font-display text-2xl sm:text-3xl font-black text-amber tabular-nums">
-                  4.9+/5
-                </p>
-                <p className="mt-1 text-xs font-bold text-slate-600">
-                  Ulasan Puas
-                </p>
-              </div>
-              <div className="text-center p-2 border-t sm:border-t-0 sm:border-l border-line">
-                <p className="font-display text-2xl sm:text-3xl font-black text-mint tabular-nums">
-                  100%
-                </p>
-                <p className="mt-1 text-xs font-bold text-slate-600">
-                  File Sumber Disertakan
-                </p>
-              </div>
-              <div className="text-center p-2 border-t sm:border-t-0 sm:border-l border-line">
-                <p className="font-display text-2xl sm:text-3xl font-black text-ink tabular-nums">
-                  07.00–23.00
-                </p>
-                <p className="mt-1 text-xs font-bold text-slate-600">
-                  WIB Responsif
-                </p>
-              </div>
-            </div>
-
-            {/* Perbandingan Mutu Sebelum vs Sesudah (Rahasia di Balik Harga Kami) */}
-            <div className="mt-14">
-              <BeforeAfterShowcase />
-            </div>
-
-            {/* Section Testimoni / Kata Mereka (Hanya tampil bila TESTIMONIALS_ENABLED = true) */}
-            <Testimonials />
-          </div>
-        </section>
-
-        {/* ========================================================== *
-         * 6. SECTION KALKULATOR (TUGAS 2: Hitung Dulu, Baru Pesan + Simulator Pindahan)
-         * ========================================================== */}
-        <section
-          id="kalkulator"
-          className="relative overflow-hidden border-b border-line bg-gradient-to-b from-[#fcfbf7] via-white to-[#f5f0e6] py-16 sm:py-24 scroll-mt-16"
-        >
-          {/* Invisible anchor for backward compatibility */}
-          <span id="hitung" className="sr-only" />
-
-          <div
-            aria-hidden
-            className="pointer-events-none absolute top-0 right-0 size-96 rounded-full bg-brand-soft/70 blur-3xl opacity-60"
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute bottom-0 left-0 size-96 rounded-full bg-amber-soft/60 blur-3xl opacity-50"
-          />
-          <div
-            aria-hidden
-            className="kertas-titik-jelas pointer-events-none absolute inset-0 opacity-35"
-          />
-
-          <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
-            <div className="max-w-2xl">
-              <span className="stempel">KALKULATOR RESMI</span>
-              <h2
-                id="judul-hitung"
-                tabIndex={-1}
-                className="mt-3 font-display text-[2.2rem] leading-tight tracking-[-0.025em] text-ink sm:text-[2.8rem] focus:outline-none"
-              >
-                Hitung Dulu, Baru Pesan.
-              </h2>
-              <p className="mt-2 text-xs sm:text-sm md:text-base leading-relaxed text-slate-600 font-medium">
-                Pilih jenis tugas, atur jumlahnya, dan lihat nominal pasti di nota sebelum menghubungi Bagas.
-              </p>
-            </div>
-
-            {/* Simulator Interaktif Pindahan dari Hero */}
-            <div className="mt-10">
-              <PriceCalculator />
-            </div>
-
-            {/* Tiga Kartu Contoh Hitungan Nyata */}
-            <div className="mt-14">
-              <SimulasiContoh />
-            </div>
-          </div>
-        </section>
-
-        {/* ========================================================== *
-         * 7. SECTION GARANSI (TUGAS 2: Teks Tiap Kartu Maksimal 2 Baris)
-         * ========================================================== */}
-        <section
-          id="garansi"
-          className="relative overflow-hidden border-b border-line bg-gradient-to-b from-white via-[#faf7ef] to-white py-14 sm:py-20 scroll-mt-16"
+          id="nilai-jual"
+          className="relative overflow-hidden border-b border-line bg-gradient-to-b from-paper via-paper-2/40 to-paper py-14 sm:py-20 scroll-mt-16"
         >
           <div
             aria-hidden
@@ -387,7 +281,7 @@ export default function Home() {
                 Empat Garansi Transparansi Mas Joki.
               </h2>
               <p className="mt-2 text-xs sm:text-sm text-slate-600 font-medium">
-                Prinsip baku tanpa kompromi yang Bagas pegang untuk setiap tugasmu.
+                Prinsip baku tanpa kompromi yang Mas Joki pegang untuk setiap tugasmu.
               </p>
             </div>
 
@@ -412,7 +306,6 @@ export default function Home() {
                       {item.judul}
                     </h3>
 
-                    {/* Teks Maksimal 2 Baris Tampil */}
                     <p className="mt-2 text-xs sm:text-sm leading-relaxed text-slate-600 font-medium line-clamp-2">
                       {item.isi}
                     </p>
@@ -424,7 +317,101 @@ export default function Home() {
         </section>
 
         {/* ========================================================== *
-         * 8. STRIP PEMBAYARAN RINGKAS (TUGAS 2 & 6: Satu Baris E-Wallet & Slot QRIS)
+         * 5. PROFIL PEMILIK (NILAI JUAL: Guru Aktif S.Pd, Tanpa Pihak Ketiga)
+         * ========================================================== */}
+        <section id="profil-pemilik" className="border-b border-line bg-gradient-to-b from-paper to-paper-2/40 py-12 sm:py-16">
+          <div className="mx-auto max-w-4xl px-5 sm:px-8">
+            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-8 rounded-3xl border border-line bg-white p-6 sm:p-8 shadow-sm">
+              <div className="relative size-24 sm:size-28 shrink-0 overflow-hidden rounded-2xl border-2 border-line shadow-xs">
+                <Image
+                  src="/mas-joki.jpg"
+                  alt="Mas Joki — Pemilik & Pengerja"
+                  width={112}
+                  height={112}
+                  className="size-full object-cover object-top"
+                />
+              </div>
+
+              <div className="flex-1 text-center sm:text-left">
+                <span className="stempel-hijau text-xs py-0.5 px-2.5">
+                  ✓ DIKERJAKAN LANGSUNG
+                </span>
+                <h3 className="mt-2.5 font-display text-lg sm:text-xl font-bold text-ink">
+                  Mas Joki — Pengelola &amp; Pengerja Langsung
+                </h3>
+                <p className="mt-2 text-xs sm:text-sm leading-relaxed text-slate-700 font-medium">
+                  Halo, saya Mas Joki — guru aktif bergelar S.Pd yang mengerjakan sendiri semua pesanan tugas di sini. Tanpa perantara, tanpa tim bayangan. Latar belakang pendidikan membuat saya paham persis format akademik yang diminta dosen: sitasi rapi, struktur benar, bahasa yang lolos dibaca manusia.
+                </p>
+
+                <div className="mt-4">
+                  <a
+                    href={waLink("Halo Mas Joki, saya mau tanya soal biaya tugas saya.")}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-brand hover:underline"
+                  >
+                    <MessageCircle className="size-4" />
+                    <span>Chat Mas Joki di WhatsApp</span>
+                    <ArrowRight className="size-3.5" />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ========================================================== *
+         * 6. HIGHLIGHT CARA PESAN (4 Langkah Praktis)
+         * ========================================================== */}
+        <AlurKerja />
+
+        {/* ========================================================== *
+         * 7. HIGHLIGHT ESTIMASI BIAYA & SIMULASI NYATA (Pintu ke /hitung)
+         * ========================================================== */}
+        <section
+          id="simulasi"
+          className="relative overflow-hidden border-b border-line bg-gradient-to-b from-paper via-paper-2/40 to-paper py-16 sm:py-20 scroll-mt-16"
+        >
+          <div
+            aria-hidden
+            className="pointer-events-none absolute top-0 right-0 size-96 rounded-full bg-brand-soft/70 blur-3xl opacity-60"
+          />
+          <div
+            aria-hidden
+            className="kertas-titik-jelas pointer-events-none absolute inset-0 opacity-35"
+          />
+
+          <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+              <div className="max-w-2xl">
+                <span className="stempel">TRANSPARANSI HARGA</span>
+                <h2 className="mt-3 font-display text-[2.2rem] leading-tight tracking-[-0.025em] text-ink sm:text-[2.6rem]">
+                  Cek Estimasi Biaya Tugasmu Seketika.
+                </h2>
+                <p className="mt-2 text-xs sm:text-sm md:text-base leading-relaxed text-slate-600 font-medium">
+                  Tidak perlu menunggu admin membalas pesan untuk tahu biaya. Coba simulasi contoh di bawah atau atur jumlah persismu di kalkulator mandiri.
+                </p>
+              </div>
+
+              <Link
+                href="/hitung"
+                className="inline-flex items-center gap-2 rounded-2xl bg-brand px-6 py-3.5 text-sm font-bold text-white shadow-md shadow-brand/20 transition-all hover:bg-brand-dark hover:shadow-lg shrink-0"
+              >
+                <Calculator className="size-4" />
+                <span>Buka Kalkulator Lengkap</span>
+                <ArrowRight className="size-4" />
+              </Link>
+            </div>
+
+            {/* Tiga Kartu Contoh Hitungan Nyata */}
+            <div className="mt-10">
+              <SimulasiContoh />
+            </div>
+          </div>
+        </section>
+
+        {/* ========================================================== *
+         * 8. STRIP PEMBAYARAN RINGKAS (ShopeePay, GoPay, DANA)
          * ========================================================== */}
         <section className="border-b border-line bg-paper-2/60 py-5">
           <div className="mx-auto max-w-6xl px-5 sm:px-8">
@@ -446,93 +433,17 @@ export default function Home() {
                 href="/cara-kerja"
                 className="inline-flex items-center gap-1.5 font-bold text-brand hover:underline shrink-0"
               >
-                <span>Lihat cara pembayaran →</span>
+                <span>Lihat panduan pembayaran →</span>
               </Link>
             </div>
           </div>
         </section>
 
         {/* ========================================================== *
-         * BLOK PERKENALAN SINGKAT PEMILIK (TUGAS 7: Bagas, S.Pd)
-         * ========================================================== */}
-        <section id="profil-pemilik" className="border-b border-line bg-gradient-to-b from-[#fcfbf7] to-white py-12 sm:py-16">
-          <div className="mx-auto max-w-4xl px-5 sm:px-8">
-            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-8 rounded-3xl border border-line bg-white p-6 sm:p-8 shadow-sm">
-              <div className="relative size-24 sm:size-28 shrink-0 overflow-hidden rounded-2xl border-2 border-line shadow-xs">
-                <Image
-                  src="/mas-joki.jpg"
-                  alt="Bagas — Pemilik & Pengerja Mas Joki"
-                  width={112}
-                  height={112}
-                  className="size-full object-cover object-top"
-                />
-              </div>
-
-              <div className="flex-1 text-center sm:text-left">
-                <span className="stempel-hijau text-[0.72rem] py-0.5 px-2.5">
-                  ✓ DIKERJAKAN LANGSUNG
-                </span>
-                <h3 className="mt-2.5 font-display text-lg sm:text-xl font-bold text-ink">
-                  Bagas, S.Pd — Pengelola &amp; Pengerja Mas Joki
-                </h3>
-                <p className="mt-2 text-xs sm:text-sm leading-relaxed text-slate-700 font-medium">
-                  Halo, saya Bagas — guru aktif bergelar S.Pd yang mengerjakan sendiri semua pesanan di Mas Joki. Tanpa perantara, tanpa tim bayangan. Latar belakang pendidikan membuat saya paham persis format akademik yang diminta dosen: sitasi rapi, struktur benar, bahasa yang lolos dibaca manusia.
-                </p>
-
-                <div className="mt-4">
-                  <a
-                    href={waLink("Halo Mas Joki, saya mau tanya soal biaya tugas saya.")}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-brand hover:underline"
-                  >
-                    <MessageCircle className="size-4" />
-                    <span>Chat Bagas</span>
-                    <ArrowRight className="size-3.5" />
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ========================================================== *
-         * 9. SECTION FAQ (TUGAS 2: Maksimal 6 Pertanyaan Populer)
-         * ========================================================== */}
-        <section id="faq" className="border-b border-line bg-white py-14 sm:py-20 scroll-mt-16">
-          <div className="mx-auto max-w-6xl px-5 sm:px-8">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-              <div className="max-w-2xl">
-                <span className="stempel">TANYA JAWAB UMUM</span>
-                <h2 className="mt-3 font-display text-[2rem] leading-tight tracking-[-0.02em] text-ink sm:text-[2.6rem]">
-                  Pertanyaan yang Kerap Ditanyakan.
-                </h2>
-                <p className="mt-2 text-xs sm:text-sm leading-relaxed text-slate-600 font-medium">
-                  Hal mendasar seputar cara pesan, uang muka (DP), revisi, keamanan file, dan batas tenggat.
-                </p>
-              </div>
-
-              <Link
-                href="/faq"
-                className="inline-flex items-center gap-2 rounded-xl border border-line bg-paper-2 px-4 py-2.5 text-xs font-bold text-ink hover:border-brand hover:text-brand shadow-2xs transition-colors shrink-0"
-              >
-                <span>Lihat Semua FAQ</span>
-                <ArrowRight className="size-3.5" />
-              </Link>
-            </div>
-
-            {/* Maksimal 6 Pertanyaan Paling Umum */}
-            <div className="mt-8">
-              <FaqList limit={6} />
-            </div>
-          </div>
-        </section>
-
-        {/* ========================================================== *
-         * 10. CTA AKHIR DENGAN SATU TOMBOL UTAMA (TUGAS 2 & 4)
+         * 9. CTA AKHIR DENGAN DUA AKSI JELAS
          * ========================================================== */}
         <section id="cta-bawah" className="mx-auto max-w-6xl px-5 py-14 sm:px-8 sm:py-20">
-          <div className="relative overflow-hidden rounded-3xl bg-ink px-8 py-12 shadow-2xl sm:px-12 sm:py-16">
+          <div className="relative overflow-hidden rounded-3xl bg-[#0b1329] dark:bg-[#0c1527] dark:border dark:border-white/10 px-8 py-12 shadow-2xl sm:px-12 sm:py-16">
             <div
               aria-hidden
               className="pointer-events-none absolute -right-16 -top-16 size-80 rounded-full bg-brand/25 blur-3xl"
@@ -557,19 +468,19 @@ export default function Home() {
                 </h2>
 
                 <p className="mt-3 max-w-[46ch] text-xs sm:text-sm leading-relaxed text-white/80">
-                  Tidak perlu bikin akun. Ketahui nominal pasti di awal sebelum kamu mengetik satu baris chat pun. Dikerjakan langsung oleh Bagas tanpa perantara.
+                  Tidak perlu bikin akun. Ketahui nominal pasti di awal sebelum kamu mengetik satu baris chat pun. Dikerjakan langsung oleh Mas Joki tanpa perantara.
                 </p>
 
-                {/* Satu Tombol CTA Utama + Chat WhatsApp */}
+                {/* Dua Tombol Aksi: Buka Kalkulator & Chat WhatsApp */}
                 <div className="mt-8 flex flex-col gap-3.5 sm:flex-row">
-                  <a
-                    href="#kalkulator"
-                    className="inline-flex items-center justify-center gap-2 rounded-2xl bg-stabilo px-7 py-4 text-sm font-extrabold text-ink shadow-lg transition-all duration-200 hover:-translate-y-0.5 hover:bg-white active:translate-y-0 cursor-pointer"
+                  <Link
+                    href="/hitung"
+                    className="inline-flex items-center justify-center gap-2 rounded-2xl bg-stabilo px-7 py-4 text-sm font-black text-slate-950 shadow-lg transition-all duration-200 hover:-translate-y-0.5 hover:bg-amber-300 active:translate-y-0 cursor-pointer"
                   >
                     <Calculator className="size-4.5" />
                     <span>Hitung Biaya Sekarang</span>
                     <ArrowRight className="size-4" />
-                  </a>
+                  </Link>
                   <a
                     href={waLink(waPesanUmum)}
                     target="_blank"
@@ -577,7 +488,7 @@ export default function Home() {
                     className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/30 bg-white/5 px-7 py-4 text-sm font-bold text-white backdrop-blur-xs transition-all duration-200 hover:bg-white/15 active:translate-y-0"
                   >
                     <MessageCircle className="size-4.5" />
-                    <span>Chat Bagas di WhatsApp</span>
+                    <span>Chat Mas Joki di WhatsApp</span>
                     <ExternalLink className="size-3.5 opacity-60" />
                   </a>
                 </div>
@@ -595,7 +506,7 @@ export default function Home() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                   <span className="absolute bottom-3 inset-x-0 text-center font-display text-xs font-bold text-white">
-                    Mas Joki Siap Membantu
+                    Mas Joki · Bantuan Tugas Kuliah
                   </span>
                 </div>
               </div>
@@ -610,6 +521,6 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-    </CalculatorProvider>
+    </>
   );
 }

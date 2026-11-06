@@ -1,0 +1,9 @@
+<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="15" y="13" width="24" height="28" rx="4" fill="#E0F2FE" stroke="#0284C7" stroke-width="2" />
+  <path d="M22 22H33M22 26H31M22 30H33M22 34H28" stroke="#0284C7" stroke-width="1.5" stroke-linecap="round" />
+  <rect x="9" y="8" width="24" height="28" rx="4" fill="#FFFFFF" stroke="#2563EB" stroke-width="2.5" />
+  <path d="M15 16H27M15 20H25M15 24H27M15 28H22" stroke="#64748B" stroke-width="2" stroke-linecap="round" />
+  <path d="M15 15V6C15 4.34315 16.3431 3 18 3C19.6569 3 21 4.34315 21 6V16C21 18.2091 19.2091 20 17 20C14.7909 20 13 18.2091 13 16V9" stroke="#475569" stroke-width="2" stroke-linecap="round" />
+  <rect x="23" y="32" width="19" height="9" rx="4.5" fill="#10B981" stroke="#FFFFFF" stroke-width="1.5" />
+  <text x="25.5" y="38.5" font-family="sans-serif" font-weight="800" font-size="6.5" fill="#FFFFFF">ID+EN</text>
+</svg>

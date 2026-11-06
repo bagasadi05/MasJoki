@@ -253,7 +253,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                   </div>
                   <div className="min-w-0 hidden sm:block">
                     <p
-                      className={`text-[0.7rem] font-bold ${
+                      className={`text-xs font-bold ${
                         aktif ? "text-brand" : "text-muted"
                       }`}
                     >
@@ -350,7 +350,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                         >
                           <span className="text-[0.84rem]">{opt.label}</span>
                           {opt.badge ? (
-                            <span className="rounded-md bg-paper-2 px-2 py-0.5 text-[0.66rem] font-bold text-muted">
+                            <span className="rounded-md bg-paper-2 px-2 py-0.5 text-xs font-bold text-muted">
                               {opt.badge}
                             </span>
                           ) : null}
@@ -384,7 +384,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                             {opt.label}
                           </span>
                           {opt.description ? (
-                            <span className="mt-0.5 text-[0.72rem] text-muted">
+                            <span className="mt-0.5 text-xs text-muted">
                               {opt.description}
                             </span>
                           ) : null}
@@ -416,7 +416,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                         >
                           <div>
                             {opt.badge ? (
-                              <span className="inline-block rounded-md bg-mint px-2 py-0.5 text-[0.64rem] font-bold text-white mb-1">
+                              <span className="inline-block rounded-md bg-mint px-2 py-0.5 text-xs font-bold text-white mb-1">
                                 {opt.badge}
                               </span>
                             ) : null}
@@ -425,7 +425,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                             </span>
                           </div>
                           {opt.description ? (
-                            <span className="mt-1.5 block text-[0.7rem] text-muted">
+                            <span className="mt-1.5 block text-xs text-muted">
                               {opt.description}
                             </span>
                           ) : null}
@@ -457,7 +457,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                         >
                           <span className="text-[0.84rem]">{opt.label}</span>
                           {opt.badge ? (
-                            <span className="rounded-md bg-paper-2 px-2 py-0.5 text-[0.66rem] font-bold text-muted">
+                            <span className="rounded-md bg-paper-2 px-2 py-0.5 text-xs font-bold text-muted">
                               {opt.badge}
                             </span>
                           ) : null}
@@ -489,7 +489,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                         >
                           <span className="text-[0.84rem]">{opt.label}</span>
                           {opt.badge ? (
-                            <span className="rounded-md bg-paper-2 px-2 py-0.5 text-[0.66rem] font-bold text-muted">
+                            <span className="rounded-md bg-paper-2 px-2 py-0.5 text-xs font-bold text-muted">
                               {opt.badge}
                             </span>
                           ) : null}
@@ -506,7 +506,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                   <label htmlFor="jumlah-spesifik" className={labelClass}>
                     Jumlah {BASIS_LABEL[service.basis]} yang Dikerjakan
                   </label>
-                  <span className="rounded-full bg-paper-2 px-3 py-1 text-[0.72rem] font-bold text-ink-soft">
+                  <span className="rounded-full bg-paper-2 px-3 py-1 text-xs font-bold text-ink-soft">
                     {price.equivalentLabel}
                   </span>
                 </div>
@@ -546,14 +546,14 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                       <span className="block text-base font-bold text-ink-soft">
                         {BASIS_LABEL[service.basis]}
                       </span>
-                      <span className="block text-[0.7rem] text-muted">
+                      <span className="block text-xs text-muted">
                         Min. {service.minQty} {BASIS_LABEL[service.basis]}
                       </span>
                     </div>
                   </div>
 
                   <div className="text-right">
-                    <span className="block text-[0.68rem] font-bold uppercase tracking-wider text-muted">
+                    <span className="block text-xs font-bold uppercase tracking-wider text-muted">
                       Rata-rata Biaya
                     </span>
                     <span className="font-mono text-sm font-bold text-brand">
@@ -578,7 +578,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                     aria-valuenow={qty}
                     aria-valuetext={`${qty} ${BASIS_LABEL[service.basis]}`}
                   />
-                  <div className="flex justify-between text-[0.68rem] text-muted font-mono mt-1">
+                  <div className="flex justify-between text-xs text-muted font-mono mt-1">
                     <span>
                       {service.minQty} {BASIS_LABEL[service.basis]}
                     </span>
@@ -595,7 +595,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                       <Sparkles className="size-4 text-mint fill-mint" />
                       <span>{price.discountLabel} aktif otomatis!</span>
                     </div>
-                    <span className="shrink-0 rounded-lg bg-mint px-2.5 py-0.5 font-mono text-[0.74rem] font-bold text-white">
+                    <span className="shrink-0 rounded-lg bg-mint px-2.5 py-0.5 font-mono text-xs font-bold text-white">
                       Hemat {rupiah(price.discountAmount)}
                     </span>
                   </div>
@@ -611,7 +611,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                 {/* Page to word helper for kata services */}
                 {service.basis === "kata" ? (
                   <div className="mt-4 flex flex-wrap items-center gap-2 rounded-2xl bg-paper-2/70 p-3">
-                    <span className="text-[0.72rem] font-bold text-ink-soft">
+                    <span className="text-xs font-bold text-ink-soft">
                       Pilihan cepat halaman A4:
                     </span>
                     <div className="flex flex-wrap gap-1.5">
@@ -620,7 +620,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                           key={item.hal}
                           type="button"
                           onClick={() => ubahJumlah(item.kata)}
-                          className={`inline-flex items-center gap-1 rounded-lg border px-2.5 py-1 text-[0.72rem] font-bold transition-all cursor-pointer ${
+                          className={`inline-flex items-center gap-1 rounded-lg border px-2.5 py-1 text-xs font-bold transition-all cursor-pointer ${
                             qty === item.kata
                               ? "border-brand bg-brand-soft text-brand"
                               : "border-line bg-white text-ink-soft hover:border-brand"
@@ -630,7 +630,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                             {item.hal} Hal (≈{angka(item.kata)} kata)
                           </span>
                           {item.badge ? (
-                            <span className="rounded bg-mint-soft px-1 py-0.2 text-[0.62rem] font-bold text-mint">
+                            <span className="rounded bg-mint-soft px-1 py-0.2 text-xs font-bold text-mint">
                               {item.badge}
                             </span>
                           ) : null}
@@ -703,18 +703,18 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                             <span className="block text-[0.88rem] font-bold text-ink">
                               {item.label}
                             </span>
-                            <span className="block text-[0.74rem] text-muted mt-0.5">
+                            <span className="block text-xs text-muted mt-0.5">
                               {item.note}
                             </span>
                           </div>
                         </div>
 
                         {item.mult > 1 ? (
-                          <span className="rounded-lg bg-amber-soft px-2 py-0.5 text-[0.68rem] font-bold text-amber">
+                          <span className="rounded-lg bg-amber-soft px-2 py-0.5 text-xs font-bold text-amber">
                             +{Math.round((item.mult - 1) * 100)}%
                           </span>
                         ) : (
-                          <span className="rounded-lg bg-mint-soft px-2 py-0.5 text-[0.68rem] font-bold text-mint">
+                          <span className="rounded-lg bg-mint-soft px-2 py-0.5 text-xs font-bold text-mint">
                             Normal
                           </span>
                         )}
@@ -728,7 +728,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
               <div className="flex items-start gap-3 rounded-2xl border border-line bg-paper-2/70 p-4 text-[0.78rem] text-ink-soft">
                 <Lightbulb className="mt-0.5 size-4 shrink-0 text-amber" />
                 <p className="leading-relaxed">
-                  <strong className="text-ink font-bold">Tentang Tingkat Kesulitan:</strong> Estimasi dihitung untuk pengerjaan tugas standar/umum. Jika tugasmu memiliki kebutuhan teknis khusus (olah data statistik, lab, atau coding), Bagas yang akan menilai dan mengonfirmasi kesepakatannya di WhatsApp setelah memeriksa file brief.
+                  <strong className="text-ink font-bold">Tentang Tingkat Kesulitan:</strong> Estimasi dihitung untuk pengerjaan tugas standar/umum. Jika tugasmu memiliki kebutuhan teknis khusus (olah data statistik, lab, atau coding), Mas Joki yang akan menilai dan mengonfirmasi kesepakatannya di WhatsApp setelah memeriksa file brief.
                 </p>
               </div>
 
@@ -767,12 +767,12 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                               <span className="block text-[0.84rem] font-bold text-ink leading-snug">
                                 {addon.label}
                               </span>
-                              <span className="mt-1 block text-[0.72rem] leading-snug text-muted">
+                              <span className="mt-1 block text-xs leading-snug text-muted">
                                 {addon.note}
                               </span>
                             </div>
                           </div>
-                          <span className="shrink-0 rounded-lg bg-paper-2 px-2 py-1 font-mono text-[0.72rem] font-bold text-brand">
+                          <span className="shrink-0 rounded-lg bg-paper-2 px-2 py-1 font-mono text-xs font-bold text-brand">
                             +{rupiah(addon.price)}
                           </span>
                         </label>
@@ -812,7 +812,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                   Data Kontak &amp; Tautan Dokumen
                 </h3>
                 <p className="mt-1 text-xs sm:text-sm text-slate-600">
-                  Digunakan Bagas untuk konfirmasi pengerjaan dan mengirim hasil jadi file.
+                  Digunakan Mas Joki untuk konfirmasi pengerjaan dan mengirim hasil jadi file.
                 </p>
               </div>
 
@@ -828,7 +828,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                     minLength={2}
                     maxLength={80}
                     autoComplete="name"
-                    placeholder="Contoh: Bagas"
+                    placeholder="Contoh: Budi"
                     aria-invalid={galat?.name ? true : undefined}
                     aria-describedby={galat?.name ? "galat-name-input" : undefined}
                     className={fieldClass}
@@ -870,14 +870,14 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                   className={fieldClass}
                 />
                 <PesanGalat id="galat-fileUrl-input" pesan={galat?.fileUrl} />
-                <p className="mt-1.5 text-[0.74rem] text-muted">
+                <p className="mt-1.5 text-xs text-muted">
                   {spec.fileHelperText} <span className="block mt-0.5 text-ink-soft font-medium">💡 Belum punya link Drive? Jangan khawatir, kamu bisa langsung melampirkan file dokumen di chat WhatsApp nanti.</span>
                 </p>
               </div>
 
               <div>
                 <label htmlFor="notes-input" className={labelClass}>
-                  Catatan Khusus untuk Bagas (Opsional)
+                  Catatan Khusus untuk Mas Joki (Opsional)
                 </label>
                 <textarea
                   id="notes-input"
@@ -949,7 +949,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
               effectiveUnitLabel={price.effectiveUnitLabel}
               estimatedTurnaround={price.estimatedTurnaround}
               equivalentLabel={price.equivalentLabel}
-              note="Harga terkunci setelah file dicek Bagas. Tidak ada biaya tersembunyi."
+              note="Harga terkunci setelah file dicek Mas Joki. Tidak ada biaya tersembunyi."
               stamp="Harga Transparan"
               code="ORDER-SPECS"
               aksen={aksen}
@@ -1005,7 +1005,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
               <ServiceIcon id={service.id} className="size-5" />
             </div>
             <div className="min-w-0">
-              <p className="text-[0.68rem] font-bold uppercase tracking-wider text-muted truncate">
+              <p className="text-xs font-bold uppercase tracking-wider text-muted truncate">
                 Langkah {step}/3 · {service.name}
               </p>
               <p className="font-display text-lg font-bold leading-none text-brand tabular-nums">
@@ -1088,7 +1088,7 @@ function SuccessPanel({
           </span>
 
           <h3 className="mt-4 font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
-            Tinggal Kirim ke WhatsApp Bagas!
+            Tinggal Kirim ke WhatsApp Mas Joki!
           </h3>
 
           <p className="mt-2.5 text-[0.94rem] leading-relaxed text-ink-soft">
@@ -1125,7 +1125,7 @@ function SuccessPanel({
           <>
             <div className="mt-6 rounded-2xl border border-line bg-brand-soft/40 p-4.5">
               <p className="text-xs sm:text-sm font-bold text-ink">
-                Metode Pembayaran (Setelah Dikonfirmasi Bagas):
+                Metode Pembayaran (Setelah Dikonfirmasi Mas Joki):
               </p>
               <p className="mt-1 text-xs text-slate-600">
                 {pembayaran.metode.join(" · ")}

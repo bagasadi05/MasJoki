@@ -1,38 +1,38 @@
+"use client";
+
 import { rupiah } from "@/lib/format";
 import { computePrice } from "@/lib/pricing";
 import { getService } from "@/lib/services";
 
 /**
- * TUGAS 1: Nota Mini Statis di Hero
- * Murni pajangan brand — tidak bisa diklik/diubah — berisi maksimal:
- * nama brand, satu contoh baris item ("Parafrase — 1.000 kata"),
- * baris Total, baris DP 50%, dan stempel "HARGA TRANSPARAN".
- * Angka contoh diambil dari modul harga (lib/pricing.ts).
+ * Receipt statis untuk Hero (desktop-only):
+ * Menggantikan live interactive preview yang lambat & berisik.
+ * Menampilkan contoh nota kwitansi transparan dengan angka riil dari pricing engine.
  */
 export function HeroStaticReceipt() {
   const service = getService("parafrase");
-  const price = computePrice(service, 1000, "santai");
+  const price = computePrice(service, 1000, "santai", "standar");
 
   return (
-    <div className="relative mx-auto w-full max-w-sm">
-      <div className="nota overflow-hidden rounded-3xl border border-line bg-white shadow-xl shadow-brand/10 p-5 sm:p-6 select-none pointer-events-none">
-        {/* Pita Atas Brand */}
+    <div className="relative mx-auto max-w-[340px] drop-shadow-xl transition-transform duration-300 hover:-translate-y-1">
+      <div className="nota overflow-hidden p-5 sm:p-6 bg-white border border-line rounded-2xl">
+        {/* Accent strip */}
         <span
           aria-hidden
-          className="pita absolute -top-px left-0 right-0 z-10 h-[5px] rounded-t-3xl"
+          className="absolute inset-x-0 top-0 h-1.5 bg-brand"
         />
 
         {/* Header Nota */}
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-2.5">
             <div className="grid size-9 -rotate-3 place-items-center rounded-xl border border-brand/20 bg-brand-soft text-brand shadow-xs">
-              <span className="font-display text-[0.82rem] font-bold">MJ</span>
+              <span className="font-display text-sm font-bold">MJ</span>
             </div>
             <div>
               <p className="font-display text-base font-bold leading-none tracking-tight text-ink">
                 Mas Joki
               </p>
-              <p className="mt-1 text-[11px] font-semibold text-slate-600">
+              <p className="mt-1 text-[13px] font-semibold text-slate-600">
                 Kwitansi Transparan
               </p>
             </div>
@@ -59,7 +59,7 @@ export function HeroStaticReceipt() {
         {/* Total & Opsi DP 50% */}
         <div className="rounded-xl bg-paper-2/80 p-3 border border-line/60">
           <div className="flex items-baseline justify-between">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-600">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-600">
               Total Akhir
             </span>
             <span className="font-display text-xl font-black tracking-tight text-brand tabular-nums">
@@ -76,10 +76,10 @@ export function HeroStaticReceipt() {
 
         {/* Stempel */}
         <div className="mt-4 flex items-center justify-between">
-          <span className="text-[11px] text-slate-600 font-medium">
+          <span className="text-[13px] text-slate-600 font-medium">
             *Dihitung dari modul harga
           </span>
-          <span className="stempel text-[11px] py-0.5 px-2">
+          <span className="stempel text-xs py-0.5 px-2">
             HARGA TRANSPARAN
           </span>
         </div>

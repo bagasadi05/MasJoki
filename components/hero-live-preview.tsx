@@ -99,8 +99,8 @@ export function HeroLivePreview() {
               <span className="font-display text-base font-bold text-ink">
                 Mas Joki
               </span>
-              <span className="rounded-full bg-brand px-2 py-0.5 font-mono text-[0.62rem] font-bold text-white">
-                Bagas
+              <span className="rounded-full bg-brand px-2 py-0.5 font-mono text-xs font-bold text-white">
+                Online
               </span>
             </div>
             <p className="mt-0.5 text-xs text-slate-600 font-medium leading-snug">
@@ -137,7 +137,7 @@ export function HeroLivePreview() {
                   <span className="block font-display text-xs font-black truncate leading-tight">
                     {preset.label}
                   </span>
-                  <span className="block font-mono text-[0.65rem] text-slate-500 font-medium truncate mt-0.5">
+                  <span className="block font-mono text-xs text-slate-600 font-medium truncate mt-0.5">
                     {preset.tag}
                   </span>
                 </button>
@@ -165,7 +165,7 @@ export function HeroLivePreview() {
         {/* Action: Bawa Ke Kalkulator */}
         <div className="mt-3.5 flex items-center justify-between gap-3 rounded-2xl bg-paper-2/80 p-3 border border-line">
           <div>
-            <p className="text-[0.72rem] font-bold text-slate-600">
+            <p className="text-xs font-bold text-slate-600">
               Punya jumlah tugas berbeda?
             </p>
             <p className="font-display text-xs sm:text-sm font-bold text-ink">

@@ -126,7 +126,7 @@ export function Pembayaran() {
             {/* Slot QRIS bila QRIS_ENABLED = true */}
             {QRIS_ENABLED && (
               <div className="mt-5 rounded-2xl border border-line bg-paper-2/60 p-4 text-center">
-                <span className="inline-block rounded-md bg-brand text-white px-2.5 py-0.5 text-[0.7rem] font-bold uppercase tracking-wider">
+                <span className="inline-block rounded-md bg-brand text-white px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider">
                   QRIS
                 </span>
                 <p className="mt-1.5 text-xs sm:text-sm font-bold text-ink">
@@ -145,7 +145,7 @@ export function Pembayaran() {
             )}
 
             <p className="mt-4 text-xs leading-relaxed text-slate-600">
-              Nomor ini resmi atas nama Bagas (Mas Joki). Tidak ada nomor rekening lain selain yang tercantum di atas.
+              Nomor ini resmi atas nama Mas Joki. Tidak ada nomor rekening lain selain yang tercantum di atas.
             </p>
           </div>
 
@@ -154,7 +154,7 @@ export function Pembayaran() {
               href={waKonfirmasi}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-2xl border-2 border-ink bg-white px-6 py-3.5 text-[0.88rem] font-bold text-ink shadow-xs transition-colors hover:bg-ink hover:text-white"
+              className="inline-flex items-center gap-2 rounded-2xl border-2 border-line dark:border-line-strong bg-white dark:bg-[#162035] px-6 py-3.5 text-[0.88rem] font-bold text-ink dark:text-slate-100 shadow-xs transition-colors hover:bg-brand dark:hover:bg-brand hover:text-white dark:hover:border-brand"
             >
               <span>Konfirmasi Pembayaran di WhatsApp</span>
               <ExternalLink className="size-3.5 opacity-60" />
@@ -174,13 +174,13 @@ export function Pembayaran() {
                 nomor: "1",
                 warna: "bg-brand text-white",
                 judul: "Kirim pesanan via kalkulator / WhatsApp",
-                isi: "Lengkapi kalkulator, lalu klik kirim. Teks pesanan beserta estimasi biaya langsung masuk ke chat WhatsApp Bagas.",
+                isi: "Lengkapi kalkulator, lalu klik kirim. Teks pesanan beserta estimasi biaya langsung masuk ke chat WhatsApp Mas Joki.",
               },
               {
                 nomor: "2",
                 warna: "bg-amber text-white",
-                judul: "Bagas konfirmasi & kunci total biaya",
-                isi: "Bagas memeriksa file dan instruksi tugasmu, kemudian mengonfirmasi total biaya tetap tanpa biaya tambahan tersembunyi.",
+                judul: "Mas Joki konfirmasi & kunci total biaya",
+                isi: "Mas Joki memeriksa file dan instruksi tugasmu, kemudian mengonfirmasi total biaya tetap tanpa biaya tambahan tersembunyi.",
               },
               {
                 nomor: "3",

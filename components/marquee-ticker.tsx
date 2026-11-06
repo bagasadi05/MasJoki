@@ -42,7 +42,7 @@ export function MarqueeTicker() {
                 <span className="font-display text-[0.78rem] font-bold text-ink">
                   {item.text}
                 </span>
-                <span className="rounded-md bg-paper-2 px-1.5 py-0.5 font-mono text-[0.62rem] font-bold uppercase tracking-wider text-muted">
+                <span className="rounded-md bg-paper-2 px-1.5 py-0.5 font-mono text-xs font-bold uppercase tracking-wider text-muted">
                   {item.badge}
                 </span>
               </div>
@@ -65,7 +65,7 @@ export function MarqueeTicker() {
                 <span className="font-display text-[0.78rem] font-bold text-ink">
                   {item.text}
                 </span>
-                <span className="rounded-md bg-paper-2 px-1.5 py-0.5 font-mono text-[0.62rem] font-bold uppercase tracking-wider text-muted">
+                <span className="rounded-md bg-paper-2 px-1.5 py-0.5 font-mono text-xs font-bold uppercase tracking-wider text-muted">
                   {item.badge}
                 </span>
               </div>
@@ -82,7 +82,7 @@ export function MarqueeTicker() {
             return (
               <div
                 key={`a1-${index}`}
-                className="inline-flex items-center gap-2 rounded-full border border-line/80 bg-paper/95 px-3 py-1 shadow-2xs text-[0.74rem]"
+                className="inline-flex items-center gap-2 rounded-full border border-line/80 bg-paper/95 px-3 py-1 shadow-2xs text-xs"
               >
                 <span className="relative flex size-2">
                   <span
@@ -104,7 +104,7 @@ export function MarqueeTicker() {
                   {isSelesai ? "Selesai" : "Diproses"}:
                 </span>
                 <span className="font-medium text-ink-soft">{item.teks}</span>
-                <span className="font-mono text-[0.66rem] text-muted font-semibold">
+                <span className="font-mono text-xs text-muted font-semibold">
                   · {item.waktu}
                 </span>
               </div>
@@ -119,7 +119,7 @@ export function MarqueeTicker() {
             return (
               <div
                 key={`a2-${index}`}
-                className="inline-flex items-center gap-2 rounded-full border border-line/80 bg-paper/95 px-3 py-1 shadow-2xs text-[0.74rem]"
+                className="inline-flex items-center gap-2 rounded-full border border-line/80 bg-paper/95 px-3 py-1 shadow-2xs text-xs"
               >
                 <span className="relative flex size-2">
                   <span
@@ -141,7 +141,7 @@ export function MarqueeTicker() {
                   {isSelesai ? "Selesai" : "Diproses"}:
                 </span>
                 <span className="font-medium text-ink-soft">{item.teks}</span>
-                <span className="font-mono text-[0.66rem] text-muted font-semibold">
+                <span className="font-mono text-xs text-muted font-semibold">
                   · {item.waktu}
                 </span>
               </div>

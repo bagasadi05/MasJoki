@@ -9,12 +9,12 @@ export const faq: FaqItem[] = [
   // 1. CARA PESAN
   {
     q: "Bagaimana cara memesan tugas jika belum punya link Google Drive?",
-    a: "Sangat fleksibel! Kamu cukup mengosongkan kolom link dokumen pada kalkulator atau formulir. Setelah menekan tombol pesan, kamu bisa langsung melampirkan file dokumen (Word, PPT, PDF, atau foto catatan materi) di ruang chat WhatsApp langsung kepada Bagas.",
+    a: "Sangat fleksibel! Kamu cukup mengosongkan kolom link dokumen pada kalkulator atau formulir. Setelah menekan tombol pesan, kamu bisa langsung melampirkan file dokumen (Word, PPT, PDF, atau foto catatan materi) di ruang chat WhatsApp langsung kepada Mas Joki.",
   },
   // 2. DP 50%
   {
     q: "Apakah bisa bayar DP (uang muka) 50% dulu?",
-    a: "Bisa banget! Kamu cukup membayar DP 50% di awal (dibulatkan ke atas ke kelipatan Rp500 terdekat) agar Bagas langsung mulai bekerja. Pelunasan 50% sisanya baru dibayarkan setelah tugas selesai dan kamu memeriksa preview hasilnya.",
+    a: "Bisa banget! Kamu cukup membayar DP 50% di awal (dibulatkan ke atas ke kelipatan Rp500 terdekat) agar Mas Joki langsung mulai bekerja. Pelunasan 50% sisanya baru dibayarkan setelah tugas selesai dan kamu memeriksa preview hasilnya.",
   },
   // 3. REVISI
   {
@@ -29,12 +29,12 @@ export const faq: FaqItem[] = [
   // 5. TURNITIN & AI
   {
     q: "Apakah bisa membantu menurunkan skor Turnitin atau deteksi AI?",
-    a: "Bisa. Naskah diperiksa terlebih dahulu untuk mengecek skor kemiripan (similarity Turnitin) dan indikasi AI. Penurunan skor dikerjakan manual oleh Bagas lewat parafrase mendalam dan restrukturisasi kalimat agar naskah tetap ilmiah dan berbobot.",
+    a: "Bisa. Naskah diperiksa terlebih dahulu untuk mengecek skor kemiripan (similarity Turnitin) dan indikasi AI. Penurunan skor dikerjakan manual oleh Mas Joki lewat parafrase mendalam dan restrukturisasi kalimat agar naskah tetap ilmiah dan berbobot.",
   },
   // 6. KETEPATAN WAKTU
   {
     q: "Bisa pesan untuk tenggat hari ini dan apakah tepat waktu?",
-    a: "Bisa, tersedia opsi tenggat kilat (kurang dari 24 jam). Bagas berkomitmen pada ketepatan waktu pengiriman. Jika antrean sedang padat dan tidak memungkinkan, Bagas akan menyampaikannya secara jujur di awal sebelum kamu melakukan transfer.",
+    a: "Bisa, tersedia opsi tenggat kilat (kurang dari 24 jam). Mas Joki berkomitmen pada ketepatan waktu pengiriman. Jika antrean sedang padat dan tidak memungkinkan, Mas Joki akan menyampaikannya secara jujur di awal sebelum kamu melakukan transfer.",
   },
   // PERTANYAAN LAINNYA (TAMPIL DI /faq)
   {
@@ -51,7 +51,7 @@ export const faq: FaqItem[] = [
   },
   {
     q: "Tugas saya tidak ada di daftar pilihan layanan. Bagaimana?",
-    a: "Gunakan mode Minta Penawaran, pilih kategori tugas, lalu ceritakan kebutuhanmu. Bagas akan memeriksa brief dan memberikan estimasi biaya transparan dalam waktu di bawah satu jam kerja.",
+    a: "Gunakan mode Minta Penawaran, pilih kategori tugas, lalu ceritakan kebutuhanmu. Mas Joki akan memeriksa brief dan memberikan estimasi biaya transparan dalam waktu di bawah satu jam kerja.",
   },
   {
     q: "Apakah layanan ini melanggar kode etik akademik?",

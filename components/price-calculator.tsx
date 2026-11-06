@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import {
@@ -147,8 +148,16 @@ const KONVERSI_HALAMAN_KATA = [
   { hal: 20, kata: 5000, badge: "-10%" },
 ];
 
-export function PriceCalculator() {
-  const { serviceId, setServiceId, mode, setMode } = useCalculator();
+export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {}) {
+  const {
+    serviceId,
+    setServiceId,
+    mode,
+    setMode,
+    setEstimasiRingkas,
+    preselectedQty,
+    preselectedDeadline,
+  } = useCalculator();
   const service = getService(serviceId);
   const aksen = aksenLayanan(service.id);
 
@@ -165,6 +174,24 @@ export function PriceCalculator() {
   useEffect(() => {
     setQuoteService(serviceId);
   }, [serviceId]);
+
+  useEffect(() => {
+    if (preselectedQty && preselectedQty > 0) {
+      setQtyInput((prev) => ({
+        ...prev,
+        [serviceId]: String(preselectedQty),
+      }));
+    }
+  }, [preselectedQty, serviceId]);
+
+  useEffect(() => {
+    if (
+      preselectedDeadline &&
+      DEADLINES.some((d) => d.id === preselectedDeadline)
+    ) {
+      setDeadlineId(preselectedDeadline as DeadlineId);
+    }
+  }, [preselectedDeadline]);
 
   const [result, setResult] = useState<ActionResult | null>(null);
   const [pending, startTransition] = useTransition();
@@ -196,6 +223,17 @@ export function PriceCalculator() {
       ),
     [service, currentQty, deadlineId, difficultyId, activeAddonIds],
   );
+
+  useEffect(() => {
+    setEstimasiRingkas({
+      total: price.total,
+      label: service.name,
+      qtyLabel: `${price.qty} ${BASIS_LABEL[service.basis]}`,
+    });
+    return () => {
+      setEstimasiRingkas(null);
+    };
+  }, [price.total, service.name, price.qty, service.basis, setEstimasiRingkas]);
 
   const sliderMax =
     service.id === "artikel_ilmiah"
@@ -403,56 +441,120 @@ export function PriceCalculator() {
         <div className="space-y-8 lg:col-start-1 lg:row-start-1">
           {mode === "hitung" ? (
             <>
-              {/* Pilihan Layanan */}
+              {/* Pilihan Layanan dengan Pengelompokan Kategori & Varian (Task 8b) */}
               <fieldset>
                 <div className="flex items-center justify-between mb-3">
                   <legend className={labelClass}>1. Pilih Layanan Tugas</legend>
-                  <span className="text-[0.74rem] font-bold text-brand">
+                  <span className="text-xs font-bold text-brand">
                     Terpilih: {service.name}
                   </span>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
-                  {CALCULABLE_SERVICES.map((item) => {
-                    const aktif = item.id === service.id;
-                    const itemAksen = aksenLayanan(item.id);
-
+                <div className="space-y-4">
+                  {[
+                    {
+                      category: "Parafrase & Humanisasi Teks",
+                      services: ["parafrase", "humanisasi"],
+                    },
+                    {
+                      category: "Kepenulisan Makalah",
+                      services: ["makalah"],
+                    },
+                    {
+                      category: "Artikel Jurnal",
+                      badge: "2 Pilihan Tingkat",
+                      services: ["artikel_ilmiah", "jurnal_submit"],
+                    },
+                    {
+                      category: "Presentasi & Format Dokumen",
+                      services: ["powerpoint", "word"],
+                    },
+                    {
+                      category: "Bahasa & Terjemahan",
+                      badge: "Termasuk Paket Abstrak",
+                      services: ["terjemah", "paket_abstrak"],
+                    },
+                    {
+                      category: "Desain & Khusus",
+                      services: ["desain", "turnitin_ai"],
+                    },
+                  ].map((grp) => {
+                    const groupItems = CALCULABLE_SERVICES.filter((item) =>
+                      grp.services.includes(item.id),
+                    );
                     return (
-                      <button
-                        key={item.id}
-                        type="button"
-                        onClick={() => pilihLayananLain(item.id)}
-                        aria-pressed={aktif}
-                        aria-label={`${item.name}, ${priceLabel(item)}`}
-                        className={`group relative flex flex-col items-start rounded-2xl border p-3.5 text-left transition-all duration-200 cursor-pointer ${
-                          aktif
-                            ? `${itemAksen.soft} ${itemAksen.border} ring-2 ${itemAksen.ring} shadow-md`
-                            : "border-line bg-white hover:border-line-strong hover:bg-paper-2/40"
-                        }`}
-                      >
-                        <div className="flex items-center justify-between w-full">
-                          <span
-                            className="p-1.5 rounded-xl border"
-                            style={{
-                              backgroundColor: `${itemAksen.hex}15`,
-                              borderColor: `${itemAksen.hex}30`,
-                              color: itemAksen.hex,
-                            }}
-                          >
-                            <ServiceIcon id={item.id} className="size-4" />
+                      <div key={grp.category} className="space-y-2">
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-bold uppercase tracking-wider text-slate-600">
+                            {grp.category}
                           </span>
-                          <span
-                            aria-hidden
-                            className={`size-2.5 rounded-full ${itemAksen.dot}`}
-                          />
+                          {grp.badge ? (
+                            <span className="rounded-full bg-paper-2 border border-line px-2 py-0.5 text-xs font-semibold text-slate-600">
+                              {grp.badge}
+                            </span>
+                          ) : null}
                         </div>
-                        <span className="mt-2.5 text-[0.84rem] font-bold text-ink leading-tight">
-                          {item.name}
-                        </span>
-                        <span className="mt-1 font-mono text-xs text-slate-600 font-medium">
-                          {priceLabel(item)}
-                        </span>
-                      </button>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                          {groupItems.map((item) => {
+                            const aktif = item.id === service.id;
+                            const itemAksen = aksenLayanan(item.id);
+                            let variantTag = null;
+                            if (item.id === "artikel_ilmiah") {
+                              variantTag = "Varian Tugas Kuliah (≤3.000 kata)";
+                            } else if (item.id === "jurnal_submit") {
+                              variantTag = "Varian Siap Submit (≤6.000 kata)";
+                            } else if (item.id === "paket_abstrak") {
+                              variantTag = "Varian Abstrak ID+EN (≤300 kata)";
+                            }
+
+                            return (
+                              <button
+                                key={item.id}
+                                type="button"
+                                onClick={() => pilihLayananLain(item.id)}
+                                aria-pressed={aktif}
+                                aria-label={`${item.name}, ${priceLabel(item)}`}
+                                className={`group relative flex flex-col items-start rounded-2xl border p-3.5 text-left transition-all duration-200 cursor-pointer ${
+                                  aktif
+                                    ? `${itemAksen.soft} ${itemAksen.border} ring-2 ${itemAksen.ring} shadow-md`
+                                    : "border-line bg-white hover:border-line-strong hover:bg-paper-2/40"
+                                }`}
+                              >
+                                <div className="flex items-center justify-between w-full">
+                                  <div className="flex items-center gap-2 flex-wrap">
+                                    <span
+                                      className="p-1.5 rounded-xl border"
+                                      style={{
+                                        backgroundColor: `${itemAksen.hex}15`,
+                                        borderColor: `${itemAksen.hex}30`,
+                                        color: itemAksen.hex,
+                                      }}
+                                    >
+                                      <ServiceIcon id={item.id} className="size-5" />
+                                    </span>
+                                    {variantTag ? (
+                                      <span className="rounded-md bg-paper-2 border border-line px-2 py-0.5 text-xs font-bold text-brand">
+                                        {variantTag}
+                                      </span>
+                                    ) : null}
+                                  </div>
+                                  <span
+                                    aria-hidden
+                                    className={`size-2.5 rounded-full ${itemAksen.dot}`}
+                                  />
+                                </div>
+                                <span className="mt-2.5 text-sm font-bold text-ink leading-tight">
+                                  {item.name}
+                                </span>
+                                <span className="mt-1 font-mono text-xs text-slate-600 font-medium">
+                                  {priceLabel(item)}
+                                </span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
                     );
                   })}
                 </div>
@@ -474,7 +576,7 @@ export function PriceCalculator() {
                             ? "Jumlah Halaman Dokumen Word"
                             : `Jumlah ${BASIS_LABEL[service.basis]}`}
                   </label>
-                  <span className="rounded-full bg-paper-2 px-3 py-1 text-[0.72rem] font-bold text-ink-soft">
+                  <span className="rounded-full bg-paper-2 px-3 py-1 text-xs font-bold text-ink-soft">
                     {price.equivalentLabel}
                   </span>
                 </div>
@@ -517,14 +619,14 @@ export function PriceCalculator() {
                       <span className="block text-base font-bold text-ink-soft">
                         {BASIS_LABEL[service.basis]}
                       </span>
-                      <span className="block text-[0.7rem] text-muted">
+                      <span className="block text-xs text-muted">
                         Min. {service.minQty} {BASIS_LABEL[service.basis]}
                       </span>
                     </div>
                   </div>
 
                   <div className="text-right">
-                    <span className="block text-[0.68rem] font-bold uppercase tracking-wider text-muted">
+                    <span className="block text-xs font-bold uppercase tracking-wider text-muted">
                       Rata-rata Biaya
                     </span>
                     <span className="font-mono text-sm font-bold text-brand">
@@ -549,7 +651,7 @@ export function PriceCalculator() {
                     aria-valuenow={currentQty}
                     aria-valuetext={`${currentQty} ${BASIS_LABEL[service.basis]}`}
                   />
-                  <div className="flex justify-between text-[0.68rem] text-muted font-mono mt-1">
+                  <div className="flex justify-between text-xs text-muted font-mono mt-1">
                     <span>
                       {service.minQty} {BASIS_LABEL[service.basis]}
                     </span>
@@ -566,12 +668,12 @@ export function PriceCalculator() {
                       <Sparkles className="size-4 text-mint fill-mint" />
                       <span>{price.discountLabel} aktif otomatis!</span>
                     </div>
-                    <span className="shrink-0 rounded-lg bg-mint px-2.5 py-0.5 font-mono text-[0.74rem] font-bold text-white">
+                    <span className="shrink-0 rounded-lg bg-mint px-2.5 py-0.5 font-mono text-xs font-bold text-white">
                       Hemat {rupiah(price.discountAmount)}
                     </span>
                   </div>
                 ) : price.nextDiscountHint ? (
-                  <div className="mt-4 flex items-center justify-between gap-2 rounded-2xl border border-amber/25 bg-amber-soft/70 px-4 py-2 text-[0.76rem] text-amber">
+                  <div className="mt-4 flex items-center justify-between gap-2 rounded-2xl border border-amber/25 bg-amber-soft/70 px-4 py-2 text-xs text-amber">
                     <span className="flex items-center gap-1.5"><Lightbulb className="size-3.5 shrink-0" />{price.nextDiscountHint}</span>
                     <span className="shrink-0 font-bold text-amber">
                       Diskon Otomatis
@@ -588,7 +690,7 @@ export function PriceCalculator() {
                     </p>
                     <p className="mt-1.5 leading-relaxed text-ink-soft">
                       {price.overLimitMessage ??
-                        "Jumlah naskah melebihi batas perhitungan otomatis. Silakan kirimkan brief ke Bagas untuk penawaran waktu & biaya khusus."}
+                        "Jumlah naskah melebihi batas perhitungan otomatis. Silakan kirimkan brief ke Mas Joki untuk penawaran waktu & biaya khusus."}
                     </p>
                   </div>
                 ) : null}
@@ -597,7 +699,7 @@ export function PriceCalculator() {
 
                 {/* Preset Chips */}
                 <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-dashed border-line pt-3.5">
-                  <span className="text-[0.74rem] font-bold text-muted">
+                  <span className="text-xs font-bold text-muted">
                     Pilihan cepat:
                   </span>
                   {service.presets.map((preset) => {
@@ -608,7 +710,7 @@ export function PriceCalculator() {
                         type="button"
                         onClick={() => ubahJumlah(String(preset))}
                         aria-pressed={aktif}
-                        className={`rounded-xl border px-3.5 py-1.5 font-mono text-[0.76rem] font-bold tabular-nums transition-all cursor-pointer ${
+                        className={`rounded-xl border px-3.5 py-1.5 font-mono text-xs font-bold tabular-nums transition-all cursor-pointer ${
                           aktif
                             ? "border-brand bg-brand text-white shadow-xs"
                             : "border-line bg-paper-2 text-ink-soft hover:border-brand hover:text-brand hover:bg-white"
@@ -623,7 +725,7 @@ export function PriceCalculator() {
                 {/* Kalkulator Bantu Konversi Halaman ke Kata */}
                 {service.basis === "kata" ? (
                   <div className="mt-3 flex flex-wrap items-center gap-2 rounded-2xl bg-paper-2/70 p-3">
-                    <span className="text-[0.72rem] font-bold text-ink-soft">
+                    <span className="text-xs font-bold text-ink-soft">
                       Hanya tahu jumlah halaman A4? Pilih taksiran:
                     </span>
                     <div className="flex flex-wrap gap-1.5">
@@ -634,7 +736,7 @@ export function PriceCalculator() {
                             key={item.hal}
                             type="button"
                             onClick={() => ubahJumlah(String(item.kata))}
-                            className={`inline-flex items-center gap-1 rounded-lg border px-2.5 py-1 text-[0.72rem] font-bold transition-all cursor-pointer ${
+                            className={`inline-flex items-center gap-1 rounded-lg border px-2.5 py-1 text-xs font-bold transition-all cursor-pointer ${
                               aktif
                                 ? "border-brand bg-brand-soft text-brand shadow-2xs"
                                 : "border-line bg-white text-ink-soft hover:border-brand hover:text-brand"
@@ -644,7 +746,7 @@ export function PriceCalculator() {
                               {item.hal} Hal (≈{angka(item.kata)} kata)
                             </span>
                             {item.badge ? (
-                              <span className="rounded bg-mint-soft px-1 py-0.2 text-[0.62rem] font-bold text-mint">
+                              <span className="rounded bg-mint-soft px-1 py-0.2 text-xs font-bold text-mint">
                                 {item.badge}
                               </span>
                             ) : null}
@@ -665,7 +767,7 @@ export function PriceCalculator() {
                   <legend className="text-[0.84rem] font-bold text-ink">
                     3. Kapan tugas ini dibutuhkan?
                   </legend>
-                  <span className="text-[0.74rem] font-semibold text-mint flex items-center gap-1">
+                  <span className="text-xs font-semibold text-mint flex items-center gap-1">
                     <Clock className="size-3.5" />
                     <span>Estimasi: {price.estimatedTurnaround}</span>
                   </span>
@@ -713,18 +815,18 @@ export function PriceCalculator() {
                             <span className="block text-[0.88rem] font-bold text-ink">
                               {item.label}
                             </span>
-                            <span className="block text-[0.74rem] text-muted mt-0.5">
+                            <span className="block text-xs text-muted mt-0.5">
                               {item.note}
                             </span>
                           </div>
                         </div>
 
                         {item.mult > 1 ? (
-                          <span className="rounded-lg bg-amber-soft px-2 py-0.5 text-[0.68rem] font-bold text-amber">
+                          <span className="rounded-lg bg-amber-soft px-2 py-0.5 text-xs font-bold text-amber">
                             +{Math.round((item.mult - 1) * 100)}%
                           </span>
                         ) : (
-                          <span className="rounded-lg bg-mint-soft px-2 py-0.5 text-[0.68rem] font-bold text-mint">
+                          <span className="rounded-lg bg-mint-soft px-2 py-0.5 text-xs font-bold text-mint">
                             Normal
                           </span>
                         )}
@@ -739,7 +841,7 @@ export function PriceCalculator() {
               <div className="flex items-start gap-3 rounded-2xl border border-line bg-paper-2/70 p-4 text-[0.78rem] text-ink-soft">
                 <Lightbulb className="mt-0.5 size-4 shrink-0 text-amber" />
                 <p className="leading-relaxed">
-                  <strong className="text-ink font-bold">Tentang Tingkat Kesulitan:</strong> Estimasi dihitung otomatis untuk pengerjaan tugas standar/umum. Jika tugasmu memiliki kebutuhan analisis data teknis khusus (seperti olah data SPSS, coding, atau uji laboratorium), Bagas yang akan menilai dan mengonfirmasi kesepakatannya di WhatsApp setelah memeriksa file brief.
+                  <strong className="text-ink font-bold">Tentang Tingkat Kesulitan:</strong> Estimasi dihitung otomatis untuk pengerjaan tugas standar/umum. Jika tugasmu memiliki kebutuhan analisis data teknis khusus (seperti olah data SPSS, coding, atau uji laboratorium), Mas Joki yang akan menilai dan mengonfirmasi kesepakatannya di WhatsApp setelah memeriksa file brief.
                 </p>
               </div>
 
@@ -752,7 +854,7 @@ export function PriceCalculator() {
                     <legend className="text-[0.84rem] font-bold text-ink">
                       4. Opsi Pendamping Tambahan (Opsional)
                     </legend>
-                    <span className="text-[0.72rem] font-semibold text-muted">
+                    <span className="text-xs font-semibold text-muted">
                       Bisa pilih lebih dari satu
                     </span>
                   </div>
@@ -781,12 +883,12 @@ export function PriceCalculator() {
                               <span className="block text-[0.84rem] font-bold text-ink leading-snug">
                                 {addon.label}
                               </span>
-                              <span className="mt-1 block text-[0.72rem] leading-snug text-muted">
+                              <span className="mt-1 block text-xs leading-snug text-muted">
                                 {addon.note}
                               </span>
                             </div>
                           </div>
-                          <span className="shrink-0 rounded-lg bg-paper-2 px-2 py-1 font-mono text-[0.72rem] font-bold text-brand">
+                          <span className="shrink-0 rounded-lg bg-paper-2 px-2 py-1 font-mono text-xs font-bold text-brand">
                             +{rupiah(addon.price)}
                           </span>
                         </label>
@@ -846,7 +948,7 @@ export function PriceCalculator() {
                 />
                 <PesanGalat id="galat-detail" pesan={galat?.detail} />
                 <p className="mt-1.5 text-xs text-slate-600">
-                  Semakin rinci brief yang kamu berikan, semakin akurat dan cepat Bagas memberikan harga penawaran.
+                  Semakin rinci brief yang kamu berikan, semakin akurat dan cepat Mas Joki memberikan harga penawaran.
                 </p>
               </div>
 
@@ -873,7 +975,7 @@ export function PriceCalculator() {
                       <span className="text-[0.88rem] font-bold text-ink">
                         {item.label}
                       </span>
-                      <span className="text-[0.74rem] text-muted">
+                      <span className="text-xs text-muted">
                         {item.note}
                       </span>
                     </label>
@@ -917,7 +1019,7 @@ export function PriceCalculator() {
                   effectiveUnitLabel={price.effectiveUnitLabel}
                   estimatedTurnaround={price.estimatedTurnaround}
                   equivalentLabel={price.equivalentLabel}
-                  note="Harga terkunci setelah file dicek Bagas. Tidak ada biaya tersembunyi."
+                  note="Harga terkunci setelah file dicek Mas Joki. Tidak ada biaya tersembunyi."
                   stamp="Harga Transparan"
                   code="EST-LIVE"
                   aksen={aksen}
@@ -925,6 +1027,22 @@ export function PriceCalculator() {
                 />
               ) : (
                 <NotaPenawaran />
+              )}
+
+              {/* CTA Ringkas untuk Beranda (Task 3b) */}
+              {ringkas && (
+                <div className="mt-4 space-y-2">
+                  <Link
+                    href={`/hitung?layanan=${service.id}&jumlah=${currentQty}&tenggat=${deadlineId}`}
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-4 text-base font-bold text-white shadow-lg shadow-brand/25 transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand-dark hover:shadow-xl active:translate-y-0 cursor-pointer"
+                  >
+                    <span>Lanjut Pesan dengan Hitungan Ini</span>
+                    <ArrowRight className="size-4.5" />
+                  </Link>
+                  <p className="text-center text-xs leading-relaxed text-slate-500 font-medium">
+                    Hitungan otomatis diteruskan ke formulir pesanan di halaman kalkulator.
+                  </p>
+                </div>
               )}
             </div>
 
@@ -963,17 +1081,18 @@ export function PriceCalculator() {
           </div>
         </div>
 
-        {/* Kolom Kiri Bawah: Form Kontak & Submit CTA */}
-        <div
-          id="kontak-pesan"
-          className="space-y-5 rounded-2xl border border-line bg-white p-7 shadow-sm lg:col-start-1 lg:row-start-2"
-        >
+        {/* Kolom Kiri Bawah: Form Kontak & Submit CTA (Hanya di /hitung, Task 3a) */}
+        {!ringkas && (
+          <div
+            id="kontak-pesan"
+            className="space-y-5 rounded-2xl border border-line bg-white p-7 shadow-sm lg:col-start-1 lg:row-start-2"
+          >
           <div>
             <h3 className="font-display text-xl font-bold text-ink">
               Data Kontak &amp; Pengiriman
             </h3>
             <p className="mt-1 text-xs sm:text-sm text-slate-600">
-              Hanya digunakan Bagas untuk konfirmasi pengerjaan dan mengirim hasil file.
+              Hanya digunakan Mas Joki untuk konfirmasi pengerjaan dan mengirim hasil file.
             </p>
           </div>
 
@@ -989,7 +1108,7 @@ export function PriceCalculator() {
                 minLength={2}
                 maxLength={80}
                 autoComplete="name"
-                placeholder="Contoh: Bagas"
+                placeholder="Contoh: Budi"
                 aria-invalid={galat?.name ? true : undefined}
                 aria-describedby={galat?.name ? "galat-name" : undefined}
                 className={fieldClass}
@@ -1034,7 +1153,7 @@ export function PriceCalculator() {
               className={fieldClass}
             />
             <PesanGalat id="galat-fileUrl" pesan={galat?.fileUrl} />
-            <p className="mt-1.5 text-[0.74rem] text-muted">
+            <p className="mt-1.5 text-xs text-muted">
               Tautan Google Drive atau OneDrive. Pastikan izin berbagi diset{" "}
               <em>&quot;Siapa saja yang memiliki link dapat melihat&quot;</em>.{" "}
               <span className="block mt-0.5 text-ink-soft font-medium">💡 Belum punya link Drive? Jangan khawatir, kamu bisa langsung melampirkan file dokumen di chat WhatsApp nanti.</span>
@@ -1133,46 +1252,14 @@ export function PriceCalculator() {
             </button>
           )}
 
-          <p className="text-center text-[0.76rem] leading-relaxed text-muted">
+          <p className="text-center text-xs leading-relaxed text-slate-500">
             Tanpa buat akun. Pesan akan terbuka otomatis di aplikasi WhatsApp kamu.
           </p>
         </div>
+        )}
       </form>
 
-      {/* Floating Sticky Mobile Summary Bar */}
-      {mode === "hitung" && (
-        <div className="fixed bottom-0 inset-x-0 z-40 lg:hidden border-t border-line bg-white/95 p-3.5 backdrop-blur-md shadow-2xl">
-          <div className="flex items-center justify-between gap-3 max-w-md mx-auto">
-            <div className="flex items-center gap-2.5">
-              <div
-                className="grid size-10 place-items-center rounded-xl border text-brand shrink-0"
-                style={{
-                  backgroundColor: `${aksen.hex}15`,
-                  borderColor: `${aksen.hex}30`,
-                }}
-              >
-                <ServiceIcon id={service.id} className="size-5" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-[0.68rem] font-bold uppercase tracking-wider text-muted truncate">
-                  {service.name} ({price.qty} {BASIS_LABEL[service.basis]})
-                </p>
-                <p className="font-display text-lg font-bold leading-none text-brand tabular-nums">
-                  <AnimatedPrice value={price.total} />
-                </p>
-              </div>
-            </div>
 
-            <a
-              href="#kontak-pesan"
-              className="shrink-0 inline-flex items-center gap-1.5 rounded-xl bg-brand px-4 py-2.5 text-xs font-bold text-white shadow-md shadow-brand/20 active:scale-95"
-            >
-              <span>Lanjut Pesan</span>
-              <span aria-hidden>↓</span>
-            </a>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
@@ -1190,7 +1277,7 @@ function NotaPenawaran() {
               <p className="font-display text-lg font-bold leading-none tracking-tight text-ink">
                 Mas Joki
               </p>
-              <p className="mt-1 text-[11px] font-semibold text-slate-600">
+              <p className="mt-1 text-[13px] font-semibold text-slate-600">
                 Penawaran Khusus
               </p>
             </div>
@@ -1226,7 +1313,7 @@ function NotaPenawaran() {
         </div>
 
         <p className="mt-3.5 text-xs leading-relaxed text-slate-600">
-          Bagas akan membaca brief kamu dan memberikan penawaran terbaik dalam &lt;1 jam kerja.
+          Mas Joki akan membaca brief kamu dan memberikan penawaran terbaik dalam &lt;1 jam kerja.
         </p>
 
         <div className="mt-5 flex justify-end">
@@ -1282,14 +1369,14 @@ function SuccessPanel({
     <div ref={panelRef} className="mx-auto max-w-xl">
       <div className="overflow-hidden rounded-2xl border border-line bg-white p-7 shadow-2xl shadow-brand/10 sm:p-9">
         <div role="status" aria-live="polite">
-          <span className="inline-flex items-center gap-2 rounded-full border border-mint/25 bg-mint-soft px-3.5 py-1 text-[0.76rem] font-bold text-mint">
+          <span className="inline-flex items-center gap-2 rounded-full border border-mint/25 bg-mint-soft px-3.5 py-1 text-xs font-bold text-mint">
             <span aria-hidden className="size-2 rounded-full bg-mint " />
             {mode === "hitung" ? "Pesanan Siap Dikirim" : "Brief Siap Dikirim"}
           </span>
 
           <h3 className="mt-4 font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
             {mode === "hitung"
-              ? "Tinggal Kirim ke WhatsApp Bagas!"
+              ? "Tinggal Kirim ke WhatsApp Mas Joki!"
               : "Tinggal Kirimkan Brief Kamu!"}
           </h3>
 
@@ -1327,7 +1414,7 @@ function SuccessPanel({
           <>
             <div className="mt-6 rounded-2xl border border-line bg-brand-soft/40 p-4.5">
               <p className="text-xs sm:text-sm font-bold text-ink">
-                Metode Pembayaran (Setelah Dikonfirmasi Bagas):
+                Metode Pembayaran (Setelah Dikonfirmasi Mas Joki):
               </p>
               <p className="mt-1 text-xs text-slate-600">
                 {pembayaran.metode.join(" · ")}
@@ -1375,7 +1462,7 @@ function SuccessPanel({
               </button>
             </div>
 
-            <p className="mt-3.5 text-center text-[0.76rem] leading-relaxed text-muted">
+            <p className="mt-3.5 text-center text-xs leading-relaxed text-muted">
               Format chat sudah tersusun rapi otomatis. Kamu cukup klik tombol kirim di WhatsApp.
             </p>
           </>

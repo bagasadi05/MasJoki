@@ -15,7 +15,7 @@ export const SITE_LOCATION = "Madiun, Jawa Timur";
 export const SITE_OPERATIONAL_HOURS = "Setiap hari, 07.00–23.00 WIB";
 export const SITE_EMAIL = "halo@masjoki.id";
 export const SITE_NAME = "Mas Joki";
-export const SITE_OWNER = "Bagas";
+export const SITE_OWNER = "Mas Joki";
 
 /** Domain aktif kanonis terpusat (masjoki.vercel.app) */
 export const SITE_URL =

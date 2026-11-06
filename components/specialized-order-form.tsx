@@ -27,6 +27,7 @@ import { ServiceIcon } from "./service-icon";
 import { aksenLayanan } from "@/lib/aksen";
 import { angka, rupiah } from "@/lib/format";
 import { getOrderSpec } from "@/lib/order-specs";
+import { useEstimatedDateRange } from "./use-wib-status";
 import {
   computePrice,
   DEADLINES,
@@ -80,6 +81,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [qty, setQty] = useState<number>(service.defaultQty);
   const [deadlineId, setDeadlineId] = useState<DeadlineId>("normal");
+  const estimatedDateRange = useEstimatedDateRange(deadlineId);
   const difficultyId: DifficultyId = "standar";
   const [selectedAddons, setSelectedAddons] = useState<AddonId[]>([]);
 
@@ -948,6 +950,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
               dpAmount={price.dpAmount}
               effectiveUnitLabel={price.effectiveUnitLabel}
               estimatedTurnaround={price.estimatedTurnaround}
+              estimatedDateRange={estimatedDateRange}
               equivalentLabel={price.equivalentLabel}
               note="Harga terkunci setelah file dicek Mas Joki. Tidak ada biaya tersembunyi."
               stamp="Harga Transparan"

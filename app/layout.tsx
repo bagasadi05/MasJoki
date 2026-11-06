@@ -4,6 +4,7 @@ import { SITE_URL } from "@/lib/config";
 import { CalculatorProvider } from "@/components/calculator-context";
 import { MobileStickyBar } from "@/components/mobile-sticky-bar";
 import { WaMelayang } from "@/components/wa-melayang";
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
 const display = Bricolage_Grotesque({
@@ -101,6 +102,7 @@ export default function RootLayout({
           {children}
           <MobileStickyBar />
           <WaMelayang />
+          <Analytics />
         </CalculatorProvider>
       </body>
     </html>

@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { submitOrder, submitQuote } from "@/app/actions";
 import { useCalculator } from "./calculator-context";
+import { useEstimatedDateRange } from "./use-wib-status";
 import { Nota } from "./nota";
 import { ServiceIcon } from "./service-icon";
 import { aksenLayanan } from "@/lib/aksen";
@@ -162,6 +163,7 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
 
   const [qtyInput, setQtyInput] = useState<Record<string, string>>(defaultQtys);
   const [deadlineId, setDeadlineId] = useState<DeadlineId>("santai");
+  const estimatedDateRange = useEstimatedDateRange(deadlineId);
   const difficultyId: DifficultyId = "standar";
   const [selectedAddons, setSelectedAddons] = useState<
     Record<string, AddonId[]>
@@ -170,6 +172,14 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
     serviceId,
   );
   const [kategoriFilter, setKategoriFilter] = useState<string>("semua");
+  const [bukaHitungKata, setBukaHitungKata] = useState(false);
+  const [teksNaskah, setTeksNaskah] = useState("");
+
+  const kataTerhitung = useMemo(() => {
+    const trimmed = teksNaskah.trim();
+    if (!trimmed) return 0;
+    return trimmed.split(/\s+/).filter(Boolean).length;
+  }, [teksNaskah]);
 
   useEffect(() => {
     setQuoteService(serviceId);
@@ -802,6 +812,67 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
                   </div>
                 ) : null}
 
+                {/* Alat Bantu Penghitung Kata Mandiri */}
+                {service.basis === "kata" ? (
+                  <div className="mt-3">
+                    <button
+                      type="button"
+                      onClick={() => setBukaHitungKata(!bukaHitungKata)}
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-brand hover:underline cursor-pointer"
+                    >
+                      <FileText className="size-3.5" />
+                      <span>{bukaHitungKata ? "Tutup Penghitung Kata" : "Belum tahu jumlah kata? Cek di sini"}</span>
+                    </button>
+
+                    {bukaHitungKata && (
+                      <div className="mt-2.5 rounded-2xl border border-brand/20 bg-brand-soft/30 p-3.5 sm:p-4">
+                        <label htmlFor="tempel-naskah" className="block text-xs font-bold text-ink mb-1.5">
+                          Tempel Naskah / Teks Tugas di Sini:
+                        </label>
+                        <textarea
+                          id="tempel-naskah"
+                          rows={4}
+                          value={teksNaskah}
+                          onChange={(e) => setTeksNaskah(e.target.value)}
+                          placeholder="Paste teks tugas atau draft naskahmu di sini untuk menghitung kata secara otomatis..."
+                          className="w-full rounded-xl border border-line bg-white p-3 text-xs text-ink placeholder:text-muted focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 resize-y"
+                        />
+                        <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
+                          <div className="flex items-center gap-2.5 text-xs font-medium text-slate-600">
+                            <span>
+                              <strong className="font-mono font-bold text-ink">{kataTerhitung}</strong> kata
+                            </span>
+                            <span>•</span>
+                            <span>
+                              <strong className="font-mono font-bold text-ink">{teksNaskah.length}</strong> karakter
+                            </span>
+                            <span>•</span>
+                            <span>
+                              ±<strong className="font-mono font-bold text-ink">{Math.max(1, Math.ceil(kataTerhitung / 250))}</strong> halaman A4
+                            </span>
+                          </div>
+
+                          {kataTerhitung > 0 && (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                ubahJumlah(String(kataTerhitung));
+                                setBukaHitungKata(false);
+                              }}
+                              className="rounded-xl bg-brand px-3 py-1.5 text-xs font-bold text-white shadow-2xs hover:bg-brand-dark transition-all cursor-pointer"
+                            >
+                              Terapkan {angka(kataTerhitung)} Kata
+                            </button>
+                          )}
+                        </div>
+                        <p className="mt-2 text-[11px] text-slate-500 font-medium">
+                          🔒 100% aman: Teks dihitung langsung di browsermu, tidak disimpan atau dikirim ke mana pun.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                ) : null}
+
                 <input type="hidden" name="qty" value={price.qty} />
                 <input type="hidden" name="serviceId" value={service.id} />
               </div>
@@ -812,9 +883,9 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
                   <legend className="text-[0.84rem] font-bold text-ink">
                     3. Kapan tugas ini dibutuhkan?
                   </legend>
-                  <span className="text-xs font-semibold text-mint flex items-center gap-1">
+                  <span className="text-xs font-semibold text-mint flex items-center gap-1" title={estimatedDateRange || undefined}>
                     <Clock className="size-3.5" />
-                    <span>Estimasi: {price.estimatedTurnaround}</span>
+                    <span>Estimasi: {price.estimatedTurnaround} {estimatedDateRange ? `(${estimatedDateRange})` : ""}</span>
                   </span>
                 </div>
                 <div className="grid grid-cols-2 gap-2 sm:gap-3">
@@ -1063,6 +1134,7 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
                   dpAmount={price.dpAmount}
                   effectiveUnitLabel={price.effectiveUnitLabel}
                   estimatedTurnaround={price.estimatedTurnaround}
+                  estimatedDateRange={estimatedDateRange}
                   equivalentLabel={price.equivalentLabel}
                   note="Harga terkunci setelah file dicek Mas Joki. Tidak ada biaya tersembunyi."
                   stamp="Harga Transparan"

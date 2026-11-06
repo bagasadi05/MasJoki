@@ -6,10 +6,12 @@ import { usePathname } from "next/navigation";
 import { ArrowRight, Calculator } from "lucide-react";
 import { MenuSeluler } from "./menu-seluler";
 import { ThemeToggle } from "./theme-toggle";
+import { useWibStatus } from "./use-wib-status";
 import { navigasi } from "@/lib/nav";
 
 export function SiteHeader() {
   const pathname = usePathname();
+  const { isOpen } = useWibStatus();
 
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-paper/90 backdrop-blur-md">
@@ -30,7 +32,7 @@ export function SiteHeader() {
                 className="size-full object-cover object-top"
                 priority
               />
-              <span className="absolute bottom-0 right-0 size-2.5 rounded-full border-2 border-white bg-mint" />
+              <span className={`absolute bottom-0 right-0 size-2.5 rounded-full border-2 border-white ${isOpen ? "bg-mint" : "bg-amber"}`} />
             </div>
 
             <div className="flex flex-col">
@@ -43,13 +45,25 @@ export function SiteHeader() {
             </div>
           </Link>
 
-          {/* Status badge online */}
-          <span className="hidden items-center gap-2 rounded-full border border-mint/25 bg-mint-soft/90 px-2.5 py-1 text-xs font-bold text-mint md:inline-flex shadow-2xs">
+          {/* Status badge operasional WIB */}
+          <span
+            className={`hidden items-center gap-2 rounded-full border px-2.5 py-1 text-xs font-bold md:inline-flex shadow-2xs ${
+              isOpen
+                ? "border-mint/25 bg-mint-soft/90 text-mint"
+                : "border-amber/25 bg-amber-soft/90 text-amber"
+            }`}
+          >
             <span className="relative flex size-1.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-mint opacity-75" />
-              <span className="relative inline-flex rounded-full size-1.5 bg-mint" />
+              {isOpen && (
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-mint opacity-75" />
+              )}
+              <span
+                className={`relative inline-flex rounded-full size-1.5 ${
+                  isOpen ? "bg-mint" : "bg-amber"
+                }`}
+              />
             </span>
-            Mas Joki Online
+            {isOpen ? "Mas Joki Online" : "Luar Jam Kerja (Buka 07.00)"}
           </span>
         </div>
 

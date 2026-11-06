@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { waLink, waPesanUmum } from "@/lib/site";
+import { useWibStatus } from "./use-wib-status";
 
 /**
  * Tombol WhatsApp melayang dengan Maskot Mas Joki:
@@ -11,6 +12,7 @@ import { waLink, waPesanUmum } from "@/lib/site";
  */
 export function WaMelayang() {
   const [sembunyi, setSembunyi] = useState(false);
+  const { isOpen } = useWibStatus();
 
   useEffect(() => {
     const bagian = document.querySelectorAll("#hitung, #bayar, #cta-bawah, footer");
@@ -51,15 +53,15 @@ export function WaMelayang() {
           className="size-full object-cover object-top"
           priority
         />
-        <span className="absolute bottom-0 right-0 size-2 rounded-full border border-white bg-mint" />
+        <span className={`absolute bottom-0 right-0 size-2 rounded-full border border-white ${isOpen ? "bg-mint" : "bg-amber"}`} />
       </div>
 
       <div className="flex flex-col text-left">
         <span className="text-sm font-bold text-ink leading-none">
           Chat Mas Joki
         </span>
-        <span className="text-xs font-semibold text-mint leading-tight">
-          Online 07:00 – 23:00
+        <span className={`text-xs font-semibold leading-tight ${isOpen ? "text-mint" : "text-amber"}`}>
+          {isOpen ? "Online 07.00 – 23.00" : "Pesan Dibalas 07.00 WIB"}
         </span>
       </div>
 

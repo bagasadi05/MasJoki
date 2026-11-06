@@ -1,9 +1,19 @@
 "use client";
 
+import { useState } from "react";
 import { rupiah } from "@/lib/format";
 import type { Aksen } from "@/lib/aksen";
 import { AnimatedPrice } from "./animated-number";
-import { Clock, CreditCard, Ruler, Sparkles } from "lucide-react";
+import {
+  Calendar,
+  Check,
+  Clock,
+  Copy,
+  CreditCard,
+  Ruler,
+  Sparkles,
+  Users,
+} from "lucide-react";
 
 export interface NotaLine {
   label: string;
@@ -19,6 +29,8 @@ interface NotaProps {
   dpAmount?: number;
   effectiveUnitLabel?: string;
   estimatedTurnaround?: string;
+  /** Rentang tanggal kalender penyelesaian (WIB) */
+  estimatedDateRange?: string;
   equivalentLabel?: string;
   note?: string;
   stamp?: string;
@@ -26,9 +38,9 @@ interface NotaProps {
   className?: string;
   /** Warna layanan aktif: menggambar pita warna di atas nota. */
   aksen?: Aksen;
-  /** TUGAS 8: Varian ringkas khusus hero agar tidak terpotong di viewport 1080p dan 768p */
+  /** Varian ringkas khusus hero agar tidak terpotong di viewport */
   ringkas?: boolean;
-  /** REVISI 4: Catatan penyesuaian batas minimum transaksi Rp15.000 */
+  /** Catatan penyesuaian batas minimum transaksi Rp15.000 */
   minimumAdjustmentNote?: string | null;
 }
 
@@ -43,6 +55,7 @@ export function Nota({
   dpAmount,
   effectiveUnitLabel,
   estimatedTurnaround,
+  estimatedDateRange,
   equivalentLabel,
   note,
   stamp,
@@ -52,7 +65,41 @@ export function Nota({
   ringkas = false,
   minimumAdjustmentNote,
 }: NotaProps) {
+  const [splitCount, setSplitCount] = useState(1);
+  const [tersalin, setTersalin] = useState(false);
+
   const displayLines = ringkas ? lines.slice(0, 2) : lines;
+
+  const perOrang = Math.round(total / splitCount);
+  const dpPerOrang = dpAmount
+    ? Math.ceil((dpAmount / splitCount) / 500) * 500
+    : 0;
+
+  const salinRincianKelompok = () => {
+    const layananNama = lines[0]?.label || "Tugas Kuliah";
+    const pesan = [
+      `*Estimasi Biaya Tugas di Mas Joki*`,
+      `📋 Layanan: ${layananNama}`,
+      `💰 Total: ${rupiah(total)}`,
+      splitCount > 1
+        ? `👥 Patungan (${splitCount} orang): ${rupiah(perOrang)} / orang\n💳 Opsi DP 50%: ${rupiah(dpPerOrang)} / orang`
+        : `💳 Opsi DP 50%: ${rupiah(dpAmount ?? Math.ceil((total * 0.5) / 500) * 500)}`,
+      estimatedTurnaround
+        ? `⏱ Estimasi Selesai: ${estimatedTurnaround}${estimatedDateRange ? ` (${estimatedDateRange})` : ""}`
+        : "",
+      `🔒 Harga pasti di awal & gratis 2× revisi`,
+      `\n🔗 Hitung detailnya di: https://masjoki.vercel.app/hitung`,
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    if (navigator?.clipboard) {
+      navigator.clipboard.writeText(pesan).then(() => {
+        setTersalin(true);
+        setTimeout(() => setTersalin(false), 2500);
+      });
+    }
+  };
 
   return (
     <div className={`nota ${animate ? "nota-masuk" : ""} ${className}`}>
@@ -174,14 +221,14 @@ export function Nota({
           </p>
         </div>
 
-        {/* REVISI 4: Catatan penyesuaian minimum transaksi Rp15.000 */}
+        {/* Catatan penyesuaian minimum transaksi Rp15.000 */}
         {minimumAdjustmentNote ? (
           <p className="mt-2 text-center text-xs font-semibold text-amber bg-amber-soft/60 border border-amber/20 rounded-xl py-1.5 px-3">
             ✦ {minimumAdjustmentNote}
           </p>
         ) : null}
 
-        {/* TUGAS 3: Info Opsi DP 50% & Estimasi Pengerjaan */}
+        {/* Info Opsi DP 50% & Estimasi Pengerjaan */}
         {dpAmount || estimatedTurnaround || equivalentLabel ? (
           <div className="mt-3 space-y-2 rounded-2xl border border-brand/15 bg-brand-soft/50 p-3 sm:p-3.5 text-xs">
             {dpAmount ? (
@@ -202,12 +249,20 @@ export function Nota({
             ) : null}
 
             {estimatedTurnaround ? (
-              <div className="flex items-center justify-between gap-2 border-t border-brand/10 pt-1.5">
-                <span className="flex items-center gap-1.5 font-semibold text-ink-soft">
-                  <Clock className="size-3.5 text-brand" />
-                  <span>Estimasi Selesai:</span>
-                </span>
-                <span className="font-bold text-ink">{estimatedTurnaround}</span>
+              <div className="space-y-0.5 border-t border-brand/10 pt-1.5">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="flex items-center gap-1.5 font-semibold text-ink-soft">
+                    <Clock className="size-3.5 text-brand" />
+                    <span>Estimasi Selesai:</span>
+                  </span>
+                  <span className="font-bold text-ink">{estimatedTurnaround}</span>
+                </div>
+                {estimatedDateRange && (
+                  <p className="flex items-center gap-1.5 text-[11px] text-slate-500 pl-5 font-medium">
+                    <Calendar className="size-3 text-slate-400 shrink-0" />
+                    <span>Target: {estimatedDateRange}</span>
+                  </p>
+                )}
               </div>
             ) : null}
 
@@ -220,13 +275,83 @@ export function Nota({
           </div>
         ) : null}
 
+        {/* Fitur Patungan Kelompok (Tugas Bareng / Makalah / PPT) */}
+        {!ringkas && total >= 15000 ? (
+          <div className="mt-3 rounded-2xl border border-line bg-paper-2/60 p-3 sm:p-3.5 text-xs">
+            <div className="flex items-center justify-between gap-2">
+              <span className="flex items-center gap-1.5 font-bold text-ink">
+                <Users className="size-3.5 text-brand" />
+                <span>Simulasi Patungan:</span>
+              </span>
+              <div className="flex items-center gap-1">
+                {[1, 2, 3, 4, 5].map((num) => (
+                  <button
+                    key={num}
+                    type="button"
+                    onClick={() => setSplitCount(num)}
+                    className={`size-6 rounded-lg font-mono text-xs font-bold transition-all cursor-pointer ${
+                      splitCount === num
+                        ? "bg-brand text-white shadow-2xs"
+                        : "bg-white text-ink-soft border border-line hover:border-brand/40"
+                    }`}
+                    title={num === 1 ? "Bayar Sendiri" : `Bagi ${num} orang`}
+                  >
+                    {num === 1 ? "1x" : `${num}`}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {splitCount > 1 ? (
+              <div className="mt-2.5 space-y-1.5 border-t border-line/60 pt-2">
+                <div className="flex items-baseline justify-between">
+                  <span className="text-slate-600 font-medium">
+                    Beban per orang ({splitCount} mhs):
+                  </span>
+                  <span className="font-mono text-sm font-extrabold text-brand tabular-nums">
+                    {rupiah(perOrang)}
+                    <span className="text-[10px] text-slate-500 font-normal"> /org</span>
+                  </span>
+                </div>
+                {dpAmount ? (
+                  <div className="flex items-baseline justify-between text-[11px] text-slate-500">
+                    <span>DP 50% per orang:</span>
+                    <span className="font-mono font-bold text-ink tabular-nums">
+                      {rupiah(dpPerOrang)}
+                      <span className="text-[10px] font-normal"> /org</span>
+                    </span>
+                  </div>
+                ) : null}
+
+                <button
+                  type="button"
+                  onClick={salinRincianKelompok}
+                  className="mt-2 inline-flex w-full items-center justify-center gap-1.5 rounded-xl border border-brand/25 bg-white py-1.5 px-2.5 text-xs font-bold text-brand shadow-2xs hover:bg-brand-soft transition-all cursor-pointer active:scale-95"
+                >
+                  {tersalin ? (
+                    <>
+                      <Check className="size-3.5 text-mint" />
+                      <span className="text-mint">Rincian Grup WA Tersalin!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="size-3.5" />
+                      <span>Salin Rincian ke Grup WA</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            ) : null}
+          </div>
+        ) : null}
+
         {note && !ringkas ? (
           <p className="mt-3.5 text-xs leading-relaxed text-slate-600 font-medium">
             {note}
           </p>
         ) : null}
 
-        {/* TUGAS 8: Stempel & Sobekan Fisik hanya tampil di nota lengkap, bukan di hero ringkas */}
+        {/* Stempel & Sobekan Fisik hanya tampil di nota lengkap */}
         {!ringkas ? (
           <>
             <div className="mt-5 flex items-center justify-between gap-2 pt-2 border-t border-dashed border-line">

@@ -33,6 +33,29 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
+const stripRingkasan = [
+  {
+    icon: Tag,
+    label: "Mulai Rp15.000",
+    iconBg: "bg-brand-soft text-brand",
+  },
+  {
+    icon: Zap,
+    label: "Pengerjaan mulai 6 jam",
+    iconBg: "bg-amber-soft text-amber",
+  },
+  {
+    icon: CreditCard,
+    label: "DP 50% dulu, lunas setelah selesai",
+    iconBg: "bg-mint-soft text-mint",
+  },
+  {
+    icon: RefreshCcw,
+    label: "Revisi 2× gratis",
+    iconBg: "bg-brand-soft text-brand",
+  },
+];
+
 const garansiList = [
   {
     kode: "PASAL 01",
@@ -183,44 +206,53 @@ export default function Home() {
         </section>
 
         {/* ========================================================== *
-         * 2. STRIP RINGKASAN CEPAT (4 Nilai Jual Kunci)
+         * 2. STRIP RINGKASAN CEPAT (Animasi Berjalan / Infinite Marquee)
          * ========================================================== */}
-        <section className="border-b border-line bg-white py-4 shadow-2xs">
-          <div className="mx-auto max-w-6xl px-5 sm:px-8">
-            <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:items-center sm:justify-between text-xs sm:text-sm font-bold text-ink">
-              <div className="flex items-center gap-2">
-                <span className="grid size-6 place-items-center rounded-full bg-brand-soft text-brand text-xs">
-                  <Tag className="size-3.5 text-brand" />
-                </span>
-                <span>Mulai Rp15.000</span>
-              </div>
-              <span className="text-slate-300 hidden md:inline" aria-hidden>
-                •
-              </span>
-              <div className="flex items-center gap-2">
-                <span className="grid size-6 place-items-center rounded-full bg-amber-soft text-amber text-xs">
-                  <Zap className="size-3.5 text-amber" />
-                </span>
-                <span>Pengerjaan mulai 6 jam</span>
-              </div>
-              <span className="text-slate-300 hidden md:inline" aria-hidden>
-                •
-              </span>
-              <div className="flex items-center gap-2">
-                <span className="grid size-6 place-items-center rounded-full bg-mint-soft text-mint text-xs">
-                  <CreditCard className="size-3.5 text-mint" />
-                </span>
-                <span>DP 50% dulu, lunas setelah selesai</span>
-              </div>
-              <span className="text-slate-300 hidden md:inline" aria-hidden>
-                •
-              </span>
-              <div className="flex items-center gap-2">
-                <span className="grid size-6 place-items-center rounded-full bg-brand-soft text-brand text-xs">
-                  <RefreshCcw className="size-3.5 text-brand" />
-                </span>
-                <span>Revisi 2× gratis</span>
-              </div>
+        <section
+          aria-label="Ringkasan keunggulan layanan Mas Joki"
+          className="relative overflow-hidden border-b border-line bg-white/95 dark:bg-[#0f172a]/95 py-3.5 shadow-2xs backdrop-blur-sm"
+        >
+          {/* Efek gradien fade di tepi kiri & kanan */}
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-8 sm:w-20 bg-gradient-to-r from-white dark:from-[#0f172a] to-transparent z-10" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-8 sm:w-20 bg-gradient-to-l from-white dark:from-[#0f172a] to-transparent z-10" />
+
+          <div className="flex w-max animate-marquee items-center select-none hover:[animation-play-state:paused] [animation-duration:28s]">
+            {/* Track 1: Set Pertama */}
+            <div className="flex items-center gap-6 sm:gap-8 pr-6 sm:pr-8">
+              {stripRingkasan.concat(stripRingkasan).map((item, idx) => (
+                <div key={`track1-${idx}`} className="flex items-center gap-6 sm:gap-8">
+                  <div className="flex items-center gap-2">
+                    <span className={`grid size-6 place-items-center rounded-full text-xs shrink-0 ${item.iconBg}`}>
+                      <item.icon className="size-3.5" />
+                    </span>
+                    <span className="text-xs sm:text-sm font-bold text-ink whitespace-nowrap">
+                      {item.label}
+                    </span>
+                  </div>
+                  <span className="text-slate-300 dark:text-slate-700" aria-hidden="true">
+                    •
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            {/* Track 2: Set Duplikat Identik untuk Loop Tanpa Henti */}
+            <div className="flex items-center gap-6 sm:gap-8 pr-6 sm:pr-8" aria-hidden="true">
+              {stripRingkasan.concat(stripRingkasan).map((item, idx) => (
+                <div key={`track2-${idx}`} className="flex items-center gap-6 sm:gap-8">
+                  <div className="flex items-center gap-2">
+                    <span className={`grid size-6 place-items-center rounded-full text-xs shrink-0 ${item.iconBg}`}>
+                      <item.icon className="size-3.5" />
+                    </span>
+                    <span className="text-xs sm:text-sm font-bold text-ink whitespace-nowrap">
+                      {item.label}
+                    </span>
+                  </div>
+                  <span className="text-slate-300 dark:text-slate-700" aria-hidden="true">
+                    •
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
         </section>

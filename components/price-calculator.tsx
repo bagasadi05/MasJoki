@@ -458,12 +458,12 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
         className="grid gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:gap-12"
       >
         {/* Kolom Kiri: Pilihan Layanan & Input Variabel */}
-        <div className="space-y-8 lg:col-start-1 lg:row-start-1">
+        <div className="min-w-0 space-y-8 lg:col-start-1 lg:row-start-1">
           {mode === "hitung" ? (
             <>
               {/* Pilihan Layanan dengan Pengelompokan Kategori & Varian (Task 8b) */}
               <fieldset>
-                <div className="flex items-center justify-between mb-3">
+                <div className="mb-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
                   <legend className={labelClass}>1. Pilih Layanan Tugas</legend>
                   <span className="text-xs font-bold text-brand">
                     Terpilih: {service.name}
@@ -471,7 +471,7 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
                 </div>
 
                 {/* Filter Kategori Cepat untuk Navigasi Mobile Ringkas */}
-                <div className="flex items-center gap-1.5 overflow-x-auto pb-2 -mx-1 px-1 sm:overflow-visible sm:flex-wrap mb-2">
+                <div className="mb-2 flex w-full min-w-0 items-center gap-1.5 overflow-x-auto pb-2 [scrollbar-width:none] sm:flex-wrap sm:overflow-visible">
                   {[
                     { id: "semua", label: "Semua (11)" },
                     { id: "penulisan", label: "Penulisan & AI" },
@@ -1120,7 +1120,7 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
         </div>
 
         {/* Kolom Kanan: Nota Kwitansi Transparan (Sticky) */}
-        <div id="ringkasan-nota" className="scroll-mt-20 lg:col-start-2 lg:row-span-2 lg:row-start-1">
+        <div id="ringkasan-nota" className="min-w-0 scroll-mt-20 lg:col-start-2 lg:row-span-2 lg:row-start-1">
           <div className="lg:sticky lg:top-24">
             <p className="sr-only" aria-live="polite" aria-atomic="true">
               {mode === "hitung" ? `Total ${rupiah(price.total)}` : ""}

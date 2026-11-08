@@ -13,7 +13,7 @@ export const site = {
   tagline: "Bantuan tugas, harga kelihatan di awal.",
   whatsapp: WA_NUMBER_INTL,
   email: SITE_EMAIL,
-  instagram: "masjoki.id",
+  instagram: process.env.NEXT_PUBLIC_INSTAGRAM || "masjoki.id",
   jamOperasional: SITE_OPERATIONAL_HOURS,
   kota: SITE_LOCATION,
 } as const;

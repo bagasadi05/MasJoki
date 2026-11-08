@@ -42,6 +42,13 @@ export const nameSchema = z
   .min(2, "Nama minimal 2 karakter")
   .max(80, "Nama terlalu panjang");
 
+/** Kode voucher: dibatasi agar tidak bisa dipakai mengirim payload panjang. */
+export const voucherCodeSchema = z
+  .string()
+  .trim()
+  .min(3, "Kode voucher terlalu pendek")
+  .max(40, "Kode voucher terlalu panjang");
+
 const fileUrlSchema = z
   .string()
   .trim()

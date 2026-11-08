@@ -194,6 +194,10 @@ html.dark,
     touch-action: manipulation;
   }
 
+  fieldset {
+    min-width: 0;
+  }
+
   section[id],
   #konten {
     scroll-margin-top: 88px;
@@ -630,6 +634,23 @@ html.dark .kertas-garis {
   animation: pulse-subtle 5s ease-in-out infinite;
 }
 
+@keyframes indeterminate-progress {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(30%);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}
+
+.animate-indeterminate {
+  width: 50%;
+  animation: indeterminate-progress 1.5s infinite ease-in-out;
+}
+
 /* ------------------------------------------------------------------ *
  * Tekstur & Layer Latar Belakang (Anti Polos Putih)
  * ------------------------------------------------------------------ */
@@ -671,5 +692,145 @@ html.dark .kertas-garis {
   .animate-float-delayed,
   .animate-pulse-subtle {
     animation: none !important;
+  }
+}
+
+
+/* ------------------------------------------------------------------ *
+ * AI Humanizer Studio Diagnostics & Diff
+ * ------------------------------------------------------------------ */
+
+.hl-forbidden {
+  background-color: #fee2e2;
+  border-bottom: 2px solid #ef4444;
+  color: #991b1b;
+  font-weight: 600;
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+html.dark .hl-forbidden,
+:root:has(> head > meta[name="color-scheme"][content="dark"]) .hl-forbidden {
+  background-color: rgba(239, 68, 68, 0.2);
+  border-bottom-color: #ef4444;
+  color: #fca5a5;
+}
+
+.hl-starter {
+  background-color: #fef3c7;
+  border-bottom: 2px solid #f59e0b;
+  color: #92400e;
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+html.dark .hl-starter,
+:root:has(> head > meta[name="color-scheme"][content="dark"]) .hl-starter {
+  background-color: rgba(245, 158, 11, 0.2);
+  border-bottom-color: #f59e0b;
+  color: #fcd34d;
+}
+
+.hl-template {
+  background-color: #dbeafe;
+  border-bottom: 2px solid #3b82f6;
+  color: #1e40af;
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+html.dark .hl-template,
+:root:has(> head > meta[name="color-scheme"][content="dark"]) .hl-template {
+  background-color: rgba(59, 130, 246, 0.2);
+  border-bottom-color: #3b82f6;
+  color: #93c5fd;
+}
+
+.hl-short {
+  background-color: #dcfce7;
+  border-bottom: 2px solid #22c55e;
+  color: #14532d;
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+html.dark .hl-short,
+:root:has(> head > meta[name="color-scheme"][content="dark"]) .hl-short {
+  background-color: rgba(34, 197, 94, 0.2);
+  border-bottom-color: #22c55e;
+  color: #86efac;
+}
+
+.diff-del {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  text-decoration: line-through;
+  padding: 1px 4px;
+  border-radius: 4px;
+  margin-right: 2px;
+}
+html.dark .diff-del,
+:root:has(> head > meta[name="color-scheme"][content="dark"]) .diff-del {
+  background-color: rgba(239, 68, 68, 0.25);
+  color: #fca5a5;
+}
+
+.diff-ins {
+  background-color: #dcfce7;
+  color: #15803d;
+  font-weight: 600;
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+html.dark .diff-ins,
+:root:has(> head > meta[name="color-scheme"][content="dark"]) .diff-ins {
+  background-color: rgba(34, 197, 94, 0.25);
+  color: #86efac;
+}
+
+.font-academic {
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+/* ------------------------------------------------------------------ *
+ * Cetak: hanya lembar audit (.print-area) yang tampil
+ * ------------------------------------------------------------------ */
+@media print {
+  @page {
+    margin: 14mm;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* Navigasi global dan elemen mengambang tidak ikut tercetak */
+  header,
+  footer,
+  [aria-label="Aksi cepat seluler"],
+  [aria-label^="Chat Mas Joki"] {
+    display: none !important;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  .print-area,
+  .print-area * {
+    visibility: visible;
+  }
+
+  .print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .print-area .bg-gradient-to-r {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 }

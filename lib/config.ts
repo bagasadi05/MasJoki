@@ -2,8 +2,13 @@
  * Konfigurasi Tunggal Mas Joki (Single Source of Truth untuk Kontak & Lokasi)
  */
 
-export const WA_NUMBER = "089619774116";
-export const WA_NUMBER_INTL = "6289619774116";
+/** Nomor dari env (format internasional tanpa tanda plus), fallback ke nomor resmi. */
+const WA_INTL_DARI_ENV = (process.env.NEXT_PUBLIC_WHATSAPP ?? "").replace(/\D/g, "");
+
+export const WA_NUMBER_INTL = WA_INTL_DARI_ENV || "6289619774116";
+export const WA_NUMBER = WA_NUMBER_INTL.startsWith("62")
+  ? `0${WA_NUMBER_INTL.slice(2)}`
+  : WA_NUMBER_INTL;
 export const WA_BASE_URL = `https://wa.me/${WA_NUMBER_INTL}`;
 
 export function getWhatsAppUrl(pesan?: string): string {
@@ -13,7 +18,7 @@ export function getWhatsAppUrl(pesan?: string): string {
 
 export const SITE_LOCATION = "Madiun, Jawa Timur";
 export const SITE_OPERATIONAL_HOURS = "Setiap hari, 07.00–23.00 WIB";
-export const SITE_EMAIL = "halo@masjoki.id";
+export const SITE_EMAIL = process.env.NEXT_PUBLIC_EMAIL || "halo@masjoki.id";
 export const SITE_NAME = "Mas Joki";
 export const SITE_OWNER = "Mas Joki";
 

@@ -2,16 +2,30 @@
 
 import { pesanPesanan, pesanOrderSpesifik, pesanPenawaran } from "@/lib/pesan";
 import { computePrice } from "@/lib/pricing";
-import { cekRateLimit } from "@/lib/rate-limit";
+import { ambilAlamatIp, cekRateLimit } from "@/lib/rate-limit";
 import { getService } from "@/lib/services";
 import { waLink } from "@/lib/site";
 import type { ActionResult } from "@/lib/types";
+import type { VoucherRedeemResult } from "@/lib/humanizer/types";
+import { verifyVoucherCode } from "@/lib/humanizer/vouchers.server";
+import {
+  checkLicense,
+  deductLicenseWords,
+  type CheckLicenseResult,
+  type DeductLicenseResult,
+} from "@/lib/humanizer/licenses.server";
+import {
+  humanizeWithGemini,
+  type GeminiHumanizeOptions,
+  type GeminiHumanizeResult,
+} from "@/lib/humanizer/gemini.server";
 import {
   fieldErrors,
   firstIssue,
   orderSchema,
   specializedOrderSchema,
   quoteSchema,
+  voucherCodeSchema,
 } from "@/lib/validation";
 
 /**
@@ -25,12 +39,19 @@ function isBot(formData: FormData): boolean {
   return String(formData.get("perusahaan") ?? "").trim().length > 0;
 }
 
-/** Batas per IP di luar honeypot. Bot yang masuk honeypot tidak kena di sini. */
-async function blokirKalauBanjir(): Promise<ActionResult | null> {
-  const limit = await cekRateLimit();
+/**
+ * Batas per IP di luar honeypot. Bot yang masuk honeypot tidak kena di sini.
+ * Setiap aksi punya keranjang sendiri supaya kuota order tidak menghabiskan
+ * kuota klaim voucher.
+ */
+async function blokirKalauBanjir(
+  aksi: string,
+  batas = 10,
+): Promise<ActionResult | null> {
+  const limit = await cekRateLimit(aksi, batas);
   if (limit.ok) return null;
 
-  const menit = Math.max(1, Math.ceil(limit.cobaLagiDalamDetik! / 60));
+  const menit = Math.max(1, Math.ceil((limit.cobaLagiDalamDetik ?? 60) / 60));
   return {
     status: "error",
     message: `Terlalu banyak percobaan. Coba lagi dalam ${menit} menit.`,
@@ -46,7 +67,7 @@ export async function submitOrder(
     return { status: "ok", message: "Pesanan diterima." };
   }
 
-  const blokir = await blokirKalauBanjir();
+  const blokir = await blokirKalauBanjir("order");
   if (blokir) return blokir;
 
   const rawAddons = formData
@@ -110,7 +131,7 @@ export async function submitSpecializedOrder(
     return { status: "ok", message: "Pesanan diterima." };
   }
 
-  const blokir = await blokirKalauBanjir();
+  const blokir = await blokirKalauBanjir("order");
   if (blokir) return blokir;
 
   const rawAddons = formData
@@ -183,7 +204,7 @@ export async function submitQuote(
     return { status: "ok", message: "Permintaan diterima." };
   }
 
-  const blokir = await blokirKalauBanjir();
+  const blokir = await blokirKalauBanjir("quote");
   if (blokir) return blokir;
 
   const parsed = quoteSchema.safeParse({
@@ -225,3 +246,89 @@ export async function submitQuote(
     waUrl: waLink(pesan),
   };
 }
+
+/**
+ * Klaim voucher. Verifikasi tanda tangan dan pencatatan pemakaian dilakukan di
+ * server (lihat lib/humanizer/vouchers.server.ts); kunci rahasia tidak pernah
+ * ikut ke browser.
+ */
+export async function redeemVoucherAction(code: string): Promise<VoucherRedeemResult> {
+  const parsed = voucherCodeSchema.safeParse(code);
+  if (!parsed.success) {
+    return { ok: false, error: firstIssue(parsed.error) };
+  }
+
+  // Kuota klaim terpisah dan lebih ketat daripada formulir pesanan.
+  const limit = await cekRateLimit("voucher", 5);
+  if (!limit.ok) {
+    const menit = Math.max(1, Math.ceil((limit.cobaLagiDalamDetik ?? 60) / 60));
+    return {
+      ok: false,
+      error: `Terlalu banyak percobaan klaim voucher. Coba lagi dalam ${menit} menit.`,
+    };
+  }
+
+  const ip = await ambilAlamatIp();
+  return verifyVoucherCode(parsed.data, ip);
+}
+
+/**
+ * Cek status kuota kunci token dari database Supabase.
+ */
+export async function checkLicenseAction(code: string): Promise<CheckLicenseResult> {
+  const limit = await cekRateLimit("license-check", 15);
+  if (!limit.ok) {
+    const menit = Math.max(1, Math.ceil((limit.cobaLagiDalamDetik ?? 60) / 60));
+    return {
+      ok: false,
+      error: `Terlalu banyak permintaan cek lisensi. Coba lagi dalam ${menit} menit.`,
+    };
+  }
+
+  return checkLicense(code);
+}
+
+/**
+ * Potong kuota kata dari kunci token di Supabase saat humanize dijalankan.
+ */
+export async function deductLicenseAction(
+  code: string,
+  words: number,
+): Promise<DeductLicenseResult> {
+  const limit = await cekRateLimit("license-deduct", 20);
+  if (!limit.ok) {
+    return {
+      ok: false,
+      error: "Terlalu banyak permintaan pemotongan token. Silakan tunggu sebentar.",
+    };
+  }
+
+  return deductLicenseWords(code, words);
+}
+
+/**
+ * Humanize naskah menggunakan model resmi Google Gemini AI (Server Action aman).
+ * Kunci API tersimpan di server dan naskah diproses dengan system prompt cerdas.
+ */
+export async function humanizeWithGeminiAction(
+  text: string,
+  options?: GeminiHumanizeOptions
+): Promise<GeminiHumanizeResult> {
+  const trimmed = (text || "").trim();
+  if (!trimmed) {
+    return { ok: false, error: "Teks yang ingin di-humanize tidak boleh kosong." };
+  }
+
+  // Batasi panggilan per IP agar kuota API aman dari penyalahgunaan
+  const limit = await cekRateLimit("gemini-ai", 30);
+  if (!limit.ok) {
+    const menit = Math.max(1, Math.ceil((limit.cobaLagiDalamDetik ?? 60) / 60));
+    return {
+      ok: false,
+      error: `Terlalu banyak permintaan AI. Silakan coba lagi dalam ${menit} menit.`,
+    };
+  }
+
+  return humanizeWithGemini(trimmed, options);
+}
+

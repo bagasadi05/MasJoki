@@ -15,11 +15,11 @@ export function HeroStaticReceipt() {
 
   return (
     <div className="relative mx-auto max-w-[340px] drop-shadow-xl transition-transform duration-300 hover:-translate-y-1">
-      <div className="nota overflow-hidden p-5 sm:p-6 bg-white border border-line rounded-2xl">
+      <div className="nota nota-masuk p-5 sm:p-6 bg-white">
         {/* Accent strip */}
         <span
           aria-hidden
-          className="absolute inset-x-0 top-0 h-1.5 bg-brand"
+          className="absolute inset-x-0 top-0 h-1.5 rounded-t-[13px] bg-brand"
         />
 
         {/* Header Nota */}
@@ -79,7 +79,7 @@ export function HeroStaticReceipt() {
           <span className="text-[13px] text-slate-600 font-medium">
             *Dihitung dari modul harga
           </span>
-          <span className="stempel text-xs py-0.5 px-2">
+          <span className="stempel stempel-masuk text-xs py-0.5 px-2">
             HARGA TRANSPARAN
           </span>
         </div>

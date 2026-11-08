@@ -55,7 +55,7 @@ export function MenuSeluler({
   }, [buka]);
 
   return (
-    <div className="md:hidden">
+    <div className="lg:hidden">
       <button
         ref={tombolRef}
         type="button"

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, ExternalLink, Mail, MessageCircle } from "lucide-react";
+import { ArrowRight, Clock, ExternalLink, Mail, MapPin, MessageCircle } from "lucide-react";
 import { THREADS_URL } from "@/lib/config";
 import { aksenLayanan } from "@/lib/aksen";
 import { SERVICES } from "@/lib/services";
@@ -21,7 +21,7 @@ function ThreadsIcon({ className = "size-3.5" }: { className?: string }) {
 export function SiteFooter() {
   return (
     <footer className="border-t border-line bg-paper-2/70">
-      <div className="mx-auto max-w-6xl px-5 pb-24 pt-14 sm:px-8 sm:pb-16">
+      <div className="mx-auto max-w-6xl px-5 pb-10 pt-14 sm:px-8 sm:pb-16">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.2fr_1fr_0.8fr_1fr]">
           {/* Brand Col */}
           <div>
@@ -39,10 +39,15 @@ export function SiteFooter() {
               Hitung biaya sendiri di awal tanpa tawar-menawar berbelit.
             </p>
 
-            <div className="mt-4 flex items-center gap-2 text-xs font-medium text-slate-600">
-              <span>📍 {site.kota}</span>
-              <span>·</span>
-              <span>⏰ {site.jamOperasional}</span>
+            <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-medium text-slate-600">
+              <span className="inline-flex items-center gap-1.5">
+                <MapPin className="size-3.5 text-muted" aria-hidden />
+                {site.kota}
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <Clock className="size-3.5 text-muted" aria-hidden />
+                {site.jamOperasional}
+              </span>
             </div>
           </div>
 
@@ -96,6 +101,11 @@ export function SiteFooter() {
               <li>
                 <Link href="/jasa" className="text-slate-600 transition-colors hover:text-brand">
                   Daftar Layanan
+                </Link>
+              </li>
+              <li>
+                <Link href="/humanizer" className="text-slate-600 transition-colors hover:text-brand">
+                  Humanizer AI Mandiri
                 </Link>
               </li>
               <li>

@@ -58,36 +58,28 @@ const stripRingkasan = [
 
 const garansiList = [
   {
-    kode: "PASAL 01",
+    kode: "Pasal 01",
     judul: "Harga Terbuka Tanpa Tawar-Menawar",
     isi: "Nominal di nota terkunci sejak awal. Tidak ada biaya siluman atau tambahan dadakan di tengah pengerjaan.",
     icon: Lock,
-    bg: "bg-brand-soft/70 border-brand/25 text-ink",
-    iconBg: "bg-brand-soft text-brand",
   },
   {
-    kode: "PASAL 02",
+    kode: "Pasal 02",
     judul: "Garansi Uang Kembali 100%",
     isi: "Jika hasil tugas menyimpang dari brief dan tidak tuntas via revisi, dana dikembalikan 100% penuh.",
     icon: RotateCcw,
-    bg: "bg-mint-soft/70 border-mint/25 text-ink",
-    iconBg: "bg-mint-soft text-mint",
   },
   {
-    kode: "PASAL 03",
+    kode: "Pasal 03",
     judul: "File Sumber Lengkap & Siap Edit",
     isi: "Mas Joki selalu menyerahkan file sumber (file mentah asli: .docx atau .pptx) yang bebas kamu edit dan simpan kapan pun.",
     icon: FolderArchive,
-    bg: "bg-amber-soft/70 border-amber/25 text-ink",
-    iconBg: "bg-amber-soft text-amber",
   },
   {
-    kode: "PASAL 04",
+    kode: "Pasal 04",
     judul: "Kerahasiaan Naskah & Data Aman",
     isi: "Identitas mahasiswa, materi tugas, dan berkas naskah dijamin aman privat tanpa pernah dipublikasikan.",
     icon: ShieldCheck,
-    bg: "bg-lilac-soft/70 border-lilac/25 text-ink",
-    iconBg: "bg-lilac-soft text-lilac",
   },
 ];
 
@@ -115,16 +107,6 @@ export default function Home() {
          * 1. HERO UTAMA (NILAI JUAL: Harga Terbuka di Awal & Nota Transparan)
          * ========================================================== */}
         <section className="relative overflow-hidden border-b border-line bg-paper">
-          {/* Ambient Lighting Orbs */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -top-24 -left-24 size-[28rem] rounded-full bg-amber-soft/90 blur-3xl opacity-60 animate-pulse-subtle"
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute top-12 -right-24 size-[32rem] rounded-full bg-brand-soft blur-3xl opacity-75"
-          />
-
           {/* Academic Graph Grid Overlay */}
           <div
             aria-hidden
@@ -136,14 +118,14 @@ export default function Home() {
               {/* Badge Kecil & Flagship Tag */}
               <div className="flex flex-wrap items-center gap-2">
                 <div className="inline-flex items-center gap-2 rounded-full border border-line bg-paper-2/90 px-3.5 py-1 text-xs font-bold text-ink shadow-2xs">
-                  <span className="size-2 rounded-full bg-mint animate-pulse" />
+                  <span className="size-2 rounded-full bg-mint" />
                   <span>Jasa Bantuan Tugas</span>
                   <span className="text-muted/40">•</span>
                   <span className="text-slate-600 font-medium">Online</span>
                 </div>
                 <div className="inline-flex items-center gap-1.5 rounded-full border border-mint/30 bg-mint-soft px-3 py-1 text-xs font-bold text-mint shadow-2xs">
                   <Sparkles className="size-3 text-mint" />
-                  <span>Produk Unggulan: Humanisasi Teks AI (GPTZero 98%) &amp; Turnitin</span>
+                  <span>Unggulan: Humanisasi Teks AI &amp; Penurunan Turnitin</span>
                 </div>
               </div>
 
@@ -206,55 +188,26 @@ export default function Home() {
         </section>
 
         {/* ========================================================== *
-         * 2. STRIP RINGKASAN CEPAT (Animasi Berjalan / Infinite Marquee)
+         * 2. STRIP RINGKASAN CEPAT (Statis, tanpa animasi berjalan)
          * ========================================================== */}
         <section
           aria-label="Ringkasan keunggulan layanan Mas Joki"
-          className="relative overflow-hidden border-b border-line bg-white/95 dark:bg-[#0f172a]/95 py-3.5 shadow-2xs backdrop-blur-sm"
+          className="border-b border-line bg-paper-2/60"
         >
-          {/* Efek gradien fade di tepi kiri & kanan */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-8 sm:w-20 bg-gradient-to-r from-white dark:from-[#0f172a] to-transparent z-10" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-8 sm:w-20 bg-gradient-to-l from-white dark:from-[#0f172a] to-transparent z-10" />
-
-          <div className="flex w-max animate-marquee items-center select-none hover:[animation-play-state:paused] [animation-duration:28s]">
-            {/* Track 1: Set Pertama */}
-            <div className="flex items-center gap-6 sm:gap-8 pr-6 sm:pr-8">
-              {stripRingkasan.concat(stripRingkasan).map((item, idx) => (
-                <div key={`track1-${idx}`} className="flex items-center gap-6 sm:gap-8">
-                  <div className="flex items-center gap-2">
-                    <span className={`grid size-6 place-items-center rounded-full text-xs shrink-0 ${item.iconBg}`}>
-                      <item.icon className="size-3.5" />
-                    </span>
-                    <span className="text-xs sm:text-sm font-bold text-ink whitespace-nowrap">
-                      {item.label}
-                    </span>
-                  </div>
-                  <span className="text-slate-300 dark:text-slate-700" aria-hidden="true">
-                    •
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            {/* Track 2: Set Duplikat Identik untuk Loop Tanpa Henti */}
-            <div className="flex items-center gap-6 sm:gap-8 pr-6 sm:pr-8" aria-hidden="true">
-              {stripRingkasan.concat(stripRingkasan).map((item, idx) => (
-                <div key={`track2-${idx}`} className="flex items-center gap-6 sm:gap-8">
-                  <div className="flex items-center gap-2">
-                    <span className={`grid size-6 place-items-center rounded-full text-xs shrink-0 ${item.iconBg}`}>
-                      <item.icon className="size-3.5" />
-                    </span>
-                    <span className="text-xs sm:text-sm font-bold text-ink whitespace-nowrap">
-                      {item.label}
-                    </span>
-                  </div>
-                  <span className="text-slate-300 dark:text-slate-700" aria-hidden="true">
-                    •
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
+          <ul className="mx-auto grid max-w-6xl grid-cols-2 gap-x-5 gap-y-3.5 px-5 py-4 sm:px-8 lg:grid-cols-4 lg:py-5">
+            {stripRingkasan.map((item) => (
+              <li key={item.label} className="flex items-start gap-2.5">
+                <span
+                  className={`grid size-7 shrink-0 place-items-center rounded-full ${item.iconBg}`}
+                >
+                  <item.icon className="size-3.5" aria-hidden />
+                </span>
+                <span className="pt-0.5 text-xs font-bold leading-snug text-ink sm:text-sm">
+                  {item.label}
+                </span>
+              </li>
+            ))}
+          </ul>
         </section>
 
         {/* ========================================================== *
@@ -271,12 +224,11 @@ export default function Home() {
           <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
               <div className="max-w-2xl">
-                <span className="stempel">PRODUK UNGGULAN &amp; PILIHAN UTAMA</span>
-                <h2 className="mt-3 font-display text-[2rem] leading-tight tracking-[-0.02em] text-ink sm:text-[2.6rem]">
+                <h2 className="font-display text-[2rem] leading-tight tracking-[-0.02em] text-ink sm:text-[2.6rem]">
                   Layanan Unggulan &amp; Paling Banyak Dipesan.
                 </h2>
-                <p className="mt-2 text-xs sm:text-sm leading-relaxed text-slate-600 font-medium">
-                  Spesialisasi utama: Humanisasi teks AI (terbukti lolos GPTZero 98% Human), penurunan Turnitin manual, dan asistensi tugas akademik tanpa perantara.
+                <p className="mt-2 text-sm leading-relaxed text-slate-600 font-medium">
+                  Spesialisasi utama: humanisasi teks AI, penurunan Turnitin manual, dan asistensi tugas akademik tanpa perantara.
                 </p>
               </div>
 
@@ -306,13 +258,12 @@ export default function Home() {
             aria-hidden
             className="kertas-titik pointer-events-none absolute inset-0 opacity-30"
           />
-          <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
-            <div className="max-w-xl">
+          <div className="relative mx-auto max-w-6xl px-5 sm:px-8">              <div className="max-w-xl">
               <span className="stempel-hijau">✓ PIAGAM INTEGRITAS</span>
               <h2 className="mt-3 font-display text-[2rem] leading-tight tracking-[-0.02em] text-ink sm:text-[2.6rem]">
                 Empat Garansi Transparansi Mas Joki.
               </h2>
-              <p className="mt-2 text-xs sm:text-sm text-slate-600 font-medium">
+              <p className="mt-2 text-sm text-slate-600 font-medium">
                 Prinsip baku tanpa kompromi yang Mas Joki pegang untuk setiap tugasmu.
               </p>
             </div>
@@ -323,13 +274,13 @@ export default function Home() {
                 return (
                   <div
                     key={item.judul}
-                    className={`rounded-2xl border p-6 transition-all duration-300 hover:shadow-md ${item.bg}`}
+                    className="rounded-2xl border border-line bg-white p-6 transition-shadow duration-300 hover:shadow-md"
                   >
-                    <div className="flex items-center justify-between border-b border-dashed border-line/60 pb-3.5">
-                      <span className="font-mono text-xs font-bold text-slate-600 tracking-wider">
+                    <div className="flex items-center justify-between border-b border-dashed border-line pb-3.5">
+                      <span className="font-mono text-xs font-bold tracking-wider text-slate-600">
                         {item.kode}
                       </span>
-                      <div className={`grid size-9 place-items-center rounded-xl ${item.iconBg}`}>
+                      <div className="grid size-9 place-items-center rounded-xl bg-paper-2 text-ink-soft">
                         <Icon className="size-4.5" />
                       </div>
                     </div>
@@ -338,7 +289,7 @@ export default function Home() {
                       {item.judul}
                     </h3>
 
-                    <p className="mt-2 text-xs sm:text-sm leading-relaxed text-slate-600 font-medium line-clamp-2">
+                    <p className="mt-2 text-sm leading-relaxed text-slate-600 font-medium">
                       {item.isi}
                     </p>
                   </div>
@@ -417,8 +368,7 @@ export default function Home() {
           <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
               <div className="max-w-2xl">
-                <span className="stempel">TRANSPARANSI HARGA</span>
-                <h2 className="mt-3 font-display text-[2.2rem] leading-tight tracking-[-0.025em] text-ink sm:text-[2.6rem]">
+                <h2 className="font-display text-[2.2rem] leading-tight tracking-[-0.025em] text-ink sm:text-[2.6rem]">
                   Cek Estimasi Biaya Tugasmu Seketika.
                 </h2>
                 <p className="mt-2 text-xs sm:text-sm md:text-base leading-relaxed text-slate-600 font-medium">
@@ -486,13 +436,9 @@ export default function Home() {
               className="pointer-events-none absolute -left-16 -bottom-16 size-80 rounded-full bg-lilac/25 blur-3xl"
             />
 
-            <div className="relative grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+            <div className="relative grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center lg:gap-10">
               <div>
-                <span className="stempel bg-white/10 text-white border-white/40">
-                  ESTIMASI SEKETIKA
-                </span>
-
-                <h2 className="mt-4 font-display text-[2.2rem] leading-[1.08] tracking-[-0.02em] text-white sm:text-[2.8rem]">
+                <h2 className="font-display text-[2.2rem] leading-[1.08] tracking-[-0.02em] text-white sm:text-[2.8rem]">
                   Cek harga tugasmu sekarang.
                   <br />
                   <span className="text-stabilo">
@@ -505,10 +451,10 @@ export default function Home() {
                 </p>
 
                 {/* Dua Tombol Aksi: Buka Kalkulator & Chat WhatsApp */}
-                <div className="mt-8 flex flex-col gap-3.5 sm:flex-row">
+                <div className="mt-8 flex flex-col gap-3.5 sm:flex-row sm:flex-wrap">
                   <Link
                     href="/hitung"
-                    className="inline-flex items-center justify-center gap-2 rounded-2xl bg-stabilo px-7 py-4 text-sm font-black text-slate-950 shadow-lg transition-all duration-200 hover:-translate-y-0.5 hover:bg-amber-300 active:translate-y-0 cursor-pointer"
+                    className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl bg-stabilo px-7 py-4 text-sm font-black text-slate-950 shadow-lg transition-all duration-200 hover:-translate-y-0.5 hover:bg-amber-300 active:translate-y-0 cursor-pointer"
                   >
                     <Calculator className="size-4.5" />
                     <span>Hitung Biaya Sekarang</span>
@@ -518,7 +464,7 @@ export default function Home() {
                     href={waLink(waPesanUmum)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/30 bg-white/5 px-7 py-4 text-sm font-bold text-white backdrop-blur-xs transition-all duration-200 hover:bg-white/15 active:translate-y-0"
+                    className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl border border-white/30 bg-white/5 px-7 py-4 text-sm font-bold text-white backdrop-blur-xs transition-all duration-200 hover:bg-white/15 active:translate-y-0"
                   >
                     <MessageCircle className="size-4.5" />
                     <span>Chat Mas Joki di WhatsApp</span>
@@ -529,7 +475,7 @@ export default function Home() {
 
               {/* Maskot Avatar di CTA Akhir */}
               <div className="hidden lg:flex justify-end">
-                <div className="relative size-52 overflow-hidden rounded-2xl border-4 border-white/20 bg-white/5 shadow-2xl backdrop-blur-sm transition-transform duration-300 hover:scale-105 animate-float">
+                <div className="relative size-52 overflow-hidden rounded-2xl border-4 border-white/20 bg-white/5 shadow-2xl backdrop-blur-sm">
                   <Image
                     src="/mas-joki.jpg"
                     alt="Maskot Mas Joki"

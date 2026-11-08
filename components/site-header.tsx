@@ -20,7 +20,7 @@ export function SiteHeader() {
         <div className="flex items-center gap-3">
           <Link
             href="/"
-            className="group flex items-center gap-2.5 transition-transform duration-150 hover:scale-[1.02]"
+            className="group flex shrink-0 items-center gap-2.5 transition-transform duration-150 hover:scale-[1.02]"
             aria-label="Mas Joki, beranda"
           >
             <div className="relative size-10 shrink-0 overflow-hidden rounded-full border-2 border-brand/30 bg-brand-soft shadow-xs ring-2 ring-white">
@@ -39,7 +39,7 @@ export function SiteHeader() {
               <span className="font-display text-[1.22rem] font-bold tracking-tight text-ink leading-tight">
                 Mas Joki
               </span>
-              <span className="hidden font-mono text-xs font-medium text-slate-500 sm:inline-block">
+              <span className="hidden font-mono text-xs font-medium text-slate-500 xl:inline-block">
                 Asisten Akademik Transparan
               </span>
             </div>
@@ -53,23 +53,18 @@ export function SiteHeader() {
                 : "border-amber/25 bg-amber-soft/90 text-amber"
             }`}
           >
-            <span className="relative flex size-1.5">
-              {isOpen && (
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-mint opacity-75" />
-              )}
-              <span
-                className={`relative inline-flex rounded-full size-1.5 ${
-                  isOpen ? "bg-mint" : "bg-amber"
-                }`}
-              />
-            </span>
+            <span
+              className={`inline-flex size-1.5 rounded-full ${
+                isOpen ? "bg-mint" : "bg-amber"
+              }`}
+            />
             {isOpen ? "Mas Joki Online" : "Luar Jam Kerja (Buka 07.00)"}
           </span>
         </div>
 
         {/* Desktop Nav */}
-        <nav aria-label="Navigasi utama" className="hidden md:block">
-          <ul className="flex items-center gap-1 lg:gap-1.5">
+        <nav aria-label="Navigasi utama" className="hidden lg:block">
+          <ul className="flex items-center gap-0.5 xl:gap-1">
             {navigasi.map((item) => {
               const aktif =
                 item.href === "/"
@@ -82,7 +77,7 @@ export function SiteHeader() {
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className={`rounded-xl px-3.5 py-2 text-[0.86rem] font-bold transition-all ${
+                    className={`whitespace-nowrap rounded-xl px-3 py-2 text-[0.86rem] font-bold transition-all xl:px-3.5 ${
                       aktif
                         ? "bg-brand-soft text-brand shadow-2xs"
                         : "text-ink-soft hover:bg-paper-2 hover:text-brand"
@@ -101,7 +96,7 @@ export function SiteHeader() {
           <ThemeToggle />
           <Link
             href="/hitung"
-            className="hidden sm:inline-flex items-center gap-1.5 rounded-xl bg-brand px-4 py-2.5 text-[0.82rem] font-bold text-white shadow-sm shadow-brand/25 transition-all duration-150 hover:-translate-y-0.5 hover:bg-brand-dark hover:shadow-md hover:shadow-brand/30 active:translate-y-0"
+            className="hidden shrink-0 items-center gap-1.5 whitespace-nowrap rounded-xl bg-brand px-4 py-2.5 text-[0.82rem] font-bold text-white shadow-sm shadow-brand/25 transition-all duration-150 hover:-translate-y-0.5 hover:bg-brand-dark hover:shadow-md hover:shadow-brand/30 active:translate-y-0 sm:inline-flex"
           >
             <Calculator className="size-3.5" />
             <span>Hitung Biaya</span>

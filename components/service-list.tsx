@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { ServiceIcon } from "./service-icon";
+import { aksenLayanan } from "@/lib/aksen";
 import {
   CATALOG_SERVICES,
   type ServiceId,
@@ -77,6 +78,7 @@ export function ServiceList({
         {services.map((service) => {
           const deskripsi = DESKRIPSI_AWAM[service.id] ?? service.promise;
           const harga = HARGA_SERAGAM[service.id];
+          const aksen = aksenLayanan(service.id);
           const isUnggulan = service.id === "humanisasi" || service.id === "turnitin_ai";
 
           return (
@@ -88,22 +90,22 @@ export function ServiceList({
                   : "border border-line shadow-sm hover:border-brand/40"
               }`}
             >
-              {/* Top colored accent line: seragam warna brand */}
+              {/* Garis atas mengikuti warna layanan, bukan warna aksi. */}
               <span
                 aria-hidden
-                className="absolute inset-x-0 top-0 h-1.5 bg-brand"
+                className={`absolute inset-x-0 top-0 h-1.5 ${aksen.dot}`}
               />
 
               <div>
                 {/* Header: Ikon Seragam Brand & Badge Populer Bersih */}
                 <div className="flex items-center justify-between gap-2">
-                  <div className="grid size-12 place-items-center rounded-2xl border border-brand/20 bg-brand-soft/80 shadow-2xs transition-transform duration-200 group-hover:scale-105">
+                  <div className={`grid size-12 place-items-center rounded-2xl border border-line shadow-2xs transition-transform duration-200 group-hover:scale-105 ${aksen.soft}`}>
                     <ServiceIcon id={service.id} className="size-7" />
                   </div>
 
                   {isUnggulan ? (
                     <span className="inline-flex items-center gap-1.5 rounded-full border border-mint/30 bg-mint-soft px-2.5 py-0.5 text-xs font-bold text-mint shadow-2xs">
-                      <span className="size-1.5 rounded-full bg-mint animate-pulse" />
+                      <span className="size-1.5 rounded-full bg-mint" />
                       Produk Unggulan
                     </span>
                   ) : service.popular ? (
@@ -124,7 +126,7 @@ export function ServiceList({
                 {service.id === "humanisasi" && (
                   <p className="mt-1 inline-flex items-center gap-1.5 text-xs font-bold text-mint">
                     <span>✓</span>
-                    <span>Teruji Lolos GPTZero 98% Human</span>
+                    <span>Penyuntingan manual agar terbaca alami</span>
                   </p>
                 )}
                 {service.id === "turnitin_ai" && (

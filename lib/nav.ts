@@ -2,5 +2,6 @@
 export const navigasi = [
   { href: "/", label: "Beranda" },
   { href: "/jasa", label: "Layanan" },
-  { href: "/cara-kerja", label: "Cara Kerja & FAQ" },
+  { href: "/humanizer", label: "Humanizer" },
+  { href: "/cara-kerja", label: "Cara Kerja" },
 ];

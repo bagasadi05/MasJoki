@@ -47,20 +47,20 @@ interface CaseItem {
 const CASES: CaseItem[] = [
   {
     id: "humanisasi",
-    tabLabel: "Humanisasi AI (Bukti GPTZero 98%)",
+    tabLabel: "Humanisasi AI (Contoh Uji)",
     icon: Sparkles,
-    title: "Humanisasi Teks AI — Terbukti Lolos GPTZero 98% Human",
+    title: "Humanisasi Teks AI — Contoh Hasil Uji",
     subtitle:
-      "Mengubah kalimat kaku hasil generator AI menjadi prosa akademis alami yang lolos pemindaian detektor AI (GPTZero 98% Human) dan Turnitin.",
+      "Mengubah kalimat kaku hasil generator AI menjadi prosa akademis yang lebih alami. Contoh di bawah berasal dari satu naskah uji; hasil tiap naskah bisa berbeda.",
     proof: {
-      title: "Tangkapan Layar Uji GPTZero Asli (Model 4.1m)",
+      title: "Dokumentasi Uji GPTZero (Model 4.1m)",
       subtitle:
-        "Hasil pemindaian naskah hukum & pemasyarakatan setelah diolah manual oleh Mas Joki — terverifikasi 98% Human.",
-      score: "GPTZero: 98% Human (Entirely Human)",
+        "Salah satu hasil uji naskah hukum & pemasyarakatan setelah diolah manual oleh Mas Joki. Skor bisa berbeda untuk naskah lain.",
+      score: "Contoh uji: GPTZero 98% Human",
       stats: "1.085 kata · 8.109 karakter",
       image: "/bukti/bukti-humanizer-gptzero.jpg",
-      alt: "Bukti Nyata Hasil Scan AI Humanizer Mas Joki di GPTZero 98% Human",
-      note: "Dokumen riil: “Sistem pemasyarakatan merupakan bagian dari sistem hukum pidana di Indonesia”. Pengerjaan manual langsung oleh Mas Joki tanpa perantara.",
+      alt: "Contoh hasil uji scan AI Humanizer Mas Joki di GPTZero",
+      note: "Dokumen riil: “Sistem pemasyarakatan merupakan bagian dari sistem hukum pidana di Indonesia”. Pengerjaan manual langsung oleh Mas Joki tanpa perantara. Skor deteksi bukan jaminan dan bergantung pada naskah, versi detektor, serta cara pengerjaan.",
     },
     before: {
       badge: "Draft AI Mentah (ChatGPT / Claude)",
@@ -78,17 +78,17 @@ const CASES: CaseItem[] = [
       ],
     },
     after: {
-      badge: "Hasil Olahan Mas Joki (Terverifikasi)",
+      badge: "Hasil Olahan Mas Joki (Contoh Uji)",
       metrics: [
-        { label: "Deteksi GPTZero", value: "98% Human (Lolos)", bad: false },
-        { label: "Skor AI", value: "1% AI / 1% Mixed", bad: false },
+        { label: "Deteksi GPTZero", value: "98% Human (contoh uji)", bad: false },
+        { label: "Skor AI", value: "1% AI / 1% Mixed (contoh)", bad: false },
       ],
-      heading: "Naskah Mengalir Nyata (Kutipan dari Dokumen Lolos):",
+      heading: "Naskah Mengalir Lebih Alami (Kutipan Contoh Uji):",
       snippet:
         "“Penelitian ini dilakukan untuk mengetahui bagaimana aturan hukum tentang keselamatan kerja petugas yang bekerja di lapas berisiko tinggi. Selain itu penelitian ini juga ingin melihat bahaya apa saja yang mungkin dihadapi petugas berdasarkan buku dan penelitian yang sudah ada. Pembahasan penelitian ini menggunakan Nusakambangan sebagai tempat yang dijadikan contoh...”",
       notes: [
-        "Terbukti lolos deteksi GPTZero Model 4.1m dengan skor 98% Human",
-        "Diksi akademis bervariasi dengan ritme penulisan alami manusia",
+        "Pada naskah uji ini, GPTZero Model 4.1m mencatat 98% Human",
+        "Diksi akademis bervariasi dengan ritme penulisan lebih alami",
         "Sitasi dan rujukan [8] tetap utuh serta terintegrasi rapi",
       ],
     },
@@ -181,15 +181,15 @@ export function BeforeAfterShowcase() {
     <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
       {/* Header Section */}
       <div className="mx-auto max-w-3xl text-center">
-        <span className="stempel-hijau">✓ TERVERIFIKASI SISTEM</span>
+        <span className="stempel-hijau">✓ CONTOH HASIL UJI</span>
         <h2 className="mt-3.5 font-display text-[2.1rem] font-bold leading-tight tracking-[-0.02em] text-ink sm:text-[2.7rem]">
           Lihat Langsung Standar Pengerjaan Mas Joki.
         </h2>
         <p className="mt-3.5 text-base leading-relaxed text-slate-600 font-medium">
-          Bukan sekadar selesai, tapi terbukti memenuhi standar mutu akademik dan lolos deteksi sistem.
+          Dikerjakan dengan standar mutu akademik dan pemeriksaan format yang teliti.
         </p>
         <p className="mt-2 text-xs text-slate-500">
-          Contoh nyata pemindaian dan perbandingan naskah di bawah ini.
+          Contoh pemindaian dan perbandingan naskah di bawah ini. Hasil tiap naskah bisa berbeda.
         </p>
 
         {/* Tab Selector */}

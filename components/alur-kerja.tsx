@@ -36,11 +36,10 @@ export function AlurKerja() {
     <section id="cara-pesan" className="border-b border-line bg-paper-2/40 py-14 sm:py-20 scroll-mt-20">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="text-center max-w-xl mx-auto">
-          <span className="stempel-hijau">✓ ALUR TRANSPARAN</span>
-          <h2 className="mt-3 font-display text-[2rem] leading-tight tracking-tight text-ink sm:text-[2.5rem]">
+          <h2 className="font-display text-[2rem] leading-tight tracking-tight text-ink sm:text-[2.5rem]">
             Empat Langkah Pesan Tugas.
           </h2>
-          <p className="mt-2 text-xs sm:text-sm text-slate-600 font-medium">
+          <p className="mt-2 text-sm text-slate-600 font-medium">
             Proses ringkas tanpa perlu bikin akun, langsung terhubung ke WhatsApp Mas Joki.
           </p>
         </div>

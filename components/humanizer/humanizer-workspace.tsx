@@ -16,13 +16,9 @@ import {
   Gift,
   Loader2,
 } from "lucide-react";
-import { humanizeWithGeminiAction } from "@/app/actions";
+import { getHumanizerWalletAction, humanizeWithGeminiAction } from "@/app/actions";
 import { analyze, countWords } from "@/lib/humanizer/analyzer";
-import {
-  humanize,
-  applyBahasaSederhana,
-} from "@/lib/humanizer/engine";
-import { INITIAL_FREE_TOKENS, STORAGE_KEYS } from "@/lib/humanizer/tokens";
+import { applyBahasaSederhana } from "@/lib/humanizer/engine";
 import type { AnalysisResult } from "@/lib/humanizer/types";
 
 import { KpiCards } from "./kpi-cards";
@@ -41,10 +37,11 @@ function escapeXml(str: string): string {
 }
 
 export function HumanizerWorkspace() {
-  const [mounted, setMounted] = useState(false);
   const [inputText, setInputText] = useState("");
   const [historyBeforeHumanize, setHistoryBeforeHumanize] = useState<string | null>(null);
-  const [tokenBalance, setTokenBalance] = useState(INITIAL_FREE_TOKENS);
+  const [tokenBalance, setTokenBalance] = useState(0);
+  const [walletLoading, setWalletLoading] = useState(true);
+  const [walletError, setWalletError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"studio" | "diff" | "audit" | "settings">("studio");
   const [customTerms, setCustomTerms] = useState<string[]>([]);
   const [newTermInput, setNewTermInput] = useState("");
@@ -52,39 +49,38 @@ export function HumanizerWorkspace() {
   const [modalInitialTab, setModalInitialTab] = useState<"buy" | "voucher">("buy");
   const [toast, setToast] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
-  // Token yang terpakai pada aksi humanize terakhir; dikembalikan bila user
-  // menekan "Reset Asli" agar satu naskah tidak ditagih dua kali.
-  const [lastCharge, setLastCharge] = useState(0);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const processTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Bersihkan timer saat komponen dilepas agar tidak ada setState setelah unmount.
   useEffect(() => {
     return () => {
       if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
-      if (processTimerRef.current) clearTimeout(processTimerRef.current);
     };
   }, []);
 
-  // Initialize tokens from localStorage
   useEffect(() => {
-    setMounted(true);
-    try {
-      const isInit = localStorage.getItem(STORAGE_KEYS.INIT_FLAG);
-      const storedTokens = localStorage.getItem(STORAGE_KEYS.TOKENS);
+    let cancelled = false;
+    getHumanizerWalletAction()
+      .then((result) => {
+        if (cancelled) return;
+        if (result.ok) {
+          setTokenBalance(result.remainingWords);
+          setWalletError(null);
+        } else {
+          setWalletError(result.error);
+        }
+        setWalletLoading(false);
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setWalletError("Saldo token tidak bisa dimuat. Silakan muat ulang halaman.");
+        setWalletLoading(false);
+      });
 
-      if (!isInit || storedTokens === null) {
-        localStorage.setItem(STORAGE_KEYS.INIT_FLAG, "true");
-        localStorage.setItem(STORAGE_KEYS.TOKENS, INITIAL_FREE_TOKENS.toString());
-        setTokenBalance(INITIAL_FREE_TOKENS);
-      } else {
-        setTokenBalance(parseInt(storedTokens, 10) || 0);
-      }
-    } catch {
-      // Ignore localStorage access errors
-    }
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   // Debounced text for smooth typing without lag
@@ -114,67 +110,49 @@ export function HumanizerWorkspace() {
     }, 3200);
   };
 
-  const adjustTokens = (delta: number) => {
-    setTokenBalance((prev) => {
-      const next = Math.max(0, prev + delta);
-      try {
-        localStorage.setItem(STORAGE_KEYS.TOKENS, next.toString());
-      } catch {
-        // Ignore localStorage access errors
-      }
-      return next;
-    });
-  };
-
   const handleBalanceChange = (newBal: number) => {
     setTokenBalance(newBal);
-    try {
-      localStorage.setItem(STORAGE_KEYS.TOKENS, newBal.toString());
-    } catch {
-      // Ignore localStorage access errors
-    }
   };
 
-  /** Pastikan saldo cukup, lalu potong. Kembalikan false bila saldo kurang. */
-  const requestCharge = (amount: number): boolean => {
-    if (tokenBalance < amount) {
-      setModalInitialTab("buy");
-      setIsModalOpen(true);
-      showToast(
-        `Token tidak cukup (${tokenBalance.toLocaleString("id-ID")} kata tersedia, butuh ${amount.toLocaleString("id-ID")} kata). Silakan isi ulang paket token atau klaim voucher.`
-      );
-      return false;
-    }
-    adjustTokens(-amount);
-    return true;
-  };
-
-  // Aksi Tunggal: Humanize ke Bahasa Sederhana Alami (Skill)
+  // Aksi utama untuk menulis ulang naskah.
   const handleHumanize = async () => {
     if (!inputText.trim()) {
-      showToast("Tempelkan teks naskah Anda terlebih dahulu!");
+      showToast("Tempelkan teks naskah kamu terlebih dahulu!");
+      return;
+    }
+
+    if (walletLoading || walletError) {
+      showToast(walletError ?? "Saldo token sedang dimuat. Coba lagi sebentar.");
       return;
     }
 
     if (wordCount === 0 || isProcessing) return;
-    if (!requestCharge(wordCount)) return;
 
     setIsProcessing(true);
 
     try {
       const originalText = historyBeforeHumanize ?? inputText;
 
-      // 1. Coba tulis ulang via Gemini AI dengan aturan Skill Bahasa Sederhana Alami
       let humanized = "";
+      let usedServerAi = false;
+      let usedLocalFallback = false;
       const res = await humanizeWithGeminiAction(inputText, {
         intensity: "sederhana",
         customTerms,
       });
 
-      if (res.ok && res.text && res.text.trim()) {
-        humanized = res.text.trim();
+      const serverText = res.text?.trim() ?? "";
+      if (res.ok && serverText && serverText !== inputText.trim()) {
+        humanized = serverText;
+        usedServerAi = true;
+        if (typeof res.remainingWords === "number") setTokenBalance(res.remainingWords);
+      } else if (!res.ok && res.errorCode !== "ai") {
+        showToast(res.error ?? "Naskah tidak bisa diproses.");
+        return;
       } else {
-        // 2. Fallback instan ke mesin aturan lokal Bahasa Sederhana Alami
+        // Gemini bisa mengembalikan salinan yang sama tanpa error. Tetap coba
+        // mesin lokal agar tombol Humanize tidak berakhir sebagai no-op.
+        usedLocalFallback = true;
         humanized = applyBahasaSederhana(inputText, {
           intensity: "sederhana",
           bahasaSederhana: true,
@@ -182,55 +160,39 @@ export function HumanizerWorkspace() {
         });
       }
 
-      if (humanized === inputText) {
-        // Kembalikan token karena tidak ada perubahan pada naskah
-        adjustTokens(wordCount);
+      if (humanized.trim() === inputText.trim()) {
         showToast(
-          "Naskah sudah sangat sederhana dan natural atau tidak ada kata formal yang perlu diubah."
+          usedLocalFallback
+            ? "Layanan AI server gagal dan mesin lokal belum menemukan pola yang bisa disederhanakan. Periksa GEMINI_API_KEY."
+            : "Naskah belum berubah. AI dan mesin lokal tidak menemukan pola yang bisa disederhanakan."
         );
         return;
       }
 
       setHistoryBeforeHumanize(originalText);
       setInputText(humanized);
-      setLastCharge((prev) => prev + wordCount);
 
       const newAnalysis = analyze(humanized);
       showToast(
-        `Naskah disederhanakan! Estimasi risiko AI ${newAnalysis.risk.score.toFixed(1)}% (Terpakai ${wordCount.toLocaleString("id-ID")} token)`
+        usedServerAi
+          ? `Naskah disederhanakan! Estimasi internal ${newAnalysis.risk.score.toFixed(1)}%. Terpakai ${wordCount.toLocaleString("id-ID")} kata.`
+          : usedLocalFallback
+            ? `Gemini tidak tersedia; naskah disederhanakan dengan mesin lokal. Estimasi internal ${newAnalysis.risk.score.toFixed(1)}%.`
+            : `Naskah disederhanakan dengan mesin lokal. Estimasi internal ${newAnalysis.risk.score.toFixed(1)}%.`
       );
     } catch {
-      // Fallback lokal jika ada gangguan jaringan
       try {
-        const localResult = applyBahasaSederhana(inputText, {
-          intensity: "sederhana",
-          bahasaSederhana: true,
-          customTerms,
-        });
-        if (localResult !== inputText) {
-          const originalText = historyBeforeHumanize ?? inputText;
-          setHistoryBeforeHumanize(originalText);
-          setInputText(localResult);
-          setLastCharge((prev) => prev + wordCount);
-          const newAnalysis = analyze(localResult);
-          showToast(
-            `Naskah disederhanakan! Estimasi risiko AI ${newAnalysis.risk.score.toFixed(1)}%`
-          );
-          return;
-        }
+        const wallet = await getHumanizerWalletAction();
+        if (wallet.ok) setTokenBalance(wallet.remainingWords);
       } catch {
-        // Ignore fallback error
+        // Status saldo tetap tidak diketahui jika sinkronisasi kedua juga gagal.
       }
-
-      adjustTokens(wordCount);
-      showToast("Gagal memproses naskah. Kuota token Anda tetap aman.");
+      showToast("Koneksi terputus. Saldo disinkronkan jika server sempat memproses; cek hasil sebelum mencoba lagi.");
     } finally {
       setIsProcessing(false);
     }
   };
 
-  // Reset ke naskah sebelum perubahan terakhir. Token yang sudah terpakai
-  // dikembalikan, dan riwayat dikosongkan supaya restore tidak bolak-balik.
   const handleRestore = () => {
     if (!historyBeforeHumanize) {
       showToast("Belum ada riwayat naskah sebelumnya yang tersimpan.");
@@ -238,30 +200,24 @@ export function HumanizerWorkspace() {
     }
 
     const prev = historyBeforeHumanize;
-    const refund = lastCharge;
     setHistoryBeforeHumanize(null);
     setInputText(prev);
-    setLastCharge(0);
-
-    if (refund > 0) {
-      adjustTokens(refund);
-      showToast(
-        `Naskah dikembalikan ke versi sebelumnya. ${refund.toLocaleString("id-ID")} kata dikembalikan ke saldo.`
-      );
-      return;
-    }
-
-    showToast("Naskah dikembalikan ke versi sebelumnya.");
+    showToast("Naskah dikembalikan ke versi sebelumnya. Token yang sudah dipakai tidak dibatalkan.");
   };
 
   // Process raw file
   const processFile = async (file: File) => {
     if (isProcessing) return;
     const fileNameLower = file.name.toLowerCase();
+    const MAX_FILE_BYTES = 2 * 1024 * 1024;
 
-    // .doc lama adalah biner, tidak bisa dibaca sebagai teks.
-    if (fileNameLower.endsWith(".doc") && !fileNameLower.endsWith(".docx")) {
-      showToast("Format .doc lama belum didukung. Simpan ulang sebagai .docx atau .txt.");
+    if (file.size > MAX_FILE_BYTES) {
+      showToast("Ukuran file maksimal 2 MB.");
+      return;
+    }
+
+    if (!fileNameLower.endsWith(".docx") && !fileNameLower.endsWith(".txt")) {
+      showToast("Format belum didukung. Gunakan file .docx atau .txt.");
       return;
     }
 
@@ -273,7 +229,6 @@ export function HumanizerWorkspace() {
         const res = await mammoth.extractRawText({ arrayBuffer });
         setInputText(res.value);
         setHistoryBeforeHumanize(null);
-        setLastCharge(0);
         showToast(`File Word "${file.name}" berhasil dimuat!`);
       } catch (err: unknown) {
         showToast(
@@ -286,9 +241,9 @@ export function HumanizerWorkspace() {
         const content = event.target?.result as string;
         setInputText(content);
         setHistoryBeforeHumanize(null);
-        setLastCharge(0);
         showToast(`File "${file.name}" berhasil dimuat!`);
       };
+      reader.onerror = () => showToast("Gagal membaca file teks.");
       reader.readAsText(file);
     }
   };
@@ -400,6 +355,20 @@ export function HumanizerWorkspace() {
     setCustomTerms(customTerms.filter((item) => item !== termToRemove));
   };
 
+  const tabOrder = ["studio", "diff", "audit", "settings"] as const;
+  const handleTabKeyDown = (
+    event: React.KeyboardEvent<HTMLButtonElement>,
+    currentIndex: number,
+  ) => {
+    if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+    event.preventDefault();
+    const direction = event.key === "ArrowRight" ? 1 : -1;
+    const nextIndex = (currentIndex + direction + tabOrder.length) % tabOrder.length;
+    const nextTab = tabOrder[nextIndex];
+    setActiveTab(nextTab);
+    document.getElementById(`humanizer-tab-${nextTab}`)?.focus();
+  };
+
   return (
     <div className="space-y-5">
       {/* Toast Notification */}
@@ -415,7 +384,7 @@ export function HumanizerWorkspace() {
       )}
 
       {/* Top Banner & Token Bar */}
-      <section className="bg-white dark:bg-card rounded-3xl border border-line p-4 sm:p-5 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <section className="bg-white dark:bg-card rounded-3xl border border-line p-4 sm:p-5 shadow-xs flex flex-col md:flex-row flex-wrap items-start md:items-center justify-between gap-4">
         <div className="flex items-center gap-3.5">
           <div className="size-11 rounded-2xl bg-brand text-white flex items-center justify-center shadow-md shadow-brand/20 shrink-0">
             <ShieldCheck className="size-6" />
@@ -423,15 +392,15 @@ export function HumanizerWorkspace() {
           <div>
             <div className="flex items-center gap-2">
               <span className="px-2 py-0.5 rounded-md bg-brand-soft text-brand text-[10px] font-extrabold uppercase tracking-wider">
-                Skill: Bahasa Sederhana Alami
+                Humanizer AI
               </span>
             </div>
             <h2 className="font-display font-bold text-lg sm:text-xl text-ink mt-1">
-              Humanizer AI — Bahasa Sederhana Alami
+              Humanizer AI — Penulisan Lugas
             </h2>
             <p className="text-xs text-muted mt-0.5">
               Mengubah naskah akademik & formal menjadi bahasa Indonesia yang sangat sederhana, agak polos,
-              dan mengalir apa adanya, dengan tetap menjaga 100% data, angka desimal, persentase, dan sitasi referensi.
+              dan mengalir apa adanya, dengan pemeriksaan angka, persentase, dan sitasi referensi.
             </p>
           </div>
         </div>
@@ -443,7 +412,11 @@ export function HumanizerWorkspace() {
             <span>
               Saldo Token:{" "}
               <span className="font-mono text-brand">
-                {mounted ? tokenBalance.toLocaleString("id-ID") : "..."}
+                {walletLoading
+                  ? "Memuat…"
+                  : walletError
+                    ? "Tidak tersedia"
+                    : tokenBalance.toLocaleString("id-ID")}
               </span>{" "}
               kata
             </span>
@@ -455,6 +428,7 @@ export function HumanizerWorkspace() {
               setModalInitialTab("voucher");
               setIsModalOpen(true);
             }}
+            disabled={walletLoading || Boolean(walletError)}
             className="cursor-pointer inline-flex items-center gap-1.5 px-3.5 py-2 rounded-2xl border border-line bg-white dark:bg-slate-800 hover:border-brand/40 text-ink text-xs font-bold transition"
           >
             <Gift className="size-3.5 text-brand" />
@@ -467,12 +441,18 @@ export function HumanizerWorkspace() {
               setModalInitialTab("buy");
               setIsModalOpen(true);
             }}
+            disabled={walletLoading || Boolean(walletError)}
             className="cursor-pointer inline-flex items-center gap-1.5 px-4 py-2 rounded-2xl bg-brand hover:bg-brand-dark text-white text-xs font-bold shadow-xs transition active:scale-98"
           >
             <Sparkles className="size-3.5" />
             <span>Isi Ulang Token</span>
           </button>
         </div>
+        {walletError && (
+          <p className="basis-full text-xs font-semibold text-rose-700" role="alert">
+            {walletError}
+          </p>
+        )}
       </section>
 
       {/* 5 KPI Diagnostic Cards */}
@@ -482,8 +462,12 @@ export function HumanizerWorkspace() {
       <div className="flex items-center gap-1 border-b border-line overflow-x-auto pb-1" role="tablist">
         <button
           type="button"
+          id="humanizer-tab-studio"
           role="tab"
           aria-selected={activeTab === "studio"}
+          aria-controls="humanizer-panel-studio"
+          tabIndex={activeTab === "studio" ? 0 : -1}
+          onKeyDown={(event) => handleTabKeyDown(event, 0)}
           onClick={() => setActiveTab("studio")}
           className={`cursor-pointer px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap ${
             activeTab === "studio"
@@ -495,8 +479,12 @@ export function HumanizerWorkspace() {
         </button>
         <button
           type="button"
+          id="humanizer-tab-diff"
           role="tab"
           aria-selected={activeTab === "diff"}
+          aria-controls="humanizer-panel-diff"
+          tabIndex={activeTab === "diff" ? 0 : -1}
+          onKeyDown={(event) => handleTabKeyDown(event, 1)}
           onClick={() => setActiveTab("diff")}
           className={`cursor-pointer px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap ${
             activeTab === "diff"
@@ -508,8 +496,12 @@ export function HumanizerWorkspace() {
         </button>
         <button
           type="button"
+          id="humanizer-tab-audit"
           role="tab"
           aria-selected={activeTab === "audit"}
+          aria-controls="humanizer-panel-audit"
+          tabIndex={activeTab === "audit" ? 0 : -1}
+          onKeyDown={(event) => handleTabKeyDown(event, 2)}
           onClick={() => setActiveTab("audit")}
           className={`cursor-pointer px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap ${
             activeTab === "audit"
@@ -521,8 +513,12 @@ export function HumanizerWorkspace() {
         </button>
         <button
           type="button"
+          id="humanizer-tab-settings"
           role="tab"
           aria-selected={activeTab === "settings"}
+          aria-controls="humanizer-panel-settings"
+          tabIndex={activeTab === "settings" ? 0 : -1}
+          onKeyDown={(event) => handleTabKeyDown(event, 3)}
           onClick={() => setActiveTab("settings")}
           className={`cursor-pointer px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap flex items-center gap-1.5 ${
             activeTab === "settings"
@@ -539,24 +535,30 @@ export function HumanizerWorkspace() {
 
       {/* Tab Content 1: Studio */}
       {activeTab === "studio" && (
-        <div className="space-y-4">
+        <div
+          id="humanizer-panel-studio"
+          role="tabpanel"
+          aria-labelledby="humanizer-tab-studio"
+          tabIndex={0}
+          className="space-y-4"
+        >
           {/* Command Bar */}
           <section className="bg-white dark:bg-card rounded-2xl border border-line p-3 sm:px-4 sm:py-3 shadow-xs flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-            {/* Primary Action Button (Fokus Skill Bahasa Sederhana Alami) */}
+            {/* Primary Action Button */}
             <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={handleHumanize}
-                disabled={isProcessing}
+                disabled={isProcessing || walletLoading || Boolean(walletError)}
                 className="cursor-pointer inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand hover:bg-brand-dark text-white font-bold text-xs sm:text-sm shadow-md shadow-brand/25 active:scale-98 transition disabled:opacity-60 disabled:cursor-wait"
-                title="Tulis ulang naskah ke Bahasa Sederhana Alami tanpa merusak sitasi atau angka data"
+                title="Tulis ulang naskah tanpa merusak sitasi atau angka data"
               >
                 {isProcessing ? (
                   <Loader2 className="size-4 animate-spin text-stabilo" />
                 ) : (
                   <Sparkles className="size-4 text-stabilo" />
                 )}
-                <span>{isProcessing ? "Menulis Ulang Naskah..." : "Humanize Bahasa Sederhana"}</span>
+                <span>{isProcessing ? "Menulis Ulang Naskah…" : "Humanize Naskah"}</span>
               </button>
             </div>
 
@@ -567,6 +569,7 @@ export function HumanizerWorkspace() {
                 type="file"
                 accept=".txt,.docx"
                 onChange={handleFileUpload}
+                aria-label="Pilih file TXT atau DOCX"
                 className="hidden"
               />
               <button
@@ -635,16 +638,16 @@ export function HumanizerWorkspace() {
                     <Loader2 className="size-7 text-brand animate-spin" />
                   </div>
                   <h4 className="font-bold text-sm sm:text-base text-ink">
-                    Sedang Menulis Ulang Naskah...
+                    Sedang Menulis Ulang Naskah…
                   </h4>
                   <p className="text-xs text-muted max-w-sm mt-1.5 leading-relaxed">
-                    Menerapkan 12 Aturan Skill Bahasa Sederhana Alami, memecah kalimat padat, dan mengacak irama kalimat agar 100% natural.
+                    Menerapkan aturan penulisan lugas, memecah kalimat padat, dan merapikan irama kalimat.
                   </p>
                   <div className="w-52 h-1.5 bg-paper-2 dark:bg-slate-800 rounded-full overflow-hidden mt-4">
                     <div className="h-full bg-brand rounded-full animate-indeterminate" />
                   </div>
                   <span className="text-[11px] text-muted/80 mt-2 font-mono">
-                    Memproses {wordCount.toLocaleString("id-ID")} kata...
+                    Memproses {wordCount.toLocaleString("id-ID")} kata…
                   </span>
                 </div>
               )}
@@ -666,7 +669,9 @@ export function HumanizerWorkspace() {
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
                 disabled={isProcessing}
-                placeholder="Tempelkan atau drag & drop naskah (.docx/.txt) skripsi, jurnal, atau makalah di sini untuk dipindai..."
+                id="humanizer-editor"
+                aria-label="Naskah yang ingin di-humanize"
+                placeholder="Tempelkan atau drag & drop naskah (.docx/.txt) di sini untuk dipindai…"
                 className="w-full flex-1 p-5 font-academic text-base sm:text-[17px] leading-relaxed text-ink bg-transparent focus:outline-none resize-none overflow-y-auto placeholder:text-muted/60 disabled:opacity-60"
               />
 
@@ -679,7 +684,6 @@ export function HumanizerWorkspace() {
                       if (confirm("Kosongkan editor teks?")) {
                         setInputText("");
                         setHistoryBeforeHumanize(null);
-                        setLastCharge(0);
                       }
                     }}
                     className="cursor-pointer text-muted hover:text-rose-600 transition font-semibold flex items-center gap-1"
@@ -697,7 +701,7 @@ export function HumanizerWorkspace() {
                 <div className="absolute inset-0 z-20 backdrop-blur-xs bg-white/60 dark:bg-card/70 flex items-center justify-center pointer-events-none">
                   <span className="text-xs font-semibold text-brand flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-soft border border-brand/20 shadow-xs">
                     <Loader2 className="size-3.5 animate-spin" />
-                    Memperbarui Peta X-Ray...
+                    Memperbarui Peta X-Ray…
                   </span>
                 </div>
               )}
@@ -822,19 +826,31 @@ export function HumanizerWorkspace() {
 
       {/* Tab Content 2: Diff */}
       {activeTab === "diff" && (
-        <DiffViewer
-          oldText={historyBeforeHumanize || inputText}
-          newText={inputText}
-          onRefresh={() => showToast("Perbandingan diperbarui")}
-        />
+        <div id="humanizer-panel-diff" role="tabpanel" aria-labelledby="humanizer-tab-diff" tabIndex={0}>
+          <DiffViewer
+            oldText={historyBeforeHumanize || inputText}
+            newText={inputText}
+            onRefresh={() => showToast("Perbandingan diperbarui")}
+          />
+        </div>
       )}
 
       {/* Tab Content 3: Audit */}
-      {activeTab === "audit" && <ClientAudit analysis={analysis} />}
+      {activeTab === "audit" && (
+        <div id="humanizer-panel-audit" role="tabpanel" aria-labelledby="humanizer-tab-audit" tabIndex={0}>
+          <ClientAudit analysis={analysis} />
+        </div>
+      )}
 
       {/* Tab Content 4: Settings & Protected Terms (Interactive) */}
       {activeTab === "settings" && (
-        <div className="bg-white dark:bg-card rounded-2xl border border-line p-6 shadow-xs space-y-6">
+        <div
+          id="humanizer-panel-settings"
+          role="tabpanel"
+          aria-labelledby="humanizer-tab-settings"
+          tabIndex={0}
+          className="bg-white dark:bg-card rounded-2xl border border-line p-6 shadow-xs space-y-6"
+        >
           <div>
             <h3 className="font-display font-bold text-lg text-ink">
               Kamus Proteksi Istilah Ilmiah & Hukum
@@ -851,7 +867,9 @@ export function HumanizerWorkspace() {
               type="text"
               value={newTermInput}
               onChange={(e) => setNewTermInput(e.target.value)}
-              placeholder="Ketik istilah khusus yang ingin dilindungi (misal: nama konsep, singkatan, metodologi)..."
+              id="humanizer-custom-term"
+              aria-label="Istilah khusus yang ingin dilindungi"
+              placeholder="Ketik istilah khusus yang ingin dilindungi (misal: konsep, singkatan, metodologi)…"
               className="flex-1 px-4 py-2.5 text-xs rounded-xl border border-line bg-paper text-ink focus:outline-none focus:ring-2 focus:ring-brand"
             />
             <button
@@ -920,7 +938,7 @@ export function HumanizerWorkspace() {
                 <b>Preservasi Makna:</b> Istilah Indonesia dalam kurung, nomor undang-undang, serta sitasi akademik tidak dihapus.
               </li>
               <li>
-                <b>Mode Bahasa Sederhana Alami:</b> Mengubah teks kaku/akademik menjadi bahasa sehari-hari yang sangat sederhana dan polos (gaya tulisan yang apa adanya) tanpa merusak angka desimal, persentase, atau sitasi referensi (misal: Slavin 2015).
+                <b>Mode Penulisan Lugas:</b> Mengubah teks kaku/akademik menjadi bahasa sehari-hari yang sederhana dan polos tanpa merusak angka desimal, persentase, atau sitasi referensi (misal: Slavin 2015).
               </li>
             </ul>
           </div>

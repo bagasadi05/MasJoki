@@ -1,6 +1,6 @@
 /**
  * engine.ts - Humanizer Engine (Production Release)
- * Standar Bahasa Sederhana Alami Anti-GPTZero & Turnitin
+ * Standar penulisan lugas dan alami.
  * Arsitektur Zero-Synthetic-Glue + Preservasi Makna 100%
  */
 
@@ -400,7 +400,7 @@ export function applyPhraseReplacements(text: string): string {
     });
   });
 
-  // Terapkan kamus kosakata bahasa sederhana alami (diurutkan panjangnya)
+  // Terapkan kamus kosakata bahasa lugas (diurutkan panjangnya)
   const sortedSederhana = Object.keys(BAHASA_SEDERHANA_WORDS_MAP).sort((a, b) => b.length - a.length);
   for (const word of sortedSederhana) {
     const repl = BAHASA_SEDERHANA_WORDS_MAP[word];
@@ -868,7 +868,7 @@ function tidy(text: string): string {
 }
 
 /**
- * Gaya Bahasa Sederhana Alami (Skill: Bahasa Sederhana Alami)
+ * Gaya penulisan lugas dan alami.
  * Mengubah teks akademik/formal menjadi bahasa sehari-hari yang sangat sederhana,
  * agak polos, dan mudah dipahami, tanpa mengubah fakta, angka, sitasi, atau data penting.
  */
@@ -904,7 +904,7 @@ export function applyBahasaSederhana(
 
   let processed = cleanAiCommaPatterns(stripRedundantEnglishGlosses(repairGlue(protectedText)));
 
-  // 4. Terapkan Frasa Khusus Bahasa Sederhana Alami
+  // 4. Terapkan frasa khusus penulisan lugas
   BAHASA_SEDERHANA_PHRASES.forEach((item) => {
     processed = processed.replace(item.regex, item.repl);
   });

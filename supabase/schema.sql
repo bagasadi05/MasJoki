@@ -26,7 +26,33 @@ alter table public.token_licenses
 -- 2. Buat Index agar query verifikasi kunci instan (<5ms)
 create index if not exists idx_token_licenses_key_code on public.token_licenses(key_code);
 
--- 3. Tabel Pencatatan Klaim Promo Publik (misal MASJOKIBARU agar tidak bisa diklaim berulang)
+-- 3. Saldo token per browser anonim. ID wallet hanya disimpan di cookie HttpOnly.
+create table if not exists public.humanizer_wallets (
+  wallet_id uuid primary key,
+  user_id uuid references auth.users(id) on delete cascade,
+  balance_words int not null check (balance_words >= 0),
+  created_at timestamptz default now() not null,
+  updated_at timestamptz default now() not null
+);
+
+-- Hubungkan satu wallet permanen ke satu akun Supabase Auth.
+alter table public.humanizer_wallets
+  add column if not exists user_id uuid references auth.users(id) on delete cascade;
+
+create unique index if not exists idx_humanizer_wallets_user_id
+  on public.humanizer_wallets(user_id)
+  where user_id is not null;
+
+alter table public.humanizer_wallets enable row level security;
+
+drop policy if exists "Anon no direct access to humanizer wallets" on public.humanizer_wallets;
+create policy "Anon no direct access to humanizer wallets"
+  on public.humanizer_wallets
+  for all
+  to anon
+  using (false);
+
+-- 4. Tabel Pencatatan Klaim Promo Publik (misal MASJOKIBARU agar tidak bisa diklaim berulang)
 create table if not exists public.promo_claims (
   id uuid primary key default gen_random_uuid(),
   promo_code text not null,
@@ -35,11 +61,11 @@ create table if not exists public.promo_claims (
   unique (promo_code, client_ip)
 );
 
--- 4. Aktifkan Row Level Security (RLS)
+-- 5. Aktifkan Row Level Security (RLS)
 alter table public.token_licenses enable row level security;
 alter table public.promo_claims enable row level security;
 
--- 5. Kebijakan RLS (Keamanan Tingkat Tinggi)
+-- 6. Kebijakan RLS (Keamanan Tingkat Tinggi)
 -- Aplikasi hanya mengakses tabel ini lewat Service Role di server action
 -- (getSupabaseAdmin). Kunci voucher aktif tidak boleh bisa dibaca dari browser.
 drop policy if exists "Anon read-only for active keys" on public.token_licenses;

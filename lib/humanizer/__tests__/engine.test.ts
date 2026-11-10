@@ -1,8 +1,8 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 
-import { humanize, cleanAiWords } from "../engine";
-import { analyze, extractStarter } from "../analyzer";
+import { applyBahasaSederhana, humanize, cleanAiWords } from "../engine";
+import { analyze, estimateRisk, extractStarter } from "../analyzer";
 
 test("1. Preservasi 100%: Istilah Indonesia dalam kurung tidak boleh hilang", () => {
   const input = "Petugas menjaga (blok hunian) setiap hari.";
@@ -100,6 +100,50 @@ test("5. Kalibrasi Analyzer: Teks pendek tidak boleh otomatis dituduh AI (Waspad
   );
 });
 
+test("5b. Kalibrasi Analyzer: Ritme akademik normal tidak menjadi risiko tinggi", () => {
+  const risk = estimateRisk(
+    {
+      totalSentences: 10,
+      totalWords: 193,
+      mean: 19.3,
+      sd: 5.02,
+      minLocalSd: 5.09,
+      flaggedWindows: 0,
+      shortCount: 0,
+      mediumCount: 7,
+      longCount: 3,
+      mediumPercentage: 70,
+    },
+    { repeatedCount: 0, percentage: 0, details: {} },
+    {
+      forbiddenCount: 0,
+      forbiddenWordsFound: [],
+      totalGlosses: 0,
+      glossesFound: [],
+      totalTemplates: 0,
+      templatesFound: [],
+    }
+  );
+
+  assert.ok(
+    risk.score < 15,
+    `A natural 10-sentence academic sample should stay low risk, got ${risk.score}%`
+  );
+});
+
+test("5c. Fallback lokal: kalimat formal umum tetap mengalami perubahan", () => {
+  const input =
+    "Penyelenggaraan sistem pemasyarakatan di Indonesia masih sering dihadapkan pada gangguan keamanan dan ketertiban berupa peredaran telepon genggam ilegal, praktik pungutan liar dan penyalahgunaan narkotika.";
+  const output = applyBahasaSederhana(input, {
+    intensity: "sederhana",
+    bahasaSederhana: true,
+  });
+
+  assert.notEqual(output, input, "Fallback lokal tidak boleh diam-diam menjadi no-op");
+  assert.match(output, /pengelolaan/i);
+  assert.match(output, /menghadapi/i);
+});
+
 test("6. Proteksi Istilah Kustom: customTerms terlindungi 100%", () => {
   const input = "Analisis menggunakan uji Anova dan model Lapastik secara mendalam.";
   const output = humanize(input, { customTerms: ["Anova", "Lapastik"] });
@@ -191,7 +235,7 @@ test("13. Titik Koma: kata kerja umum direndahkan setelah penggabungan", () => {
   );
 });
 
-test("14. Skill Bahasa Sederhana: Preservasi sitasi, istilah teknis, dan angka", () => {
+test("14. Penulisan lugas: Preservasi sitasi, istilah teknis, dan angka", () => {
   const input =
     "Nilai rata-rata kelas naik dari 75,05 pada prasiklus menjadi 80,65 pada Siklus I dan 87,80 pada Siklus II (Slavin, 2015).";
   const output = humanize(input, { intensity: "sederhana" });
@@ -209,7 +253,7 @@ test("14. Skill Bahasa Sederhana: Preservasi sitasi, istilah teknis, dan angka",
   );
 });
 
-test("15. Skill Bahasa Sederhana: Ketuntasan & angka persen tetap terjaga", () => {
+test("15. Penulisan lugas: Ketuntasan & angka persen tetap terjaga", () => {
   const input =
     "Pada Siklus I, rata-rata hasil belajar meningkat dari 75,05 menjadi 80,65 dengan ketuntasan 80%.";
   const output = humanize(input, { intensity: "sederhana" });
@@ -224,7 +268,7 @@ test("15. Skill Bahasa Sederhana: Ketuntasan & angka persen tetap terjaga", () =
   );
 });
 
-test("16. Skill Bahasa Sederhana: Transformasi istilah akademik ke bahasa lugas", () => {
+test("16. Penulisan lugas: Transformasi istilah akademik ke bahasa lugas", () => {
   const input =
     "Guru mengimplementasikan metode baru untuk mengidentifikasi kebutuhan belajar peserta didik berdasarkan temuan instrumen diagnostik nonkognitif.";
   const output = humanize(input, { intensity: "sederhana" });
@@ -263,7 +307,7 @@ test("16. Skill Bahasa Sederhana: Transformasi istilah akademik ke bahasa lugas"
   );
 });
 
-test("17. Skill Bahasa Sederhana: Kalimat padat model pembelajaran", () => {
+test("17. Penulisan lugas: Kalimat padat model pembelajaran", () => {
   const input =
     "Penerapan model pembelajaran kooperatif mampu meningkatkan partisipasi aktif peserta didik selama proses pembelajaran berlangsung.";
   const output = humanize(input, { intensity: "sederhana" });

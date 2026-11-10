@@ -1,7 +1,7 @@
 "use client";
 
 import type { AnalysisResult } from "@/lib/humanizer/types";
-import { SD_TARGET } from "@/lib/humanizer/analyzer";
+import { MEDIUM_SAFE_PERCENTAGE, SD_TARGET } from "@/lib/humanizer/analyzer";
 
 interface KpiCardsProps {
   analysis: AnalysisResult | null;
@@ -36,7 +36,7 @@ export function KpiCards({ analysis }: KpiCardsProps) {
 
   const isBurstSafe = isLongEnough && analysis.burstiness.sd >= SD_TARGET && flaggedCount === 0;
   const burstStatus = !hasData
-    ? "Menunggu naskah..."
+    ? "Menunggu naskah…"
     : !isLongEnough
       ? "Sampel < 5 kalimat"
       : isBurstSafe
@@ -52,9 +52,9 @@ export function KpiCards({ analysis }: KpiCardsProps) {
       : "text-amber-600 dark:text-amber-400";
 
   const medPct = hasData ? analysis.burstiness.mediumPercentage : 0;
-  const medSafe = medPct <= 55;
+  const medSafe = medPct <= MEDIUM_SAFE_PERCENTAGE;
   const medStatus = !hasData
-    ? "Aman jika ≤ 55%"
+    ? `Aman jika ≤ ${MEDIUM_SAFE_PERCENTAGE}%`
     : medSafe
       ? `✓ Aman (${analysis.burstiness.shortCount} pendek · ${analysis.burstiness.longCount} panjang)`
       : "⚠️ Terlalu Banyak Kalimat Sedang";
@@ -94,7 +94,7 @@ export function KpiCards({ analysis }: KpiCardsProps) {
           </div>
           {hasData && (
             <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
-              {analysis.risk.humanScore.toFixed(0)}% Human
+              {analysis.risk.humanScore.toFixed(0)}% Pola Natural
             </span>
           )}
         </div>
@@ -139,7 +139,7 @@ export function KpiCards({ analysis }: KpiCardsProps) {
             Kalimat Sedang
           </span>
           <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-paper-2 text-ink-soft">
-            &le; 55%
+            &le; {MEDIUM_SAFE_PERCENTAGE}%
           </span>
         </div>
         <div className="my-1.5">

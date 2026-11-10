@@ -1,6 +1,7 @@
 "use server";
 
 import { pesanPesanan, pesanOrderSpesifik, pesanPenawaran } from "@/lib/pesan";
+import { z } from "zod";
 import { computePrice } from "@/lib/pricing";
 import { ambilAlamatIp, cekRateLimit } from "@/lib/rate-limit";
 import { getService } from "@/lib/services";
@@ -19,6 +20,13 @@ import {
   type GeminiHumanizeOptions,
   type GeminiHumanizeResult,
 } from "@/lib/humanizer/gemini.server";
+import { validateHumanizerIntegrity } from "@/lib/humanizer/integrity";
+import {
+  creditHumanizerWords,
+  deductHumanizerWords,
+  getOrCreateHumanizerWallet,
+} from "@/lib/humanizer/wallets.server";
+import { countWords } from "@/lib/humanizer/analyzer";
 import {
   fieldErrors,
   firstIssue,
@@ -29,9 +37,9 @@ import {
 } from "@/lib/validation";
 
 /**
- * Tidak ada database. Server action ini hanya memvalidasi isian, menghitung
- * ulang harga, lalu menyusun tautan WhatsApp berisi ringkasan pesanan.
- * Pesanan "tersimpan" sebagai pesan di chat admin.
+ * Server action untuk alur pesanan publik. Data order tidak disimpan di aplikasi;
+ * server hanya memvalidasi isian, menghitung ulang harga, lalu menyusun tautan
+ * WhatsApp berisi ringkasan pesanan.
  */
 
 function isBot(formData: FormData): boolean {
@@ -268,8 +276,31 @@ export async function redeemVoucherAction(code: string): Promise<VoucherRedeemRe
     };
   }
 
+  const wallet = await getOrCreateHumanizerWallet();
+  if (!wallet.ok) return { ok: false, error: wallet.error };
+
   const ip = await ambilAlamatIp();
-  return verifyVoucherCode(parsed.data, ip);
+  const result = await verifyVoucherCode(parsed.data, ip);
+  if (!result.ok || !result.tokens) return result;
+
+  const credited = await creditHumanizerWords(wallet.walletId, result.tokens);
+  if (!credited.ok) {
+    return {
+      ok: false,
+      error: "Voucher sudah diverifikasi, tetapi saldo belum bisa diperbarui. Hubungi admin sebelum mencoba lagi.",
+    };
+  }
+
+  return { ...result, remainingWords: credited.remainingWords };
+}
+
+export async function getHumanizerWalletAction(): Promise<
+  | { ok: true; remainingWords: number }
+  | { ok: false; error: string }
+> {
+  const wallet = await getOrCreateHumanizerWallet();
+  if (!wallet.ok) return wallet;
+  return { ok: true, remainingWords: wallet.remainingWords };
 }
 
 /**
@@ -314,9 +345,41 @@ export async function humanizeWithGeminiAction(
   text: string,
   options?: GeminiHumanizeOptions
 ): Promise<GeminiHumanizeResult> {
-  const trimmed = (text || "").trim();
+  const MAX_WORDS = 15_000;
+  const MAX_CHARACTERS = 120_000;
+  const trimmed = typeof text === "string" ? text.trim() : "";
   if (!trimmed) {
-    return { ok: false, error: "Teks yang ingin di-humanize tidak boleh kosong." };
+    return {
+      ok: false,
+      error: "Teks yang ingin di-humanize tidak boleh kosong.",
+      errorCode: "invalid-input",
+    };
+  }
+
+  if (trimmed.length > MAX_CHARACTERS) {
+    return {
+      ok: false,
+      error: `Naskah terlalu panjang. Batasnya ${MAX_CHARACTERS.toLocaleString("id-ID")} karakter.`,
+      errorCode: "invalid-input",
+    };
+  }
+
+  const optionsSchema = z.object({
+    intensity: z.enum(["aggressive", "sederhana", "balanced", "light"]).optional(),
+    customTerms: z.array(z.string().trim().min(1).max(80)).max(50).optional(),
+  });
+  const parsedOptions = optionsSchema.safeParse(options ?? {});
+  if (!parsedOptions.success) {
+    return { ok: false, error: "Pengaturan humanizer tidak valid.", errorCode: "invalid-input" };
+  }
+
+  const words = countWords(trimmed);
+  if (words === 0 || words > MAX_WORDS) {
+    return {
+      ok: false,
+      error: `Naskah harus berisi 1 sampai ${MAX_WORDS.toLocaleString("id-ID")} kata.`,
+      errorCode: "invalid-input",
+    };
   }
 
   // Batasi panggilan per IP agar kuota API aman dari penyalahgunaan
@@ -326,9 +389,69 @@ export async function humanizeWithGeminiAction(
     return {
       ok: false,
       error: `Terlalu banyak permintaan AI. Silakan coba lagi dalam ${menit} menit.`,
+      errorCode: "rate-limit",
     };
   }
 
-  return humanizeWithGemini(trimmed, options);
+  const wallet = await getOrCreateHumanizerWallet();
+  if (!wallet.ok) return { ok: false, error: wallet.error, errorCode: "wallet" };
+
+  const charged = await deductHumanizerWords(wallet.walletId, words);
+  if (!charged.ok) return { ok: false, error: charged.error, errorCode: "wallet" };
+
+  const refund = async (): Promise<
+    | { ok: true; remainingWords: number }
+    | GeminiHumanizeResult
+  > => {
+    const refunded = await creditHumanizerWords(wallet.walletId, words);
+    if (refunded.ok) return refunded;
+    return {
+      ok: false,
+      error: "Proses gagal dan saldo token belum bisa dikembalikan. Hubungi admin.",
+      errorCode: "wallet",
+    };
+  };
+
+  try {
+    const result = await humanizeWithGemini(trimmed, parsedOptions.data);
+    if (!result.ok || !result.text?.trim()) {
+      const refundResult = await refund();
+      if (!refundResult.ok) return refundResult;
+      return { ...result, errorCode: result.errorCode ?? "ai" };
+    }
+
+    const output = result.text.trim();
+    const integrity = validateHumanizerIntegrity(
+      trimmed,
+      output,
+      parsedOptions.data.customTerms,
+    );
+    if (!integrity.ok) {
+      const refundResult = await refund();
+      if (!refundResult.ok) return refundResult;
+      return { ok: false, error: integrity.error, errorCode: "integrity" };
+    }
+
+    if (output === trimmed) {
+      const refundResult = await refund();
+      if (!refundResult.ok) return refundResult;
+      return { ...result, text: output, remainingWords: refundResult.remainingWords };
+    }
+
+    return {
+      ...result,
+      text: output,
+      remainingWords: charged.remainingWords,
+      chargedWords: words,
+    };
+  } catch {
+    const refundResult = await refund();
+    if (!refundResult.ok) return refundResult;
+    return {
+      ok: false,
+      error: "AI sedang tidak bisa digunakan. Mesin lokal akan dicoba dari browser.",
+      errorCode: "ai",
+    };
+  }
 }
 

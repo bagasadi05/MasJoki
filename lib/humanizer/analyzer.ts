@@ -22,14 +22,19 @@ import type {
   StarterMetrics,
 } from "./types";
 
-/** Target standar deviasi panjang kalimat (global). */
-export const SD_TARGET = 6.8;
-/** Batas minimal SD lokal agar blok dianggap aman. Satu angka untuk seluruh app. */
-export const LOCAL_SD_MIN = 6.0;
+/**
+ * Ambang ritme internal yang konservatif. SD bukan bukti AI dengan sendirinya,
+ * jadi nilainya dipakai sebagai sinyal ringan, bukan hukuman besar.
+ */
+export const SD_TARGET = 5.0;
+/** Batas minimal SD lokal agar blok dianggap aman. */
+export const LOCAL_SD_MIN = 4.5;
 /** Ukuran jendela geser untuk local burstiness. */
 export const LOCAL_WINDOW_SIZE = 8;
-/** Rasio kalimat sedang yang memicu flag pada satu jendela. */
-export const FLAG_MEDIUM_RATIO = 0.7;
+/** Rasio kalimat sedang yang baru memicu flag pada satu jendela. */
+export const FLAG_MEDIUM_RATIO = 0.85;
+/** Kalimat sedang masih wajar bila tidak melebihi proporsi ini. */
+export const MEDIUM_SAFE_PERCENTAGE = 75;
 
 function escapeRegex(str: string): string {
   return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -335,24 +340,23 @@ export function estimateRisk(
   // Hanya evaluasi variasi statistik kalimat jika naskah >= 5 kalimat.
   // Snippet 1-4 kalimat tidak boleh dihukum SD rendah karena secara matematis sampelnya terlalu kecil.
   if (!isSnippet) {
-    // 1. Burstiness Global (Max 30 poin)
-    if (burstiness.sd < 4.5) risk += 30;
-    else if (burstiness.sd < 5.5) risk += 24;
-    else if (burstiness.sd < SD_TARGET) risk += 16;
-    else if (burstiness.sd < 7.5) risk += 6;
-    else risk += 2;
+    // 1. Burstiness Global (sinyal lemah, max 14 poin)
+    // Naskah alami tidak harus mencapai SD 6.8; nilai sekitar 5 masih umum.
+    if (burstiness.sd < 3.5) risk += 14;
+    else if (burstiness.sd < 4.5) risk += 8;
+    else if (burstiness.sd < SD_TARGET) risk += 3;
 
-    // 2. Local Burstiness (Max 25 poin)
-    if (burstiness.minLocalSd < 4.0) risk += 25;
-    else if (burstiness.minLocalSd < 5.0) risk += 18;
-    else if (burstiness.minLocalSd < LOCAL_SD_MIN) risk += 10;
-    else if (burstiness.flaggedWindows > 0) risk += Math.min(15, burstiness.flaggedWindows * 3);
+    // 2. Local Burstiness (sinyal lemah, max 10 poin)
+    if (burstiness.minLocalSd < 3.5) risk += 10;
+    else if (burstiness.minLocalSd < 4.0) risk += 6;
+    else if (burstiness.minLocalSd < LOCAL_SD_MIN) risk += 3;
+    else if (burstiness.flaggedWindows > 0) risk += Math.min(4, burstiness.flaggedWindows);
 
-    // 3. Persentase Kalimat Sedang (Max 25 poin)
-    if (burstiness.mediumPercentage > 75) risk += 25;
-    else if (burstiness.mediumPercentage > 65) risk += 18;
-    else if (burstiness.mediumPercentage > 55) risk += 10;
-    else if (burstiness.mediumPercentage > 45) risk += 4;
+    // 3. Persentase Kalimat Sedang (sinyal lemah, max 8 poin)
+    // Proporsi 60-75% masih normal untuk tulisan akademik yang rapi.
+    if (burstiness.mediumPercentage > 85) risk += 8;
+    else if (burstiness.mediumPercentage > MEDIUM_SAFE_PERCENTAGE) risk += 4;
+    else if (burstiness.mediumPercentage > 65) risk += 1;
 
     // 4. Awalan Monoton (Max 20 poin)
     // Snippet < 5 kalimat tidak dihukum karena sampelnya terlalu kecil.

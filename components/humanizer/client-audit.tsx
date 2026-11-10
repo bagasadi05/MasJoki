@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Printer, ShieldCheck, CheckCircle2, AlertTriangle, FileText, User } from "lucide-react";
 import type { AnalysisResult } from "@/lib/humanizer/types";
-import { LOCAL_SD_MIN, SD_TARGET } from "@/lib/humanizer/analyzer";
+import { LOCAL_SD_MIN, MEDIUM_SAFE_PERCENTAGE, SD_TARGET } from "@/lib/humanizer/analyzer";
 
 interface ClientAuditProps {
   analysis: AnalysisResult | null;
@@ -97,7 +97,7 @@ export function ClientAudit({ analysis }: ClientAuditProps) {
             <span className="font-bold font-mono text-emerald-400 text-sm">{r.score.toFixed(1)}% AI</span>
             {" · "}
             Indeks Keaslian Manusia:{" "}
-            <span className="font-bold font-mono text-emerald-400 text-sm">{r.humanScore.toFixed(0)}% Human</span>
+            <span className="font-bold font-mono text-emerald-400 text-sm">{r.humanScore.toFixed(0)}% Pola Natural</span>
             {" · "}
             Total Naskah: <span className="font-mono">{b.totalWords} kata ({b.totalSentences} kalimat)</span>
           </p>
@@ -177,7 +177,9 @@ export function ClientAudit({ analysis }: ClientAuditProps) {
               <span className="text-muted">Kalimat Sedang (10–21 kata):</span>
               <span
                 className={`font-bold font-mono ${
-                  medPct <= 55 ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600"
+                  medPct <= MEDIUM_SAFE_PERCENTAGE
+                    ? "text-emerald-600 dark:text-emerald-400"
+                    : "text-rose-600"
                 }`}
               >
                 {medPct}% ({b.mediumCount} kalimat)

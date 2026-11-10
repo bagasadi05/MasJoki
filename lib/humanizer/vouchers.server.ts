@@ -114,6 +114,14 @@ export async function verifyVoucherCode(
   const code = rawCode.trim().toUpperCase();
   const sekarang = Date.now();
   const supabase = getSupabaseAdmin();
+  const production = process.env.NODE_ENV === "production";
+
+  if (!supabase && production) {
+    return {
+      ok: false,
+      error: "Verifikasi voucher sedang tidak tersedia. Silakan coba lagi nanti.",
+    };
+  }
 
   // 1. CEK VOUCHER PROMO PUBLIK (mis. MASJOKIBARU)
   const promo = PROMO_VOUCHERS[code];
@@ -166,6 +174,12 @@ export async function verifyVoucherCode(
           throw insertErr;
         }
       } catch {
+        if (production) {
+          return {
+            ok: false,
+            error: "Verifikasi voucher sedang tidak tersedia. Silakan coba lagi nanti.",
+          };
+        }
         // Fallback ke in-memory jika tabel promo_claims belum dibuat
         if (sudahDipakai(kunciMemori, sekarang)) {
           return {
@@ -260,7 +274,20 @@ export async function verifyVoucherCode(
       }
     } catch (err: unknown) {
       console.error("Gagal verifikasi voucher di Supabase:", err);
+      if (production) {
+        return {
+          ok: false,
+          error: "Verifikasi voucher sedang tidak tersedia. Silakan coba lagi nanti.",
+        };
+      }
     }
+  }
+
+  if (production) {
+    return {
+      ok: false,
+      error: "Kode voucher tidak ditemukan atau belum terdaftar di server.",
+    };
   }
 
   // 3. FALLBACK: VOUCHER BERTANDA TANGAN LAMA (HMAC)

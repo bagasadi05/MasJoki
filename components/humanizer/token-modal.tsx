@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   X,
   Sparkles,
@@ -35,6 +35,14 @@ export function TokenModal({
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+  const onCloseRef = useRef(onClose);
+
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
 
   // Sinkronkan tab dan pesan saat modal dibuka
   useEffect(() => {
@@ -45,15 +53,46 @@ export function TokenModal({
     setVoucherCode("");
   }, [isOpen, initialTab]);
 
-  // Tutup dengan tombol Escape
   useEffect(() => {
     if (!isOpen) return;
+
+    previousFocusRef.current = document.activeElement as HTMLElement | null;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const focusTimer = window.requestAnimationFrame(() => closeButtonRef.current?.focus());
+
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
+      if (event.key === "Escape") {
+        onCloseRef.current();
+        return;
+      }
+
+      if (event.key !== "Tab" || !dialogRef.current) return;
+      const focusable = Array.from(
+        dialogRef.current.querySelectorAll<HTMLElement>(
+          "button:not([disabled]), input:not([disabled]), a[href], [tabindex]:not([tabindex='-1'])",
+        ),
+      );
+      if (focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
     };
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [isOpen, onClose]);
+    return () => {
+      window.cancelAnimationFrame(focusTimer);
+      window.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = previousOverflow;
+      previousFocusRef.current?.focus();
+    };
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -93,10 +132,13 @@ export function TokenModal({
         return;
       }
 
-      // Tambahkan kuota ke saldo
-      const newBalance = currentBalance + res.tokens;
+      if (typeof res.remainingWords !== "number") {
+        setErrorMsg("Saldo berhasil diverifikasi, tetapi jumlah saldo belum diterima. Silakan coba lagi.");
+        return;
+      }
+
+      const newBalance = res.remainingWords;
       try {
-        localStorage.setItem(STORAGE_KEYS.TOKENS, newBalance.toString());
         const rawClaimed = localStorage.getItem(STORAGE_KEYS.CLAIMED_VOUCHERS);
         const claimed: string[] = rawClaimed ? JSON.parse(rawClaimed) : [];
         if (!claimed.includes(code)) {
@@ -128,7 +170,11 @@ export function TokenModal({
         if (event.target === event.currentTarget) onClose();
       }}
     >
-      <div className="relative w-full max-w-2xl bg-white dark:bg-card border border-line rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div
+        ref={dialogRef}
+        tabIndex={-1}
+        className="relative w-full max-w-2xl bg-white dark:bg-card border border-line rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] overscroll-contain"
+      >
         {/* Header */}
         <div className="px-6 py-4 border-b border-line bg-paper/80 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
@@ -151,6 +197,7 @@ export function TokenModal({
             </div>
           </div>
           <button
+            ref={closeButtonRef}
             type="button"
             onClick={onClose}
             className="size-8 rounded-full border border-line bg-white dark:bg-slate-800 text-muted hover:text-ink flex items-center justify-center transition cursor-pointer"
@@ -161,9 +208,13 @@ export function TokenModal({
         </div>
 
         {/* Tab Toggle */}
-        <div className="flex border-b border-line bg-paper-2/60 px-6 pt-2">
+        <div className="flex border-b border-line bg-paper-2/60 px-6 pt-2" role="tablist" aria-label="Pilihan saldo token">
           <button
             type="button"
+            id="token-tab-buy"
+            role="tab"
+            aria-selected={tab === "buy"}
+            aria-controls="token-panel-buy"
             onClick={() => {
               setTab("buy");
               setErrorMsg(null);
@@ -180,6 +231,10 @@ export function TokenModal({
           </button>
           <button
             type="button"
+            id="token-tab-voucher"
+            role="tab"
+            aria-selected={tab === "voucher"}
+            aria-controls="token-panel-voucher"
             onClick={() => {
               setTab("voucher");
               setErrorMsg(null);
@@ -197,15 +252,20 @@ export function TokenModal({
         </div>
 
         {/* Content Body */}
-        <div className="p-6 overflow-y-auto space-y-5">
+        <div
+          className="p-6 overflow-y-auto space-y-5"
+          role="tabpanel"
+          id={tab === "buy" ? "token-panel-buy" : "token-panel-voucher"}
+          aria-labelledby={tab === "buy" ? "token-tab-buy" : "token-tab-voucher"}
+        >
           {errorMsg && (
-            <div className="p-3.5 rounded-xl border border-rose-300 bg-rose-50 dark:bg-rose-950/40 text-rose-800 dark:text-rose-200 text-xs font-semibold">
+            <div className="p-3.5 rounded-xl border border-rose-300 bg-rose-50 dark:bg-rose-950/40 text-rose-800 dark:text-rose-200 text-xs font-semibold" role="alert" aria-live="polite">
               {errorMsg}
             </div>
           )}
 
           {successMsg && (
-            <div className="p-3.5 rounded-xl border border-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-200 text-xs font-semibold flex items-center gap-2">
+            <div className="p-3.5 rounded-xl border border-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-200 text-xs font-semibold flex items-center gap-2" role="status" aria-live="polite">
               <Check className="size-4 shrink-0 text-emerald-600" />
               <span>{successMsg}</span>
             </div>
@@ -299,7 +359,8 @@ export function TokenModal({
                     type="text"
                     value={voucherCode}
                     onChange={(e) => setVoucherCode(e.target.value)}
-                    placeholder="Contoh: MJ-3K-8AF7-1A9A"
+                    name="voucherCode"
+                    placeholder="Contoh: MJ-3K-8AF7-1A9A…"
                     className="w-full px-4 py-2.5 rounded-xl border border-line bg-white dark:bg-slate-800 text-ink text-sm font-mono tracking-wider focus:outline-hidden focus:border-brand focus:ring-1 focus:ring-brand"
                     autoComplete="off"
                     spellCheck={false}
@@ -313,7 +374,7 @@ export function TokenModal({
                   {loading ? (
                     <>
                       <Sparkles className="size-3.5 animate-spin" />
-                      <span>Memverifikasi Database...</span>
+                      <span>Memverifikasi Database…</span>
                     </>
                   ) : (
                     <>

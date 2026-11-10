@@ -98,7 +98,7 @@ export const FORBIDDEN_WORDS_MAP: Record<string, string> = {
 export const FORBIDDEN_WORDS: string[] = Object.keys(FORBIDDEN_WORDS_MAP);
 
 /**
- * Kamus Khusus Gaya Bahasa Sederhana Alami (Skill: Bahasa Sederhana Alami)
+ * Kamus khusus gaya penulisan lugas dan alami.
  * Menulis ulang teks akademik/formal menjadi bahasa sehari-hari yang sangat sederhana,
  * agak polos, dan mudah dipahami, tanpa mengubah fakta, angka, sitasi, atau data.
  */
@@ -132,6 +132,18 @@ export const BAHASA_SEDERHANA_WORDS_MAP: Record<string, string> = {
   "mampu meningkatkan": "bisa membantu menaikkan",
   "dapat meningkatkan": "bisa membuat nilai naik",
   "ketuntasan belajar": "ketuntasan siswa",
+  "penyelenggaraan": "pengelolaan",
+  "dihadapkan pada": "menghadapi",
+  "gangguan keamanan dan ketertiban": "masalah keamanan dan ketertiban",
+  "berupa": "seperti",
+  "praktik pungutan liar": "pungutan liar",
+  "penyalahgunaan narkotika": "pemakaian narkotika secara ilegal",
+  "pembayaran nontunai": "pembayaran tanpa uang tunai",
+  "penjatuhan sanksi": "pemberian sanksi",
+  "efektivitas": "keefektifan",
+  "terkendala": "terhambat",
+  "kelebihan penghuni": "jumlah penghuni yang berlebih",
+  "timpangnya": "tidak seimbangnya",
 
   // Kosakata akademik formal -> bahasa polos & sederhana
   "optimalisasi": "usaha perbaikan",

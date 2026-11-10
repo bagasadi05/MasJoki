@@ -6,7 +6,7 @@ import { HumanizerWorkspace } from "@/components/humanizer/humanizer-workspace";
 import { ShieldCheck, Sparkles, Zap, BookOpen } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Humanizer AI (Bahasa Sederhana Alami) | Mas Joki",
+  title: "Humanizer AI | Mas Joki",
   description:
     "Ubah naskah akademik, formal, atau draf buatan AI menjadi bahasa sehari-hari yang sangat sederhana, agak polos, dan mudah dipahami tanpa mengubah angka desimal atau sitasi referensi.",
   alternates: { canonical: "/humanizer" },
@@ -29,18 +29,18 @@ export default function HumanizerPage() {
           <span aria-hidden className="text-muted/60">
             /
           </span>
-          <span className="font-bold text-ink">Humanizer AI (Bahasa Sederhana Alami)</span>
+          <span className="font-bold text-ink">Humanizer AI</span>
         </nav>
 
         {/* Hero Section */}
         <div className="max-w-4xl space-y-3">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-extrabold bg-brand-soft text-brand border border-brand/20">
             <Sparkles className="size-3.5" />
-            <span>Skill: Bahasa Sederhana Alami</span>
+            <span>Humanizer AI</span>
           </div>
 
           <h1 className="font-display text-2xl sm:text-4xl lg:text-[2.75rem] font-bold text-ink tracking-tight leading-tight">
-            Humanizer AI — Bahasa Sederhana Alami.
+            Humanizer AI untuk Penulisan Lugas.
           </h1>
 
           <p className="text-sm sm:text-base text-muted leading-relaxed max-w-3xl">
@@ -71,7 +71,7 @@ export default function HumanizerPage() {
                 <Sparkles className="size-5" />
               </div>
               <h3 className="font-display font-bold text-base text-ink">
-                Bahasa Sederhana & Polos
+                Bahasa Lugas & Polos
               </h3>
               <p className="text-xs text-muted leading-relaxed">
                 Naskah ditulis ulang dengan kata-kata umum sehari-hari yang bersahaja seperti penjelasan
@@ -97,11 +97,11 @@ export default function HumanizerPage() {
                 <BookOpen className="size-5" />
               </div>
               <h3 className="font-display font-bold text-base text-ink">
-                100% Preservasi Sitasi & Data
+                Preservasi Sitasi & Data
               </h3>
               <p className="text-xs text-muted leading-relaxed">
                 Sitasi dalam kurung seperti <code>(Slavin, 2015)</code>, istilah teknis (PTKK, TGT, KKTP),
-                angka desimal <code>75,05</code>, dan persentase dipertahankan secara utuh.
+                angka desimal <code>75,05</code>, dan persentase dijaga oleh pemeriksaan tambahan.
               </p>
             </div>
 

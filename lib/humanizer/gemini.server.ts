@@ -14,9 +14,12 @@ export interface GeminiHumanizeResult {
   text?: string;
   error?: string;
   modelUsed?: string;
+  remainingWords?: number;
+  chargedWords?: number;
+  errorCode?: "invalid-input" | "rate-limit" | "wallet" | "ai" | "integrity";
 }
 
-const SYSTEM_INSTRUCTION_BASE = `Kamu adalah ahli penulisan ulang naskah bahasa Indonesia dengan spesialisasi tunggal: "Skill Bahasa Sederhana Alami (Natural Human Writing)".
+const SYSTEM_INSTRUCTION_BASE = `Kamu adalah ahli penulisan ulang naskah bahasa Indonesia dengan gaya penulisan lugas dan alami.
 
 TUJUAN:
 Tulis ulang naskah akademik/formal menjadi bahasa Indonesia yang SANGAT SEDERHANA, POLOS, dan MENGALIR NATURAL seperti ditulis oleh manusia asli (mahasiswa atau penulis awam yang menjelaskan fakta apa adanya, tanpa susunan kalimat yang terlalu rapi atau kaku, dan bebas dari pola klise AI).
@@ -30,7 +33,7 @@ ATURAN WAJIB INTEGRITAS DATA & REFERENSI (100% HARUS UTUH):
 3. ISTILAH TEKNIS TETAP AKURAT:
    - Singkatan dan istilah resmi (seperti Rutan Kelas IIB Purworejo, PTK, TGT, KKTP, overkapasitas) dipertahankan.
 
-ATURAN ANTI-AI & GAYA MANUSIA ASLI (SUPAYA 100% LOLOS DETEKSI AI / GPTZERO):
+ATURAN GAYA MANUSIA ASLI (UNTUK MENGURANGI POLA TULISAN YANG TERLALU SERAGAM):
 1. HINDARI POLA ENUMERASI SIMETRIS AI:
    - DILARANG membuat enumerasi robotik seperti: "Tugas pertama, jadi... Tugas kedua, jadi..." atau "Langkah satu... Langkah dua...".
    - Jelaskan langsung dalam kalimat mengalir yang wajar.
@@ -61,8 +64,32 @@ CONTOH PENULISAN ULANG:
 OUTPUT:
 Kembalikan HANYA teks hasil penulisan ulang naskah, tanpa kata pengantar dan tanpa blok markdown.`;
 
-function ambilApiKey(): string {
-  return (process.env.GEMINI_API_KEY || "").trim();
+function ambilApiKeys(): string[] {
+  const raw = [process.env.GEMINI_API_KEYS, process.env.GEMINI_API_KEY]
+    .filter(Boolean)
+    .join("\n");
+
+  return [...new Set(
+    raw
+      .split(/[;,\n]+/)
+      .map((key) => key.trim().replace(/^['"]|['"]$/g, ""))
+      .filter(Boolean),
+  )];
+}
+
+let geminiKeyCursor = 0;
+
+function urutkanApiKeys(keys: string[]): string[] {
+  if (keys.length < 2) return keys;
+
+  const start = geminiKeyCursor % keys.length;
+  geminiKeyCursor += 1;
+  return [...keys.slice(start), ...keys.slice(0, start)];
+}
+
+function isKeyOrQuotaError(error: unknown): boolean {
+  const message = error instanceof Error ? error.message : String(error);
+  return /\b(401|403|429)\b|api key|quota|rate limit|resource exhausted/i.test(message);
 }
 
 /**
@@ -103,12 +130,12 @@ export async function humanizeWithGemini(
     return { ok: false, error: "Naskah teks tidak boleh kosong." };
   }
 
-  const apiKey = ambilApiKey();
-  if (!apiKey) {
+  const apiKeys = urutkanApiKeys(ambilApiKeys());
+  if (apiKeys.length === 0) {
     return {
       ok: false,
       error:
-        "Kunci GEMINI_API_KEY belum dikonfigurasi di server (.env.local). Silakan masukkan API key gratis dari Google AI Studio (https://aistudio.google.com/) ke file .env.local untuk mengaktifkan fitur AI ini.",
+        "Kunci Gemini belum dikonfigurasi di server. Isi GEMINI_API_KEY atau GEMINI_API_KEYS dari Google AI Studio.",
     };
   }
 
@@ -116,68 +143,71 @@ export async function humanizeWithGemini(
   let systemInstruction = SYSTEM_INSTRUCTION_BASE;
   if (options.customTerms && options.customTerms.length > 0) {
     const termList = options.customTerms.join(", ");
-    systemInstruction += `\n\nISTILAH KUSTOM TAMBAHAN YANG HARUS 100% DIPERTAHANKAN: ${termList}`;
+    systemInstruction += `\n\nISTILAH KUSTOM TAMBAHAN YANG HARUS SELALU DIPERTAHANKAN: ${termList}`;
   }
 
   if (options.intensity === "sederhana") {
-    systemInstruction += `\n\nMODE SPESIFIK: BAHASA SEDERHANA ALAMI
+    systemInstruction += `\n\nMODE SPESIFIK: PENULISAN LUGAS
 Gunakan bahasa Indonesia sehari-hari yang sangat polos, bersahaja, dan mudah dipahami oleh siapa saja, seperti seseorang menjelaskan langsung secara lisan tanpa pretensi akademik, namun tetap akurat terhadap fakta dan data.`;
   }
-
-  // Inisialisasi GoogleGenAI dengan apiVersion 'v1beta' agar mendukung model modern
-  // (gemini-2.5-flash) dan systemInstruction tanpa error 400 'Developer instruction not enabled'
-  const ai = new GoogleGenAI({
-    apiKey,
-    apiVersion: "v1beta",
-  } as ConstructorParameters<typeof GoogleGenAI>[0]);
 
   // Model yang didukung pada endpoint v1beta: gemini-2.5-flash (utama), gemini-3.5-flash (cadangan)
   const candidateModels = ["gemini-2.5-flash", "gemini-3.5-flash"];
 
   let lastError: unknown = null;
-  for (const modelName of candidateModels) {
-    try {
-      const response = await ai.models.generateContent({
-        model: modelName,
-        contents: trimmed,
-        config: {
-          systemInstruction,
-          temperature: 0.85,
-        },
-      });
+  for (const apiKey of apiKeys) {
+    // Inisialisasi satu client per key agar pool bisa berganti saat key
+    // invalid, terkena quota, atau rate limit.
+    const ai = new GoogleGenAI({
+      apiKey,
+      apiVersion: "v1beta",
+    } as ConstructorParameters<typeof GoogleGenAI>[0]);
 
-      const responseText = response.text;
-      if (responseText && responseText.trim()) {
-        const cleaned = cleanAiResponse(responseText);
-        return {
-          ok: true,
-          text: cleaned,
-          modelUsed: modelName,
-        };
-      }
-    } catch (err: unknown) {
-      lastError = err;
-      // Jika terjadi error pada systemInstruction, coba sekali lagi dengan instruksi disatukan ke prompt
+    for (const modelName of candidateModels) {
       try {
-        const promptFallback = `[ATURAN KHUSUS HUMANIZER]\n${systemInstruction}\n\n[NASKAH SUMBER]\n${trimmed}`;
-        const fallbackRes = await ai.models.generateContent({
+        const response = await ai.models.generateContent({
           model: modelName,
-          contents: promptFallback,
+          contents: trimmed,
           config: {
+            systemInstruction,
             temperature: 0.85,
           },
         });
-        if (fallbackRes.text && fallbackRes.text.trim()) {
+
+        const responseText = response.text;
+        if (responseText && responseText.trim()) {
           return {
             ok: true,
-            text: cleanAiResponse(fallbackRes.text),
+            text: cleanAiResponse(responseText),
             modelUsed: modelName,
           };
         }
-      } catch {
-        // Lanjut ke model kandidat berikutnya jika fallback prompt juga gagal
+      } catch (err: unknown) {
+        lastError = err;
+
+        // 401/403/429 berlaku untuk key ini; langsung pindah ke key berikutnya.
+        if (isKeyOrQuotaError(err)) break;
+
+        // Jika hanya systemInstruction yang ditolak, coba prompt gabungan.
+        try {
+          const promptFallback = `[ATURAN KHUSUS HUMANIZER]\n${systemInstruction}\n\n[NASKAH SUMBER]\n${trimmed}`;
+          const fallbackRes = await ai.models.generateContent({
+            model: modelName,
+            contents: promptFallback,
+            config: { temperature: 0.85 },
+          });
+          if (fallbackRes.text && fallbackRes.text.trim()) {
+            return {
+              ok: true,
+              text: cleanAiResponse(fallbackRes.text),
+              modelUsed: modelName,
+            };
+          }
+        } catch (fallbackError: unknown) {
+          lastError = fallbackError;
+          if (isKeyOrQuotaError(fallbackError)) break;
+        }
       }
-      continue;
     }
   }
 

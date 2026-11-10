@@ -17,7 +17,7 @@ export interface BurstinessMetrics {
   mean: number;
   sd: number; // Standar deviasi panjang kalimat (global)
   minLocalSd: number; // Min SD pada sliding window (local burstiness)
-  flaggedWindows: number; // Jumlah jendela dengan SD < 6.0 (lihat LOCAL_SD_MIN)
+  flaggedWindows: number; // Jumlah jendela dengan SD di bawah ambang lokal
   shortCount: number; // < 10 kata
   mediumCount: number; // 10–21 kata
   longCount: number; // > 21 kata
@@ -41,7 +41,7 @@ export interface ScanMetrics {
 
 export interface RiskMetrics {
   score: number; // 0.0 - 99.0%
-  humanScore: number;
+  humanScore: number; // Pelengkap skor internal, bukan hasil detektor eksternal
   verdict: string;
   color: string;
   badgeClass: string;
@@ -84,6 +84,7 @@ export interface TokenPackage {
 export interface VoucherRedeemResult {
   ok: boolean;
   tokens?: number;
+  remainingWords?: number;
   message?: string;
   error?: string;
 }

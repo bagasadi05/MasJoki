@@ -6,6 +6,7 @@ import {
   Calculator,
   CheckCircle2,
   CreditCard,
+  Download,
   ExternalLink,
   FolderArchive,
   Lock,
@@ -37,22 +38,22 @@ const stripRingkasan = [
   {
     icon: Tag,
     label: "Mulai Rp15.000",
-    iconBg: "bg-brand-soft text-brand",
+    iconBg: "bg-black/10 text-[#101a33]",
   },
   {
     icon: Zap,
     label: "Pengerjaan mulai 6 jam",
-    iconBg: "bg-amber-soft text-amber",
+    iconBg: "bg-black/10 text-[#101a33]",
   },
   {
     icon: CreditCard,
     label: "DP 50% dulu, lunas setelah selesai",
-    iconBg: "bg-mint-soft text-mint",
+    iconBg: "bg-black/10 text-[#101a33]",
   },
   {
     icon: RefreshCcw,
     label: "Revisi 2× gratis",
-    iconBg: "bg-brand-soft text-brand",
+    iconBg: "bg-black/10 text-[#101a33]",
   },
 ];
 
@@ -192,7 +193,7 @@ export default function Home() {
          * ========================================================== */}
         <section
           aria-label="Ringkasan keunggulan layanan Mas Joki"
-          className="border-b border-line bg-paper-2/60"
+          className="border-b border-ink/15 bg-stabilo"
         >
           <ul className="mx-auto grid max-w-6xl grid-cols-2 gap-x-5 gap-y-3.5 px-5 py-4 sm:px-8 lg:grid-cols-4 lg:py-5">
             {stripRingkasan.map((item) => (
@@ -215,7 +216,7 @@ export default function Home() {
          * ========================================================== */}
         <section
           id="layanan"
-          className="relative overflow-hidden border-b border-line bg-gradient-to-b from-paper via-paper-2/45 to-paper py-14 sm:py-20 scroll-mt-16"
+          className="relative overflow-hidden border-b border-line bg-paper-2 py-14 sm:py-20 scroll-mt-16"
         >
           <div
             aria-hidden
@@ -241,7 +242,7 @@ export default function Home() {
               </Link>
             </div>
 
-            <div className="mt-10">
+            <div className="reveal mt-10">
               <ServiceList hanyaHighlight={true} />
             </div>
           </div>
@@ -252,7 +253,7 @@ export default function Home() {
          * ========================================================== */}
         <section
           id="nilai-jual"
-          className="relative overflow-hidden border-b border-line bg-gradient-to-b from-paper via-paper-2/40 to-paper py-14 sm:py-20 scroll-mt-16"
+          className="relative overflow-hidden border-b border-line bg-paper-2 py-14 sm:py-20 scroll-mt-16"
         >
           <div
             aria-hidden
@@ -268,7 +269,7 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="mt-10 grid gap-5 sm:grid-cols-2">
+            <div className="reveal mt-10 grid gap-5 sm:grid-cols-2">
               {garansiList.map((item) => {
                 const Icon = item.icon;
                 return (
@@ -302,7 +303,7 @@ export default function Home() {
         {/* ========================================================== *
          * 5. PROFIL PEMILIK (NILAI JUAL: Guru Aktif S.Pd, Tanpa Pihak Ketiga)
          * ========================================================== */}
-        <section id="profil-pemilik" className="border-b border-line bg-gradient-to-b from-paper to-paper-2/40 py-12 sm:py-16">
+        <section id="profil-pemilik" className="border-b border-line bg-paper py-12 sm:py-16">
           <div className="mx-auto max-w-4xl px-5 sm:px-8">
             <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-8 rounded-3xl border border-line bg-white p-6 sm:p-8 shadow-sm">
               <div className="relative size-24 sm:size-28 shrink-0 overflow-hidden rounded-2xl border-2 border-line shadow-xs mx-auto sm:mx-0">
@@ -354,7 +355,7 @@ export default function Home() {
          * ========================================================== */}
         <section
           id="simulasi"
-          className="relative overflow-hidden border-b border-line bg-gradient-to-b from-paper via-paper-2/40 to-paper py-16 sm:py-20 scroll-mt-16"
+          className="relative overflow-hidden border-b border-line bg-paper py-16 sm:py-20 scroll-mt-16"
         >
           <div
             aria-hidden
@@ -387,16 +388,95 @@ export default function Home() {
             </div>
 
             {/* Tiga Kartu Contoh Hitungan Nyata */}
-            <div className="mt-10">
+            <div className="reveal mt-10">
               <SimulasiContoh />
             </div>
           </div>
         </section>
 
         {/* ========================================================== *
-         * 8. STRIP PEMBAYARAN RINGKAS (ShopeePay, GoPay, DANA)
+         * 8. POSTER HARGA (NILAI JUAL: SATU LEMBAR, SEMUA TARIF)
          * ========================================================== */}
-        <section className="border-b border-line bg-paper-2/60 py-5">
+        <section
+          id="poster-harga"
+          className="relative overflow-hidden border-b border-line bg-paper-2 py-14 sm:py-20 scroll-mt-16"
+        >
+          <div
+            aria-hidden
+            className="kertas-titik pointer-events-none absolute inset-0 opacity-25"
+          />
+
+          <div className="relative mx-auto grid max-w-6xl gap-10 px-5 sm:px-8 lg:grid-cols-[1fr_0.82fr] lg:items-center">
+            <div>
+              <span className="stempel">POSTER HARGA</span>
+              <h2 className="mt-3 font-display text-[2rem] leading-tight tracking-[-0.02em] text-ink sm:text-[2.6rem]">
+                Satu lembar, semua tarif kelihatan.
+              </h2>
+              <p className="mt-2 max-w-[52ch] text-sm leading-relaxed text-slate-600 font-medium">
+                Poster ini dihitung dari mesin harga yang sama dengan kalkulator, bukan
+                angka tempelan. Simpan atau bagikan ke teman satu kelas sebelum chat.
+              </p>
+
+              <ul className="mt-6 space-y-2.5">
+                <li className="flex items-start gap-2 text-sm font-medium text-slate-700">
+                  <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-mint" aria-hidden />
+                  <span>Delapan layanan inti, lengkap dengan satuan harganya.</span>
+                </li>
+                <li className="flex items-start gap-2 text-sm font-medium text-slate-700">
+                  <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-brand" aria-hidden />
+                  <span>Tidak ada &quot;mulai dari&quot; tanpa satuan — semua angka bisa dicek ulang di kalkulator.</span>
+                </li>
+                <li className="flex items-start gap-2 text-sm font-medium text-slate-700">
+                  <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-amber" aria-hidden />
+                  <span>Bisa diunduh dan dibagikan tanpa perlu screenshot berantakan.</span>
+                </li>
+              </ul>
+
+              <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+                <a
+                  href="/poster"
+                  download="poster-harga-mas-joki.png"
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-3.5 text-sm font-bold text-white shadow-md shadow-brand/20 transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand-dark hover:shadow-lg active:translate-y-0"
+                >
+                  <Download className="size-4" />
+                  <span>Unduh poster (PNG)</span>
+                </a>
+                <Link
+                  href="/hitung"
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl border border-line bg-white px-6 py-3.5 text-sm font-bold text-ink transition-colors hover:border-brand hover:text-brand"
+                >
+                  <span>Hitung biaya persisnya</span>
+                  <ArrowRight className="size-4" />
+                </Link>
+              </div>
+
+              <p className="mt-3 text-xs font-medium text-muted">
+                Ukuran 1080 × 1350 px — pas untuk status WhatsApp atau feed Instagram.
+              </p>
+            </div>
+
+            <figure className="relative mx-auto w-full max-w-[360px]">
+              <div className="rotate-[1.2deg] overflow-hidden rounded-xl border border-line bg-white p-2 shadow-xl shadow-ink/10">
+                <Image
+                  src="/poster"
+                  alt="Poster daftar harga Mas Joki: humanisasi teks AI, parafrase, makalah, artikel jurnal, PowerPoint, rapikan Word, terjemahan, dan desain visual."
+                  width={1080}
+                  height={1350}
+                  unoptimized
+                  className="h-auto w-full rounded-md"
+                />
+              </div>
+              <figcaption className="mt-3 text-center text-xs font-semibold text-muted">
+                Poster harga Mas Joki · 1080 × 1350 px
+              </figcaption>
+            </figure>
+          </div>
+        </section>
+
+        {/* ========================================================== *
+         * 9. STRIP PEMBAYARAN RINGKAS (ShopeePay, GoPay, DANA)
+         * ========================================================== */}
+        <section className="border-b border-line bg-paper py-5">
           <div className="mx-auto max-w-6xl px-5 sm:px-8">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs sm:text-sm text-slate-700">
               <div className="flex flex-wrap items-center gap-2">

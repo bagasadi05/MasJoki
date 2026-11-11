@@ -9,14 +9,14 @@
 :root {
   color-scheme: light dark;
 
-  --color-paper: #fcfbf7;
-  --color-paper-2: #f4f1e8;
-  --color-card: #ffffff;
-  --color-ink: #0b1329;
-  --color-ink-soft: #334155;
-  --color-muted: #54637a;
-  --color-line: #e2ded5;
-  --color-line-strong: #cac4b5;
+  --color-paper: #f7f2e6;
+  --color-paper-2: #ece4d2;
+  --color-card: #fffdf6;
+  --color-ink: #101a33;
+  --color-ink-soft: #3c465c;
+  --color-muted: #5f6672;
+  --color-line: #ddd3bd;
+  --color-line-strong: #c4b79c;
   --color-brand: #2563eb;
   --color-brand-dark: #1d4ed8;
   --color-brand-soft: #eff6ff;
@@ -38,7 +38,7 @@
   --color-rose: #9d4d6b;
   --color-rose-soft: #f6e7ed;
 
-  --color-nota-bg: #ffffff;
+  --color-nota-bg: #fffdf6;
 
   &:has(> head > meta[name="color-scheme"][content="dark"]) {
     color-scheme: dark;
@@ -225,6 +225,11 @@ html.dark,
 html.dark .bg-white,
 :root:has(> head > meta[name="color-scheme"][content="dark"]) .bg-white {
   background-color: var(--color-card, #131c31) !important;
+}
+
+/* Kartu terang tidak putih bersih: ikut warna kertas hangat. */
+html:not(.dark) .bg-white {
+  background-color: var(--color-card) !important;
 }
 
 html.dark .bg-white\/95,
@@ -676,6 +681,31 @@ html.dark .kertas-garis {
     transparent 1.5px
   );
   background-size: 22px 22px;
+}
+
+/* ------------------------------------------------------------------ *
+ * Animasi Masuk Saat Di-scroll (CSS scroll-driven, tanpa JS)
+ * ------------------------------------------------------------------ */
+
+@keyframes reveal-naik {
+  from {
+    transform: translateY(14px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* Hanya menggeser, tidak mengubah opacity: kontainer tinggi tetap terbaca
+ * penuh walau animasinya belum selesai. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: reveal-naik linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 45%;
+    }
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

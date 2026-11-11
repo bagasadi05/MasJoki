@@ -121,8 +121,9 @@ balasan "ok" tanpa `waUrl`, jadi tidak ada tautan yang bisa disalahgunakan.
 Arah visual: **nota/kwitansi**, bukan kartu SaaS.
 
 ```
-paper #FBFAF6 · ink #101A33 · ink-soft #3C465C · muted #686E79
-line #DED9C8 · brand #1F3BE0 · brand-soft #E7EAFF · stabilo #FFE44D
+paper #F7F2E6 · paper-2 #ECE4D2 · card #FFFDF6
+ink #101A33 · ink-soft #3C465C · muted #5F6672
+line #DDD3BD · brand #1F3BE0 · brand-soft #E7EAFF · stabilo #FFE44D
 display: Bricolage Grotesque · body: Plus Jakarta Sans
 ```
 
@@ -171,6 +172,11 @@ Aturannya:
   memang membawa informasi.
 - Fokus keyboard wajib terlihat; jangan hapus `:focus-visible` di `globals.css`.
 - Halaman ini terang saja. Jangan tambahkan mode gelap tanpa diminta.
+- Jangan memakai putih bersih (#FFF) untuk latar atau kartu: pakai `card`.
+  Putih bersih hanya untuk kertas nota di dalam poster/cetak.
+- Irama bagian: krem `paper` dan `paper-2` bergantian, ditambah maksimal satu
+  bidang jenuh per halaman (pita `stabilo` atau panel `ink`). Jangan membuat
+  setiap bagian berwarna sendiri.
 
 ## UX & aksesibilitas
 

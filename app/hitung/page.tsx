@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { LangkahRingkas } from "@/components/langkah-ringkas";
 import { PriceCalculator } from "@/components/price-calculator";
 import { SimulasiContoh } from "@/components/simulasi-contoh";
 import { SiteFooter } from "@/components/site-footer";
@@ -46,6 +47,8 @@ export default function HalamanKalkulator() {
             Total biaya dan rincian nota kwitansi langsung keluar seketika tanpa perlu nunggu chat admin dibalas.
           </p>
         </div>
+
+        <LangkahRingkas />
 
         {/* Main Calculator */}
         <div id="hitung" className="mt-10 scroll-mt-24">

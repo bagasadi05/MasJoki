@@ -17,6 +17,8 @@ export interface GeminiHumanizeResult {
   remainingWords?: number;
   chargedWords?: number;
   errorCode?: "invalid-input" | "rate-limit" | "wallet" | "ai" | "integrity";
+  /** Hasil diambil dari cache server; tidak memanggil Gemini dan tidak memotong saldo. */
+  cached?: boolean;
 }
 
 const SYSTEM_INSTRUCTION_BASE = `Kamu adalah ahli penulisan ulang naskah bahasa Indonesia dengan gaya penulisan lugas dan alami.
@@ -35,6 +37,9 @@ ATURAN WAJIB INTEGRITAS DATA & REFERENSI (100% HARUS UTUH):
    - Sitasi seperti (Slavin, 2015), (Dewantara, 2013), (Sugiyono, 2016: 45) harus tetap utuh pada posisinya.
 3. ISTILAH TEKNIS TETAP AKURAT:
    - Singkatan dan istilah resmi (seperti Rutan Kelas IIB Purworejo, PTK, TGT, KKTP, overkapasitas) dipertahankan.
+4. FORMAT ANGKA HARUS PERSIS:
+   - Tulis angka sama seperti sumber, termasuk koma desimal (75,05 — bukan 75.05 atau 75.5), tanda persen (80%), dan rentang bertanda hubung (60-80).
+   - Jangan mengubah tanda baca angka, jangan membulatkan, dan jangan menulis angka dengan kata.
 
 ATURAN GAYA MANUSIA ASLI (UNTUK MENGURANGI POLA TULISAN YANG TERLALU SERAGAM):
 1. HINDARI POLA ENUMERASI SIMETRIS AI:
@@ -56,6 +61,19 @@ ATURAN GAYA MANUSIA ASLI (UNTUK MENGURANGI POLA TULISAN YANG TERLALU SERAGAM):
      * 'dalam rangka' -> 'untuk'
      * 'merupakan salah satu' -> 'termasuk' / 'adalah'
 
+STANDAR SKILL HUMANISASI AKADEMIK (WAJIB DIPATUHI):
+1. VARIASI PANJANG KALIMAT.
+   - Jangan membuat semua kalimat 15–20 kata. Selipkan kalimat pendek 5–8 kata, dan sesekali kalimat panjang 30+ kata yang memuat syarat, sebab, atau pengecualian.
+2. PELAKU HARUS JELAS.
+   - Kalimat tanpa pelaku ("perlindungan perlu diperbaiki") diubah menjadi kalimat dengan pelaku ("pemerintah belum menerbitkan aturan turunannya").
+3. KEKHUSUSAN DIUTAMAKAN.
+   - Angka, tahun, nomor pasal, nama tempat, dan detail spesifik lain dipertahankan karena itu yang membedakan tulisan penulis asli.
+4. WACANA TIDAK BOLEH BERPOLA.
+   - Jangan membuka paragraf dengan konektor yang sama, jangan menutup setiap paragraf dengan simpulan, dan jangan memakai tiga item sejajar berulang.
+5. UBAH ARSITEKTUR KALIMAT, BUKAN ISTILAH.
+   - Istilah hukum/resmi seperti "Pasal 87 ayat (1) Undang-Undang Nomor 22 Tahun 2022" atau "Rutan Kelas IIB Purworejo" harus utuh; jangan disinonimkan paksa.
+   - DILARANG: mengganti sinonim istilah teknis, memendekkan semua kalimat, menambah basa-basi ("sebagai penulis"), menghapus sitasi agar lebih lancar, atau menambah klaim baru.
+
 CONTOH PENULISAN ULANG:
 - Masukan: Penerapan model pembelajaran kooperatif mampu meningkatkan partisipasi aktif peserta didik selama proses pembelajaran berlangsung.
   Hasil: Kalau siswa belajar dengan kelompok, mereka bisa lebih banyak ikut belajar. Karena siswa tidak hanya duduk dan mendengarkan guru saja. Mereka juga bisa berbicara dengan teman dan mengerjakan tugas bersama. Jadi siswa bisa lebih aktif saat belajar.
@@ -65,7 +83,8 @@ CONTOH PENULISAN ULANG:
   Hasil: Rutan Kelas IIB Purworejo punya dua tugas pokok, yaitu melayani tahanan dan membina narapidana. Rutan ini aslinya cuma dibuat untuk 100 orang. Sekarang penghuninya ada 150 sampai 180 orang, atau sekitar 150-180% dari kapasitas aslinya. Kamar-kamar jadi sangat sempit.
 
 OUTPUT:
-Kembalikan HANYA teks hasil penulisan ulang naskah, tanpa kata pengantar dan tanpa blok markdown.`;
+Kembalikan HANYA teks hasil penulisan ulang naskah, tanpa kata pengantar dan tanpa blok markdown.
+Panjang hasil maksimal 110% dari panjang naskah asli. Jangan menambah kalimat pengantar, ringkasan, atau penutup baru.`;
 
 function ambilApiKeys(): string[] {
   const raw = [process.env.GEMINI_API_KEYS, process.env.GEMINI_API_KEY]
@@ -169,6 +188,12 @@ Gunakan bahasa Indonesia sehari-hari yang sangat polos, bersahaja, dan mudah dip
   // Model yang didukung pada endpoint v1beta: gemini-2.5-flash (utama), gemini-3.5-flash (cadangan)
   const candidateModels = ["gemini-2.5-flash", "gemini-3.5-flash"];
 
+  // Batas keluaran proporsional: hemat kuota dan cegah model menulis lebih
+  // panjang dari naskah aslinya. Minimal 1.024 token supaya penulisan ulang
+  // pendek tidak terpotong.
+  const jumlahKata = trimmed.split(/\s+/).filter(Boolean).length;
+  const batasToken = Math.min(8192, Math.max(1024, Math.round(jumlahKata * 4)));
+
   let lastError: unknown = null;
   for (const apiKey of apiKeys) {
     // Inisialisasi satu client per key agar pool bisa berganti saat key
@@ -186,10 +211,26 @@ Gunakan bahasa Indonesia sehari-hari yang sangat polos, bersahaja, dan mudah dip
           config: {
             systemInstruction,
             temperature: 0.85,
+            maxOutputTokens: batasToken,
+            // 2.5-flash menyalakan "thinking" secara bawaan; token pikirannya
+            // memakan jatah keluaran sehingga naskah terpotong (MAX_TOKENS).
+            // Untuk tugas menulis ulang, thinking tidak diperlukan.
+            ...(modelName.includes("2.5")
+              ? { thinkingConfig: { thinkingBudget: 0 } }
+              : {}),
           },
         });
 
         const responseText = response.text;
+
+        // Diagnostik aman: panjang & alasan selesai saja, tanpa isi naskah.
+        if (process.env.NODE_ENV !== "production") {
+          const kandidat = response.candidates?.[0];
+          console.log(
+            `[gemini] ${modelName} chars=${responseText?.length ?? 0} finish=${kandidat?.finishReason ?? "?"} maxOut=${batasToken}`,
+          );
+        }
+
         if (responseText && responseText.trim()) {
           return {
             ok: true,

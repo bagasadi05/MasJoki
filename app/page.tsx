@@ -22,8 +22,11 @@ import { AlurKerja } from "@/components/alur-kerja";
 import { HeroStaticReceipt } from "@/components/hero-static-receipt";
 import { ServiceList } from "@/components/service-list";
 import { SimulasiContoh } from "@/components/simulasi-contoh";
+import { HighlightHumanizer } from "@/components/highlight-humanizer";
+import { LacakKlik } from "@/components/lacak-klik";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { Tilt } from "@/components/tilt";
 import { QRIS_ENABLED, SITE_OWNER } from "@/lib/config";
 import { pembayaran, site, waLink, waPesanUmum } from "@/lib/site";
 
@@ -141,14 +144,16 @@ export default function Home() {
 
               {/* Dua Tombol CTA Utama: Buka Kalkulator Biaya & Lihat Layanan */}
               <div className="mt-8 flex flex-col gap-3.5 sm:flex-row">
-                <Link
-                  href="/hitung"
-                  className="inline-flex items-center justify-center gap-2 rounded-2xl bg-brand px-7 py-4 text-sm font-extrabold text-white shadow-lg shadow-brand/25 transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35 active:translate-y-0 cursor-pointer"
-                >
-                  <Calculator className="size-4.5" />
-                  <span>Buka Kalkulator Biaya</span>
-                  <ArrowRight className="size-4" />
-                </Link>
+                <LacakKlik nama="cta_hitung" data={{ lokasi: "hero" }}>
+                  <Link
+                    href="/hitung"
+                    className="group inline-flex items-center justify-center gap-2 rounded-2xl bg-brand px-7 py-4 text-sm font-extrabold text-white shadow-lg shadow-brand/25 transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35 active:translate-y-0 cursor-pointer"
+                  >
+                    <Calculator className="size-4.5" />
+                    <span>Buka Kalkulator Biaya</span>
+                    <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0" />
+                  </Link>
+                </LacakKlik>
                 <a
                   href="#layanan"
                   className="inline-flex items-center justify-center gap-2 rounded-2xl border-2 border-line dark:border-line-strong bg-white dark:bg-[#162035] px-7 py-4 text-sm font-bold text-ink dark:text-slate-100 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand dark:hover:bg-brand hover:text-white dark:hover:border-brand active:translate-y-0"
@@ -189,26 +194,40 @@ export default function Home() {
         </section>
 
         {/* ========================================================== *
-         * 2. STRIP RINGKASAN CEPAT (Statis, tanpa animasi berjalan)
+         * 2. STRIP RINGKASAN CEPAT (band stabilo berjalan)
          * ========================================================== */}
         <section
           aria-label="Ringkasan keunggulan layanan Mas Joki"
-          className="border-b border-ink/15 bg-stabilo"
+          className="overflow-hidden border-b border-ink/15 bg-stabilo py-3.5 sm:py-4"
         >
-          <ul className="mx-auto grid max-w-6xl grid-cols-2 gap-x-5 gap-y-3.5 px-5 py-4 sm:px-8 lg:grid-cols-4 lg:py-5">
-            {stripRingkasan.map((item) => (
-              <li key={item.label} className="flex items-start gap-2.5">
-                <span
-                  className={`grid size-7 shrink-0 place-items-center rounded-full ${item.iconBg}`}
+          <div className="[mask-image:linear-gradient(to_right,transparent,#000_4%,#000_96%,transparent)]">
+            <div className="band-berjalan">
+              {[0, 1, 2, 3].map((salinan) => (
+                <ul
+                  key={salinan}
+                  aria-hidden={salinan > 0 ? true : undefined}
+                  data-duplikat={salinan > 0 ? "" : undefined}
+                  className="flex shrink-0 items-center gap-8 pr-8 sm:gap-12 sm:pr-12"
                 >
-                  <item.icon className="size-3.5" aria-hidden />
-                </span>
-                <span className="pt-0.5 text-xs font-bold leading-snug text-ink sm:text-sm">
-                  {item.label}
-                </span>
-              </li>
-            ))}
-          </ul>
+                  {stripRingkasan.map((item) => (
+                    <li
+                      key={item.label}
+                      className="flex shrink-0 items-center gap-2.5 whitespace-nowrap"
+                    >
+                      <span
+                        className={`grid size-7 shrink-0 place-items-center rounded-full ${item.iconBg}`}
+                      >
+                        <item.icon className="size-3.5" aria-hidden />
+                      </span>
+                      <span className="text-xs font-bold leading-snug text-ink sm:text-sm">
+                        {item.label}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              ))}
+            </div>
+          </div>
         </section>
 
         {/* ========================================================== *
@@ -247,6 +266,9 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* Humanizer mandiri: jalur kedua, pakai token sendiri */}
+        <HighlightHumanizer />
 
         {/* ========================================================== *
          * 4. NILAI JUAL: EMPAT GARANSI INTEGRITAS
@@ -433,20 +455,22 @@ export default function Home() {
               </ul>
 
               <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-                <a
-                  href="/poster"
-                  download="poster-harga-mas-joki.png"
-                  className="inline-flex items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-3.5 text-sm font-bold text-white shadow-md shadow-brand/20 transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand-dark hover:shadow-lg active:translate-y-0"
-                >
-                  <Download className="size-4" />
-                  <span>Unduh poster (PNG)</span>
-                </a>
+                <LacakKlik nama="poster_unduh" data={{ lokasi: "poster" }}>
+                  <a
+                    href="/poster"
+                    download="poster-harga-mas-joki.png"
+                    className="inline-flex items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-3.5 text-sm font-bold text-white shadow-md shadow-brand/20 transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand-dark hover:shadow-lg active:translate-y-0"
+                  >
+                    <Download className="size-4" />
+                    <span>Unduh poster (PNG)</span>
+                  </a>
+                </LacakKlik>
                 <Link
                   href="/hitung"
-                  className="inline-flex items-center justify-center gap-2 rounded-2xl border border-line bg-white px-6 py-3.5 text-sm font-bold text-ink transition-colors hover:border-brand hover:text-brand"
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl border border-line bg-white px-6 py-3.5 text-sm font-bold text-ink transition-colors hover:border-brand hover:text-brand group"
                 >
                   <span>Hitung biaya persisnya</span>
-                  <ArrowRight className="size-4" />
+                  <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0" />
                 </Link>
               </div>
 
@@ -456,19 +480,21 @@ export default function Home() {
             </div>
 
             <figure className="relative mx-auto w-full max-w-[360px]">
-              <div className="rotate-[1.2deg] overflow-hidden rounded-xl border border-line bg-white p-2 shadow-xl shadow-ink/10">
-                <Image
-                  src="/poster"
-                  alt="Poster daftar harga Mas Joki: humanisasi teks AI, parafrase, makalah, artikel jurnal, PowerPoint, rapikan Word, terjemahan, dan desain visual."
-                  width={1080}
-                  height={1350}
-                  unoptimized
-                  className="h-auto w-full rounded-md"
-                />
-              </div>
-              <figcaption className="mt-3 text-center text-xs font-semibold text-muted">
-                Poster harga Mas Joki · 1080 × 1350 px
-              </figcaption>
+              <Tilt maks={4}>
+                <div className="rotate-[1.2deg] overflow-hidden rounded-xl border border-line bg-white p-2 shadow-xl shadow-ink/10">
+                  <Image
+                    src="/poster"
+                    alt="Poster daftar harga Mas Joki: humanisasi teks AI, parafrase, makalah, artikel jurnal, PowerPoint, rapikan Word, terjemahan, dan desain visual."
+                    width={1080}
+                    height={1350}
+                    unoptimized
+                    className="h-auto w-full rounded-md"
+                  />
+                </div>
+                <figcaption className="mt-3 text-center text-xs font-semibold text-muted">
+                  Poster harga Mas Joki · 1080 × 1350 px
+                </figcaption>
+              </Tilt>
             </figure>
           </div>
         </section>

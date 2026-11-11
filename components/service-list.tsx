@@ -93,7 +93,7 @@ export function ServiceList({
               {/* Garis atas mengikuti warna layanan, bukan warna aksi. */}
               <span
                 aria-hidden
-                className={`absolute inset-x-0 top-0 h-1.5 ${aksen.dot}`}
+                className={`absolute inset-x-0 top-0 h-1.5 transition-[height] duration-300 group-hover:h-2 motion-reduce:transition-none ${aksen.dot}`}
               />
 
               <div>

@@ -10,6 +10,7 @@ import type { AuthUserSummary } from "@/app/auth/actions";
 import { MenuSeluler } from "./menu-seluler";
 import { ThemeToggle } from "./theme-toggle";
 import { useWibStatus } from "./use-wib-status";
+import { lacak } from "@/lib/analytics";
 import { navigasi } from "@/lib/nav";
 
 export function SiteHeader() {
@@ -35,7 +36,7 @@ export function SiteHeader() {
             className="group flex shrink-0 items-center gap-2.5 transition-transform duration-150 hover:scale-[1.02]"
             aria-label="Mas Joki, beranda"
           >
-            <div className="relative size-10 shrink-0 overflow-hidden rounded-full border-2 border-brand/30 bg-brand-soft shadow-xs ring-2 ring-white">
+            <div className="relative size-10 shrink-0 overflow-hidden rounded-full border-2 border-brand/30 bg-brand-soft shadow-xs ring-2 ring-card">
               <Image
                 src="/mas-joki.jpg"
                 alt="Avatar Mas Joki"
@@ -44,7 +45,7 @@ export function SiteHeader() {
                 className="size-full object-cover object-top"
                 priority
               />
-              <span className={`absolute bottom-0 right-0 size-2.5 rounded-full border-2 border-white ${isOpen ? "bg-mint" : "bg-amber"}`} />
+              <span className={`absolute bottom-0 right-0 size-2.5 rounded-full border-2 border-card ${isOpen ? "bg-mint" : "bg-amber"}`} />
             </div>
 
             <div className="flex flex-col">
@@ -132,6 +133,7 @@ export function SiteHeader() {
           ) : null}
           <Link
             href="/hitung"
+            onClick={() => lacak("cta_hitung", { lokasi: "header" })}
             className="hidden shrink-0 items-center gap-1.5 whitespace-nowrap rounded-xl bg-brand px-4 py-2.5 text-[0.82rem] font-bold text-white shadow-sm shadow-brand/25 transition-all duration-150 hover:-translate-y-0.5 hover:bg-brand-dark hover:shadow-md hover:shadow-brand/30 active:translate-y-0 sm:inline-flex"
           >
             <Calculator className="size-3.5" />

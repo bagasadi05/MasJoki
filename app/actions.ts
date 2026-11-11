@@ -1,5 +1,7 @@
 "use server";
 
+import { createHash } from "node:crypto";
+
 import { pesanPesanan, pesanOrderSpesifik, pesanPenawaran } from "@/lib/pesan";
 import { z } from "zod";
 import { computePrice } from "@/lib/pricing";
@@ -30,6 +32,44 @@ import {
   quoteSchema,
   voucherCodeSchema,
 } from "@/lib/validation";
+
+/* ------------------------------------------------------------------ *
+ * Cache hasil humanize
+ * ------------------------------------------------------------------ *
+ * Naskah + pengaturan yang sama persis tidak perlu dikirim ulang ke Gemini.
+ * Menekan kuota saat pengguna menekan tombol berkali-kali, membuka ulang
+ * halaman, atau mencoba lagi karena ragu. Cukup di memori proses: kalau
+ * instance berganti, cache kosong lagi tanpa merusak apa pun.
+ */
+
+const CACHE_AI_TTL_MS = 30 * 60 * 1000;
+const CACHE_AI_MAKS = 40;
+const cacheHasilAi = new Map<string, { teks: string; kedaluwarsa: number }>();
+
+function kunciHasilAi(teks: string, opsi: unknown): string {
+  return createHash("sha256")
+    .update(teks)
+    .update(JSON.stringify(opsi ?? {}))
+    .digest("hex");
+}
+
+function ambilHasilAi(kunci: string): string | null {
+  const entri = cacheHasilAi.get(kunci);
+  if (!entri) return null;
+  if (Date.now() > entri.kedaluwarsa) {
+    cacheHasilAi.delete(kunci);
+    return null;
+  }
+  return entri.teks;
+}
+
+function simpanHasilAi(kunci: string, teks: string) {
+  if (cacheHasilAi.size >= CACHE_AI_MAKS) {
+    const tertua = cacheHasilAi.keys().next().value;
+    if (tertua) cacheHasilAi.delete(tertua);
+  }
+  cacheHasilAi.set(kunci, { teks, kedaluwarsa: Date.now() + CACHE_AI_TTL_MS });
+}
 
 /**
  * Server action untuk alur pesanan publik. Data order tidak disimpan di aplikasi;
@@ -360,6 +400,18 @@ export async function humanizeWithGeminiAction(
     };
   }
 
+  // Hasil identik yang sudah pernah diproses tidak perlu memanggil Gemini lagi.
+  const kunciCache = kunciHasilAi(trimmed, parsedOptions.data);
+  const hasilCache = ambilHasilAi(kunciCache);
+  if (hasilCache) {
+    return {
+      ok: true,
+      text: hasilCache,
+      chargedWords: 0,
+      cached: true,
+    };
+  }
+
   // Batasi panggilan per IP agar kuota API aman dari penyalahgunaan
   const limit = await cekRateLimit("gemini-ai", 30);
   if (!limit.ok) {
@@ -415,6 +467,8 @@ export async function humanizeWithGeminiAction(
       if (!refundResult.ok) return refundResult;
       return { ...result, text: output, remainingWords: refundResult.remainingWords };
     }
+
+    simpanHasilAi(kunciCache, output);
 
     return {
       ...result,

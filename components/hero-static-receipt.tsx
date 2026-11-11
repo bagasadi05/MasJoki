@@ -3,6 +3,7 @@
 import { rupiah } from "@/lib/format";
 import { computePrice } from "@/lib/pricing";
 import { getService } from "@/lib/services";
+import { Tilt } from "./tilt";
 
 /**
  * Receipt statis untuk Hero (desktop-only):
@@ -14,8 +15,8 @@ export function HeroStaticReceipt() {
   const price = computePrice(service, 1000, "santai", "standar");
 
   return (
-    <div className="relative mx-auto max-w-[340px] drop-shadow-xl transition-transform duration-300 hover:-translate-y-1">
-      <div className="nota nota-masuk p-5 sm:p-6 bg-white">
+    <Tilt maks={4} className="relative mx-auto max-w-[340px] drop-shadow-xl">
+      <div className="nota nota-masuk bg-white p-5 sm:p-6">
         {/* Accent strip */}
         <span
           aria-hidden
@@ -84,6 +85,6 @@ export function HeroStaticReceipt() {
           </span>
         </div>
       </div>
-    </div>
+    </Tilt>
   );
 }

@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { lacak } from "@/lib/analytics";
 
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import {
@@ -343,6 +344,9 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
           : await submitQuote(null, data);
       setResult(jawaban);
       if (jawaban.status === "ok") {
+        lacak(mode === "hitung" ? "order_terkirim" : "penawaran_terkirim", {
+          layanan: String(data.get("serviceId") ?? ""),
+        });
         form.reset();
         setQtyInput(defaultQtys());
         setSelectedAddons({});

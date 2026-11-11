@@ -8,11 +8,11 @@ export const size = { width: 1080, height: 1350 };
 export const contentType = "image/png";
 export const alt = "Poster daftar harga Mas Joki — bantuan tugas kuliah";
 
-const PAPER = "#fcfbf7";
+const PAPER = "#f7f2e6";
 const INK = "#101a33";
 const INK_SOFT = "#3c465c";
-const MUTED = "#686e79";
-const LINE = "#ded9c8";
+const MUTED = "#5f6672";
+const LINE = "#ddd3bd";
 const BRAND = "#1f3be0";
 const STABILO = "#ffe44d";
 const MINT = "#2a6b55";
@@ -264,7 +264,7 @@ export async function GET() {
               flexDirection: "column",
               width: "322px",
               padding: "16px 18px",
-              backgroundColor: "#ffffff",
+              backgroundColor: "#fffdf6",
               border: `1px solid ${LINE}`,
               borderRadius: "12px",
               boxShadow: "0 18px 30px -18px rgba(16, 26, 51, 0.5)",

@@ -71,6 +71,7 @@ export const FORBIDDEN_WORDS_MAP: Record<string, string> = {
   "bertujuan untuk": "bertujuan",
   "guna memastikan": "supaya",
   "guna mencapai": "supaya bisa mencapai",
+  "dalam rangka untuk": "untuk",
   "dalam rangka": "untuk",
   "sebagai salah satu upaya": "sebagai langkah",
 
@@ -161,6 +162,7 @@ export const BAHASA_SEDERHANA_WORDS_MAP: Record<string, string> = {
   "berperan krusial": "sangat penting",
   "tidak dapat dipungkiri": "jelas sekali",
   "konsekuensi yuridis": "akibat hukum",
+  "dalam rangka untuk": "untuk",
   "dalam rangka": "untuk",
   "guna mencapai": "supaya bisa mencapai",
   "guna": "untuk",

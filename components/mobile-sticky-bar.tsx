@@ -5,14 +5,20 @@ import { usePathname } from "next/navigation";
 import { ArrowDown, Calculator } from "lucide-react";
 import { useOptionalCalculator } from "./calculator-context";
 import { rupiah } from "@/lib/format";
+import { lacak } from "@/lib/analytics";
 import { waLink, waPesanUmum } from "@/lib/site";
 
 export function MobileStickyBar() {
   const pathname = usePathname();
   const calc = useOptionalCalculator();
 
-  // Jangan tampilkan di halaman wizard order khusus karena sudah punya sticky bar wizard tersendiri
-  if (pathname?.includes("/order")) {
+  // Jangan tampilkan di halaman wizard order (punya bar sendiri) maupun di
+  // halaman alat seperti Humanizer, supaya tidak menutupi editor.
+  if (
+    pathname?.includes("/order") ||
+    pathname?.startsWith("/humanizer") ||
+    pathname?.startsWith("/auth")
+  ) {
     return null;
   }
 
@@ -98,6 +104,7 @@ export function MobileStickyBar() {
             <>
               <Link
                 href={targetHitungUrl}
+                onClick={() => lacak("cta_hitung", { lokasi: "mobile_bar" })}
                 className="inline-flex items-center gap-1.5 rounded-xl bg-brand px-3.5 py-2 text-xs font-bold text-white shadow-xs transition-transform active:scale-95"
               >
                 <Calculator className="size-3.5" />
@@ -107,6 +114,7 @@ export function MobileStickyBar() {
                 href={waLink(waPesanUmum)}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => lacak("chat_whatsapp", { lokasi: "mobile_bar" })}
                 className="inline-flex items-center gap-1.5 rounded-xl border border-[#25D366]/35 bg-[#25D366]/10 px-3 py-2 text-xs font-bold text-[#166534] shadow-xs transition-transform active:scale-95 hover:bg-[#25D366]/20"
                 aria-label="Chat WhatsApp Mas Joki"
               >

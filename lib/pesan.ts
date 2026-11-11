@@ -16,6 +16,37 @@ function rapikan(baris: (string | false | null | undefined)[]): string {
     .join("\n");
 }
 
+/** Label manusiawi untuk nilai pengecek yang dikirim form (slug). */
+const LABEL_PENGECEK: Record<string, string> = {
+  turnitin: "Turnitin",
+  turnitin_ai: "Turnitin AI Writing",
+  gptzero: "GPTZero",
+  zerogpt: "ZeroGPT",
+  copyleaks: "CopyLeaks",
+  plagx: "Plagiarism Checker X",
+  dosen_manual: "Arahan dosen langsung",
+  belum: "Belum dicek",
+};
+
+function labelPengecek(nilai?: string): string | null {
+  if (!nilai) return null;
+  const kunci = nilai.trim().toLowerCase();
+  if (LABEL_PENGECEK[kunci]) return LABEL_PENGECEK[kunci];
+  return kunci
+    .replace(/[_-]+/g, " ")
+    .replace(/\b\w/g, (huruf) => huruf.toUpperCase());
+}
+
+/** "25-40%" → "25–40%", ">60%" → "di atas 60%". */
+function rapikanSkor(nilai?: string): string | null {
+  if (!nilai) return null;
+  return nilai
+    .trim()
+    .replace(/(\d)\s*[-–]\s*(\d)/g, "$1–$2")
+    .replace(/^>\s*/, "di atas ")
+    .replace(/^<\s*/, "di bawah ");
+}
+
 export function pesanPesanan({
   service,
   price,
@@ -98,9 +129,9 @@ export function pesanOrderSpesifik({
     "",
     `Layanan: ${service.name}`,
     `Jumlah: ${price.qty} ${BASIS_LABEL[service.basis]} (${price.equivalentLabel})`,
-    checkerTool ? `Pengecek/Sistem: ${checkerTool}` : false,
-    currentScore ? `Kondisi/Skor Saat Ini: ${currentScore}` : false,
-    targetScore ? `Target Skor Akhir: ${targetScore}` : false,
+    checkerTool ? `Pengecek/Sistem: ${labelPengecek(checkerTool)}` : false,
+    currentScore ? `Kondisi/Skor Saat Ini: ${rapikanSkor(currentScore)}` : false,
+    targetScore ? `Target Skor Akhir: ${rapikanSkor(targetScore)}` : false,
     citationStyle ? `Format Sitasi/Rujukan: ${citationStyle}` : false,
     customPreference ? `Spesifikasi Khusus: ${customPreference}` : false,
     `Tenggat: ${price.deadline.label} (Estimasi: ${price.estimatedTurnaround})`,

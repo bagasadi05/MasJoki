@@ -19,6 +19,7 @@ import {
 import { getHumanizerWalletAction, humanizeWithGeminiAction } from "@/app/actions";
 import { analyze, countWords } from "@/lib/humanizer/analyzer";
 import { applyBahasaSederhana } from "@/lib/humanizer/engine";
+import { lacak } from "@/lib/analytics";
 import type { AnalysisResult } from "@/lib/humanizer/types";
 
 import { KpiCards } from "./kpi-cards";
@@ -136,16 +137,29 @@ export function HumanizerWorkspace() {
       let humanized = "";
       let usedServerAi = false;
       let usedLocalFallback = false;
+      let ditolakIntegritas = false;
       const res = await humanizeWithGeminiAction(inputText, {
         intensity: "sederhana",
         customTerms,
       });
+      lacak("humanize_mulai", { kata: wordCount });
 
       const serverText = res.text?.trim() ?? "";
       if (res.ok && serverText && serverText !== inputText.trim()) {
         humanized = serverText;
         usedServerAi = true;
         if (typeof res.remainingWords === "number") setTokenBalance(res.remainingWords);
+      } else if (!res.ok && res.errorCode === "integrity") {
+        // AI mengubah angka/sitasi: server sudah mengembalikan saldo. Jangan
+        // berhenti di galat — sederhanakan dengan mesin lokal yang menjaga
+        // angka secara konstruktif, tanpa memanggil AI lagi.
+        ditolakIntegritas = true;
+        usedLocalFallback = true;
+        humanized = applyBahasaSederhana(inputText, {
+          intensity: "sederhana",
+          bahasaSederhana: true,
+          customTerms,
+        });
       } else if (!res.ok && res.errorCode !== "ai") {
         showToast(res.error ?? "Naskah tidak bisa diproses.");
         return;
@@ -163,7 +177,7 @@ export function HumanizerWorkspace() {
       if (humanized.trim() === inputText.trim()) {
         showToast(
           usedLocalFallback
-            ? "Layanan AI server gagal dan mesin lokal belum menemukan pola yang bisa disederhanakan. Periksa GEMINI_API_KEY."
+            ? "Layanan AI di server gagal dan mesin lokal belum menemukan pola yang bisa disederhanakan. Coba lagi sebentar atau hubungi Mas Joki."
             : "Naskah belum berubah. AI dan mesin lokal tidak menemukan pola yang bisa disederhanakan."
         );
         return;
@@ -173,12 +187,24 @@ export function HumanizerWorkspace() {
       setInputText(humanized);
 
       const newAnalysis = analyze(humanized);
+      lacak("humanize_sukses", {
+        kata: wordCount,
+        sumber: res.cached ? "cache" : usedServerAi ? "ai" : "lokal",
+      });
+      const skorTeks =
+        newAnalysis.burstiness.totalSentences < 5
+          ? "Skor ritme belum dinilai karena sampel di bawah 5 kalimat"
+          : `Estimasi internal ${newAnalysis.risk.score.toFixed(1)}%`;
       showToast(
-        usedServerAi
-          ? `Naskah disederhanakan! Estimasi internal ${newAnalysis.risk.score.toFixed(1)}%. Terpakai ${wordCount.toLocaleString("id-ID")} kata.`
-          : usedLocalFallback
-            ? `Gemini tidak tersedia; naskah disederhanakan dengan mesin lokal. Estimasi internal ${newAnalysis.risk.score.toFixed(1)}%.`
-            : `Naskah disederhanakan dengan mesin lokal. Estimasi internal ${newAnalysis.risk.score.toFixed(1)}%.`
+        res.cached
+          ? `Naskah ini sudah pernah diproses dengan pengaturan yang sama. Hasil diambil dari cache — token tidak dipotong. ${skorTeks}.`
+          : ditolakIntegritas
+            ? `Hasil AI ditolak karena mengubah angka atau sitasi. Naskah disederhanakan dengan mesin lokal, token tidak dipotong. ${skorTeks}.`
+            : usedServerAi
+              ? `Naskah disederhanakan! ${skorTeks}. Terpakai ${wordCount.toLocaleString("id-ID")} kata.`
+              : usedLocalFallback
+                ? `Layanan AI sedang sibuk; naskah disederhanakan dengan mesin lokal. ${skorTeks}.`
+                : `Naskah disederhanakan dengan mesin lokal. ${skorTeks}.`
       );
     } catch {
       try {
@@ -384,25 +410,24 @@ export function HumanizerWorkspace() {
       )}
 
       {/* Top Banner & Token Bar */}
-      <section className="bg-white dark:bg-card rounded-3xl border border-line p-4 sm:p-5 shadow-xs flex flex-col md:flex-row flex-wrap items-start md:items-center justify-between gap-4">
+      <section className="flex flex-col flex-wrap items-start justify-between gap-4 border-y border-line bg-card px-4 py-4 sm:px-5 md:flex-row md:items-center">
         <div className="flex items-center gap-3.5">
-          <div className="size-11 rounded-2xl bg-brand text-white flex items-center justify-center shadow-md shadow-brand/20 shrink-0">
-            <ShieldCheck className="size-6" />
+          <div className="grid size-9 shrink-0 place-items-center rounded-md border border-line bg-paper-2 text-ink-soft">
+            <ShieldCheck className="size-4" aria-hidden />
           </div>
           <div>
-            <div className="flex items-center gap-2">
-              <span className="px-2 py-0.5 rounded-md bg-brand-soft text-brand text-[10px] font-extrabold uppercase tracking-wider">
-                Humanizer AI
-              </span>
-            </div>
-            <h2 className="font-display font-bold text-lg sm:text-xl text-ink mt-1">
+            <h2 className="font-display font-bold text-base sm:text-lg text-ink">
               Humanizer AI — Penulisan Lugas
             </h2>
             <p className="text-xs text-muted mt-0.5">
               Mengubah naskah akademik & formal menjadi bahasa Indonesia yang sangat sederhana, agak polos,
               dan mengalir apa adanya, dengan pemeriksaan angka, persentase, dan sitasi referensi.
               <span className="mt-1 block text-[11px] font-medium text-muted/90">
-                Naskah diproses melalui Gemini API untuk ditulis ulang dan tidak disimpan di server Mas Joki.
+                Naskah dikirim ke server Mas Joki untuk diolah, lalu hasilnya dikembalikan ke editor ini. Naskah tidak disimpan di server setelah diproses.
+              </span>
+              <span className="mt-1 block text-[11px] font-medium text-muted/90">
+                Mengikuti standar Skill Humanisasi Akademik: variasi panjang kalimat,
+                pelaku jelas, dan istilah serta sitasi tetap utuh.
               </span>
             </p>
           </div>
@@ -410,7 +435,7 @@ export function HumanizerWorkspace() {
 
         {/* Token Balance & CTAs */}
         <div className="flex items-center flex-wrap gap-2.5 self-stretch md:self-auto justify-between md:justify-end">
-          <div className="flex items-center gap-2 px-3.5 py-2 rounded-2xl border border-line bg-paper-2/70 text-xs font-bold text-ink">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-md border border-line bg-paper-2/70 font-mono text-[0.7rem] font-bold text-ink" data-tour="token">
             <Coins className="size-4 text-amber-500" />
             <span>
               Saldo Token:{" "}
@@ -430,9 +455,10 @@ export function HumanizerWorkspace() {
             onClick={() => {
               setModalInitialTab("voucher");
               setIsModalOpen(true);
+              lacak("token_modal", { tab: "voucher" });
             }}
             disabled={walletLoading || Boolean(walletError)}
-            className="cursor-pointer inline-flex items-center gap-1.5 px-3.5 py-2 rounded-2xl border border-line bg-white dark:bg-slate-800 hover:border-brand/40 text-ink text-xs font-bold transition"
+            className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-2 rounded-md border border-line bg-card hover:border-brand/40 text-ink text-xs font-bold transition"
           >
             <Gift className="size-3.5 text-brand" />
             <span>Klaim Voucher</span>
@@ -443,9 +469,10 @@ export function HumanizerWorkspace() {
             onClick={() => {
               setModalInitialTab("buy");
               setIsModalOpen(true);
+              lacak("token_modal", { tab: "buy" });
             }}
             disabled={walletLoading || Boolean(walletError)}
-            className="cursor-pointer inline-flex items-center gap-1.5 px-4 py-2 rounded-2xl bg-brand hover:bg-brand-dark text-white text-xs font-bold shadow-xs transition active:scale-98"
+            className="cursor-pointer inline-flex items-center gap-1.5 px-3.5 py-2 rounded-md bg-brand hover:bg-brand-dark text-white text-xs font-bold transition active:scale-98"
           >
             <Sparkles className="size-3.5" />
             <span>Isi Ulang Token</span>
@@ -462,7 +489,7 @@ export function HumanizerWorkspace() {
       <KpiCards analysis={analysis} />
 
       {/* Tab Navigation */}
-      <div className="flex items-center gap-1 border-b border-line overflow-x-auto pb-1" role="tablist">
+      <div className="flex items-center gap-5 overflow-x-auto border-b border-line" role="tablist" data-tour="tabs">
         <button
           type="button"
           id="humanizer-tab-studio"
@@ -472,10 +499,10 @@ export function HumanizerWorkspace() {
           tabIndex={activeTab === "studio" ? 0 : -1}
           onKeyDown={(event) => handleTabKeyDown(event, 0)}
           onClick={() => setActiveTab("studio")}
-          className={`cursor-pointer px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap ${
+          className={`-mb-px cursor-pointer border-b-2 px-1 py-2.5 text-xs font-bold transition whitespace-nowrap ${
             activeTab === "studio"
-              ? "bg-brand text-white shadow-xs"
-              : "text-muted hover:text-ink hover:bg-paper-2"
+              ? "border-brand text-ink"
+              : "border-transparent text-muted hover:text-ink"
           }`}
         >
           Studio Editor
@@ -489,10 +516,11 @@ export function HumanizerWorkspace() {
           tabIndex={activeTab === "diff" ? 0 : -1}
           onKeyDown={(event) => handleTabKeyDown(event, 1)}
           onClick={() => setActiveTab("diff")}
-          className={`cursor-pointer px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap ${
+          data-tour="diff"
+          className={`-mb-px cursor-pointer border-b-2 px-1 py-2.5 text-xs font-bold transition whitespace-nowrap ${
             activeTab === "diff"
-              ? "bg-brand text-white shadow-xs"
-              : "text-muted hover:text-ink hover:bg-paper-2"
+              ? "border-brand text-ink"
+              : "border-transparent text-muted hover:text-ink"
           }`}
         >
           Diff Perbandingan
@@ -506,10 +534,11 @@ export function HumanizerWorkspace() {
           tabIndex={activeTab === "audit" ? 0 : -1}
           onKeyDown={(event) => handleTabKeyDown(event, 2)}
           onClick={() => setActiveTab("audit")}
-          className={`cursor-pointer px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap ${
+          data-tour="audit"
+          className={`-mb-px cursor-pointer border-b-2 px-1 py-2.5 text-xs font-bold transition whitespace-nowrap ${
             activeTab === "audit"
-              ? "bg-brand text-white shadow-xs"
-              : "text-muted hover:text-ink hover:bg-paper-2"
+              ? "border-brand text-ink"
+              : "border-transparent text-muted hover:text-ink"
           }`}
         >
           Sertifikat Audit Klien
@@ -523,10 +552,11 @@ export function HumanizerWorkspace() {
           tabIndex={activeTab === "settings" ? 0 : -1}
           onKeyDown={(event) => handleTabKeyDown(event, 3)}
           onClick={() => setActiveTab("settings")}
-          className={`cursor-pointer px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap flex items-center gap-1.5 ${
+          data-tour="proteksi"
+          className={`-mb-px cursor-pointer border-b-2 px-1 py-2.5 text-xs font-bold transition whitespace-nowrap flex items-center gap-1.5 ${
             activeTab === "settings"
-              ? "bg-brand text-white shadow-xs"
-              : "text-muted hover:text-ink hover:bg-paper-2"
+              ? "border-brand text-ink"
+              : "border-transparent text-muted hover:text-ink"
           }`}
         >
           <span>Proteksi Istilah</span>
@@ -546,14 +576,15 @@ export function HumanizerWorkspace() {
           className="space-y-4"
         >
           {/* Command Bar */}
-          <section className="bg-white dark:bg-card rounded-2xl border border-line p-3 sm:px-4 sm:py-3 shadow-xs flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+          <section className="flex flex-col items-stretch justify-between gap-3 border-b border-line bg-card px-3 py-3 sm:flex-row sm:items-center sm:px-4">
             {/* Primary Action Button */}
             <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={handleHumanize}
+                data-tour="proses"
                 disabled={isProcessing || walletLoading || Boolean(walletError)}
-                className="cursor-pointer inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand hover:bg-brand-dark text-white font-bold text-xs sm:text-sm shadow-md shadow-brand/25 active:scale-98 transition disabled:opacity-60 disabled:cursor-wait"
+                className="cursor-pointer inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-brand hover:bg-brand-dark text-white font-bold text-xs sm:text-sm active:scale-98 transition disabled:opacity-60 disabled:cursor-wait"
                 title="Tulis ulang naskah tanpa merusak sitasi atau angka data"
               >
                 {isProcessing ? (
@@ -673,6 +704,7 @@ export function HumanizerWorkspace() {
                 onChange={(e) => setInputText(e.target.value)}
                 disabled={isProcessing}
                 id="humanizer-editor"
+                data-tour="editor"
                 aria-label="Naskah yang ingin di-humanize"
                 placeholder="Tempelkan atau drag & drop naskah (.docx/.txt) di sini untuk dipindai…"
                 className="w-full flex-1 p-5 font-academic text-base sm:text-[17px] leading-relaxed text-ink bg-transparent focus:outline-none resize-none overflow-y-auto placeholder:text-muted/60 disabled:opacity-60"

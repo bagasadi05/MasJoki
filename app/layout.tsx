@@ -3,6 +3,7 @@ import { Bricolage_Grotesque, Plus_Jakarta_Sans } from "next/font/google";
 import { SITE_URL } from "@/lib/config";
 import { CalculatorProvider } from "@/components/calculator-context";
 import { MobileStickyBar } from "@/components/mobile-sticky-bar";
+import { ScrollProgress } from "@/components/scroll-progress";
 import { WaMelayang } from "@/components/wa-melayang";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
@@ -99,6 +100,7 @@ export default function RootLayout({
           Lewati ke konten
         </a>
         <CalculatorProvider>
+          <ScrollProgress />
           {children}
           <MobileStickyBar />
           <WaMelayang />

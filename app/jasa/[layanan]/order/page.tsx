@@ -7,7 +7,6 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { getOrderSpec } from "@/lib/order-specs";
 import { getService, SERVICES, type ServiceId } from "@/lib/services";
-import { site } from "@/lib/site";
 
 const SLUG = new Set(SERVICES.map((s) => s.id));
 
@@ -28,7 +27,7 @@ export async function generateMetadata({
   const spec = getOrderSpec(service.id);
 
   return {
-    title: `${spec.headline} | ${site.name}`,
+    title: spec.headline,
     description: spec.subheadline,
     alternates: { canonical: `/jasa/${service.id}/order` },
   };

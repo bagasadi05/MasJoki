@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "node --max-old-space-size=4096 ./node_modules/typescript/bin/tsc --noEmit",
-    "test": "npx tsx --test lib/humanizer/__tests__/engine.test.ts lib/humanizer/__tests__/integrity.test.ts lib/humanizer/__tests__/voucher.test.ts",
+    "test": "npx tsx --test lib/humanizer/__tests__/engine.test.ts lib/humanizer/__tests__/integrity.test.ts lib/humanizer/__tests__/voucher.test.ts lib/__tests__/pesan.test.ts",
     "voucher": "npx tsx scripts/create-license.mts",
     "license": "npx tsx scripts/create-license.mts",
     "check:supabase": "npx tsx scripts/test-conn.mts"

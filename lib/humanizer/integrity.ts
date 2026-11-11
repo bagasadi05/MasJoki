@@ -20,8 +20,23 @@ export function validateHumanizerIntegrity(
   output: string,
   customTerms: string[] = [],
 ): { ok: true } | { ok: false; error: string } {
-  if (sorted(numbers(source)).join("|") !== sorted(numbers(output)).join("|")) {
-    return { ok: false, error: "Hasil AI mengubah angka atau data numerik. Hasil tidak ditampilkan." };
+  const angkaSumber = sorted(numbers(source));
+  const angkaHasil = sorted(numbers(output));
+
+  if (angkaSumber.join("|") !== angkaHasil.join("|")) {
+    const hilang = angkaSumber.filter((n) => !angkaHasil.includes(n)).slice(0, 3);
+    const baru = angkaHasil.filter((n) => !angkaSumber.includes(n)).slice(0, 3);
+    const rincian = [
+      hilang.length ? `hilang: ${hilang.join(", ")}` : "",
+      baru.length ? `baru: ${baru.join(", ")}` : "",
+    ]
+      .filter(Boolean)
+      .join("; ");
+
+    return {
+      ok: false,
+      error: `Hasil AI mengubah angka atau data numerik${rincian ? ` (${rincian})` : ""}. Hasil tidak ditampilkan.`,
+    };
   }
 
   if (sorted(citations(source)).join("|") !== sorted(citations(output)).join("|")) {

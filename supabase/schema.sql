@@ -3,6 +3,9 @@
 -- Jalankan skrip ini di: Supabase Dashboard -> SQL Editor -> New Query -> Run
 -- ==============================================================================
 
+-- CATATAN: file ini adalah baseline awal. Perubahan schema berikutnya ada di
+-- supabase/migrations/ (mulai dari 20261111000100_redeem_license_atomic.sql).
+
 -- 1. Buat / Update Tabel token_licenses (Voucher Sekali Pakai)
 create table if not exists public.token_licenses (
   id uuid primary key default gen_random_uuid(),
@@ -23,8 +26,10 @@ alter table public.token_licenses
   add column if not exists is_redeemed boolean default false not null,
   add column if not exists redeemed_at timestamptz;
 
--- 2. Buat Index agar query verifikasi kunci instan (<5ms)
-create index if not exists idx_token_licenses_key_code on public.token_licenses(key_code);
+-- 2. Index key_code: TIDAK perlu index tambahan.
+--    `key_code text unique` sudah membuat index unik sendiri. Index kedua di
+--    kolom yang sama hanya menambah biaya tulis.
+--    (Index duplikat dihapus di migrasi 20261111000100.)
 
 -- 3. Saldo token per browser anonim. ID wallet hanya disimpan di cookie HttpOnly.
 create table if not exists public.humanizer_wallets (

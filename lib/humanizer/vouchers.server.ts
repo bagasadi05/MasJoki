@@ -102,10 +102,12 @@ export function generateSignedVoucher(words: number): string {
  *
  * @param rawCode kode yang diketik pembeli
  * @param clientKey penanda pemakai (alamat IP) untuk membatasi voucher promo
+ * @param walletId wallet tujuan saldo (wajib untuk voucher pembelian)
  */
 export async function verifyVoucherCode(
   rawCode: string,
   clientKey = "tanpa-ip",
+  walletId?: string,
 ): Promise<VoucherRedeemResult> {
   if (!rawCode || typeof rawCode !== "string") {
     return { ok: false, error: "Kode voucher tidak valid." };
@@ -203,77 +205,66 @@ export async function verifyVoucherCode(
     };
   }
 
-  // 2. CEK DATABASE SUPABASE (Tabel token_licenses - Sistem Sekali Pakai)
+  // 2. REDEEM VOUCHER PEMBELIAN (tabel token_licenses).
+  //    Voucher ditandai hangus DAN saldo wallet ditambah oleh satu fungsi
+  //    database (public.redeem_license), jadi tidak ada lagi kondisi voucher
+  //    hangus tetapi saldo gagal masuk.
+  //    Lihat supabase/migrations/20261111000100_redeem_license_atomic.sql.
   if (supabase) {
+    if (!walletId) {
+      return {
+        ok: false,
+        error: "Saldo token belum siap. Muat ulang halaman lalu coba lagi.",
+      };
+    }
+
     try {
-      const { data: license, error: fetchErr } = await supabase
-        .from("token_licenses")
-        .select("*")
-        .eq("key_code", code)
-        .maybeSingle();
+      const { data, error: rpcErr } = await supabase.rpc("redeem_license", {
+        p_key_code: code,
+        p_wallet_id: walletId,
+      });
 
-      if (license && !fetchErr) {
-        if (!license.is_active) {
+      if (rpcErr) {
+        // PGRST202 = fungsi belum ada di database (migrasi belum dijalankan).
+        if (rpcErr.code === "PGRST202") {
+          console.error(
+            "Fungsi redeem_license belum ada. Jalankan supabase/migrations/20261111000100_redeem_license_atomic.sql.",
+          );
           return {
             ok: false,
-            error: "Kode voucher ini sudah dinonaktifkan oleh admin.",
+            error: "Sistem voucher belum siap. Hubungi admin Mas Joki.",
           };
         }
 
-        // PERIKSA STATUS SEKALI PAKAI
-        if (
-          license.is_redeemed === true ||
-          Number(license.remaining_words) <= 0
-        ) {
+        // P0002 = wallet tidak ditemukan; transaksi dibatalkan, voucher utuh.
+        if (rpcErr.code === "P0002") {
           return {
             ok: false,
-            error: "Kode voucher ini sudah expired / sudah pernah digunakan sebelumnya.",
+            error: "Saldo token belum siap. Muat ulang halaman lalu coba lagi.",
           };
         }
 
-        // Kuota yang diberikan adalah sisa kata saat ini, bukan total awal.
-        const granted = Number(license.remaining_words) || Number(license.total_words) || 0;
+        throw rpcErr;
+      }
 
-        // TANDAI LANGSUNG EXPIRED SECARA ATOMIK DI DATABASE
-        const updatePayload: Record<string, unknown> = {
-          remaining_words: 0,
-          last_used_at: new Date().toISOString(),
-        };
-        if ("is_redeemed" in license) {
-          updatePayload.is_redeemed = true;
-          updatePayload.redeemed_at = new Date().toISOString();
-        }
-
-        const query = supabase
-          .from("token_licenses")
-          .update(updatePayload)
-          .eq("key_code", code);
-
-        if ("is_redeemed" in license) {
-          query.eq("is_redeemed", false);
-        } else {
-          query.gt("remaining_words", 0);
-        }
-
-        const { data: updated, error: updateErr } = await query
-          .select("total_words, package_name")
-          .maybeSingle();
-
-        if (updateErr || !updated) {
-          return {
-            ok: false,
-            error: "Kode voucher ini sudah expired / sudah pernah digunakan sebelumnya.",
-          };
-        }
-
+      const row = Array.isArray(data) ? data[0] : data;
+      if (!row) {
         return {
-          ok: true,
-          tokens: granted,
-          message: `Voucher ${updated.package_name} berhasil diklaim (+${granted.toLocaleString("id-ID")} kata)!`,
+          ok: false,
+          error: "Kode voucher ini sudah expired / sudah pernah digunakan sebelumnya.",
         };
       }
+
+      const granted = Number(row.granted);
+      return {
+        ok: true,
+        tokens: granted,
+        remainingWords: Number(row.remaining_words),
+        credited: true,
+        message: `Voucher ${row.package_name} berhasil diklaim (+${granted.toLocaleString("id-ID")} kata)!`,
+      };
     } catch (err: unknown) {
-      console.error("Gagal verifikasi voucher di Supabase:", err);
+      console.error("Gagal redeem voucher di Supabase:", err);
       if (production) {
         return {
           ok: false,

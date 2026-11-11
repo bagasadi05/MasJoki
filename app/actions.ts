@@ -9,12 +9,7 @@ import { waLink } from "@/lib/site";
 import type { ActionResult } from "@/lib/types";
 import type { VoucherRedeemResult } from "@/lib/humanizer/types";
 import { verifyVoucherCode } from "@/lib/humanizer/vouchers.server";
-import {
-  checkLicense,
-  deductLicenseWords,
-  type CheckLicenseResult,
-  type DeductLicenseResult,
-} from "@/lib/humanizer/licenses.server";
+
 import {
   humanizeWithGemini,
   type GeminiHumanizeOptions,
@@ -280,8 +275,11 @@ export async function redeemVoucherAction(code: string): Promise<VoucherRedeemRe
   if (!wallet.ok) return { ok: false, error: wallet.error };
 
   const ip = await ambilAlamatIp();
-  const result = await verifyVoucherCode(parsed.data, ip);
+  const result = await verifyVoucherCode(parsed.data, ip, wallet.walletId);
   if (!result.ok || !result.tokens) return result;
+
+  // Voucher pembelian sudah menambah saldo di dalam transaksi database.
+  if (result.credited) return result;
 
   const credited = await creditHumanizerWords(wallet.walletId, result.tokens);
   if (!credited.ok) {
@@ -303,39 +301,7 @@ export async function getHumanizerWalletAction(): Promise<
   return { ok: true, remainingWords: wallet.remainingWords };
 }
 
-/**
- * Cek status kuota kunci token dari database Supabase.
- */
-export async function checkLicenseAction(code: string): Promise<CheckLicenseResult> {
-  const limit = await cekRateLimit("license-check", 15);
-  if (!limit.ok) {
-    const menit = Math.max(1, Math.ceil((limit.cobaLagiDalamDetik ?? 60) / 60));
-    return {
-      ok: false,
-      error: `Terlalu banyak permintaan cek lisensi. Coba lagi dalam ${menit} menit.`,
-    };
-  }
 
-  return checkLicense(code);
-}
-
-/**
- * Potong kuota kata dari kunci token di Supabase saat humanize dijalankan.
- */
-export async function deductLicenseAction(
-  code: string,
-  words: number,
-): Promise<DeductLicenseResult> {
-  const limit = await cekRateLimit("license-deduct", 20);
-  if (!limit.ok) {
-    return {
-      ok: false,
-      error: "Terlalu banyak permintaan pemotongan token. Silakan tunggu sebentar.",
-    };
-  }
-
-  return deductLicenseWords(code, words);
-}
 
 /**
  * Humanize naskah menggunakan model resmi Google Gemini AI (Server Action aman).
@@ -366,7 +332,19 @@ export async function humanizeWithGeminiAction(
 
   const optionsSchema = z.object({
     intensity: z.enum(["aggressive", "sederhana", "balanced", "light"]).optional(),
-    customTerms: z.array(z.string().trim().min(1).max(80)).max(50).optional(),
+    customTerms: z
+      .array(
+        z
+          .string()
+          .trim()
+          .min(1)
+          .max(80)
+          .refine((nilai) => !/[\r\n\t<>{}]/.test(nilai), {
+            message: "Istilah tidak boleh memuat baris baru atau kurung.",
+          }),
+      )
+      .max(50)
+      .optional(),
   });
   const parsedOptions = optionsSchema.safeParse(options ?? {});
   if (!parsedOptions.success) {

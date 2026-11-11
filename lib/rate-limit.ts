@@ -1,4 +1,5 @@
 import { headers } from "next/headers";
+import { batasiKunciPersisten } from "./rate-limit-persisten";
 
 /**
  * Rate limit sederhana untuk server action formulir, di memori per pekerja.
@@ -103,6 +104,22 @@ export async function ambilAlamatIp(): Promise<string> {
 }
 
 /**
+ * Cek kuota untuk satu kunci bebas. Dipakai bila kunci bukan IP, misalnya
+ * gabungan email untuk membatasi tebakan password pada satu akun.
+ */
+export async function cekRateLimitKunci(
+  kunci: string,
+  batas = BATAS_DEFAULT,
+  jendelaDetik = JENDELA_DETIK_DEFAULT,
+): Promise<HasilLimit> {
+  const persisten = await batasiKunciPersisten(kunci, batas, jendelaDetik);
+  if (persisten) return persisten;
+
+  // Database tidak tersedia: tetap batasi di memori proses ini.
+  return batasiKunci(kunci, Date.now(), batas, jendelaDetik);
+}
+
+/**
  * Cek kuota per aksi. Setiap aksi punya keranjang sendiri supaya pengguna yang
  * mengirim dua pesanan tidak ikut terkunci saat mencoba klaim voucher.
  */
@@ -112,5 +129,5 @@ export async function cekRateLimit(
   jendelaDetik = JENDELA_DETIK_DEFAULT,
 ): Promise<HasilLimit> {
   const kunci = `${aksi}:${await ambilAlamatIp()}`;
-  return batasiKunci(kunci, Date.now(), batas, jendelaDetik);
+  return cekRateLimitKunci(kunci, batas, jendelaDetik);
 }

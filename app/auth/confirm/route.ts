@@ -1,12 +1,13 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { safeNextPath } from "@/lib/safe-redirect";
 
 export async function GET(request: NextRequest) {
   const tokenHash = request.nextUrl.searchParams.get("token_hash");
-  const nextPath = request.nextUrl.searchParams.get("next");
-  const safeNext = nextPath?.startsWith("/") && !nextPath.startsWith("//")
-    ? nextPath
-    : "/humanizer";
+  const safeNext = safeNextPath(
+    request.nextUrl.searchParams.get("next"),
+    request.nextUrl.origin,
+  );
 
   if (!tokenHash) {
     return NextResponse.redirect(new URL("/humanizer?auth_error=missing_token", request.url));

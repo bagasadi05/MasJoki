@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { cekRateLimit, cekRateLimitKunci, type HasilLimit } from "@/lib/rate-limit";
 
 export interface AuthUserSummary {
   id: string;
@@ -16,13 +17,28 @@ export type PasswordAuthResult =
   | { ok: true; requiresEmailConfirmation?: boolean }
   | { ok: false; error: string };
 
+/**
+ * Origin untuk tautan konfirmasi email. Env situs dipakai lebih dulu: header
+ * Host/x-forwarded-host bisa dipalsukan dan akan mengarahkan tautan verifikasi
+ * ke domain penyerang (host header injection).
+ */
 async function getRequestOrigin(): Promise<string> {
+  const dikonfigurasi = process.env.NEXT_PUBLIC_SITE_URL?.trim().replace(/\/$/, "");
+  if (dikonfigurasi) return dikonfigurasi;
+
   const requestHeaders = await headers();
   const host = requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host");
   const protocol = requestHeaders.get("x-forwarded-proto") ?? "http";
-  return host
-    ? `${protocol}://${host}`
-    : (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(/\/$/, "");
+  return host ? `${protocol}://${host}` : "http://localhost:3000";
+}
+
+const BATAS_MASUK_PER_IP = 10;
+const BATAS_MASUK_PER_EMAIL = 5;
+const JENDELA_AUTH_DETIK = 15 * 60;
+
+function pesanTunggu(hasil: HasilLimit): string {
+  const menit = Math.max(1, Math.ceil((hasil.cobaLagiDalamDetik ?? 60) / 60));
+  return `Terlalu banyak percobaan masuk. Coba lagi dalam ${menit} menit.`;
 }
 
 const credentialsSchema = z.object({
@@ -38,6 +54,21 @@ export async function signInWithPasswordAction(
   if (!parsed.success) {
     return { ok: false, error: "Email atau password belum valid." };
   }
+
+  // Per IP menahan percobaan massal; per email menahan tebakan satu akun.
+  const batasIp = await cekRateLimit(
+    "auth-masuk",
+    BATAS_MASUK_PER_IP,
+    JENDELA_AUTH_DETIK,
+  );
+  if (!batasIp.ok) return { ok: false, error: pesanTunggu(batasIp) };
+
+  const batasEmail = await cekRateLimitKunci(
+    `auth-masuk-email:${parsed.data.email.toLowerCase()}`,
+    BATAS_MASUK_PER_EMAIL,
+    JENDELA_AUTH_DETIK,
+  );
+  if (!batasEmail.ok) return { ok: false, error: pesanTunggu(batasEmail) };
 
   try {
     const supabase = await createSupabaseServerClient();
@@ -62,6 +93,15 @@ export async function signUpWithPasswordAction(
   }
   if (parsed.data.password !== parsed.data.confirmPassword) {
     return { ok: false, error: "Konfirmasi password belum sama." };
+  }
+
+  const batasDaftar = await cekRateLimit("auth-daftar", 5, 60 * 60);
+  if (!batasDaftar.ok) {
+    const menit = Math.max(1, Math.ceil((batasDaftar.cobaLagiDalamDetik ?? 60) / 60));
+    return {
+      ok: false,
+      error: `Terlalu banyak pendaftaran dari jaringan ini. Coba lagi dalam ${menit} menit.`,
+    };
   }
 
   try {

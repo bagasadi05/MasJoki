@@ -85,6 +85,8 @@ export interface VoucherRedeemResult {
   ok: boolean;
   tokens?: number;
   remainingWords?: number;
+  /** true bila saldo sudah ditambahkan di dalam transaksi database (RPC). */
+  credited?: boolean;
   message?: string;
   error?: string;
 }

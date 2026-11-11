@@ -401,6 +401,9 @@ export function HumanizerWorkspace() {
             <p className="text-xs text-muted mt-0.5">
               Mengubah naskah akademik & formal menjadi bahasa Indonesia yang sangat sederhana, agak polos,
               dan mengalir apa adanya, dengan pemeriksaan angka, persentase, dan sitasi referensi.
+              <span className="mt-1 block text-[11px] font-medium text-muted/90">
+                Naskah diproses melalui Gemini API untuk ditulis ulang dan tidak disimpan di server Mas Joki.
+              </span>
             </p>
           </div>
         </div>

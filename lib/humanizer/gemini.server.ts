@@ -21,7 +21,7 @@ export interface GeminiHumanizeResult {
   cached?: boolean;
 }
 
-const SYSTEM_INSTRUCTION_BASE = `Kamu adalah ahli penulisan ulang naskah bahasa Indonesia dengan gaya penulisan lugas dan alami.
+export const SYSTEM_INSTRUCTION_BASE = `Kamu adalah ahli penulisan ulang naskah bahasa Indonesia dengan gaya penulisan lugas dan alami.
 
 TUJUAN:
 Tulis ulang naskah akademik/formal menjadi bahasa Indonesia yang SANGAT SEDERHANA, POLOS, dan MENGALIR NATURAL seperti ditulis oleh manusia asli (mahasiswa atau penulis awam yang menjelaskan fakta apa adanya, tanpa susunan kalimat yang terlalu rapi atau kaku, dan bebas dari pola klise AI).
@@ -48,9 +48,9 @@ ATURAN GAYA MANUSIA ASLI (UNTUK MENGURANGI POLA TULISAN YANG TERLALU SERAGAM):
 2. LARANGAN AWALAN KALIMAT KLISE AI:
    - DILARANG memulai kalimat dengan: "Selain itu,", "Oleh karena itu,", "Dengan demikian,", "Hal ini menunjukkan bahwa", "Tidak hanya itu,", "Maka dari itu,".
    - Mulailah langsung dengan subjeknya (misal: "Gedungnya...", "Kamar jadi...", "Penghuni...", "Barang terlarang...", "Risiko...").
-3. VARIASI IRAMA KALIMAT TINGGI (BURSTINESS):
-   - AI cenderung membuat kalimat seragam (15-20 kata). Manusia asli menulis dengan irama bervariasi:
-   - Selingi kalimat pendek (3-6 kata, misal: "Kamar jadi padat sekali." atau "Gedungnya peninggalan Belanda.") dengan kalimat sedang (8-14 kata).
+3. SEBARAN PANJANG KALIMAT, BUKAN SEMUA PENDEK:
+   - Yang membedakan tulisan manusia adalah sebarannya, bukan rata-ratanya. Semua kalimat pendek justru paling mudah ditandai karena variansinya nol.
+   - Target kasar: sekitar 20% kalimat di bawah 8 kata, sekitar 20% di atas 30 kata, sisanya bervariasi. Kalimat panjang dipakai untuk syarat, sebab, atau pengecualian.
 4. KATA UMUM & POLOS:
    - Gunakan kata umum: 'melihat', 'membantu', 'membuat', 'dilakukan', 'masalah', 'aturan', 'naik', 'turun'.
    - Ganti kata rumit/kaku:
@@ -76,7 +76,7 @@ STANDAR SKILL HUMANISASI AKADEMIK (WAJIB DIPATUHI):
 
 CONTOH PENULISAN ULANG:
 - Masukan: Penerapan model pembelajaran kooperatif mampu meningkatkan partisipasi aktif peserta didik selama proses pembelajaran berlangsung.
-  Hasil: Kalau siswa belajar dengan kelompok, mereka bisa lebih banyak ikut belajar. Karena siswa tidak hanya duduk dan mendengarkan guru saja. Mereka juga bisa berbicara dengan teman dan mengerjakan tugas bersama. Jadi siswa bisa lebih aktif saat belajar.
+  Hasil: Kalau siswa belajar dengan kelompok, mereka bisa lebih banyak ikut belajar. Mereka tidak hanya duduk dan mendengarkan guru, tetapi juga berbicara dengan teman dan mengerjakan tugas bersama, sehingga keaktifan mereka selama pembelajaran berlangsung ikut naik.
 - Masukan: Nilai rata-rata kelas naik dari 75,05 pada prasiklus menjadi 80,65 pada Siklus I dan 87,80 pada Siklus II (Slavin, 2015).
   Hasil: Sebelum kegiatan dilakukan, nilai rata-rata kelas masih 75,05. Setelah Siklus I naik menjadi 80,65. Lalu pada Siklus II nilainya naik lagi menjadi 87,80 (Slavin, 2015).
 - Masukan: Rumah Tahanan Negara (Rutan) Kelas IIB Purworejo memiliki dua fungsi utama, yaitu pelayanan tahanan dan pembinaan narapidana. Kapasitas hunian sejatinya dirancang untuk 100 orang, namun faktualnya dihuni 150 hingga 180 orang (overcrowding mencapai 150-180%).

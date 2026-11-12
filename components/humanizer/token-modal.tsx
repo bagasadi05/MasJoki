@@ -173,7 +173,7 @@ export function TokenModal({
       <div
         ref={dialogRef}
         tabIndex={-1}
-        className="relative w-full max-w-2xl bg-white dark:bg-card border border-line rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] overscroll-contain"
+        className="relative flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden overscroll-contain rounded-2xl border border-line bg-card shadow-2xl"
       >
         {/* Header */}
         <div className="px-6 py-4 border-b border-line bg-paper/80 flex items-center justify-between">

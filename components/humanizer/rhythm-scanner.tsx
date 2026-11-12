@@ -11,7 +11,7 @@ interface RhythmScannerProps {
 export function RhythmScanner({ analysis }: RhythmScannerProps) {
   if (!analysis || analysis.burstiness.totalSentences === 0) {
     return (
-      <section className="bg-white dark:bg-card rounded-2xl border border-line p-5 shadow-xs">
+      <section className="rounded-xl border border-line bg-card p-5 shadow-xs">
         <p className="text-xs text-muted">
           Masukkan teks untuk memeriksa Local Burstiness per blok kalimat.
         </p>
@@ -124,8 +124,8 @@ export function RhythmScanner({ analysis }: RhythmScannerProps) {
     .slice(0, RENDER_LIMIT);
 
   return (
-    <section className="bg-white dark:bg-card rounded-2xl border border-line p-5 shadow-xs space-y-4">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-line pb-3">
+    <section className="rounded-xl border border-line bg-card p-5 shadow-xs space-y-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-dashed border-line pb-3">
         <div>
           <h3 className="font-display font-bold text-xs sm:text-sm text-ink">
             Pemindaian Local Burstiness (Jendela Geser {windowSize} Kalimat)
@@ -145,7 +145,7 @@ export function RhythmScanner({ analysis }: RhythmScannerProps) {
               <CheckCircle2 className="size-3.5" /> Semua Blok Lokal Aman
             </span>
           ) : (
-            <span className="text-amber-600 flex items-center gap-1">
+            <span className="text-amber-600 dark:text-amber-400 flex items-center gap-1">
               <AlertTriangle className="size-3.5" /> {flaggedCount} Blok Perlu Variasi
             </span>
           )}
@@ -197,8 +197,8 @@ export function RhythmScanner({ analysis }: RhythmScannerProps) {
 
       {/* Uniform Runs List */}
       {runs.length === 0 ? (
-        <div className="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 text-xs text-emerald-800 dark:text-emerald-300 font-medium flex items-center gap-2">
-          <CheckCircle2 className="size-4 shrink-0 text-emerald-600" />
+        <div className="p-3.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 text-xs text-emerald-800 dark:text-emerald-300 font-medium flex items-center gap-2">
+          <CheckCircle2 className="size-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
           <span>
             {total < 3
               ? "Naskah masih terlalu pendek untuk menilai deretan kalimat seragam. Tambahkan beberapa kalimat lagi."
@@ -210,10 +210,10 @@ export function RhythmScanner({ analysis }: RhythmScannerProps) {
           {runs.map((r, idx) => (
             <div
               key={idx}
-              className="p-3.5 rounded-xl border border-amber-200 bg-amber-50/50 dark:bg-amber-950/20 text-xs space-y-1.5"
+              className="p-3.5 rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50/50 dark:bg-amber-950/20 text-xs space-y-1.5"
             >
               <div className="font-bold text-amber-900 dark:text-amber-200 flex items-center gap-1.5">
-                <AlertTriangle className="size-3.5 text-amber-600" />
+                <AlertTriangle className="size-3.5 text-amber-600 dark:text-amber-400" />
                 <span>
                   Deretan Seragam #{idx + 1}: {r.end - r.start + 1} kalimat {r.type} (kalimat #{r.start + 1}–#{r.end + 1})
                 </span>

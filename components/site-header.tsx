@@ -63,7 +63,7 @@ export function SiteHeader() {
 
           {/* Status badge operasional WIB */}
           <span
-            className={`hidden shrink-0 items-center gap-2 whitespace-nowrap rounded-full border px-2.5 py-1 text-xs font-bold md:inline-flex shadow-2xs ${
+            className={`hidden shrink-0 items-center gap-2 whitespace-nowrap rounded-full border px-2.5 py-1 text-xs font-bold md:inline-flex lg:hidden xl:inline-flex shadow-2xs ${
               isOpen
                 ? "border-mint/25 bg-mint-soft/90 text-mint"
                 : "border-amber/25 bg-amber-soft/90 text-amber"
@@ -114,14 +114,14 @@ export function SiteHeader() {
           {!authLoading && currentUser ? (
             <form action={signOutAction} className="flex items-center gap-2">
               <span
-                className="hidden max-w-28 truncate text-xs font-semibold text-muted md:inline"
+                className="hidden max-w-28 truncate text-xs font-semibold text-muted md:inline lg:hidden xl:inline"
                 title={currentUser.email ?? currentUser.name}
               >
                 Hai, {currentUser.name}
               </span>
               <button
                 type="submit"
-                className="cursor-pointer whitespace-nowrap rounded-xl border border-line bg-white px-3 py-2 text-xs font-bold text-ink transition hover:border-brand/40 dark:bg-card sm:py-2.5"
+                className="cursor-pointer whitespace-nowrap rounded-xl border border-line bg-card px-3 py-2 text-xs font-bold text-ink transition hover:border-brand/40 sm:py-2.5"
               >
                 Keluar
               </button>
@@ -129,7 +129,7 @@ export function SiteHeader() {
           ) : !authLoading ? (
             <Link
               href="/auth/sign-in"
-              className="inline-flex shrink-0 cursor-pointer items-center whitespace-nowrap rounded-xl bg-ink px-3 py-2.5 text-xs font-bold text-white transition hover:bg-ink/90"
+              className="inline-flex shrink-0 cursor-pointer items-center whitespace-nowrap rounded-xl border border-ink bg-ink px-3 py-2.5 text-xs font-bold text-white transition hover:bg-ink/90 dark:border-line-strong dark:bg-[#1e293b] dark:hover:bg-[#293548]"
             >
               <span className="sm:hidden">Masuk</span>
               <span className="hidden sm:inline">Masuk Email</span>

@@ -501,7 +501,7 @@ export function HumanizerWorkspace() {
             {walletErrorCode === "auth" ? (
               <Link
                 href="/auth/sign-in"
-                className="inline-flex items-center gap-1.5 rounded-lg bg-ink px-3 py-1.5 text-xs font-bold text-white transition hover:bg-ink/90"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-ink bg-ink px-3 py-1.5 text-xs font-bold text-white transition hover:bg-ink/90 dark:border-line-strong dark:bg-[#1e293b] dark:hover:bg-[#293548]"
               >
                 Masuk dengan Email
               </Link>
@@ -675,7 +675,7 @@ export function HumanizerWorkspace() {
               <button
                 type="button"
                 onClick={handleDownloadDoc}
-                className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-ink text-white dark:bg-slate-800 dark:border dark:border-line text-xs font-semibold hover:bg-slate-800 transition"
+                className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-ink bg-ink text-white dark:border-line-strong dark:bg-[#1e293b] text-xs font-semibold hover:bg-ink/90 dark:hover:bg-[#293548] transition"
               >
                 <Download className="size-3.5 text-stabilo" />
                 <span>Word (.doc)</span>
@@ -697,7 +697,7 @@ export function HumanizerWorkspace() {
             <div
               onDragOver={(e) => e.preventDefault()}
               onDrop={handleDrop}
-              className="relative bg-white dark:bg-card rounded-2xl border border-line shadow-xs flex flex-col h-[520px] overflow-hidden"
+              className="relative flex h-[520px] flex-col overflow-hidden rounded-xl border border-line bg-card shadow-xs"
             >
               {/* Prominent Loading Overlay saat memproses Humanize */}
               {isProcessing && (
@@ -755,7 +755,7 @@ export function HumanizerWorkspace() {
                         setHistoryBeforeHumanize(null);
                       }
                     }}
-                    className="cursor-pointer text-muted hover:text-rose-600 transition font-semibold flex items-center gap-1"
+                    className="cursor-pointer text-muted hover:text-rose-600 dark:hover:text-rose-400 transition font-semibold flex items-center gap-1"
                   >
                     <Trash2 className="size-3" />
                     <span>Kosongkan</span>
@@ -765,7 +765,7 @@ export function HumanizerWorkspace() {
             </div>
 
             {/* Right Pane: X-Ray Heatmap & Sparkline */}
-            <div className="relative bg-white dark:bg-card rounded-2xl border border-line shadow-xs flex flex-col h-[520px] overflow-hidden">
+            <div className="relative flex h-[520px] flex-col overflow-hidden rounded-xl border border-line bg-card shadow-xs">
               {isProcessing && (
                 <div className="absolute inset-0 z-20 backdrop-blur-xs bg-white/60 dark:bg-card/70 flex items-center justify-center pointer-events-none">
                   <span className="text-xs font-semibold text-brand flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-soft border border-brand/20 shadow-xs">
@@ -921,7 +921,7 @@ export function HumanizerWorkspace() {
           role="tabpanel"
           aria-labelledby="humanizer-tab-settings"
           tabIndex={0}
-          className="bg-white dark:bg-card rounded-2xl border border-line p-6 shadow-xs space-y-6"
+          className="rounded-xl border border-line bg-card p-6 shadow-xs space-y-6"
         >
           <div>
             <h3 className="font-display font-bold text-lg text-ink">
@@ -962,7 +962,7 @@ export function HumanizerWorkspace() {
                 <button
                   type="button"
                   onClick={() => setCustomTerms([])}
-                  className="cursor-pointer text-[11px] text-rose-600 hover:underline font-semibold"
+                  className="cursor-pointer text-[11px] text-rose-600 dark:text-rose-400 hover:underline font-semibold"
                 >
                   Hapus Semua Istilah
                 </button>
@@ -984,7 +984,7 @@ export function HumanizerWorkspace() {
                     <button
                       type="button"
                       onClick={() => handleRemoveTerm(term)}
-                      className="cursor-pointer text-brand/60 hover:text-rose-600 transition"
+                      className="cursor-pointer text-brand/60 hover:text-rose-600 dark:hover:text-rose-400 transition"
                       aria-label={`Hapus istilah ${term}`}
                       title={`Hapus ${term}`}
                     >

@@ -320,9 +320,9 @@ export default function Home() {
               </div>
 
               <div className="flex-1 text-center sm:text-left">
-                <span className="stempel-hijau text-xs py-0.5 px-2.5">
-                  ✓ DIKERJAKAN LANGSUNG
-                </span>
+                <p className="font-mono text-[0.7rem] font-bold uppercase tracking-[0.14em] text-mint">
+                  ✓ Dikerjakan Langsung
+                </p>
                 <h3 className="mt-2.5 font-display text-lg sm:text-xl font-bold text-ink">
                   Mas Joki — Pengelola &amp; Pengerja Langsung
                 </h3>
@@ -491,7 +491,7 @@ export default function Home() {
                 <strong className="font-mono text-ink font-bold">{pembayaran.nomor}</strong>
                 <span> a.n. {SITE_OWNER} (tanpa biaya admin).</span>
                 {QRIS_ENABLED && (
-                  <span className="ml-1 rounded-md bg-emerald-50 px-2 py-0.5 text-xs font-bold text-emerald-700 border border-emerald-200">
+                  <span className="ml-1 rounded-md border border-mint/25 bg-mint-soft px-2 py-0.5 text-xs font-bold text-mint">
                     QRIS — bisa dari e-wallet &amp; m-banking apa pun
                   </span>
                 )}

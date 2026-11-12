@@ -186,12 +186,12 @@ export default function SignInPage() {
             )}
 
             {error && (
-              <p className="rounded-xl border border-rose-300 bg-rose-50 px-3.5 py-3 text-xs font-semibold text-rose-800" role="alert">
+              <p className="rounded-xl border border-rose-300 bg-rose-50 px-3.5 py-3 text-xs font-semibold text-rose-800 dark:border-rose-800 dark:bg-rose-950/40 dark:text-rose-200" role="alert">
                 {error}
               </p>
             )}
             {message && (
-              <p className="rounded-xl border border-emerald-300 bg-emerald-50 px-3.5 py-3 text-xs font-semibold text-emerald-800" role="status">
+              <p className="rounded-xl border border-emerald-300 bg-emerald-50 px-3.5 py-3 text-xs font-semibold text-emerald-800 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200" role="status">
                 {message}
               </p>
             )}

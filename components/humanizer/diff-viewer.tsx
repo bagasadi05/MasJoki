@@ -19,17 +19,17 @@ export function DiffViewer({ oldText, newText, onRefresh }: DiffViewerProps) {
   const hasChanges = chunks.some((c) => c.type !== "equal");
 
   return (
-    <div className="bg-white dark:bg-card rounded-2xl border border-line p-5 sm:p-6 shadow-xs space-y-4">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-line pb-4">
+    <div className="rounded-xl border border-line bg-card p-5 sm:p-6 shadow-xs space-y-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-dashed border-line pb-4">
         <div>
           <h3 className="font-display font-bold text-base sm:text-lg text-ink">
             Diff Inspector: Bukti Perubahan Sebelum vs Sesudah
           </h3>
           <p className="text-xs text-muted mt-0.5">
             Kata pemicu AI & sintaks monoton ditandai{" "}
-            <span className="text-rose-600 font-semibold line-through">merah coret</span>, dan
+            <span className="text-rose-600 dark:text-rose-400 font-semibold line-through">merah coret</span>, dan
             struktur alami baru ditandai{" "}
-            <span className="text-emerald-600 font-semibold">hijau tebal</span>.
+            <span className="text-emerald-600 dark:text-emerald-400 font-semibold">hijau tebal</span>.
           </p>
         </div>
 
@@ -37,7 +37,7 @@ export function DiffViewer({ oldText, newText, onRefresh }: DiffViewerProps) {
           <button
             type="button"
             onClick={onRefresh}
-            className="inline-flex items-center gap-1.5 self-start sm:self-auto px-3.5 py-1.5 rounded-xl border border-line bg-paper-2 hover:bg-paper text-xs font-bold text-ink-soft transition cursor-pointer"
+            className="inline-flex items-center gap-1.5 self-start sm:self-auto px-3.5 py-1.5 rounded-lg border border-line bg-paper-2 hover:bg-paper text-xs font-bold text-ink-soft transition cursor-pointer"
           >
             <RefreshCw className="size-3.5" />
             <span>Segarkan Diff</span>

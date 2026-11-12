@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import {
   Calculator,
@@ -84,9 +84,25 @@ function AngkaNaik({ nilai, className = "" }: { nilai: number; className?: strin
 export function AlurKerja() {
   const [aktif, setAktif] = useState(0);
   const [manual, setManual] = useState(false);
+  const [terlihat, setTerlihat] = useState(true);
+  const bagianRef = useRef<HTMLElement | null>(null);
+
+  // Demo berhenti saat bagian ini keluar layar: tidak ada timer dan render
+  // sia-sia ketika pengunjung sedang membaca bagian lain.
+  useEffect(() => {
+    const el = bagianRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+
+    const pengamat = new IntersectionObserver(
+      ([entri]) => setTerlihat(entri.isIntersecting),
+      { threshold: 0.15 },
+    );
+    pengamat.observe(el);
+    return () => pengamat.disconnect();
+  }, []);
 
   useEffect(() => {
-    if (manual) return;
+    if (manual || !terlihat) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const timer = window.setInterval(
@@ -94,7 +110,7 @@ export function AlurKerja() {
       JEDA_MS,
     );
     return () => window.clearInterval(timer);
-  }, [manual]);
+  }, [manual, terlihat]);
 
   const pilih = (i: number) => {
     setAktif(i);
@@ -103,6 +119,7 @@ export function AlurKerja() {
 
   return (
     <section
+      ref={bagianRef}
       id="cara-pesan"
       className="border-b border-line bg-paper py-14 scroll-mt-20 sm:py-20"
     >

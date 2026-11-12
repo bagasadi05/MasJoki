@@ -28,6 +28,8 @@ const csp = [
 const nextConfig: NextConfig = {
   /* config options here */
   cacheComponents: true,
+  // Jangan bocorkan versi framework lewat header respons.
+  poweredByHeader: false,
   partialPrefetching: true,
   async headers() {
     return [

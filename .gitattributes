@@ -1,0 +1,11 @@
+# Normalisasi line ending: semua teks disimpan LF di repo.
+# Tanpa ini, diff bisa terlihat ribuan baris padahal isinya hanya beberapa.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.pdf binary

@@ -75,15 +75,10 @@ export function HeroStaticReceipt() {
           </div>
         </div>
 
-        {/* Stempel */}
-        <div className="mt-4 flex items-center justify-between">
-          <span className="text-[13px] text-slate-600 font-medium">
-            *Dihitung dari modul harga
-          </span>
-          <span className="stempel stempel-masuk text-xs py-0.5 px-2">
-            HARGA TRANSPARAN
-          </span>
-        </div>
+        {/* Keterangan sumber angka */}
+        <p className="mt-4 border-t border-dashed border-line pt-3 text-[11px] font-medium leading-snug text-slate-500">
+          *Angka dihitung dari modul harga yang sama dengan kalkulator.
+        </p>
       </div>
     </Tilt>
   );

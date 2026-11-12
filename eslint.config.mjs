@@ -17,6 +17,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Artefak kerja lokal (profil browser untuk screenshot, skrip sekali pakai).
+    "scratch/**",
   ]),
 ]);
 

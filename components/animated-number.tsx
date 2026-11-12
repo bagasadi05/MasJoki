@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { rupiah } from "@/lib/format";
 
 interface AnimatedPriceProps {
@@ -20,6 +20,9 @@ export function AnimatedPrice({
 }: AnimatedPriceProps) {
   const spanRef = useRef<HTMLSpanElement>(null);
   const prevValueRef = useRef<number>(value);
+  /* Teks awal dibekukan: React tidak boleh menulis nilai akhir lebih dulu,
+   * kalau tidak angka sempat melompat ke tujuan lalu berputar balik. */
+  const [teksAwal] = useState(() => format(value));
 
   useEffect(() => {
     const el = spanRef.current;
@@ -67,7 +70,7 @@ export function AnimatedPrice({
 
   return (
     <span ref={spanRef} className={className}>
-      {format(value)}
+      {teksAwal}
     </span>
   );
 }

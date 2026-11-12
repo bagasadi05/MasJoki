@@ -24,6 +24,7 @@ import {
 import { submitOrder, submitQuote } from "@/app/actions";
 import { useCalculator } from "./calculator-context";
 import { useEstimatedDateRange } from "./use-wib-status";
+import { AnimatedPrice } from "./animated-number";
 import { Nota } from "./nota";
 import { ServiceIcon } from "./service-icon";
 import { aksenLayanan } from "@/lib/aksen";
@@ -1535,7 +1536,7 @@ function SuccessPanel({
               {mode === "hitung" ? "Estimasi Biaya" : "Status Harga"}
             </dt>
             <dd className="mt-1 font-mono text-base font-bold tabular-nums text-brand">
-              {total ? rupiah(total) : "Dihitung Mas Joki"}
+              {total ? <AnimatedPrice value={total} /> : "Dihitung Mas Joki"}
             </dd>
             {dpAmount ? (
               <dd className="mt-0.5 text-xs font-semibold text-mint">

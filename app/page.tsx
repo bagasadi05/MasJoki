@@ -400,7 +400,7 @@ export default function Home() {
          * ========================================================== */}
         <section
           id="poster-harga"
-          className="relative overflow-hidden border-b border-line bg-paper-2 py-14 sm:py-20 scroll-mt-16"
+          className="relative overflow-clip border-b border-line bg-paper-2 py-14 sm:py-20 scroll-mt-16"
         >
           <div
             aria-hidden
@@ -459,7 +459,7 @@ export default function Home() {
 
             <figure className="relative mx-auto w-full max-w-[360px]">
               <Tilt maks={4}>
-                <div className="rotate-[1.2deg] overflow-hidden rounded-xl border border-line bg-white p-2 shadow-xl shadow-ink/10">
+                <div className="poster-geser rotate-[1.2deg] overflow-hidden rounded-xl border border-line bg-white p-2 shadow-xl shadow-ink/10">
                   <Image
                     src="/poster"
                     alt="Poster daftar harga Mas Joki: humanisasi teks AI, parafrase, makalah, artikel jurnal, PowerPoint, rapikan Word, terjemahan, dan desain visual."

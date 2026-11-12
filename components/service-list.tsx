@@ -62,7 +62,7 @@ export function ServiceList({
           return (
             <div
               key={service.id}
-              className={`group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-white p-6 transition duration-300 hover:-translate-y-1 hover:shadow-lg ${
+              className={`kartu-layanan group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-white p-6 transition duration-300 hover:-translate-y-1 hover:shadow-lg ${
                 isUnggulan
                   ? "border-2 border-brand/50 shadow-md ring-1 ring-brand/15"
                   : "border border-line shadow-sm hover:border-brand/40"

@@ -16,7 +16,7 @@ export function HeroStaticReceipt() {
 
   return (
     <Tilt maks={4} className="relative mx-auto max-w-[340px] drop-shadow-xl">
-      <div className="nota nota-masuk bg-white p-5 sm:p-6">
+      <div className="nota nota-masuk nota-cetak bg-white p-5 sm:p-6">
         {/* Accent strip */}
         <span
           aria-hidden

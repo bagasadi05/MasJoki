@@ -77,7 +77,10 @@ export function ServiceList({
               <div>
                 {/* Header: Ikon Seragam Brand & Badge Populer Bersih */}
                 <div className="flex items-center justify-between gap-2">
-                  <div className={`grid size-12 place-items-center rounded-2xl border border-line shadow-2xs transition-transform duration-200 group-hover:scale-105 ${aksen.soft}`}>
+                  <div
+                    className={`vt-ikon grid size-12 place-items-center rounded-2xl border border-line shadow-2xs transition-transform duration-200 group-hover:scale-105 ${aksen.soft}`}
+                    style={{ viewTransitionName: `ikon-${service.id}` }}
+                  >
                     <ServiceIcon id={service.id} className="size-7" />
                   </div>
 

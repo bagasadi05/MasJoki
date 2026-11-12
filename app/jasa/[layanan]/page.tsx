@@ -143,7 +143,10 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
             <div className="mt-8 grid gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:gap-16">
               <div>
                 <div className="flex items-center gap-3">
-                  <div className="grid size-11 place-items-center rounded-2xl border border-brand/20 bg-white shadow-2xs">
+                  <div
+                    className="vt-ikon grid size-11 place-items-center rounded-2xl border border-brand/20 bg-white shadow-2xs"
+                    style={{ viewTransitionName: `ikon-${service.id}` }}
+                  >
                     <ServiceIcon id={service.id} className="size-6" />
                   </div>
                   <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold ${aksen.chip}`}>

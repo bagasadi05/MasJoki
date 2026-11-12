@@ -888,6 +888,17 @@ html.dark .kertas-garis {
   animation: none;
 }
 
+/* Ikon layanan ikut berpindah dari kartu ke kepala halaman detail: elemen
+ * yang sama, bukan potongan halaman yang saling memudar. */
+.vt-ikon {
+  view-transition-class: ikon;
+}
+
+::view-transition-group(.ikon) {
+  animation-duration: 320ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 ::view-transition-old(.halaman-keluar) {
   animation: 130ms ease-in both vt-keluar;
 }

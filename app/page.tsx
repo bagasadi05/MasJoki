@@ -19,6 +19,7 @@ import {
   Zap,
 } from "lucide-react";
 import { AlurKerja } from "@/components/alur-kerja";
+import { FaqRingkas } from "@/components/faq-ringkas";
 import { HeroStaticReceipt } from "@/components/hero-static-receipt";
 import { ServiceList } from "@/components/service-list";
 import { SimulasiContoh } from "@/components/simulasi-contoh";
@@ -534,6 +535,8 @@ export default function Home() {
         {/* ========================================================== *
          * 9. CTA AKHIR DENGAN DUA AKSI JELAS
          * ========================================================== */}
+        <FaqRingkas />
+
         <section id="cta-bawah" className="mx-auto max-w-6xl px-5 py-14 sm:px-8 sm:py-20">
           <div className="relative overflow-hidden rounded-3xl bg-[#0b1329] dark:bg-[#0c1527] dark:border dark:border-white/10 px-8 py-12 shadow-2xl sm:px-12 sm:py-16">
             <div

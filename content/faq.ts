@@ -58,3 +58,20 @@ export const faq: FaqItem[] = [
     a: "Mas Joki menyediakan pendampingan belajar, perapian format dokumen, penyuntingan bahasa, parafrase naskah, dan pembuatan presentasi. Setiap kampus memiliki pedoman akademik masing-masing, dan keputusan pemanfaatannya berada di tangan mahasiswa secara bijak.",
   },
 ];
+
+/**
+ * Subset untuk beranda: hanya pertanyaan yang menutup keberatan terakhir
+ * sebelum CTA. Sumber teksnya tetap satu — kalau pertanyaan di atas diubah
+ * namanya, item ini hilang dan tes akan menangkapnya.
+ */
+const PERTANYAAN_RINGKAS = [
+  "Apakah bisa bayar DP (uang muka) 50% dulu?",
+  "Berapa kali saya boleh minta revisi?",
+  "Apakah file dan berkas tugas saya dijamin aman?",
+  "Apakah harga bisa berubah setelah saya memesan?",
+  "Apakah bisa membantu menurunkan skor Turnitin atau deteksi AI?",
+];
+
+export const faqRingkas: FaqItem[] = PERTANYAAN_RINGKAS.map((q) =>
+  faq.find((item) => item.q === q),
+).filter((item): item is FaqItem => Boolean(item));

@@ -8,12 +8,8 @@ import {
   CreditCard,
   Download,
   ExternalLink,
-  FolderArchive,
-  Lock,
   MessageCircle,
   RefreshCcw,
-  RotateCcw,
-  ShieldCheck,
   Sparkles,
   Tag,
   Zap,
@@ -66,25 +62,21 @@ const garansiList = [
     kode: "Pasal 01",
     judul: "Harga Terbuka Tanpa Tawar-Menawar",
     isi: "Nominal di nota terkunci sejak awal. Tidak ada biaya siluman atau tambahan dadakan di tengah pengerjaan.",
-    icon: Lock,
   },
   {
     kode: "Pasal 02",
     judul: "Garansi Uang Kembali 100%",
     isi: "Jika hasil tugas menyimpang dari brief dan tidak tuntas via revisi, dana dikembalikan 100% penuh.",
-    icon: RotateCcw,
   },
   {
     kode: "Pasal 03",
     judul: "File Sumber Lengkap & Siap Edit",
     isi: "Mas Joki selalu menyerahkan file sumber (file mentah asli: .docx atau .pptx) yang bebas kamu edit dan simpan kapan pun.",
-    icon: FolderArchive,
   },
   {
     kode: "Pasal 04",
     judul: "Kerahasiaan Naskah & Data Aman",
     isi: "Identitas mahasiswa, materi tugas, dan berkas naskah dijamin aman privat tanpa pernah dipublikasikan.",
-    icon: ShieldCheck,
   },
 ];
 
@@ -294,33 +286,25 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="reveal mt-10 grid gap-5 sm:grid-cols-2">
-              {garansiList.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <div
-                    key={item.judul}
-                    className="rounded-2xl border border-line bg-white p-6 transition-shadow duration-300 hover:shadow-md"
-                  >
-                    <div className="flex items-center justify-between border-b border-dashed border-line pb-3.5">
-                      <span className="font-mono text-xs font-bold tracking-wider text-slate-600">
-                        {item.kode}
-                      </span>
-                      <div className="grid size-9 place-items-center rounded-xl bg-paper-2 text-ink-soft">
-                        <Icon className="size-4.5" />
-                      </div>
-                    </div>
-
-                    <h3 className="mt-4 font-display text-base sm:text-lg font-bold tracking-tight text-ink">
+            <div className="reveal mt-10 overflow-hidden rounded-2xl border border-line bg-card">
+              {garansiList.map((item) => (
+                <article
+                  key={item.judul}
+                  className="grid gap-2 border-b border-line p-6 last:border-b-0 sm:grid-cols-[7.5rem_1fr] sm:gap-6 sm:p-7"
+                >
+                  <span className="font-mono text-[0.7rem] font-bold uppercase tracking-[0.18em] text-muted">
+                    {item.kode}
+                  </span>
+                  <div>
+                    <h3 className="font-display text-base font-bold tracking-tight text-ink sm:text-lg">
                       {item.judul}
                     </h3>
-
-                    <p className="mt-2 text-sm leading-relaxed text-slate-600 font-medium">
+                    <p className="mt-1.5 text-sm leading-relaxed text-slate-600 font-medium">
                       {item.isi}
                     </p>
                   </div>
-                );
-              })}
+                </article>
+              ))}
             </div>
           </div>
         </section>

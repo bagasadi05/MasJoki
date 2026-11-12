@@ -134,7 +134,7 @@ export default function Home() {
               </h1>
 
               <p className="mt-4 max-w-[48ch] text-sm sm:text-base leading-relaxed text-slate-600 font-medium">
-                Dikerjakan langsung oleh Mas Joki tanpa perantara. Buka kalkulator biaya untuk menghitung perkiraan biaya tugasmu seketika sebelum menghubungi kami.
+                Buka kalkulator biaya dan lihat perkiraan biayanya seketika, sebelum menghubungi.
               </p>
 
               {/* Dua Tombol CTA Utama: Buka Kalkulator Biaya & Lihat Layanan */}
@@ -235,7 +235,7 @@ export default function Home() {
                   Layanan Unggulan &amp; Paling Banyak Dipesan.
                 </h2>
                 <p className="mt-2 text-sm leading-relaxed text-slate-600 font-medium">
-                  Spesialisasi utama: humanisasi teks AI, penurunan Turnitin manual, dan asistensi tugas akademik tanpa perantara.
+                  Humanisasi teks AI, penurunan Turnitin manual, dan asistensi tugas akademik.
                 </p>
               </div>
 
@@ -274,7 +274,7 @@ export default function Home() {
                 Empat Garansi Transparansi Mas Joki.
               </h2>
               <p className="mt-2 text-sm text-slate-600 font-medium">
-                Prinsip baku tanpa kompromi yang Mas Joki pegang untuk setiap tugasmu.
+                Yang Mas Joki pegang di setiap pesanan.
               </p>
             </div>
 
@@ -326,7 +326,7 @@ export default function Home() {
                   Mas Joki — Pengelola &amp; Pengerja Langsung
                 </h3>
                 <p className="mt-2 text-xs sm:text-sm leading-relaxed text-slate-700 font-medium">
-                  Halo, saya Mas Joki — guru aktif bergelar S.Pd yang mengerjakan sendiri semua pesanan tugas di sini. Tanpa perantara, tanpa tim bayangan. Latar belakang pendidikan membuat saya paham persis format akademik yang diminta dosen: sitasi rapi, struktur benar, bahasa yang lolos dibaca manusia.
+                  Guru aktif bergelar S.Pd yang mengerjakan sendiri semua pesanan di sini. Paham format yang diminta dosen: sitasi rapi, struktur benar, bahasa enak dibaca.
                 </p>
 
                 <div className="mt-4">
@@ -338,7 +338,6 @@ export default function Home() {
                   >
                     <MessageCircle className="size-4" />
                     <span>Chat Mas Joki di WhatsApp</span>
-                    <ArrowRight className="size-3.5" />
                   </a>
                 </div>
               </div>
@@ -374,7 +373,7 @@ export default function Home() {
                   Cek Estimasi Biaya Tugasmu Seketika.
                 </h2>
                 <p className="mt-2 text-xs sm:text-sm md:text-base leading-relaxed text-slate-600 font-medium">
-                  Tidak perlu menunggu admin membalas pesan untuk tahu biaya. Coba simulasi contoh di bawah atau atur jumlah persismu di kalkulator mandiri.
+                  Tanpa akun. Nominal muncul sebelum kamu mengetik satu baris chat pun.
                 </p>
               </div>
 
@@ -414,8 +413,7 @@ export default function Home() {
                 Satu lembar, semua tarif kelihatan.
               </h2>
               <p className="mt-2 max-w-[52ch] text-sm leading-relaxed text-slate-600 font-medium">
-                Poster ini dihitung dari mesin harga yang sama dengan kalkulator, bukan
-                angka tempelan. Simpan atau bagikan ke teman satu kelas sebelum chat.
+                Dihitung dari mesin harga yang sama dengan kalkulator, bukan angka tempelan.
               </p>
 
               <ul className="mt-6 space-y-2.5">
@@ -535,7 +533,7 @@ export default function Home() {
                 </h2>
 
                 <p className="mt-3 max-w-[46ch] text-xs sm:text-sm leading-relaxed text-white/80">
-                  Tidak perlu bikin akun. Ketahui nominal pasti di awal sebelum kamu mengetik satu baris chat pun. Dikerjakan langsung oleh Mas Joki tanpa perantara.
+                  Nominal sudah kelihatan sebelum kamu chat. Tanpa akun, tanpa tunggu balasan admin.
                 </p>
 
                 {/* Dua Tombol Aksi: Buka Kalkulator & Chat WhatsApp */}

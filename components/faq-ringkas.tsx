@@ -26,8 +26,7 @@ export function FaqRingkas() {
               Lima hal yang paling sering ditanyakan.
             </h2>
             <p className="mt-2 text-sm leading-relaxed text-slate-600 font-medium">
-              Ringkas saja. Kalau pertanyaanmu belum ada di sini, daftar lengkapnya
-              ada di halaman FAQ.
+              Selengkapnya ada di halaman FAQ.
             </p>
           </div>
 

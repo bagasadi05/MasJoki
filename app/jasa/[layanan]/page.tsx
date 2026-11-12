@@ -355,7 +355,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                     Penetapan Biaya Sesuai Target Skor &amp; Panjang Naskah
                   </h2>
                   <p className="mt-2 text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
-                    Karena tingkat kesulitan penurunan skor Turnitin dan deteksi AI sangat bergantung pada panjang dokumen serta persentase skor awal, biaya dihitung secara personal dan transparan lewat form penawaran tanpa perantara.
+                    Karena tingkat kesulitan penurunan skor Turnitin dan deteksi AI sangat bergantung pada panjang dokumen serta persentase skor awal, biaya dihitung personal lewat form penawaran.
                   </p>
                   <div className="mt-6">
                     <Link
@@ -373,7 +373,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                     Dua Pilihan Tingkat Layanan Artikel Jurnal
                   </h2>
                   <p className="mt-2 text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
-                    Pilih tingkat layanan yang sesuai dengan tujuan naskahmu. Dikerjakan langsung oleh Mas Joki tanpa perantara.
+                    Pilih tingkat yang sesuai tujuan naskahmu.
                   </p>
 
                   <div className="mt-6 space-y-4">
@@ -504,7 +504,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                     Gambaran Biaya Berdasarkan Jumlah (Tenggat Normal 4–6 Hari, +10%)
                   </h2>
                   <p className="mt-2 text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
-                    Simulasi dihitung otomatis menggunakan tenggat normal (4–6 hari kerja, +10%) dan tingkat pengerjaan standar tanpa perantara. Nominal terkunci sebelum kamu chat.
+                    Simulasi memakai tenggat normal (4–6 hari kerja, +10%) dan tingkat pengerjaan standar. Nominal terkunci sebelum kamu chat.
                   </p>
 
                   <ul className="mt-6 divide-y divide-line border-y border-line">

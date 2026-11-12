@@ -165,7 +165,7 @@ export default function HalamanCaraKerja() {
                 Siap pesan tugasmu sekarang?
               </h2>
               <p className="mt-2 text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
-                Gunakan kalkulator kami untuk menghitung nominal pasti sebelum chat Mas Joki.
+                Hitung nominalnya dulu, baru chat.
               </p>
             </div>
 

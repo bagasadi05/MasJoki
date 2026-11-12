@@ -74,8 +74,7 @@ export function HighlightHumanizer() {
           </div>
 
           <p className="mt-3 text-[0.72rem] text-muted">
-            Humanizer memakai saldo token akun. Tanpa masuk, naskah tetap bisa
-            dianalisis di editor, tapi belum bisa diproses.
+            Butuh akun untuk memproses. Tanpa masuk, naskah hanya bisa dianalisis.
           </p>
         </div>
 

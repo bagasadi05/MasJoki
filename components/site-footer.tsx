@@ -35,8 +35,7 @@ export function SiteFooter() {
             </div>
 
             <p className="mt-3 max-w-[34ch] text-xs sm:text-sm leading-relaxed text-slate-600">
-              Layanan bantuan penulisan, perapian format, dan penyuntingan tugas akademik langsung oleh Mas Joki tanpa perantara.
-              Hitung biaya sendiri di awal tanpa tawar-menawar berbelit.
+              Penulisan, penyuntingan, dan perapian format tugas akademik, dikerjakan langsung oleh Mas Joki.
             </p>
 
             <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-medium text-slate-600">
@@ -183,9 +182,6 @@ export function SiteFooter() {
 
         <div className="mt-12 flex flex-col gap-3 border-t border-line pt-6 text-xs leading-relaxed text-slate-600 sm:flex-row sm:items-center sm:justify-between">
           <p>© Mas Joki — Madiun, Jawa Timur. Hak cipta dilindungi.</p>
-          <p className="max-w-[50ch] sm:text-right">
-            Dikerjakan langsung oleh Mas Joki tanpa perantara untuk asistensi penulisan dan penyuntingan naskah akademik.
-          </p>
         </div>
       </div>
     </footer>

@@ -179,6 +179,13 @@ html.dark,
     color: #101a33;
   }
 
+  /* Kartu pilihan (tenggat/kesulitan/opsi) menyembunyikan radio aslinya,
+   * jadi fokus keyboard harus ditampilkan oleh kartunya. */
+  .kartu-opsi:focus-within {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+  }
+
   :focus-visible {
     outline: 2px solid var(--color-brand);
     outline-offset: 3px;

@@ -907,7 +907,7 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
                     return (
                       <label
                         key={item.id}
-                        className={`flex cursor-pointer items-start justify-between gap-3 rounded-2xl border p-4 transition duration-200 ${
+                        className={`flex cursor-pointer items-start justify-between gap-3 rounded-2xl border p-4 transition duration-200 kartu-opsi ${
                           aktif
                             ? "border-brand bg-brand-soft/70 ring-2 ring-brand/30 shadow-sm"
                             : "border-line bg-white hover:border-line-strong hover:bg-paper-2/40"
@@ -984,7 +984,7 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
                       return (
                         <label
                           key={addon.id}
-                          className={`flex cursor-pointer items-start justify-between gap-3 rounded-2xl border p-4 transition duration-200 ${
+                          className={`flex cursor-pointer items-start justify-between gap-3 rounded-2xl border p-4 transition duration-200 kartu-opsi ${
                             terpilih
                               ? "border-brand bg-brand-soft/60 ring-2 ring-brand/25 shadow-xs"
                               : "border-line bg-white hover:border-line-strong hover:bg-paper-2/40"

@@ -1345,7 +1345,7 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
                 }}
                 className="w-full py-2 text-center text-xs font-bold text-brand hover:underline cursor-pointer"
               >
-                Atau isi formulir detail di mode Minta Penawaran →
+                Atau isi formulir detail di mode Minta Penawaran
               </button>
             </div>
           ) : (

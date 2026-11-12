@@ -526,7 +526,7 @@ export default function Home() {
                 href="/cara-kerja"
                 className="inline-flex items-center gap-1.5 font-bold text-brand hover:underline shrink-0"
               >
-                <span>Lihat panduan pembayaran →</span>
+                <span>Lihat panduan pembayaran</span>
               </Link>
             </div>
           </div>

@@ -12,13 +12,13 @@ export function FaqList({ limit }: FaqListProps = {}) {
       {items.map((item) => (
         <details
           key={item.q}
-          className="group rounded-3xl border border-line bg-white p-6 transition-all duration-200 hover:border-brand/40 hover:shadow-xs [&_summary::-webkit-details-marker]:hidden"
+          className="group rounded-3xl border border-line bg-white p-6 transition duration-200 hover:border-brand/40 hover:shadow-xs [&_summary::-webkit-details-marker]:hidden"
         >
           <summary className="flex cursor-pointer list-none items-start justify-between gap-4 text-left">
             <span className="font-display text-[1.05rem] font-bold leading-snug text-ink transition-colors group-hover:text-brand">
               {item.q}
             </span>
-            <span className="grid size-8 shrink-0 place-items-center rounded-xl bg-paper-2 text-ink-soft transition-all duration-200 group-open:rotate-45 group-open:bg-brand group-open:text-white shadow-2xs">
+            <span className="grid size-8 shrink-0 place-items-center rounded-xl bg-paper-2 text-ink-soft transition duration-200 group-open:rotate-45 group-open:bg-brand group-open:text-white shadow-2xs">
               <svg
                 aria-hidden
                 viewBox="0 0 16 16"

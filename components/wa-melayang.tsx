@@ -41,7 +41,7 @@ export function WaMelayang() {
       target="_blank"
       rel="noopener noreferrer"
       onClick={() => lacak("chat_whatsapp", { lokasi: "melayang" })}
-      className={`fixed bottom-[max(1.2rem,env(safe-area-inset-bottom))] right-4 z-50 hidden lg:inline-flex items-center gap-2.5 rounded-full border border-mint/25 bg-white/95 p-1.5 pr-4 text-sm font-bold text-ink shadow-lg shadow-mint/15 backdrop-blur transition-all duration-200 hover:-translate-y-1 hover:border-mint/40 hover:shadow-xl hover:shadow-mint/20 active:translate-y-0 sm:bottom-[max(1.8rem,env(safe-area-inset-bottom))] sm:right-6 ${
+      className={`fixed bottom-[max(1.2rem,env(safe-area-inset-bottom))] right-4 z-50 hidden lg:inline-flex items-center gap-2.5 rounded-full border border-mint/25 bg-white/95 p-1.5 pr-4 text-sm font-bold text-ink shadow-lg shadow-mint/15 backdrop-blur transition duration-200 hover:-translate-y-1 hover:border-mint/40 hover:shadow-xl hover:shadow-mint/20 active:translate-y-0 sm:bottom-[max(1.8rem,env(safe-area-inset-bottom))] sm:right-6 ${
         sembunyi
           ? "pointer-events-none translate-y-3 opacity-0"
           : "translate-y-0 opacity-100"

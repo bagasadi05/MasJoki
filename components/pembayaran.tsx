@@ -80,7 +80,7 @@ export function Pembayaran() {
               <button
                 type="button"
                 onClick={salin}
-                className={`inline-flex items-center gap-1.5 rounded-xl px-4 py-2.5 text-[0.82rem] font-bold transition-all cursor-pointer ${
+                className={`inline-flex items-center gap-1.5 rounded-xl px-4 py-2.5 text-[0.82rem] font-bold transition cursor-pointer ${
                   tersalin
                     ? "bg-mint text-white shadow-xs"
                     : "bg-brand text-white hover:bg-brand-dark shadow-xs"

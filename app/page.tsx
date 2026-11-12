@@ -149,7 +149,7 @@ export default function Home() {
                 <LacakKlik nama="cta_hitung" data={{ lokasi: "hero" }}>
                   <Link
                     href="/hitung"
-                    className="group inline-flex items-center justify-center gap-2 rounded-2xl bg-brand px-7 py-4 text-sm font-extrabold text-white shadow-lg shadow-brand/25 transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35 active:translate-y-0 cursor-pointer"
+                    className="group inline-flex items-center justify-center gap-2 rounded-2xl bg-brand px-7 py-4 text-sm font-extrabold text-white shadow-lg shadow-brand/25 transition duration-200 hover:-translate-y-0.5 hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35 active:translate-y-0 cursor-pointer"
                   >
                     <Calculator className="size-4.5" />
                     <span>Buka Kalkulator Biaya</span>
@@ -158,7 +158,7 @@ export default function Home() {
                 </LacakKlik>
                 <a
                   href="#layanan"
-                  className="inline-flex items-center justify-center gap-2 rounded-2xl border-2 border-line dark:border-line-strong bg-white dark:bg-[#162035] px-7 py-4 text-sm font-bold text-ink dark:text-slate-100 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand dark:hover:bg-brand hover:text-white dark:hover:border-brand active:translate-y-0"
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl border-2 border-line dark:border-line-strong bg-white dark:bg-[#162035] px-7 py-4 text-sm font-bold text-ink dark:text-slate-100 shadow-xs transition duration-200 hover:-translate-y-0.5 hover:bg-brand dark:hover:bg-brand hover:text-white dark:hover:border-brand active:translate-y-0"
                 >
                   <span>Lihat Layanan Unggulan</span>
                   <ArrowRight className="size-4" />
@@ -403,7 +403,7 @@ export default function Home() {
 
               <Link
                 href="/hitung"
-                className="inline-flex items-center gap-2 rounded-2xl bg-brand px-6 py-3.5 text-sm font-bold text-white shadow-md shadow-brand/20 transition-all hover:bg-brand-dark hover:shadow-lg shrink-0"
+                className="inline-flex items-center gap-2 rounded-2xl bg-brand px-6 py-3.5 text-sm font-bold text-white shadow-md shadow-brand/20 transition hover:bg-brand-dark hover:shadow-lg shrink-0"
               >
                 <Calculator className="size-4" />
                 <span>Buka Kalkulator Lengkap</span>
@@ -461,7 +461,7 @@ export default function Home() {
                   <a
                     href="/poster"
                     download="poster-harga-mas-joki.png"
-                    className="inline-flex items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-3.5 text-sm font-bold text-white shadow-md shadow-brand/20 transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand-dark hover:shadow-lg active:translate-y-0"
+                    className="inline-flex items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-3.5 text-sm font-bold text-white shadow-md shadow-brand/20 transition duration-200 hover:-translate-y-0.5 hover:bg-brand-dark hover:shadow-lg active:translate-y-0"
                   >
                     <Download className="size-4" />
                     <span>Unduh poster (PNG)</span>
@@ -563,7 +563,7 @@ export default function Home() {
                 <div className="mt-8 flex flex-col gap-3.5 sm:flex-row sm:flex-wrap">
                   <Link
                     href="/hitung"
-                    className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl bg-stabilo px-7 py-4 text-sm font-black text-slate-950 shadow-lg transition-all duration-200 hover:-translate-y-0.5 hover:bg-amber-300 active:translate-y-0 cursor-pointer"
+                    className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl bg-stabilo px-7 py-4 text-sm font-black text-slate-950 shadow-lg transition duration-200 hover:-translate-y-0.5 hover:bg-amber-300 active:translate-y-0 cursor-pointer"
                   >
                     <Calculator className="size-4.5" />
                     <span>Hitung Biaya Sekarang</span>
@@ -573,7 +573,7 @@ export default function Home() {
                     href={waLink(waPesanUmum)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl border border-white/30 bg-white/5 px-7 py-4 text-sm font-bold text-white backdrop-blur-xs transition-all duration-200 hover:bg-white/15 active:translate-y-0"
+                    className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl border border-white/30 bg-white/5 px-7 py-4 text-sm font-bold text-white backdrop-blur-xs transition duration-200 hover:bg-white/15 active:translate-y-0"
                   >
                     <MessageCircle className="size-4.5" />
                     <span>Chat Mas Joki di WhatsApp</span>

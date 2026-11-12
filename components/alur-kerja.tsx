@@ -158,7 +158,7 @@ export function AlurKerja() {
                   >
                     <span
                       aria-hidden
-                      className={`grid size-8 shrink-0 place-items-center rounded-full border font-mono text-[0.68rem] font-bold transition-all duration-300 motion-reduce:transition-none ${
+                      className={`grid size-8 shrink-0 place-items-center rounded-full border font-mono text-[0.68rem] font-bold transition duration-300 motion-reduce:transition-none ${
                         hidup
                           ? "scale-105 border-brand bg-brand text-white shadow-xs shadow-brand/25"
                           : "border-line-strong bg-paper text-muted"

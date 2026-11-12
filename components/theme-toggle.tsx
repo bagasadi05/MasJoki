@@ -103,7 +103,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
           : "Ganti mode tema"
       }
       title={mounted ? (isDark ? "Mode Terang" : "Mode Gelap") : "Ganti Tema"}
-      className={`relative grid size-10 place-items-center rounded-xl border border-line bg-paper-2 text-ink-soft transition-all duration-200 hover:border-brand/40 hover:bg-brand-soft hover:text-brand active:scale-95 cursor-pointer ${className}`}
+      className={`relative grid size-10 place-items-center rounded-xl border border-line bg-paper-2 text-ink-soft transition duration-200 hover:border-brand/40 hover:bg-brand-soft hover:text-brand active:scale-95 cursor-pointer ${className}`}
     >
       {mounted ? (
         isDark ? (

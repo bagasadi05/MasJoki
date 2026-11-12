@@ -210,7 +210,7 @@ export function BeforeAfterShowcase() {
                 aria-selected={aktif}
                 aria-controls={`panel-${item.id}`}
                 onClick={() => setActiveTab(item.id)}
-                className={`inline-flex items-center gap-2 rounded-2xl border px-5 py-2.5 text-sm font-bold transition-all duration-200 cursor-pointer ${
+                className={`inline-flex items-center gap-2 rounded-2xl border px-5 py-2.5 text-sm font-bold transition duration-200 cursor-pointer ${
                   aktif
                     ? "border-brand bg-brand text-white shadow-md shadow-brand/20 scale-102"
                     : "border-line bg-white dark:bg-[#161f30] text-slate-600 dark:text-slate-300 hover:border-brand/40 hover:text-ink hover:bg-paper-2"
@@ -251,7 +251,7 @@ export function BeforeAfterShowcase() {
               type="button"
               aria-pressed={viewMode === "both"}
               onClick={() => setViewMode("both")}
-              className={`rounded-lg px-3 py-1.5 transition-all cursor-pointer ${
+              className={`rounded-lg px-3 py-1.5 transition cursor-pointer ${
                 viewMode === "both"
                   ? "bg-white dark:bg-[#182337] text-brand dark:text-blue-400 shadow-2xs"
                   : "text-slate-500 hover:text-ink"
@@ -263,7 +263,7 @@ export function BeforeAfterShowcase() {
               type="button"
               aria-pressed={viewMode === "before"}
               onClick={() => setViewMode("before")}
-              className={`rounded-lg px-3 py-1.5 transition-all cursor-pointer ${
+              className={`rounded-lg px-3 py-1.5 transition cursor-pointer ${
                 viewMode === "before"
                   ? "bg-red-600 text-white shadow-2xs"
                   : "text-slate-500 hover:text-ink"
@@ -275,7 +275,7 @@ export function BeforeAfterShowcase() {
               type="button"
               aria-pressed={viewMode === "after"}
               onClick={() => setViewMode("after")}
-              className={`rounded-lg px-3 py-1.5 transition-all cursor-pointer ${
+              className={`rounded-lg px-3 py-1.5 transition cursor-pointer ${
                 viewMode === "after"
                   ? "bg-mint text-white shadow-2xs"
                   : "text-slate-500 hover:text-ink"

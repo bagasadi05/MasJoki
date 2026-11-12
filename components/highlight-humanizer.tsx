@@ -58,7 +58,7 @@ export function HighlightHumanizer() {
             <LacakKlik nama="cta_humanizer" data={{ lokasi: "highlight" }}>
               <Link
                 href="/humanizer"
-                className="group inline-flex items-center justify-center gap-2 rounded-lg bg-brand px-6 py-3.5 text-sm font-bold text-white shadow-md shadow-brand/20 transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand-dark hover:shadow-lg active:translate-y-0"
+                className="group inline-flex items-center justify-center gap-2 rounded-lg bg-brand px-6 py-3.5 text-sm font-bold text-white shadow-md shadow-brand/20 transition duration-200 hover:-translate-y-0.5 hover:bg-brand-dark hover:shadow-lg active:translate-y-0"
               >
                 <Sparkles className="size-4" aria-hidden />
                 <span>Buka Humanizer</span>

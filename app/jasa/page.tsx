@@ -46,7 +46,7 @@ export default function HalamanDaftarLayanan() {
           <div className="flex flex-col gap-3 sm:flex-row shrink-0">
             <Link
               href="/hitung"
-              className="inline-flex items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-3.5 text-sm font-bold text-white shadow-md shadow-brand/20 transition-all hover:bg-brand-dark hover:shadow-lg"
+              className="inline-flex items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-3.5 text-sm font-bold text-white shadow-md shadow-brand/20 transition hover:bg-brand-dark hover:shadow-lg"
             >
               <Calculator className="size-4" />
               <span>Buka Kalkulator Biaya</span>

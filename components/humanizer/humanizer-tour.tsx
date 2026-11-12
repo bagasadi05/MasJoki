@@ -368,7 +368,7 @@ export function HumanizerTour() {
                 {LANGKAH.map((_, i) => (
                   <span
                     key={i}
-                    className={`h-1.5 rounded-full transition-all duration-300 motion-reduce:transition-none ${
+                    className={`h-1.5 rounded-full transition duration-300 motion-reduce:transition-none ${
                       i === indeks ? "w-5 bg-brand" : "w-1.5 bg-line-strong"
                     }`}
                   />

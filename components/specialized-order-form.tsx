@@ -45,7 +45,7 @@ import { pembayaran } from "@/lib/site";
 import type { ActionResult } from "@/lib/types";
 
 const fieldClass =
-  "w-full rounded-2xl border border-line bg-white px-4 py-3.5 text-base sm:text-sm text-ink placeholder:text-muted/60 transition-all duration-150 hover:border-line-strong focus:border-brand focus:ring-3 focus:ring-brand/15 focus:outline-none";
+  "w-full rounded-2xl border border-line bg-white px-4 py-3.5 text-base sm:text-sm text-ink placeholder:text-muted/60 transition duration-150 hover:border-line-strong focus:border-brand focus:ring-3 focus:ring-brand/15 focus:outline-none";
 
 const labelClass = "mb-2 block text-[0.84rem] font-bold text-ink";
 
@@ -234,7 +234,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                   type="button"
                   aria-current={aktif ? "step" : undefined}
                   onClick={() => setStep(item.num as 1 | 2 | 3)}
-                  className={`w-full flex items-center gap-2.5 rounded-2xl border p-3 sm:p-4 text-left transition-all cursor-pointer ${
+                  className={`w-full flex items-center gap-2.5 rounded-2xl border p-3 sm:p-4 text-left transition cursor-pointer ${
                     aktif
                       ? "border-brand bg-brand-soft/70 ring-2 ring-brand/20 shadow-xs"
                       : lewat
@@ -344,7 +344,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                           type="button"
                           aria-pressed={aktif}
                           onClick={() => setCheckerTool(opt.value)}
-                          className={`flex items-center justify-between rounded-2xl border p-3.5 text-left transition-all cursor-pointer ${
+                          className={`flex items-center justify-between rounded-2xl border p-3.5 text-left transition cursor-pointer ${
                             aktif
                               ? "border-brand bg-brand-soft ring-2 ring-brand/20 font-bold text-brand shadow-xs"
                               : "border-line bg-white hover:border-line-strong text-ink-soft"
@@ -376,7 +376,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                           type="button"
                           aria-pressed={aktif}
                           onClick={() => setCurrentScore(opt.value)}
-                          className={`flex flex-col items-start rounded-2xl border p-3.5 text-left transition-all cursor-pointer ${
+                          className={`flex flex-col items-start rounded-2xl border p-3.5 text-left transition cursor-pointer ${
                             aktif
                               ? "border-amber/40 bg-amber-soft/70 ring-2 ring-amber/25 font-bold text-amber shadow-xs"
                               : "border-line bg-white hover:border-line-strong text-ink-soft"
@@ -410,7 +410,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                           type="button"
                           aria-pressed={aktif}
                           onClick={() => setTargetScore(opt.value)}
-                          className={`flex flex-col justify-between rounded-2xl border p-3.5 text-left transition-all cursor-pointer ${
+                          className={`flex flex-col justify-between rounded-2xl border p-3.5 text-left transition cursor-pointer ${
                             aktif
                               ? "border-mint/40 bg-mint-soft ring-2 ring-mint/25 text-mint shadow-xs"
                               : "border-line bg-white hover:border-line-strong text-ink-soft"
@@ -451,7 +451,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                           type="button"
                           aria-pressed={aktif}
                           onClick={() => setCitationStyle(opt.value)}
-                          className={`flex items-center justify-between rounded-2xl border p-3.5 text-left transition-all cursor-pointer ${
+                          className={`flex items-center justify-between rounded-2xl border p-3.5 text-left transition cursor-pointer ${
                             aktif
                               ? "border-brand bg-brand-soft ring-2 ring-brand/20 font-bold text-brand shadow-xs"
                               : "border-line bg-white hover:border-line-strong text-ink-soft"
@@ -483,7 +483,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                           type="button"
                           aria-pressed={aktif}
                           onClick={() => setCustomPreference(opt.value)}
-                          className={`flex items-center justify-between rounded-2xl border p-3.5 text-left transition-all cursor-pointer ${
+                          className={`flex items-center justify-between rounded-2xl border p-3.5 text-left transition cursor-pointer ${
                             aktif
                               ? "border-brand bg-brand-soft ring-2 ring-brand/20 font-bold text-brand shadow-xs"
                               : "border-line bg-white hover:border-line-strong text-ink-soft"
@@ -519,7 +519,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                       <button
                         type="button"
                         onClick={() => sesuaikanJumlah(-1)}
-                        className="grid size-11 place-items-center rounded-xl bg-white text-ink shadow-2xs transition-all hover:bg-brand hover:text-white active:scale-95 cursor-pointer"
+                        className="grid size-11 place-items-center rounded-xl bg-white text-ink shadow-2xs transition hover:bg-brand hover:text-white active:scale-95 cursor-pointer"
                         aria-label={`Kurangi jumlah ${BASIS_LABEL[service.basis]}`}
                       >
                         <Minus className="size-4 stroke-[2.5]" />
@@ -537,7 +537,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                       <button
                         type="button"
                         onClick={() => sesuaikanJumlah(1)}
-                        className="grid size-11 place-items-center rounded-xl bg-white text-ink shadow-2xs transition-all hover:bg-brand hover:text-white active:scale-95 cursor-pointer"
+                        className="grid size-11 place-items-center rounded-xl bg-white text-ink shadow-2xs transition hover:bg-brand hover:text-white active:scale-95 cursor-pointer"
                         aria-label={`Tambah jumlah ${BASIS_LABEL[service.basis]}`}
                       >
                         <Plus className="size-4 stroke-[2.5]" />
@@ -622,7 +622,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                           key={item.hal}
                           type="button"
                           onClick={() => ubahJumlah(item.kata)}
-                          className={`inline-flex items-center gap-1 rounded-lg border px-2.5 py-1 text-xs font-bold transition-all cursor-pointer ${
+                          className={`inline-flex items-center gap-1 rounded-lg border px-2.5 py-1 text-xs font-bold transition cursor-pointer ${
                             qty === item.kata
                               ? "border-brand bg-brand-soft text-brand"
                               : "border-line bg-white text-ink-soft hover:border-brand"
@@ -647,7 +647,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
               <button
                 type="button"
                 onClick={() => setStep(2)}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-4 text-[0.94rem] font-bold text-white shadow-md shadow-brand/20 transition-all hover:bg-brand-dark cursor-pointer"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-4 text-[0.94rem] font-bold text-white shadow-md shadow-brand/20 transition hover:bg-brand-dark cursor-pointer"
               >
                 <span>Lanjut: Tentukan Tenggat &amp; Tambahan</span>
                 <ArrowRight className="size-4" />
@@ -685,7 +685,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                         key={item.id}
                         type="button"
                         onClick={() => setDeadlineId(item.id)}
-                        className={`flex items-start justify-between gap-3 rounded-2xl border p-4 text-left transition-all cursor-pointer ${
+                        className={`flex items-start justify-between gap-3 rounded-2xl border p-4 text-left transition cursor-pointer ${
                           aktif
                             ? "border-brand bg-brand-soft/70 ring-2 ring-brand/30 shadow-sm"
                             : "border-line bg-white hover:border-line-strong hover:bg-paper-2/40"
@@ -751,7 +751,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                         <label
                           key={addon.id}
                           htmlFor={`addon-${addon.id}`}
-                          className={`flex cursor-pointer items-start justify-between gap-3 rounded-2xl border p-4 transition-all ${
+                          className={`flex cursor-pointer items-start justify-between gap-3 rounded-2xl border p-4 transition ${
                             terpilih
                               ? "border-brand bg-brand-soft/60 ring-2 ring-brand/25 shadow-xs"
                               : "border-line bg-white hover:border-line-strong hover:bg-paper-2/40"
@@ -797,7 +797,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                 <button
                   type="button"
                   onClick={() => setStep(3)}
-                  className="flex-1 inline-flex items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-4 text-[0.94rem] font-bold text-white shadow-md shadow-brand/20 transition-all hover:bg-brand-dark cursor-pointer"
+                  className="flex-1 inline-flex items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-4 text-[0.94rem] font-bold text-white shadow-md shadow-brand/20 transition hover:bg-brand-dark cursor-pointer"
                 >
                   <span>Lanjut: Dokumen &amp; Kontak WhatsApp</span>
                   <ArrowRight className="size-4" />
@@ -920,7 +920,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                 <button
                   type="submit"
                   disabled={pending}
-                  className="flex-1 inline-flex items-center justify-center gap-2.5 rounded-2xl bg-brand px-7 py-4.5 text-[0.98rem] font-bold text-white shadow-lg shadow-brand/25 transition-all duration-200 hover:-translate-y-1 hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35 disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
+                  className="flex-1 inline-flex items-center justify-center gap-2.5 rounded-2xl bg-brand px-7 py-4.5 text-[0.98rem] font-bold text-white shadow-lg shadow-brand/25 transition duration-200 hover:-translate-y-1 hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35 disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
                 >
                   {pending ? (
                     <span>Sedang Memproses…</span>
@@ -1165,7 +1165,7 @@ function SuccessPanel({
                 href={result.waUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex flex-1 items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-4 text-[0.95rem] font-bold text-white shadow-lg shadow-brand/25 transition-all hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35"
+                className="inline-flex flex-1 items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-4 text-[0.95rem] font-bold text-white shadow-lg shadow-brand/25 transition hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35"
               >
                 <span>Buka WhatsApp Sekarang</span>
                 <ExternalLink className="size-4" />

@@ -289,7 +289,7 @@ export function Nota({
                     key={num}
                     type="button"
                     onClick={() => setSplitCount(num)}
-                    className={`size-6 rounded-lg font-mono text-xs font-bold transition-all cursor-pointer ${
+                    className={`size-6 rounded-lg font-mono text-xs font-bold transition cursor-pointer ${
                       splitCount === num
                         ? "bg-brand text-white shadow-2xs"
                         : "bg-white text-ink-soft border border-line hover:border-brand/40"
@@ -326,7 +326,7 @@ export function Nota({
                 <button
                   type="button"
                   onClick={salinRincianKelompok}
-                  className="mt-2 inline-flex w-full items-center justify-center gap-1.5 rounded-xl border border-brand/25 bg-white py-1.5 px-2.5 text-xs font-bold text-brand shadow-2xs hover:bg-brand-soft transition-all cursor-pointer active:scale-95"
+                  className="mt-2 inline-flex w-full items-center justify-center gap-1.5 rounded-xl border border-brand/25 bg-white py-1.5 px-2.5 text-xs font-bold text-brand shadow-2xs hover:bg-brand-soft transition cursor-pointer active:scale-95"
                 >
                   {tersalin ? (
                     <>

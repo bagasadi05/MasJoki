@@ -62,7 +62,7 @@ export function ServiceList({
           return (
             <div
               key={service.id}
-              className={`group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${
+              className={`group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-white p-6 transition duration-300 hover:-translate-y-1 hover:shadow-lg ${
                 isUnggulan
                   ? "border-2 border-brand/50 shadow-md ring-1 ring-brand/15"
                   : "border border-line shadow-sm hover:border-brand/40"
@@ -137,7 +137,7 @@ export function ServiceList({
                 {service.customQuoteOnly ? (
                   <Link
                     href="/hitung?mode=penawaran&layanan=turnitin_ai"
-                    className="inline-flex items-center gap-1.5 rounded-xl bg-brand px-4 py-2.5 text-xs font-bold text-white shadow-xs transition-all duration-200 hover:bg-brand-dark hover:shadow-md active:scale-95 shrink-0"
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-brand px-4 py-2.5 text-xs font-bold text-white shadow-xs transition duration-200 hover:bg-brand-dark hover:shadow-md active:scale-95 shrink-0"
                   >
                     <span>Minta Penawaran</span>
                     <ArrowRight className="size-3.5" />
@@ -145,7 +145,7 @@ export function ServiceList({
                 ) : (
                   <Link
                     href={`/hitung?layanan=${service.id}`}
-                    className="inline-flex items-center gap-1.5 rounded-xl bg-brand px-5 py-2.5 text-xs font-bold text-white shadow-xs transition-all duration-200 hover:bg-brand-dark hover:shadow-md active:scale-95 shrink-0"
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-brand px-5 py-2.5 text-xs font-bold text-white shadow-xs transition duration-200 hover:bg-brand-dark hover:shadow-md active:scale-95 shrink-0"
                   >
                     <span>Hitung</span>
                     <ArrowRight className="size-3.5" />
@@ -169,7 +169,7 @@ export function ServiceList({
           </div>
           <Link
             href="/jasa"
-            className="inline-flex items-center gap-2 rounded-xl bg-[#0b1329] dark:bg-brand px-5 py-3 text-xs sm:text-sm font-bold text-white shadow-xs transition-all hover:bg-brand dark:hover:bg-brand-dark shrink-0"
+            className="inline-flex items-center gap-2 rounded-xl bg-[#0b1329] dark:bg-brand px-5 py-3 text-xs sm:text-sm font-bold text-white shadow-xs transition hover:bg-brand dark:hover:bg-brand-dark shrink-0"
           >
             <span>Buka Semua Layanan</span>
             <ArrowRight className="size-4" />

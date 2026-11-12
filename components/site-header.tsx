@@ -91,7 +91,7 @@ export function SiteHeader() {
                   <Link
                     href={item.href}
                     aria-current={aktif ? "page" : undefined}
-                    className={`whitespace-nowrap rounded-xl px-3 py-2 text-[0.86rem] font-bold transition-all xl:px-3.5 ${
+                    className={`whitespace-nowrap rounded-xl px-3 py-2 text-[0.86rem] font-bold transition xl:px-3.5 ${
                       aktif
                         ? "bg-brand-soft text-brand shadow-2xs"
                         : "text-ink-soft hover:bg-paper-2 hover:text-brand"
@@ -135,7 +135,7 @@ export function SiteHeader() {
           <Link
             href="/hitung"
             onClick={() => lacak("cta_hitung", { lokasi: "header" })}
-            className="hidden shrink-0 items-center gap-1.5 whitespace-nowrap rounded-xl bg-brand px-4 py-2.5 text-[0.82rem] font-bold text-white shadow-sm shadow-brand/25 transition-all duration-150 hover:-translate-y-0.5 hover:bg-brand-dark hover:shadow-md hover:shadow-brand/30 active:translate-y-0 sm:inline-flex"
+            className="hidden shrink-0 items-center gap-1.5 whitespace-nowrap rounded-xl bg-brand px-4 py-2.5 text-[0.82rem] font-bold text-white shadow-sm shadow-brand/25 transition duration-150 hover:-translate-y-0.5 hover:bg-brand-dark hover:shadow-md hover:shadow-brand/30 active:translate-y-0 sm:inline-flex"
           >
             <Calculator className="size-3.5" />
             <span>Hitung Biaya</span>

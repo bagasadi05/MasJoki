@@ -792,7 +792,7 @@ export function HumanizerWorkspace() {
                       return (
                         <div
                           key={idx}
-                          className={`w-1.5 shrink-0 rounded-t ${barColor} transition-all duration-300`}
+                          className={`w-1.5 shrink-0 rounded-t ${barColor} transition duration-300`}
                           style={{ height: `${heightPct}%` }}
                           title={`Kalimat #${idx + 1}: ${len} kata`}
                         />

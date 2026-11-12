@@ -45,7 +45,7 @@ export default function NotFound() {
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                 <Link
                   href="/"
-                  className="inline-flex items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-3.5 text-sm font-bold text-white shadow-md shadow-brand/20 transition-all hover:-translate-y-0.5 hover:bg-brand-dark active:translate-y-0"
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-3.5 text-sm font-bold text-white shadow-md shadow-brand/20 transition hover:-translate-y-0.5 hover:bg-brand-dark active:translate-y-0"
                 >
                   <SearchX className="size-4" />
                   <span>Kembali ke beranda</span>

@@ -174,7 +174,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                   <div className="mt-8 flex flex-col gap-3.5 sm:flex-row">
                     <Link
                       href="/hitung?mode=penawaran&layanan=turnitin_ai"
-                      className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-7 py-4 text-sm font-bold text-white shadow-lg shadow-brand/25 transition-all hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35"
+                      className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-7 py-4 text-sm font-bold text-white shadow-lg shadow-brand/25 transition hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35"
                     >
                       <span>Minta Penawaran Turnitin &amp; AI</span>
                       <ArrowRight className="size-4" />
@@ -190,7 +190,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                   <div className="mt-8 flex flex-col gap-3.5 sm:flex-row">
                     <Link
                       href="/hitung?layanan=artikel_ilmiah"
-                      className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-6 py-4 text-sm font-bold text-white shadow-lg shadow-brand/25 transition-all hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35"
+                      className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-6 py-4 text-sm font-bold text-white shadow-lg shadow-brand/25 transition hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35"
                     >
                       <span>Pesan Artikel Ilmiah (Rp 250rb)</span>
                       <ArrowRight className="size-4" />
@@ -207,7 +207,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                   <div className="mt-8 flex flex-col gap-3.5 sm:flex-row">
                     <Link
                       href={`/jasa/${service.id}/order`}
-                      className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-7 py-4 text-sm font-bold text-white shadow-lg shadow-brand/25 transition-all hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35"
+                      className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-7 py-4 text-sm font-bold text-white shadow-lg shadow-brand/25 transition hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35"
                     >
                       <span>Pesan {service.name} Sekarang</span>
                       <ArrowRight className="size-4" />
@@ -378,7 +378,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
 
                   <div className="mt-6 space-y-4">
                     {/* Tingkat A */}
-                    <div className="rounded-2xl border border-line bg-paper-2/50 p-5 transition-all hover:border-brand/40">
+                    <div className="rounded-2xl border border-line bg-paper-2/50 p-5 transition hover:border-brand/40">
                       <div className="flex items-start justify-between gap-3">
                         <div>
                           <span className="inline-block rounded-md bg-blue-100 text-brand px-2.5 py-0.5 text-xs font-bold">
@@ -409,7 +409,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                     </div>
 
                     {/* Tingkat B */}
-                    <div className="rounded-2xl border-2 border-brand/35 bg-brand-soft/20 p-5 transition-all hover:border-brand">
+                    <div className="rounded-2xl border-2 border-brand/35 bg-brand-soft/20 p-5 transition hover:border-brand">
                       <div className="flex items-start justify-between gap-3">
                         <div>
                           <span className="inline-block rounded-md bg-purple-100 text-purple-800 px-2.5 py-0.5 text-xs font-bold">
@@ -588,7 +588,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
               {konten.faq.map((item) => (
                 <details
                   key={item.q}
-                  className="group rounded-2xl border border-line bg-white p-5 transition-all duration-150 hover:border-brand/40 hover:shadow-2xs [&_summary::-webkit-details-marker]:hidden"
+                  className="group rounded-2xl border border-line bg-white p-5 transition duration-150 hover:border-brand/40 hover:shadow-2xs [&_summary::-webkit-details-marker]:hidden"
                 >
                   <summary className="flex cursor-pointer list-none items-start justify-between gap-4 text-left">
                     <span className="font-display text-base sm:text-lg font-bold leading-snug text-ink transition-colors group-hover:text-brand">
@@ -642,7 +642,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
               <Link
                 key={item.id}
                 href={item.customQuoteOnly ? "/hitung?mode=penawaran&layanan=turnitin_ai" : `/jasa/${item.id}`}
-                className="group flex flex-col justify-between rounded-2xl border border-line bg-white p-5 shadow-2xs transition-all duration-200 hover:-translate-y-1 hover:border-brand/40 hover:shadow-md"
+                className="group flex flex-col justify-between rounded-2xl border border-line bg-white p-5 shadow-2xs transition duration-200 hover:-translate-y-1 hover:border-brand/40 hover:shadow-md"
               >
                 <div className="flex items-center gap-3">
                   <StempelLayanan id={item.id} ukuran="kecil" />
@@ -679,7 +679,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
               <div className="flex flex-col gap-3 sm:flex-row">
                 <Link
                   href={service.customQuoteOnly ? "/hitung?mode=penawaran&layanan=turnitin_ai" : `/jasa/${service.id}/order`}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-stabilo px-7 py-4 text-sm font-black text-slate-950 shadow-md transition-all hover:bg-amber-300"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-stabilo px-7 py-4 text-sm font-black text-slate-950 shadow-md transition hover:bg-amber-300"
                 >
                   <span>{service.customQuoteOnly ? "Minta Penawaran Sekarang" : `Pesan ${service.name} Sekarang`}</span>
                   <ArrowRight className="size-4" />

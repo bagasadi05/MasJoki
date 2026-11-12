@@ -48,7 +48,7 @@ import { pembayaran, waLink } from "@/lib/site";
 import type { ActionResult } from "@/lib/types";
 
 const fieldClass =
-  "w-full rounded-2xl border border-line bg-white px-4 py-3.5 text-base sm:text-sm text-ink placeholder:text-muted/60 transition-all duration-150 hover:border-line-strong focus:border-brand focus:ring-3 focus:ring-brand/15 focus:outline-none";
+  "w-full rounded-2xl border border-line bg-white px-4 py-3.5 text-base sm:text-sm text-ink placeholder:text-muted/60 transition duration-150 hover:border-line-strong focus:border-brand focus:ring-3 focus:ring-brand/15 focus:outline-none";
 
 const labelClass = "mb-2.5 block text-[0.84rem] font-bold text-ink";
 
@@ -426,7 +426,7 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
               setResult(null);
             }}
             aria-pressed={mode === "hitung"}
-            className={`inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-[0.86rem] font-bold transition-all cursor-pointer ${
+            className={`inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-[0.86rem] font-bold transition cursor-pointer ${
               mode === "hitung"
                 ? "bg-brand text-white shadow-md shadow-brand/20"
                 : "text-ink-soft hover:bg-white hover:text-ink"
@@ -442,7 +442,7 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
               setResult(null);
             }}
             aria-pressed={mode === "penawaran"}
-            className={`inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-[0.86rem] font-bold transition-all cursor-pointer ${
+            className={`inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-[0.86rem] font-bold transition cursor-pointer ${
               mode === "penawaran"
                 ? "bg-brand text-white shadow-md shadow-brand/20"
                 : "text-ink-soft hover:bg-white hover:text-ink"
@@ -489,7 +489,7 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
                         key={cat.id}
                         type="button"
                         onClick={() => setKategoriFilter(cat.id)}
-                        className={`shrink-0 rounded-xl px-3 py-1.5 text-xs font-bold transition-all cursor-pointer ${
+                        className={`shrink-0 rounded-xl px-3 py-1.5 text-xs font-bold transition cursor-pointer ${
                           aktif
                             ? "bg-brand text-white shadow-xs"
                             : "bg-paper-2 text-slate-600 hover:bg-paper-2/80 hover:text-ink border border-line"
@@ -574,7 +574,7 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
                                 onClick={() => pilihLayananLain(item.id)}
                                 aria-pressed={aktif}
                                 aria-label={`${item.name}, ${priceLabel(item)}`}
-                                className={`group relative flex flex-col items-start rounded-2xl border p-3.5 text-left transition-all duration-200 cursor-pointer ${
+                                className={`group relative flex flex-col items-start rounded-2xl border p-3.5 text-left transition duration-200 cursor-pointer ${
                                   aktif
                                     ? `${itemAksen.soft} ${itemAksen.border} ring-2 ${itemAksen.ring} shadow-md`
                                     : "border-line bg-white hover:border-line-strong hover:bg-paper-2/40"
@@ -647,7 +647,7 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
                       <button
                         type="button"
                         onClick={() => sesuaikanJumlah(-1)}
-                        className="grid size-11 place-items-center rounded-xl bg-white text-ink shadow-2xs transition-all hover:bg-brand hover:text-white active:scale-95 cursor-pointer"
+                        className="grid size-11 place-items-center rounded-xl bg-white text-ink shadow-2xs transition hover:bg-brand hover:text-white active:scale-95 cursor-pointer"
                         aria-label={`Kurangi jumlah ${BASIS_LABEL[service.basis]}`}
                       >
                         <Minus className="size-4 stroke-[2.5]" />
@@ -667,7 +667,7 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
                       <button
                         type="button"
                         onClick={() => sesuaikanJumlah(1)}
-                        className="grid size-11 place-items-center rounded-xl bg-white text-ink shadow-2xs transition-all hover:bg-brand hover:text-white active:scale-95 cursor-pointer"
+                        className="grid size-11 place-items-center rounded-xl bg-white text-ink shadow-2xs transition hover:bg-brand hover:text-white active:scale-95 cursor-pointer"
                         aria-label={`Tambah jumlah ${BASIS_LABEL[service.basis]}`}
                       >
                         <Plus className="size-4 stroke-[2.5]" />
@@ -769,7 +769,7 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
                         type="button"
                         onClick={() => ubahJumlah(String(preset))}
                         aria-pressed={aktif}
-                        className={`rounded-xl border px-3.5 py-1.5 font-mono text-xs font-bold tabular-nums transition-all cursor-pointer ${
+                        className={`rounded-xl border px-3.5 py-1.5 font-mono text-xs font-bold tabular-nums transition cursor-pointer ${
                           aktif
                             ? "border-brand bg-brand text-white shadow-xs"
                             : "border-line bg-paper-2 text-ink-soft hover:border-brand hover:text-brand hover:bg-white"
@@ -795,7 +795,7 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
                             key={item.hal}
                             type="button"
                             onClick={() => ubahJumlah(String(item.kata))}
-                            className={`inline-flex items-center gap-1 rounded-lg border px-2.5 py-1 text-xs font-bold transition-all cursor-pointer ${
+                            className={`inline-flex items-center gap-1 rounded-lg border px-2.5 py-1 text-xs font-bold transition cursor-pointer ${
                               aktif
                                 ? "border-brand bg-brand-soft text-brand shadow-2xs"
                                 : "border-line bg-white text-ink-soft hover:border-brand hover:text-brand"
@@ -863,7 +863,7 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
                                 ubahJumlah(String(kataTerhitung));
                                 setBukaHitungKata(false);
                               }}
-                              className="rounded-xl bg-brand px-3 py-1.5 text-xs font-bold text-white shadow-2xs hover:bg-brand-dark transition-all cursor-pointer"
+                              className="rounded-xl bg-brand px-3 py-1.5 text-xs font-bold text-white shadow-2xs hover:bg-brand-dark transition cursor-pointer"
                             >
                               Terapkan {angka(kataTerhitung)} Kata
                             </button>
@@ -907,7 +907,7 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
                     return (
                       <label
                         key={item.id}
-                        className={`flex cursor-pointer items-start justify-between gap-3 rounded-2xl border p-4 transition-all duration-200 ${
+                        className={`flex cursor-pointer items-start justify-between gap-3 rounded-2xl border p-4 transition duration-200 ${
                           aktif
                             ? "border-brand bg-brand-soft/70 ring-2 ring-brand/30 shadow-sm"
                             : "border-line bg-white hover:border-line-strong hover:bg-paper-2/40"
@@ -984,7 +984,7 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
                       return (
                         <label
                           key={addon.id}
-                          className={`flex cursor-pointer items-start justify-between gap-3 rounded-2xl border p-4 transition-all duration-200 ${
+                          className={`flex cursor-pointer items-start justify-between gap-3 rounded-2xl border p-4 transition duration-200 ${
                             terpilih
                               ? "border-brand bg-brand-soft/60 ring-2 ring-brand/25 shadow-xs"
                               : "border-line bg-white hover:border-line-strong hover:bg-paper-2/40"
@@ -1078,7 +1078,7 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
                   {DEADLINES.map((item) => (
                     <label
                       key={item.id}
-                      className={`flex cursor-pointer items-center justify-between rounded-2xl border p-4 transition-all ${
+                      className={`flex cursor-pointer items-center justify-between rounded-2xl border p-4 transition ${
                         deadlineId === item.id
                           ? "border-brand bg-brand-soft ring-2 ring-brand/30"
                           : "border-line bg-white hover:border-line-strong"
@@ -1158,7 +1158,7 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
                 <div className="mt-4 space-y-2">
                   <Link
                     href={`/hitung?layanan=${service.id}&jumlah=${currentQty}&tenggat=${deadlineId}`}
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-4 text-base font-bold text-white shadow-lg shadow-brand/25 transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand-dark hover:shadow-xl active:translate-y-0 cursor-pointer"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-4 text-base font-bold text-white shadow-lg shadow-brand/25 transition duration-200 hover:-translate-y-0.5 hover:bg-brand-dark hover:shadow-xl active:translate-y-0 cursor-pointer"
                   >
                     <span>Lanjut Pesan dengan Hitungan Ini</span>
                     <ArrowRight className="size-4.5" />
@@ -1331,7 +1331,7 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
                 )}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full inline-flex items-center justify-center gap-2.5 rounded-2xl bg-brand px-7 py-4.5 text-[0.98rem] font-bold text-white shadow-lg shadow-brand/25 transition-all duration-200 hover:-translate-y-1 hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35 cursor-pointer"
+                className="w-full inline-flex items-center justify-center gap-2.5 rounded-2xl bg-brand px-7 py-4.5 text-[0.98rem] font-bold text-white shadow-lg shadow-brand/25 transition duration-200 hover:-translate-y-1 hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35 cursor-pointer"
               >
                 <Send className="size-4.5" />
                 <span>Kirim Penawaran via WhatsApp</span>
@@ -1353,7 +1353,7 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
               type="submit"
               disabled={pending}
               aria-busy={pending}
-              className="w-full inline-flex items-center justify-center gap-2.5 rounded-2xl bg-brand px-7 py-4.5 text-[0.98rem] font-bold text-white shadow-lg shadow-brand/25 transition-all duration-200 hover:-translate-y-1 hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35 disabled:cursor-not-allowed disabled:opacity-60 active:translate-y-0 cursor-pointer"
+              className="w-full inline-flex items-center justify-center gap-2.5 rounded-2xl bg-brand px-7 py-4.5 text-[0.98rem] font-bold text-white shadow-lg shadow-brand/25 transition duration-200 hover:-translate-y-1 hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35 disabled:cursor-not-allowed disabled:opacity-60 active:translate-y-0 cursor-pointer"
             >
               {pending ? (
                 <span>Sedang Memproses…</span>
@@ -1583,7 +1583,7 @@ function SuccessPanel({
                 href={result.waUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex flex-1 items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-4 text-[0.95rem] font-bold text-white shadow-lg shadow-brand/25 transition-all hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35"
+                className="inline-flex flex-1 items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-4 text-[0.95rem] font-bold text-white shadow-lg shadow-brand/25 transition hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35"
               >
                 <span>Buka WhatsApp Sekarang</span>
                 <ExternalLink className="size-4" />

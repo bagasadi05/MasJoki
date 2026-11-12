@@ -95,7 +95,7 @@ export default function HalamanCaraKerja() {
               return (
                 <li
                   key={item.nomor}
-                  className="group relative flex flex-col justify-between rounded-2xl border border-line bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-amber/25 hover:shadow-lg"
+                  className="group relative flex flex-col justify-between rounded-2xl border border-line bg-white p-7 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-amber/25 hover:shadow-lg"
                 >
                   <div>
                     <div className="flex items-center justify-between">
@@ -172,7 +172,7 @@ export default function HalamanCaraKerja() {
             <div className="flex flex-wrap items-center gap-3">
               <Link
                 href="/hitung"
-                className="inline-flex items-center gap-2 rounded-xl bg-brand px-6 py-3.5 text-sm font-bold text-white shadow-md shadow-brand/20 transition-all hover:bg-brand-dark"
+                className="inline-flex items-center gap-2 rounded-xl bg-brand px-6 py-3.5 text-sm font-bold text-white shadow-md shadow-brand/20 transition hover:bg-brand-dark"
               >
                 <Calculator className="size-4" />
                 <span>Buka Kalkulator Biaya</span>

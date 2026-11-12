@@ -76,7 +76,7 @@ export default function HalamanFaq() {
                 href={waLink(waPesanUmum)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-4 text-sm font-bold text-white shadow-md shadow-brand/25 transition-all hover:bg-brand-dark hover:shadow-lg"
+                className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-4 text-sm font-bold text-white shadow-md shadow-brand/25 transition hover:bg-brand-dark hover:shadow-lg"
               >
                 <MessageCircle className="size-4.5" />
                 <span>Chat Admin Mas Joki via WhatsApp</span>

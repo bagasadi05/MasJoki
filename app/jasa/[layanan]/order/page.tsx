@@ -30,6 +30,9 @@ export async function generateMetadata({
     title: spec.headline,
     description: spec.subheadline,
     alternates: { canonical: `/jasa/${service.id}/order` },
+    // Formulir transaksional: isinya menduplikasi halaman layanan, jadi tidak
+    // perlu masuk indeks. Tautan di dalamnya tetap diikuti crawler.
+    robots: { index: false, follow: true },
   };
 }
 

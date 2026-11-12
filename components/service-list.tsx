@@ -169,7 +169,7 @@ export function ServiceList({
           </div>
           <Link
             href="/jasa"
-            className="inline-flex items-center gap-2 rounded-xl bg-[#0b1329] dark:bg-brand px-5 py-3 text-xs sm:text-sm font-bold text-white shadow-xs transition hover:bg-brand dark:hover:bg-brand-dark shrink-0"
+            className="inline-flex items-center gap-2 rounded-xl bg-[#0b1329] dark:bg-[#2f4fd8] px-5 py-3 text-xs sm:text-sm font-bold text-white shadow-xs transition hover:bg-brand dark:hover:bg-[#2643c4] shrink-0"
           >
             <span>Buka Semua Layanan</span>
             <ArrowRight className="size-4" />

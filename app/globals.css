@@ -55,7 +55,7 @@
     --color-card: #131c31;
     --color-ink: #f8fafc;
     --color-ink-soft: #94a3b8;
-    --color-muted: #64748b;
+    --color-muted: #94a3b8;
     --color-line: #1e293b;
     --color-line-strong: #334155;
     --color-brand: #3b82f6;
@@ -93,7 +93,7 @@ html.dark,
   --color-card: #131c31;
   --color-ink: #f8fafc;
   --color-ink-soft: #94a3b8;
-  --color-muted: #64748b;
+  --color-muted: #94a3b8;
   --color-line: #1e293b;
   --color-line-strong: #334155;
   --color-brand: #3b82f6;
@@ -118,6 +118,27 @@ html.dark,
   --color-rose-soft: rgba(244, 114, 182, 0.15);
 
   --color-nota-bg: #131c31;
+}
+
+/* Tombol solid biru memakai teks putih. Biru mode gelap (#3b82f6) hanya
+ * mencapai 3,7:1 terhadap putih, jadi khusus kombinasi kelas ini dipakai biru
+ * yang lebih pekat (6,5:1). Token --color-brand sendiri tetap terang supaya
+ * tautan dan ikon tetap terbaca di atas latar gelap. */
+html.dark .bg-brand.text-white,
+:root:has(> head > meta[name="color-scheme"][content="dark"]) .bg-brand.text-white {
+  background-color: #2f4fd8;
+}
+
+html.dark .bg-brand.text-white:hover,
+:root:has(> head > meta[name="color-scheme"][content="dark"]) .bg-brand.text-white:hover {
+  background-color: #2643c4;
+}
+
+/* Hal yang sama untuk mint: toskan terang dengan teks putih hanya 1,9:1.
+ * Mint dibiarkan terang (warna status), teksnya yang digelapkan. */
+html.dark .bg-mint.text-white,
+:root:has(> head > meta[name="color-scheme"][content="dark"]) .bg-mint.text-white {
+  color: #06261c;
 }
 
 @theme {

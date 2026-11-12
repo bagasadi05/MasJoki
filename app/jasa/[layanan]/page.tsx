@@ -7,6 +7,7 @@ import { Nota } from "@/components/nota";
 import { ServiceIcon } from "@/components/service-icon";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { TransisiHalaman } from "@/components/transisi-halaman";
 import { StempelLayanan } from "@/components/stempel-layanan";
 import { KONTEN_LAYANAN } from "@/content/layanan";
 import { aksenLayanan } from "@/lib/aksen";
@@ -123,7 +124,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
     <>
       <SiteHeader />
 
-      <main id="konten">
+      <TransisiHalaman id="konten">
         {/* Hero Section Layanan */}
         <section className={`border-b border-line ${aksen.wash}`}>
           <div className="mx-auto max-w-6xl px-5 pb-14 pt-10 sm:px-8 sm:pb-20 sm:pt-14">
@@ -698,7 +699,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
             </div>
           </div>
         </section>
-      </main>
+      </TransisiHalaman>
 
       <SiteFooter />
 

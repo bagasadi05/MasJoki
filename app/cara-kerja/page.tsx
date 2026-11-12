@@ -6,6 +6,7 @@ import { Pembayaran } from "@/components/pembayaran";
 import { PerbandinganJoki } from "@/components/perbandingan-joki";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { TransisiHalaman } from "@/components/transisi-halaman";
 import { faq } from "@/content/faq";
 import { waLink, waPesanUmum } from "@/lib/site";
 
@@ -62,7 +63,7 @@ export default function HalamanCaraKerja() {
     <>
       <SiteHeader />
 
-      <main id="konten">
+      <TransisiHalaman id="konten">
         {/* Header Section */}
         <section className="mx-auto max-w-6xl px-5 pt-12 pb-16 sm:px-8 sm:pt-16 sm:pb-20">
           <nav
@@ -191,7 +192,7 @@ export default function HalamanCaraKerja() {
             </div>
           </div>
         </section>
-      </main>
+      </TransisiHalaman>
 
       <SiteFooter />
     </>

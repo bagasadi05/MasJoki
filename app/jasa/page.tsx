@@ -5,6 +5,7 @@ import { BeforeAfterShowcase } from "@/components/before-after-showcase";
 import { ServiceList } from "@/components/service-list";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { TransisiHalaman } from "@/components/transisi-halaman";
 import { waLink, waPesanUmum } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -19,7 +20,7 @@ export default function HalamanDaftarLayanan() {
     <>
       <SiteHeader />
 
-      <main id="konten" className="mx-auto max-w-6xl px-5 py-12 sm:px-8 sm:py-18">
+      <TransisiHalaman id="konten" className="mx-auto max-w-6xl px-5 py-12 sm:px-8 sm:py-18">
         {/* Breadcrumb */}
         <nav aria-label="Remah roti" className="flex items-center gap-2 text-xs font-semibold text-slate-600">
           <Link href="/" className="transition-colors hover:text-brand">
@@ -99,7 +100,7 @@ export default function HalamanDaftarLayanan() {
             </a>
           </div>
         </div>
-      </main>
+      </TransisiHalaman>
 
       <SiteFooter />
     </>

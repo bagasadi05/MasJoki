@@ -23,6 +23,7 @@ import { HighlightHumanizer } from "@/components/highlight-humanizer";
 import { LacakKlik } from "@/components/lacak-klik";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { TransisiHalaman } from "@/components/transisi-halaman";
 import { Tilt } from "@/components/tilt";
 import { QRIS_ENABLED, SITE_OWNER, SITE_URL } from "@/lib/config";
 import { pembayaran, site, waLink, waPesanUmum } from "@/lib/site";
@@ -101,7 +102,7 @@ export default function Home() {
     <>
       <SiteHeader />
 
-      <main id="konten">
+      <TransisiHalaman id="konten">
         {/* ========================================================== *
          * 1. HERO UTAMA (NILAI JUAL: Harga Terbuka di Awal & Nota Transparan)
          * ========================================================== */}
@@ -578,7 +579,7 @@ export default function Home() {
             </div>
           </div>
         </section>
-      </main>
+      </TransisiHalaman>
 
       <SiteFooter />
 

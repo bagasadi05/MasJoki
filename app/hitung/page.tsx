@@ -5,6 +5,7 @@ import { PriceCalculator } from "@/components/price-calculator";
 import { SimulasiContoh } from "@/components/simulasi-contoh";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { TransisiHalaman } from "@/components/transisi-halaman";
 
 export const metadata: Metadata = {
   title: "Kalkulator Biaya Bantuan Tugas",
@@ -18,7 +19,7 @@ export default function HalamanKalkulator() {
     <>
       <SiteHeader />
 
-      <main id="konten" className="mx-auto max-w-6xl px-5 py-12 sm:px-8 sm:py-16">
+      <TransisiHalaman id="konten" className="mx-auto max-w-6xl px-5 py-12 sm:px-8 sm:py-16">
         {/* Breadcrumb */}
         <nav
           aria-label="Remah roti"
@@ -59,7 +60,7 @@ export default function HalamanKalkulator() {
         <section className="mt-20">
           <SimulasiContoh />
         </section>
-      </main>
+      </TransisiHalaman>
 
       <SiteFooter />
     </>

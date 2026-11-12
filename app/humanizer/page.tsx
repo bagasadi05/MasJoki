@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
+import { TransisiHalaman } from "@/components/transisi-halaman";
 import { SiteFooter } from "@/components/site-footer";
 import { HumanizerWorkspace } from "@/components/humanizer/humanizer-workspace";
 import { HumanizerTour } from "@/components/humanizer/humanizer-tour";
@@ -36,7 +37,7 @@ export default function HumanizerPage() {
     <>
       <SiteHeader />
 
-      <main
+      <TransisiHalaman
         id="konten"
         className="mx-auto max-w-7xl space-y-10 px-4 py-8 sm:px-6 sm:py-12 lg:px-8"
       >
@@ -124,7 +125,7 @@ export default function HumanizerPage() {
             Hitung biaya manual
           </Link>
         </section>
-      </main>
+      </TransisiHalaman>
 
       <SiteFooter />
     </>

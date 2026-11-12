@@ -90,6 +90,7 @@ export function SiteHeader() {
                 <li key={item.href}>
                   <Link
                     href={item.href}
+                    aria-current={aktif ? "page" : undefined}
                     className={`whitespace-nowrap rounded-xl px-3 py-2 text-[0.86rem] font-bold transition-all xl:px-3.5 ${
                       aktif
                         ? "bg-brand-soft text-brand shadow-2xs"

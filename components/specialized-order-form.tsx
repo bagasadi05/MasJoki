@@ -866,6 +866,8 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                   id="fileUrl-input"
                   name="fileUrl"
                   type="url"
+                  inputMode="url"
+                  autoComplete="url"
                   placeholder="https://drive.google.com/… (atau kirim file via WA)"
                   aria-invalid={galat?.fileUrl ? true : undefined}
                   aria-describedby={galat?.fileUrl ? "galat-fileUrl-input" : undefined}
@@ -885,6 +887,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                   id="notes-input"
                   name="notes"
                   rows={3}
+                  autoComplete="off"
                   placeholder="Contoh: Sitasi pada bab 2 tolong dipertahankan rujukan aslinya, naskah dikirim sebelum jam 5 sore."
                   className={`${fieldClass} resize-y leading-relaxed`}
                 />

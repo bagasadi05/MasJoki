@@ -63,7 +63,7 @@ export default function SignInPage() {
   const isSignUp = mode === "signup";
 
   return (
-    <main className="min-h-dvh bg-paper px-4 py-10 sm:py-16">
+    <main id="konten" className="min-h-dvh bg-paper px-4 py-10 sm:py-16">
       <div className="mx-auto max-w-md">
         <Link
           href="/humanizer"

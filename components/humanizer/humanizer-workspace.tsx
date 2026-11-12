@@ -111,6 +111,19 @@ export function HumanizerWorkspace() {
     }, 3200);
   };
 
+  // Naskah hanya hidup di editor: cegah tab tertutup tanpa peringatan.
+  useEffect(() => {
+    if (!inputText.trim()) return;
+
+    const peringatan = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      event.returnValue = "";
+    };
+
+    window.addEventListener("beforeunload", peringatan);
+    return () => window.removeEventListener("beforeunload", peringatan);
+  }, [inputText]);
+
   const handleBalanceChange = (newBal: number) => {
     setTokenBalance(newBal);
   };

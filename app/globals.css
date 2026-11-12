@@ -183,6 +183,9 @@ html.dark,
     outline: 2px solid var(--color-brand);
     outline-offset: 3px;
     border-radius: 6px;
+    /* Fokus tidak boleh tertutup header sticky (64px) atau bar bawah. */
+    scroll-margin-top: 96px;
+    scroll-margin-bottom: 88px;
   }
 
   a,

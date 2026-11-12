@@ -92,6 +92,7 @@ export function MenuSeluler({
                   <li key={item.href}>
                     <Link
                       href={item.href}
+                      aria-current={aktif ? "page" : undefined}
                       onClick={() => setBuka(false)}
                       className={`flex items-center justify-between py-3.5 text-[0.92rem] font-bold transition-colors ${
                         aktif

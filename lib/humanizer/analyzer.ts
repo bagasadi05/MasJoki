@@ -426,6 +426,19 @@ function kataPantanganDalam(text: string): string[] {
   return found;
 }
 
+function polaTemplateDalam(text: string): string[] {
+  const found: string[] = [];
+
+  for (const { name, regex } of TEMPLATE_REGEXES) {
+    regex.lastIndex = 0;
+    if (regex.test(text)) {
+      found.push(name);
+    }
+  }
+
+  return found;
+}
+
 export function analyze(text: string): AnalysisResult {
   const rawSentences = splitSentences(text);
   const burstiness = calculateBurstiness(rawSentences);
@@ -437,6 +450,7 @@ export function analyze(text: string): AnalysisResult {
     const starter = extractStarter(s);
     const wc = countWords(s);
     const foundForb = kataPantanganDalam(s);
+    const foundTemplates = polaTemplateDalam(s);
     return {
       text: s,
       wordCount: wc,
@@ -447,6 +461,8 @@ export function analyze(text: string): AnalysisResult {
           (starters.details[starter] || 0) >= 2),
       hasForbiddenWord: foundForb.length > 0,
       forbiddenWords: foundForb,
+      hasTemplatePattern: foundTemplates.length > 0,
+      templatePatterns: foundTemplates,
     };
   });
 

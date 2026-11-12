@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect, useMemo, useRef } from "react";
+import Link from "next/link";
+import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import {
   Sparkles,
   Upload,
@@ -43,6 +44,7 @@ export function HumanizerWorkspace() {
   const [tokenBalance, setTokenBalance] = useState(0);
   const [walletLoading, setWalletLoading] = useState(true);
   const [walletError, setWalletError] = useState<string | null>(null);
+  const [walletErrorCode, setWalletErrorCode] = useState<"auth" | "config" | "database" | null>(null);
   const [activeTab, setActiveTab] = useState<"studio" | "diff" | "audit" | "settings">("studio");
   const [customTerms, setCustomTerms] = useState<string[]>([]);
   const [newTermInput, setNewTermInput] = useState("");
@@ -60,29 +62,29 @@ export function HumanizerWorkspace() {
     };
   }, []);
 
-  useEffect(() => {
-    let cancelled = false;
-    getHumanizerWalletAction()
-      .then((result) => {
-        if (cancelled) return;
-        if (result.ok) {
-          setTokenBalance(result.remainingWords);
-          setWalletError(null);
-        } else {
-          setWalletError(result.error);
-        }
-        setWalletLoading(false);
-      })
-      .catch(() => {
-        if (cancelled) return;
-        setWalletError("Saldo token tidak bisa dimuat. Silakan muat ulang halaman.");
-        setWalletLoading(false);
-      });
-
-    return () => {
-      cancelled = true;
-    };
+  const loadWallet = useCallback(async () => {
+    setWalletLoading(true);
+    try {
+      const result = await getHumanizerWalletAction();
+      if (result.ok) {
+        setTokenBalance(result.remainingWords);
+        setWalletError(null);
+        setWalletErrorCode(null);
+      } else {
+        setWalletError(result.error);
+        setWalletErrorCode(result.errorCode ?? null);
+      }
+    } catch {
+      setWalletError("Saldo token tidak bisa dimuat. Silakan muat ulang halaman.");
+      setWalletErrorCode("database");
+    } finally {
+      setWalletLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    void loadWallet();
+  }, [loadWallet]);
 
   // Debounced text for smooth typing without lag
   const [debouncedText, setDebouncedText] = useState(inputText);
@@ -484,7 +486,6 @@ export function HumanizerWorkspace() {
               setIsModalOpen(true);
               lacak("token_modal", { tab: "buy" });
             }}
-            disabled={walletLoading || Boolean(walletError)}
             className="cursor-pointer inline-flex items-center gap-1.5 px-3.5 py-2 rounded-md bg-brand hover:bg-brand-dark text-white text-xs font-bold transition active:scale-98"
           >
             <Sparkles className="size-3.5" />
@@ -492,9 +493,29 @@ export function HumanizerWorkspace() {
           </button>
         </div>
         {walletError && (
-          <p className="basis-full text-xs font-semibold text-rose-700" role="alert">
-            {walletError}
-          </p>
+          <div
+            className="basis-full flex flex-wrap items-center justify-between gap-2.5 rounded-xl border border-amber/30 bg-amber-soft/50 px-3.5 py-2.5 text-xs"
+            role="alert"
+          >
+            <span className="font-semibold text-ink">{walletError}</span>
+            {walletErrorCode === "auth" ? (
+              <Link
+                href="/auth/sign-in"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-ink px-3 py-1.5 text-xs font-bold text-white transition hover:bg-ink/90"
+              >
+                Masuk dengan Email
+              </Link>
+            ) : (
+              <button
+                type="button"
+                onClick={() => void loadWallet()}
+                className="cursor-pointer inline-flex items-center gap-1.5 rounded-lg border border-line bg-card px-3 py-1.5 text-xs font-bold text-ink transition hover:border-brand/40"
+              >
+                <RotateCcw className="size-3" />
+                Muat Ulang Saldo
+              </button>
+            )}
+          </div>
         )}
       </section>
 
@@ -827,6 +848,9 @@ export function HumanizerWorkspace() {
                       if (st.hasForbiddenWord) {
                         tagCls = "hl-forbidden";
                         title = `Kata pantangan AI: ${st.forbiddenWords.join(", ")}`;
+                      } else if (st.hasTemplatePattern) {
+                        tagCls = "hl-template";
+                        title = `Pola template AI: ${st.templatePatterns.join(", ")}`;
                       } else if (st.isMonoStarter) {
                         tagCls = "hl-starter";
                         title = `Awalan monoton: "${st.starter}"`;
@@ -961,6 +985,7 @@ export function HumanizerWorkspace() {
                       type="button"
                       onClick={() => handleRemoveTerm(term)}
                       className="cursor-pointer text-brand/60 hover:text-rose-600 transition"
+                      aria-label={`Hapus istilah ${term}`}
                       title={`Hapus ${term}`}
                     >
                       <X className="size-3" />

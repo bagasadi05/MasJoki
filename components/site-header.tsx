@@ -112,16 +112,16 @@ export function SiteHeader() {
         <div className="flex shrink-0 items-center gap-2 sm:gap-2.5">
           <ThemeToggle />
           {!authLoading && currentUser ? (
-            <form action={signOutAction} className="hidden items-center gap-2 md:flex">
+            <form action={signOutAction} className="flex items-center gap-2">
               <span
-                className="max-w-28 truncate text-xs font-semibold text-muted"
+                className="hidden max-w-28 truncate text-xs font-semibold text-muted md:inline"
                 title={currentUser.email ?? currentUser.name}
               >
                 Hai, {currentUser.name}
               </span>
               <button
                 type="submit"
-                className="cursor-pointer whitespace-nowrap rounded-xl border border-line bg-white px-3 py-2.5 text-xs font-bold text-ink transition hover:border-brand/40 dark:bg-card"
+                className="cursor-pointer whitespace-nowrap rounded-xl border border-line bg-white px-3 py-2 text-xs font-bold text-ink transition hover:border-brand/40 dark:bg-card sm:py-2.5"
               >
                 Keluar
               </button>

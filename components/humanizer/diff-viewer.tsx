@@ -59,7 +59,7 @@ export function DiffViewer({ oldText, newText, onRefresh }: DiffViewerProps) {
             <FileText className="size-8 text-muted/60" />
             <p className="font-bold text-ink-soft">Belum Ada Perubahan</p>
             <p className="text-xs text-muted max-w-sm">
-              Klik tombol <b>1-Click Humanize Pro</b> pada editor terlebih dahulu untuk melihat
+              Klik tombol <b>Humanize Naskah</b> pada editor terlebih dahulu untuk melihat
               perbandingan detail sebelum dan sesudah.
             </p>
           </div>

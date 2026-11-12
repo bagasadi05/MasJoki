@@ -117,7 +117,8 @@ export async function getOrCreateHumanizerWallet(): Promise<HumanizerWalletResul
   const auth = await getAuthenticatedUserId();
   if ("error" in auth) return { ok: false, error: auth.error, errorCode: "auth" };
 
-  const stored = await readWalletId();
+  // Cek wallet akun yang sudah ada lebih dulu agar kunjungan dari perangkat
+  // baru tidak langsung membuat cookie UUID kosong yang tidak terpakai.
   const existing = await getUserWallet(auth.userId);
   if ("error" in existing) {
     return { ok: false, error: existing.error, errorCode: "database" };
@@ -129,6 +130,8 @@ export async function getOrCreateHumanizerWallet(): Promise<HumanizerWalletResul
       remainingWords: existing.wallet.balanceWords,
     };
   }
+
+  const stored = await readWalletId();
 
   // Migrasikan wallet anonim yang masih berada di browser ini ke akun terverifikasi.
   if (!stored.isNew) {
@@ -200,6 +203,34 @@ async function changeWalletBalance(
     return { ok: false, error: "Layanan token belum dikonfigurasi di server." };
   }
 
+  const { data: rpcData, error: rpcError } = await supabase.rpc("mutate_wallet_balance", {
+    p_wallet_id: walletId,
+    p_delta: delta,
+  });
+
+  if (!rpcError) {
+    const baris = Array.isArray(rpcData) ? rpcData[0] : rpcData;
+    if (baris) {
+      if (baris.ok) {
+        return { ok: true, remainingWords: Number(baris.balance_words) };
+      }
+      if (baris.reason === "insufficient_funds") {
+        const saldo = Number(baris.balance_words);
+        return {
+          ok: false,
+          error: `Saldo token tidak cukup. Sisa kuota ${saldo.toLocaleString("id-ID")} kata.`,
+        };
+      }
+      if (baris.reason === "not_found") {
+        return { ok: false, error: "Saldo token belum siap. Silakan muat ulang halaman." };
+      }
+      return { ok: false, error: "Permintaan saldo token tidak valid." };
+    }
+  } else if (rpcError.code !== "PGRST202") {
+    return { ok: false, error: "Gagal memperbarui saldo token." };
+  }
+
+  // Fallback jika migrasi mutate_wallet_balance belum dijalankan di database.
   for (let attempt = 0; attempt < 3; attempt += 1) {
     const row = await getWalletRow(walletId);
     if ("error" in row) return { ok: false, error: row.error };

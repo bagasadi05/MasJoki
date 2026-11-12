@@ -334,10 +334,12 @@ export async function redeemVoucherAction(code: string): Promise<VoucherRedeemRe
 
 export async function getHumanizerWalletAction(): Promise<
   | { ok: true; remainingWords: number }
-  | { ok: false; error: string }
+  | { ok: false; error: string; errorCode?: "auth" | "config" | "database" }
 > {
   const wallet = await getOrCreateHumanizerWallet();
-  if (!wallet.ok) return wallet;
+  if (!wallet.ok) {
+    return { ok: false, error: wallet.error, errorCode: wallet.errorCode };
+  }
   return { ok: true, remainingWords: wallet.remainingWords };
 }
 

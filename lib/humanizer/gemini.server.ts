@@ -1,4 +1,5 @@
 import { GoogleGenAI } from "@google/genai";
+import { isStatisticalUse } from "./dictionary";
 
 if (typeof window !== "undefined") {
   throw new Error("gemini.server.ts hanya boleh diimpor di server.");
@@ -46,7 +47,7 @@ ATURAN GAYA MANUSIA ASLI (UNTUK MENGURANGI POLA TULISAN YANG TERLALU SERAGAM):
    - DILARANG membuat enumerasi robotik seperti: "Tugas pertama, jadi... Tugas kedua, jadi..." atau "Langkah satu... Langkah dua...".
    - Jelaskan langsung dalam kalimat mengalir yang wajar.
 2. LARANGAN AWALAN KALIMAT KLISE AI:
-   - DILARANG memulai kalimat dengan: "Selain itu,", "Oleh karena itu,", "Dengan demikian,", "Hal ini menunjukkan bahwa", "Tidak hanya itu,", "Maka dari itu,".
+   - DILARANG memulai kalimat dengan: "Selain itu,", "Oleh karena itu,", "Dengan demikian,", "Hal ini menunjukkan bahwa", "Tidak hanya itu,", "Maka dari itu,", "Tapi,", "Jadi,", "Artinya,".
    - Mulailah langsung dengan subjeknya (misal: "Gedungnya...", "Kamar jadi...", "Penghuni...", "Barang terlarang...", "Risiko...").
 3. SEBARAN PANJANG KALIMAT, BUKAN SEMUA PENDEK:
    - Yang membedakan tulisan manusia adalah sebarannya, bukan rata-ratanya. Semua kalimat pendek justru paling mudah ditandai karena variansinya nol.
@@ -72,6 +73,7 @@ STANDAR SKILL HUMANISASI AKADEMIK (WAJIB DIPATUHI):
    - Jangan membuka paragraf dengan konektor yang sama, jangan menutup setiap paragraf dengan simpulan, dan jangan memakai tiga item sejajar berulang.
 5. UBAH ARSITEKTUR KALIMAT, BUKAN ISTILAH.
    - Istilah hukum/resmi seperti "Pasal 87 ayat (1) Undang-Undang Nomor 22 Tahun 2022" atau "Rutan Kelas IIB Purworejo" harus utuh; jangan disinonimkan paksa.
+   - Istilah statistik seperti "signifikan" atau "perbedaan signifikan" di sekitar nilai p atau uji statistik HARUS dipertahankan persis — jangan diganti menjadi "beda banget" atau "nyata".
    - DILARANG: mengganti sinonim istilah teknis, memendekkan semua kalimat, menambah basa-basi ("sebagai penulis"), menghapus sitasi agar lebih lancar, atau menambah klaim baru.
 
 CONTOH PENULISAN ULANG:
@@ -117,7 +119,7 @@ function isKeyOrQuotaError(error: unknown): boolean {
 /**
  * Bersihkan output dari respons AI (hapus pembungkus markdown & awalan AI klise).
  */
-function cleanAiResponse(raw: string): string {
+export function cleanAiResponse(raw: string): string {
   let text = raw.trim();
   // Hapus pembungkus ```markdown atau ``` jika model membungkusnya dalam code block
   if (text.startsWith("```") && text.endsWith("```")) {
@@ -126,16 +128,23 @@ function cleanAiResponse(raw: string): string {
   // Hapus kata pengantar tipikal AI jika lolos
   text = text.replace(/^(?:Tentu,?\s+)?(?:berikut|ini|di bawah ini)\s+adalah\s+(?:hasil|naskah|teks)[^:\n]*:\s*\n+/i, "");
 
-  // Bersihkan awalan klise AI di awal kalimat yang memicu detektor AI (GPTZero/Turnitin)
-  text = text.replace(/(?<=[.!?]|^)\s*Selain itu,\s*/gi, (m, offset) => {
-    return offset === 0 ? "" : " ";
-  });
-  text = text.replace(/(?<=[.!?]|^)\s*Oleh karena itu,\s*/gi, (m, offset) => {
-    return offset === 0 ? "Jadi, " : " Jadi, ";
-  });
-  text = text.replace(/(?<=[.!?]|^)\s*Dengan demikian,\s*/gi, (m, offset) => {
-    return offset === 0 ? "Artinya, " : " Artinya, ";
-  });
+  // Bersihkan awalan klise AI di awal kalimat tanpa merusak huruf kapital kalimat berikutnya
+  text = text.replace(
+    /(^|[.!?]\s+|\n+)(?:Selain itu|Jadi),\s+([\p{L}])/giu,
+    (_, sep: string, ch: string) => `${sep}${ch.toUpperCase()}`,
+  );
+  text = text.replace(
+    /(^|[.!?]\s+|\n+)Oleh karena itu,\s+([\p{L}])/giu,
+    (_, sep: string, ch: string) => `${sep}Karena itu, ${ch.toLowerCase()}`,
+  );
+  text = text.replace(
+    /(^|[.!?]\s+|\n+)Dengan demikian,\s+([\p{L}])/giu,
+    (_, sep: string, ch: string) => `${sep}Akibatnya, ${ch.toLowerCase()}`,
+  );
+  text = text.replace(
+    /(^|[.!?]\s+|\n+)Tapi,\s+([\p{L}])/giu,
+    (_, sep: string, ch: string) => `${sep}Padahal, ${ch.toLowerCase()}`,
+  );
 
   return text.trim();
 }
@@ -161,12 +170,28 @@ export async function humanizeWithGemini(
     };
   }
 
-  // Buat instruksi sistem yang diperkaya dengan istilah kustom jika ada
+  // Buat instruksi sistem yang diperkaya dengan istilah kustom (plus istilah statistik jika terdeteksi)
+  const effectiveCustomTerms = [...(options.customTerms ?? [])];
+  const statRegex = /\bsignifikan(?:si)?\b/gi;
+  let statMatch: RegExpExecArray | null;
+  const lowerTrimmed = trimmed.toLowerCase();
+  while ((statMatch = statRegex.exec(lowerTrimmed)) !== null) {
+    if (
+      isStatisticalUse(lowerTrimmed, statMatch.index, statMatch.index + statMatch[0].length) ||
+      /\bp\s*[=<>≤≥]\s*0[.,]\d+/i.test(trimmed)
+    ) {
+      if (!effectiveCustomTerms.some((t) => t.toLowerCase() === statMatch![0].toLowerCase())) {
+        effectiveCustomTerms.push(statMatch[0]);
+      }
+      break;
+    }
+  }
+
   let systemInstruction = SYSTEM_INSTRUCTION_BASE;
-  if (options.customTerms && options.customTerms.length > 0) {
+  if (effectiveCustomTerms.length > 0) {
     // Istilah berasal dari pengguna: buang karakter kontrol/pembatas supaya
     // tidak bisa dipakai menyusupkan instruksi baru ke system prompt.
-    const termList = options.customTerms
+    const termList = effectiveCustomTerms
       .map((istilah) =>
         istilah.replace(/[\r\n\t]+/g, " ").replace(/[<>{}「」]/g, "").trim(),
       )
@@ -182,7 +207,7 @@ export async function humanizeWithGemini(
 
   if (options.intensity === "sederhana") {
     systemInstruction += `\n\nMODE SPESIFIK: PENULISAN LUGAS
-Gunakan bahasa Indonesia sehari-hari yang sangat polos, bersahaja, dan mudah dipahami oleh siapa saja, seperti seseorang menjelaskan langsung secara lisan tanpa pretensi akademik, namun tetap akurat terhadap fakta dan data.`;
+Gunakan bahasa Indonesia sehari-hari yang sangat polos, bersahaja, dan mudah dipahami oleh siapa saja, seperti seseorang menjelaskan langsung secara lisan tanpa pretensi akademik, namun tetap akurat terhadap fakta, angka, sitasi, istilah hukum/teknis, dan kata statistik (misalnya "signifikan" di dekat nilai p).`;
   }
 
   // Model yang didukung pada endpoint v1beta: gemini-2.5-flash (utama), gemini-3.5-flash (cadangan)

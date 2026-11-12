@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { SYSTEM_INSTRUCTION_BASE } from "../humanizer/gemini.server";
+import { cleanAiResponse, SYSTEM_INSTRUCTION_BASE } from "../humanizer/gemini.server";
 
 /**
  * Prompt ini adalah kontrak produk: ia menentukan apakah hasil humanizer
@@ -43,4 +43,14 @@ test("prompt melarang menambah klaim baru", () => {
 test("prompt tidak memuat instruksi Inggris yang tidak relevan", () => {
   assert.doesNotMatch(prompt, /not just X but Y/i);
   assert.doesNotMatch(prompt, /rule of three/i);
+});
+
+test("cleanAiResponse menghapus awalan klise AI dan menjaga kapitalisasi kalimat", () => {
+  const cleaned = cleanAiResponse(
+    "```markdown\nTentu, berikut adalah hasil penulisan ulang:\n\nSelain itu, pengawasan harus ketat. Oleh karena itu, petugas berjaga. Dengan demikian, keamanan terjaga. Tapi, risiko tetap ada. Jadi, inspeksi rutin berjalan.\n```",
+  );
+  assert.equal(
+    cleaned,
+    "Pengawasan harus ketat. Karena itu, petugas berjaga. Akibatnya, keamanan terjaga. Padahal, risiko tetap ada. Inspeksi rutin berjalan.",
+  );
 });

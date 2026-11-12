@@ -463,3 +463,42 @@ test("28. Kalimat Panjang Tunggal: dipecah dengan konjungsi alami meskipun hanya
     `Kalimat panjang harus dipecah menjadi dua kalimat, dapat: ${output}`
   );
 });
+
+test("29. Analyzer: mendeteksi kalke AI Indonesia ('Tidak hanya... melainkan juga', 'Di era digital', 'Patut dicatat bahwa')", () => {
+  const aiCalqueText =
+    "Di era digital, aplikasi ini tidak hanya mempercepat pekerjaan, melainkan juga menurunkan biaya. Patut dicatat bahwa tingkat partisipasi mencapai 80%.";
+  const result = analyze(aiCalqueText);
+
+  assert.ok(
+    result.scan.totalTemplates >= 3,
+    `Minimal 3 pola template kalke AI harus terdeteksi, dapat: ${JSON.stringify(result.scan.templatesFound)}`
+  );
+  assert.ok(
+    result.scan.forbiddenCount >= 2,
+    `Kata klise kalke harus terhitung, dapat: ${JSON.stringify(result.scan.forbiddenWordsFound)}`
+  );
+});
+
+test("30. Transformasi Kalke AI: membersihkan klise kalke sambil menjaga angka 80%", () => {
+  const aiCalqueText =
+    "Di era digital, patut dicatat bahwa pelatihan ini tidak hanya melatih keterampilan, melainkan juga menjaga ketuntasan 80%.";
+  const output = humanize(aiCalqueText);
+
+  assert.ok(output.includes("80%"), `Angka 80% harus tetap utuh, dapat: ${output}`);
+  assert.ok(!/di era digital/i.test(output), `'Di era digital' harus diganti, dapat: ${output}`);
+  assert.ok(!/patut dicatat/i.test(output), `'Patut dicatat' harus diganti, dapat: ${output}`);
+  assert.ok(!/melainkan juga/i.test(output), `'melainkan juga' harus disederhanakan, dapat: ${output}`);
+});
+
+test("31. Analyzer X-Ray: menandai pola template AI per kalimat (hasTemplatePattern)", () => {
+  const sample =
+    "Hal ini menunjukkan bahwa kolaborasi meningkat. Siswa mengerjakan soal latihan mandiri.";
+  const result = analyze(sample);
+
+  assert.equal(result.sentences[0]?.hasTemplatePattern, true);
+  assert.ok(
+    result.sentences[0]?.templatePatterns.includes("Hal ini menunjukkan bahwa"),
+    `Template harus tercatat per kalimat: ${JSON.stringify(result.sentences[0])}`,
+  );
+  assert.equal(result.sentences[1]?.hasTemplatePattern, false);
+});

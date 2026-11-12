@@ -14,7 +14,9 @@
     "test": "npx tsx --test lib/humanizer/__tests__/engine.test.ts lib/humanizer/__tests__/integrity.test.ts lib/humanizer/__tests__/voucher.test.ts lib/__tests__/pesan.test.ts lib/__tests__/keamanan.test.ts lib/__tests__/harga.test.ts lib/__tests__/harga-tampil.test.ts lib/__tests__/prompt.test.ts lib/__tests__/faq-ringkas.test.ts",
     "voucher": "npx tsx scripts/create-license.mts",
     "license": "npx tsx scripts/create-license.mts",
-    "check:supabase": "npx tsx scripts/test-conn.mts"
+    "check:supabase": "npx tsx scripts/test-conn.mts",
+    "eval:humanizer": "npx tsx scripts/eval-humanizer.mts",
+    "eval:humanizer:live": "npx tsx scripts/eval-humanizer.mts --live"
   },
   "dependencies": {
     "@google/genai": "^3.0.0",

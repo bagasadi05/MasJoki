@@ -188,7 +188,8 @@ export function cleanAiCommaPatterns(text: string): string {
 // frasa hanya punya satu jalur penggantian (mencegah penggantian berantai).
 const BASE_PHRASE_REPLACEMENTS = [
   // Pembuka era & waktu klise AI
-  { regex: /\b(?:dalam|di)\s+era\s+(?:digitalisasi|globalisasi|modern|teknologi|informasi)(?:\s+saat\s+ini|\s+kini)?,\s*/gi, repl: "Saat ini, " },
+  { regex: /\b(?:dalam|di)\s+(?:era|lanskap|dunia)\s+(?:digitalisasi|digital|globalisasi|modern|teknologi|informasi)(?:\s+saat\s+ini|\s+kini)?,\s*/gi, repl: "Saat ini, " },
+  { regex: /\b(?:di|dalam)\s+(?:era|lanskap)\s+(?:digitalisasi|digital|globalisasi|modern|teknologi|informasi|yang terus berkembang)\b/gi, repl: "situasi saat ini" },
   { regex: /\bseiring\s+(?:dengan\s+)?(?:berjalannya\s+waktu|perkembangan\s+zaman),\s*/gi, repl: "Seiring waktu, " },
   { regex: /\bseiring\s+dengan\s+pesatnya\s+perkembangan\s+([^,.!?]+),\s*/gi, repl: "Dengan makin majunya $1, " },
 
@@ -248,7 +249,8 @@ const BASE_PHRASE_REPLACEMENTS = [
 
   // Penegasan & transisi
   { regex: /\btidak\s+dapat\s+(?:dipungkiri|disangkal)\s+bahwa\b/gi, repl: "jelas sekali kalau" },
-  { regex: /\bperlu\s+(?:dipahami|diingat|digarisbawahi)\s+bahwa\b/gi, repl: "perlu diingat kalau" },
+  { regex: /\b(?:penting\s+untuk|patut|perlu)\s+(?:dicatat|dipahami|diperhatikan|diingat|ditekankan|digarisbawahi)\s+bahwa\b/gi, repl: "perlu diingat kalau" },
+  { regex: /\bmenjembatani\s+kesenjangan\b/gi, repl: "mengurangi jarak" },
   { regex: /\bpada\s+hakikatnya,?\s*/gi, repl: "sebenarnya, " },
   { regex: /\bpada\s+dasarnya,?\s*/gi, repl: "sebenarnya, " },
   { regex: /\bpada\s+kenyataannya,?\s*/gi, repl: "faktanya, " },

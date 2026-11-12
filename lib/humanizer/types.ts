@@ -9,6 +9,8 @@ export interface SentenceStats {
   isMonoStarter: boolean;
   hasForbiddenWord: boolean;
   forbiddenWords: string[];
+  hasTemplatePattern: boolean;
+  templatePatterns: string[];
 }
 
 export interface BurstinessMetrics {

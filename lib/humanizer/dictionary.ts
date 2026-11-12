@@ -75,7 +75,7 @@ export const FORBIDDEN_WORDS_MAP: Record<string, string> = {
   "dalam rangka": "untuk",
   "sebagai salah satu upaya": "sebagai langkah",
 
-  // Kata leksikal klise AI
+  // Kata leksikal & kalke klise AI
   "mengimplementasikan": "menerapkan",
   "mengidentifikasi": "mencari tahu",
   "komprehensif": "menyeluruh",
@@ -88,6 +88,14 @@ export const FORBIDDEN_WORDS_MAP: Record<string, string> = {
   "pelbagai": "berbagai",
   "eksistensi": "keberadaan",
   "signifikan": "nyata",
+  "dalam lanskap": "dalam situasi",
+  "di era modern": "saat ini",
+  "di era digital": "saat ini",
+  "patut dicatat": "perlu diingat",
+  "perlu ditekankan": "perlu diingat",
+  "menjembatani kesenjangan": "mengurangi jarak",
+  "lebih lanjut lagi": "berikutnya",
+  "di sisi lainnya": "sebaliknya",
 
   // Kata penghubung yang paling sering dipakai generator AI. Dua kata ini
   // sebelumnya diganti oleh engine tetapi tidak dihitung analyzer/UI.
@@ -318,8 +326,8 @@ export const TEMPLATE_PATTERNS = [
     regex: /\bhal ini (?:menunjukkan|membuktikan|menegaskan|mengindikasikan|menggambarkan)\s+bahwa\b/gi,
   },
   {
-    name: "Bukan hanya X tetapi juga Y",
-    regex: /\bbukan hanya\s+[^,.!?]+\s+tetapi juga\b/gi,
+    name: "Bukan/Tidak hanya X tetapi/melainkan juga Y",
+    regex: /\b(?:bukan|tidak) hanya\s+[^,.!?]+,?\s+(?:tetapi|melainkan|namun) juga\b/gi,
   },
   {
     name: "Dalam konteks ini",
@@ -330,8 +338,12 @@ export const TEMPLATE_PATTERNS = [
     regex: /\bsebagai salah satu upaya\b/gi,
   },
   {
-    name: "Penting untuk dicatat bahwa",
-    regex: /\bpenting untuk (?:dicatat|diperhatikan|diingat)\s+bahwa\b/gi,
+    name: "Dalam lanskap / era modern",
+    regex: /\b(?:di|dalam)\s+(?:era|lanskap|dunia)\s+(?:digital|modern|teknologi|globalisasi|yang terus berkembang)\b/gi,
+  },
+  {
+    name: "Patut/Perlu dicatat bahwa",
+    regex: /\b(?:penting untuk|patut|perlu)\s+(?:dicatat|diperhatikan|diingat|ditekankan|digarisbawahi)\s+bahwa\b/gi,
   },
   {
     name: "Dapat disimpulkan bahwa",

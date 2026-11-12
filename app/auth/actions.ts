@@ -155,7 +155,8 @@ export async function signOutAction() {
   try {
     const supabase = await createSupabaseServerClient();
     await supabase.auth.signOut();
-  } finally {
-    redirect("/humanizer");
+  } catch {
+    // Tetap arahkan kembali ke halaman humanizer walaupun session sudah kadaluwarsa.
   }
+  redirect("/humanizer");
 }

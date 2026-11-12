@@ -114,16 +114,16 @@ export default function Home() {
 
           <div className="relative mx-auto grid max-w-6xl gap-10 px-5 pb-14 pt-12 sm:px-8 lg:grid-cols-[1.12fr_0.88fr] lg:items-center lg:gap-12 lg:pb-20 lg:pt-16">
             <div>
-              {/* Badge Kecil & Flagship Tag */}
-              <div className="flex flex-wrap items-center gap-2">
-                <div className="inline-flex items-center gap-2 rounded-full border border-line bg-paper-2/90 px-3.5 py-1 text-xs font-bold text-ink shadow-2xs">
-                  <span className="size-2 rounded-full bg-mint" />
-                  <span>Jasa Bantuan Tugas</span>
-                  <span className="text-muted/40">•</span>
-                  <span className="text-slate-600 font-medium">Online</span>
-                </div>
-                <div className="inline-flex items-center gap-1.5 rounded-full border border-mint/30 bg-mint-soft px-3 py-1 text-xs font-bold text-mint shadow-2xs">
-                  <Sparkles className="size-3 text-mint" />
+              {/* Label Kategori + Satu Badge Unggulan */}
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                <p className="inline-flex items-center gap-2 text-xs font-bold text-slate-600">
+                  <span aria-hidden className="size-2 rounded-full bg-mint" />
+                  <span>Jasa bantuan tugas</span>
+                  <span aria-hidden className="text-muted/40">·</span>
+                  <span className="font-medium">Online</span>
+                </p>
+                <div className="inline-flex items-center gap-1.5 rounded-full border border-mint/30 bg-mint-soft px-3 py-1 text-xs font-bold text-mint">
+                  <Sparkles aria-hidden className="size-3 text-mint" />
                   <span>Unggulan: Humanisasi Teks AI &amp; Penurunan Turnitin</span>
                 </div>
               </div>
@@ -159,26 +159,18 @@ export default function Home() {
               </div>
 
               {/* Tiga Poin Kepercayaan dalam Satu Baris Ringkas */}
-              <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs font-semibold text-slate-600">
-                <span className="inline-flex items-center gap-1.5">
-                  <CheckCircle2 className="size-3.5 text-mint shrink-0" />
-                  <span>Harga pasti di awal</span>
-                </span>
-                <span className="text-slate-300 hidden sm:inline" aria-hidden>
-                  •
-                </span>
-                <span className="inline-flex items-center gap-1.5">
-                  <CheckCircle2 className="size-3.5 text-brand shrink-0" />
-                  <span>Dikerjakan langsung oleh Mas Joki</span>
-                </span>
-                <span className="text-slate-300 hidden sm:inline" aria-hidden>
-                  •
-                </span>
-                <span className="inline-flex items-center gap-1.5">
-                  <CheckCircle2 className="size-3.5 text-amber shrink-0" />
-                  <span>File sumber (.docx / .pptx) disertakan</span>
-                </span>
-              </div>
+              <ul className="mt-8 flex flex-col gap-1.5 text-xs font-semibold text-slate-600">
+                {[
+                  "Harga pasti di awal",
+                  "Dikerjakan langsung oleh Mas Joki",
+                  "File sumber (.docx / .pptx) disertakan",
+                ].map((poin) => (
+                  <li key={poin} className="inline-flex items-center gap-1.5">
+                    <CheckCircle2 aria-hidden className="size-3.5 shrink-0 text-mint" />
+                    <span>{poin}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
 
             {/* Sisi Kanan: Nota Mini Statis (Pajangan Nilai Jual) */}

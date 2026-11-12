@@ -30,20 +30,20 @@ export default function HalamanDaftarLayanan() {
         </nav>
 
         {/* Hero Title */}
-        <div className="mt-8 flex flex-col sm:flex-row sm:items-end justify-between gap-6 border-b border-line pb-10">
-          <div className="max-w-2xl">
-            <span className="stempel-hijau">
-              ✓ HARGA TRANSPARAN DI AWAL
-            </span>
-            <h1 className="mt-3 font-display text-[2.5rem] leading-[1.08] tracking-[-0.03em] text-ink sm:text-[3.2rem]">
-              Layanan Bantuan Tugas.
-            </h1>
-            <p className="mt-4 max-w-[56ch] text-sm md:text-base leading-relaxed text-slate-600 font-medium">
+        <div className="mt-8 border-b border-line pb-10">
+          <span className="stempel-hijau">
+            ✓ HARGA TRANSPARAN DI AWAL
+          </span>
+          <h1 className="mt-3 max-w-4xl font-display text-[2.5rem] leading-[1.08] tracking-[-0.03em] text-balance text-ink sm:text-[2.9rem] xl:text-[3.4rem]">
+            Layanan Bantuan Tugas.
+          </h1>
+
+          <div className="mt-5 flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
+            <p className="max-w-[52ch] text-sm md:text-base leading-relaxed text-slate-600 font-medium">
               9 kategori utama yang dikerjakan langsung oleh Mas Joki tanpa perantara. Tersedia varian tingkat artikel jurnal dan paket abstrak. Harga terkunci di awal dan dihitung otomatis lewat kalkulator tanpa biaya siluman.
             </p>
-          </div>
 
-          <div className="flex flex-col gap-3 sm:flex-row shrink-0">
+            <div className="flex flex-col gap-3 sm:flex-row shrink-0">
             <Link
               href="/hitung"
               className="inline-flex items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-3.5 text-sm font-bold text-white shadow-md shadow-brand/20 transition hover:bg-brand-dark hover:shadow-lg"
@@ -61,6 +61,7 @@ export default function HalamanDaftarLayanan() {
               <span>Tanya Mas Joki via WhatsApp</span>
               <ExternalLink className="size-3.5 opacity-60" />
             </a>
+            </div>
           </div>
         </div>
 

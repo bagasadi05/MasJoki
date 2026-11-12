@@ -25,7 +25,7 @@ export function PerbandinganJoki() {
     {
       kategori: "Keamanan Pembayaran",
       biasa: "Rekening ganti-ganti atas nama perorangan tak dikenal, rawan modus penipuan online.",
-      masJoki: "Satu nomor pembayaran resmi untuk ShopeePay, GoPay, dan DANA atas nama admin Mas Joki.",
+      masJoki: "Satu nomor pembayaran resmi untuk ShopeePay, GoPay, dan DANA atas nama Mas Joki.",
     },
   ];
 

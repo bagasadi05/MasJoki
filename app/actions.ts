@@ -161,7 +161,7 @@ export async function submitOrder(
   return {
     status: "ok",
     message:
-      "Pesanan siap dikirim. Buka WhatsApp dan tekan kirim — admin akan mengonfirmasi harga sebelum kamu bayar.",
+      "Pesanan siap dikirim. Buka WhatsApp dan tekan kirim — Mas Joki mengonfirmasi harga sebelum kamu bayar.",
     waUrl: waLink(pesan),
   };
 }
@@ -234,7 +234,7 @@ export async function submitSpecializedOrder(
   return {
     status: "ok",
     message:
-      "Pesanan siap dikirim ke WhatsApp admin. Rincian tugas lengkap sudah terangkum otomatis.",
+      "Pesanan siap dikirim ke WhatsApp Mas Joki. Rincian tugas lengkap sudah terangkum otomatis.",
     waUrl: waLink(pesan),
   };
 }
@@ -285,7 +285,7 @@ export async function submitQuote(
   return {
     status: "ok",
     message:
-      "Brief siap dikirim. Buka WhatsApp dan tekan kirim — admin balas dengan rincian harga, biasanya di bawah 1 jam kerja.",
+      "Brief siap dikirim. Buka WhatsApp dan tekan kirim — Mas Joki balas dengan rincian harga, biasanya di bawah 1 jam kerja.",
     waUrl: waLink(pesan),
   };
 }
@@ -325,7 +325,7 @@ export async function redeemVoucherAction(code: string): Promise<VoucherRedeemRe
   if (!credited.ok) {
     return {
       ok: false,
-      error: "Voucher sudah diverifikasi, tetapi saldo belum bisa diperbarui. Hubungi admin sebelum mencoba lagi.",
+      error: "Voucher sudah diverifikasi, tetapi saldo belum bisa diperbarui. Hubungi Mas Joki sebelum mencoba lagi.",
     };
   }
 
@@ -437,7 +437,7 @@ export async function humanizeWithGeminiAction(
     if (refunded.ok) return refunded;
     return {
       ok: false,
-      error: "Proses gagal dan saldo token belum bisa dikembalikan. Hubungi admin.",
+      error: "Proses gagal dan saldo token belum bisa dikembalikan. Hubungi Mas Joki.",
       errorCode: "wallet",
     };
   };

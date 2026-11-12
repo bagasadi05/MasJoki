@@ -49,7 +49,7 @@ export async function checkLicense(rawCode: string): Promise<CheckLicenseResult>
   if (!data.is_active) {
     return {
       ok: false,
-      error: "Kunci token ini sudah dinonaktifkan oleh admin.",
+      error: "Kunci token ini sudah dinonaktifkan.",
     };
   }
 

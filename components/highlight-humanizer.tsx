@@ -27,7 +27,7 @@ export function HighlightHumanizer() {
           <p className="mt-3 max-w-[52ch] text-sm leading-relaxed text-ink-soft font-medium">
             Tempel naskah, jalankan, lalu bandingkan hasilnya per kalimat. Saldo
             token dipotong sesuai jumlah kata — tanpa antre chat dan tanpa
-            mengirim file ke admin.
+            mengirim file ke siapa pun.
           </p>
 
           <ul className="mt-5 space-y-2.5">

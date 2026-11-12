@@ -70,7 +70,7 @@ export default function HalamanFaq() {
               </h2>
               <p className="mt-2 text-sm text-ink-soft leading-relaxed">
                 Punya pertanyaan di luar daftar ini atau tugas dengan format kampus yang sangat khusus?
-                Admin membalas pada jam operasional 07.00–23.00 WIB.
+                Mas Joki membalas pada jam operasional 07.00–23.00 WIB.
               </p>
 
               <a
@@ -80,7 +80,7 @@ export default function HalamanFaq() {
                 className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-4 text-sm font-bold text-white shadow-md shadow-brand/25 transition hover:bg-brand-dark hover:shadow-lg"
               >
                 <MessageCircle className="size-4.5" />
-                <span>Chat Admin Mas Joki via WhatsApp</span>
+                <span>Chat Mas Joki via WhatsApp</span>
                 <ExternalLink className="size-4 opacity-70" />
               </a>
 
@@ -102,7 +102,7 @@ export default function HalamanFaq() {
                 <div>
                   <p className="font-bold text-ink text-sm">Privasi Dokumen Terjaga</p>
                   <p className="text-xs text-muted mt-0.5 leading-relaxed">
-                    Data kampus, nama mahasiswa, dan materi tugas dienkripsi &amp; tidak pernah dipublikasikan.
+                    Data kampus, nama mahasiswa, dan materi tugas tidak pernah dibagikan atau dipublikasikan.
                   </p>
                 </div>
               </div>
@@ -114,7 +114,7 @@ export default function HalamanFaq() {
                 <div>
                   <p className="font-bold text-ink text-sm">Revisi 2× Gratis</p>
                   <p className="text-xs text-muted mt-0.5 leading-relaxed">
-                    Bila ada arahan awal dosen yang belum terpenuhi, admin langsung revisi tanpa biaya tambahan.
+                    Bila ada arahan awal dosen yang belum terpenuhi, Mas Joki langsung revisi tanpa biaya tambahan.
                   </p>
                 </div>
               </div>
@@ -126,7 +126,7 @@ export default function HalamanFaq() {
                 <div>
                   <p className="font-bold text-ink text-sm">Selesai Tepat Waktu</p>
                   <p className="text-xs text-muted mt-0.5 leading-relaxed">
-                    Tenggat waktu yang kamu pilih di awal kami kunci dan patuhi dengan disiplin penuh.
+                    Tenggat yang kamu pilih di awal dikunci dan dipatuhi.
                   </p>
                 </div>
               </div>

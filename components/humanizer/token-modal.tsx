@@ -334,7 +334,7 @@ export function TokenModal({
                 <p className="text-muted leading-relaxed">
                   Transfer E-Wallet ({pembayaran.metode.join(", ")}) ke nomor{" "}
                   <span className="font-mono font-bold text-ink">{pembayaran.nomor}</span> (a.n.{" "}
-                  Bagas Adi Saputra / Mas Joki). Kirim bukti transfer di WhatsApp dan admin akan langsung
+                  Bagas Adi Saputra / Mas Joki). Kirim bukti transfer di WhatsApp dan Mas Joki akan langsung
                   memberikan kode voucher sekali pakai untuk kamu klaim!
                 </p>
               </div>

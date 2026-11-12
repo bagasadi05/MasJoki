@@ -232,7 +232,7 @@ export async function verifyVoucherCode(
           );
           return {
             ok: false,
-            error: "Sistem voucher belum siap. Hubungi admin Mas Joki.",
+            error: "Sistem voucher belum siap. Hubungi Mas Joki.",
           };
         }
 
@@ -310,7 +310,7 @@ export async function verifyVoucherCode(
   if (!samaPersis(tandaTangan(words, secret), expectedSig)) {
     return {
       ok: false,
-      error: "Kode voucher tidak valid atau salah. Silakan hubungi admin Mas Joki.",
+      error: "Kode voucher tidak valid atau salah. Hubungi Mas Joki.",
     };
   }
 

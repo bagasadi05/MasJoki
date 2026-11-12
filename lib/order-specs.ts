@@ -44,7 +44,7 @@ export const SERVICE_ORDER_SPECS: Record<ServiceId, ServiceOrderSpec> = {
       { value: "30-50%", label: "30% – 50% AI", description: "Deteksi sedang" },
       { value: "51-75%", label: "51% – 75% AI", description: "Deteksi tinggi" },
       { value: "76-100%", label: "76% – 100% AI", description: "Mayoritas buatan AI" },
-      { value: "belum_tahu", label: "Belum Dicek", description: "Biar admin yang cek" },
+      { value: "belum_tahu", label: "Belum Dicek", description: "Biar Mas Joki yang cek" },
     ],
     targetScoreTitle: "Target Penurunan Skor yang Diinginkan",
     targetScoreOptions: [

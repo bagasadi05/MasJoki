@@ -45,7 +45,7 @@ export default function HalamanKalkulator() {
           </h1>
           <p className="mt-4 max-w-[62ch] text-base leading-relaxed text-slate-600 font-medium">
             Pilih jenis tugas, geser jumlah kata atau halaman, dan pilih tenggat yang kamu butuhkan.
-            Total biaya dan rincian nota kwitansi langsung keluar seketika tanpa perlu nunggu chat admin dibalas.
+            Total biaya dan rincian nota keluar seketika tanpa menunggu balasan chat.
           </p>
         </div>
 

@@ -420,7 +420,7 @@ export default function Home() {
               <ul className="mt-6 space-y-2.5">
                 <li className="flex items-start gap-2 text-sm font-medium text-slate-700">
                   <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-mint" aria-hidden />
-                  <span>Delapan layanan inti, lengkap dengan satuan harganya.</span>
+                  <span>Delapan layanan bertarif tetap, lengkap dengan satuannya. Penurunan Turnitin lewat penawaran.</span>
                 </li>
                 <li className="flex items-start gap-2 text-sm font-medium text-slate-700">
                   <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-brand" aria-hidden />
@@ -534,7 +534,7 @@ export default function Home() {
                 </h2>
 
                 <p className="mt-3 max-w-[46ch] text-xs sm:text-sm leading-relaxed text-white/80">
-                  Nominal sudah kelihatan sebelum kamu chat. Tanpa akun, tanpa tunggu balasan admin.
+                  Nominal sudah kelihatan sebelum kamu chat. Tanpa akun, tanpa menunggu balasan.
                 </p>
 
                 {/* Dua Tombol Aksi: Buka Kalkulator & Chat WhatsApp */}

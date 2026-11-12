@@ -108,7 +108,7 @@ export const SERVICES: Service[] = [
     presets: [5, 10, 20, 40],
     popular: true,
   },
-  // REVISI 1: Tingkat (a) Artikel Ilmiah untuk tugas kuliah (Rp250.000 / maks 3.000 kata)
+  // REVISI 1: Tingkat (a) Artikel Ilmiah untuk tugas kuliah (Rp 250.000 / maks 3.000 kata)
   {
     id: "artikel_ilmiah",
     name: "Artikel Ilmiah",
@@ -125,7 +125,7 @@ export const SERVICES: Service[] = [
     presets: [1500, 2000, 2500, 3000],
     popular: true,
   },
-  // REVISI 1: Tingkat (b) Artikel Jurnal Siap Submit untuk publikasi (Rp400.000 / maks 6.000 kata)
+  // REVISI 1: Tingkat (b) Artikel Jurnal Siap Submit untuk publikasi (Rp 400.000 / maks 6.000 kata)
   {
     id: "jurnal_submit",
     name: "Artikel Jurnal Siap Submit",
@@ -146,7 +146,7 @@ export const SERVICES: Service[] = [
     id: "jurnal",
     name: "Artikel Jurnal",
     promise:
-      "Dua pilihan tingkat: Artikel Ilmiah tugas kuliah (Rp250.000) dan Jurnal Siap Submit (Rp400.000).",
+      "Dua pilihan tingkat: Artikel Ilmiah tugas kuliah (Rp 250.000) dan Jurnal Siap Submit (Rp 400.000).",
     basis: "artikel",
     chunk: 1,
     pricePerChunk: 250000,
@@ -177,7 +177,7 @@ export const SERVICES: Service[] = [
     id: "word",
     name: "Rapikan Word",
     promise:
-      "Margin, heading, penomoran, dan daftar isi dirapikan sesuai pedoman kampus (berdasarkan jumlah halaman, mulai Rp30.000).",
+      "Margin, heading, penomoran, dan daftar isi dirapikan sesuai pedoman kampus (berdasarkan jumlah halaman, mulai Rp 30.000).",
     basis: "halaman",
     chunk: 1,
     pricePerChunk: 30000,
@@ -204,7 +204,7 @@ export const SERVICES: Service[] = [
     turnaround: "6–12 jam",
     presets: [300, 500, 1000, 3000],
   },
-  // REVISI 2(b): Paket Abstrak (ID+EN) flat Rp35.000 (maks. 300 kata per versi)
+  // REVISI 2(b): Paket Abstrak (ID+EN) flat Rp 35.000 (maks. 300 kata per versi)
   {
     id: "paket_abstrak",
     name: "Paket Abstrak (ID+EN)",
@@ -282,19 +282,19 @@ export function priceLabel(service: Service): string {
     return "Minta Penawaran";
   }
   if (service.id === "word") {
-    return "Mulai Rp30.000 (berdasarkan halaman)";
+    return "Mulai Rp 30.000 (berdasarkan halaman)";
   }
   if (service.id === "jurnal") {
-    return "Mulai Rp250.000 (2 pilihan tingkat)";
+    return "Mulai Rp 250.000 (2 pilihan tingkat)";
   }
   if (service.id === "artikel_ilmiah") {
-    return "Rp250.000 / artikel (maks. 3.000 kata)";
+    return "Rp 250.000 / artikel (maks. 3.000 kata)";
   }
   if (service.id === "jurnal_submit") {
-    return "Rp400.000 / artikel (maks. 6.000 kata)";
+    return "Rp 400.000 / artikel (maks. 6.000 kata)";
   }
   if (service.id === "paket_abstrak") {
-    return "Rp35.000 / paket (ID+EN)";
+    return "Rp 35.000 / paket (ID+EN)";
   }
   if (service.chunk === 1) {
     return `${rupiah(service.pricePerChunk)} / ${BASIS_LABEL[service.basis] ?? service.basis}`;

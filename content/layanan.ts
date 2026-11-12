@@ -228,11 +228,11 @@ export const KONTEN_LAYANAN: Record<ServiceId, KontenLayanan> = {
     faq: [
       {
         q: "Apakah bisa untuk abstrak jurnal?",
-        a: "Bisa! Tersedia juga Paket Abstrak (ID+EN) flat Rp35.000 untuk pasangan abstrak skripsi/artikel sampai 300 kata per versi.",
+        a: "Bisa! Tersedia juga Paket Abstrak (ID+EN) flat Rp 35.000 untuk pasangan abstrak skripsi/artikel sampai 300 kata per versi.",
       },
       {
         q: "Bagaimana kalau teksnya sangat panjang?",
-        a: "Harga dihitung per 100 kata (Rp10.000/100 kata). Untuk dokumen di atas 5.000 kata, gunakan mode penawaran supaya ada penyesuaian diskon volume.",
+        a: "Harga dihitung per 100 kata (Rp 10.000/100 kata). Untuk dokumen di atas 5.000 kata, gunakan mode penawaran supaya ada penyesuaian diskon volume.",
       },
     ],
   },

@@ -307,7 +307,7 @@ export interface PriceResult {
   difficultyFee: number;
   addonsTotal: number;
   selectedAddons: Addon[];
-  /** Total hitungan murni sebelum penyesuaian batas minimum belanja Rp15.000 */
+  /** Total hitungan murni sebelum penyesuaian batas minimum belanja Rp 15.000 */
   totalSebelumMinimum: number;
   total: number;
   /** Opsi DP 50%, dibulatkan KE ATAS ke kelipatan Rp500 terdekat */
@@ -323,7 +323,7 @@ export interface PriceResult {
   deadline: Deadline;
   difficulty: Difficulty;
   qty: number;
-  /** REVISI 4: Catatan penyesuaian batas minimum belanja Rp15.000 */
+  /** REVISI 4: Catatan penyesuaian batas minimum belanja Rp 15.000 */
   minimumAdjustmentNote?: string | null;
   /** REVISI 1 & 3: Penanda kuantitas melebihi batas hitungan otomatis */
   isOverLimit?: boolean;
@@ -386,7 +386,7 @@ export function hitungKonversiEkuivalen(service: Service, qty: number): string {
 
 export interface ComputePriceOptions {
   /**
-   * Terapkan batas minimum transaksi Rp15.000.
+   * Terapkan batas minimum transaksi Rp 15.000.
    * Default: true (untuk kalkulator /hitung dan formulir pemesanan).
    * Set ke false untuk tabel gambaran biaya contoh agar menampilkan angka murni.
    */
@@ -435,7 +435,7 @@ export function computePrice(
         "Dokumen di atas 120 halaman tidak dapat dihitung otomatis. Silakan kirimkan naskah lewat WhatsApp untuk penawaran khusus.";
     }
   } else if (service.id === "artikel_ilmiah") {
-    // REVISI 1(a): Artikel Ilmiah flat Rp250.000 / maks 3.000 kata
+    // REVISI 1(a): Artikel Ilmiah flat Rp 250.000 / maks 3.000 kata
     units = 1;
     unitPrice = 250000;
     rawSubtotal = 250000;
@@ -449,7 +449,7 @@ export function computePrice(
         "Jumlah kata melebihi batas maksimal 3.000 kata untuk Artikel Ilmiah. Kelebihan kata dialihkan ke mode Minta Penawaran.";
     }
   } else if (service.id === "jurnal_submit") {
-    // REVISI 1(b): Jurnal Siap Submit flat Rp400.000 / maks 6.000 kata
+    // REVISI 1(b): Jurnal Siap Submit flat Rp 400.000 / maks 6.000 kata
     units = 1;
     unitPrice = 400000;
     rawSubtotal = 400000;
@@ -463,7 +463,7 @@ export function computePrice(
         "Jumlah kata melebihi batas maksimal 6.000 kata untuk Jurnal Siap Submit. Kelebihan kata dialihkan ke mode Minta Penawaran.";
     }
   } else if (service.id === "paket_abstrak") {
-    // REVISI 2(b): Paket Abstrak (ID+EN) flat Rp35.000 / maks 300 kata
+    // REVISI 2(b): Paket Abstrak (ID+EN) flat Rp 35.000 / maks 300 kata
     units = 1;
     unitPrice = 35000;
     rawSubtotal = 35000;
@@ -527,7 +527,7 @@ export function computePrice(
 
   const totalSebelumMinimum = effectiveBase + deadlineFee + difficultyFee + addonsTotal;
 
-  // REVISI 4: Minimum transaksi Rp15.000 untuk kalkulator dan formulir order
+  // REVISI 4: Minimum transaksi Rp 15.000 untuk kalkulator dan formulir order
   let minimumAdjustment = 0;
   let minimumAdjustmentNote: string | null = null;
   let total = totalSebelumMinimum;
@@ -537,7 +537,7 @@ export function computePrice(
   if (shouldApplyMinimum && !isOverLimit && totalSebelumMinimum < MINIMUM_TRANSACTION) {
     minimumAdjustment = MINIMUM_TRANSACTION - totalSebelumMinimum;
     total = MINIMUM_TRANSACTION;
-    minimumAdjustmentNote = "Disesuaikan dengan minimum transaksi Rp15.000.";
+    minimumAdjustmentNote = "Disesuaikan dengan minimum transaksi Rp 15.000.";
   }
 
   // Aturan DP 50%, dibulatkan KE ATAS ke kelipatan Rp500 terdekat dari total akhir
@@ -604,11 +604,11 @@ export function computePrice(
     });
   }
 
-  // REVISI 4: Baris penyesuaian batas minimum belanja Rp15.000
+  // REVISI 4: Baris penyesuaian batas minimum belanja Rp 15.000
   if (minimumAdjustment > 0) {
     lines.push({
       label: "Penyesuaian minimum transaksi",
-      detail: "Batas minimum order Rp15.000",
+      detail: "Batas minimum order Rp 15.000",
       amount: minimumAdjustment,
       kind: "surcharge",
     });

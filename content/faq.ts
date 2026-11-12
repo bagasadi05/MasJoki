@@ -14,7 +14,7 @@ export const faq: FaqItem[] = [
   // 2. DP 50%
   {
     q: "Apakah bisa bayar DP (uang muka) 50% dulu?",
-    a: "Bisa banget! Kamu cukup membayar DP 50% di awal (dibulatkan ke atas ke kelipatan Rp500 terdekat) agar Mas Joki langsung mulai bekerja. Pelunasan 50% sisanya baru dibayarkan setelah tugas selesai dan kamu memeriksa preview hasilnya.",
+    a: "Bisa banget! Kamu cukup membayar DP 50% di awal (dibulatkan ke atas ke kelipatan Rp 500 terdekat) agar Mas Joki langsung mulai bekerja. Pelunasan 50% sisanya baru dibayarkan setelah tugas selesai dan kamu memeriksa preview hasilnya.",
   },
   // 3. REVISI
   {

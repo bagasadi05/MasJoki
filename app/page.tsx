@@ -27,7 +27,7 @@ import { LacakKlik } from "@/components/lacak-klik";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { Tilt } from "@/components/tilt";
-import { QRIS_ENABLED, SITE_OWNER } from "@/lib/config";
+import { QRIS_ENABLED, SITE_OWNER, SITE_URL } from "@/lib/config";
 import { pembayaran, site, waLink, waPesanUmum } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
 const stripRingkasan = [
   {
     icon: Tag,
-    label: "Mulai Rp15.000",
+    label: "Mulai Rp 15.000",
     iconBg: "bg-black/10 text-[#101a33]",
   },
   {
@@ -91,10 +91,12 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
   name: site.name,
+  url: SITE_URL,
+  image: `${SITE_URL}/opengraph-image`,
   description:
     "Bantuan penulisan dan penyuntingan tugas: parafrase, humanisasi teks AI, makalah, PowerPoint, artikel jurnal, terjemahan, rapikan format Word, dan penurunan Turnitin.",
   areaServed: "ID",
-  priceRange: "Rp15.000–Rp400.000",
+  priceRange: "Rp 15.000–Rp 400.000",
   email: site.email,
   sameAs: ["https://www.threads.com/@adis.shop29"],
   address: { "@type": "PostalAddress", addressLocality: site.kota },
@@ -487,7 +489,8 @@ export default function Home() {
                     alt="Poster daftar harga Mas Joki: humanisasi teks AI, parafrase, makalah, artikel jurnal, PowerPoint, rapikan Word, terjemahan, dan desain visual."
                     width={1080}
                     height={1350}
-                    unoptimized
+                    sizes="(max-width: 640px) 320px, 360px"
+                    quality={80}
                     className="h-auto w-full rounded-md"
                   />
                 </div>

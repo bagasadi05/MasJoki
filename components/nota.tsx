@@ -40,7 +40,7 @@ interface NotaProps {
   aksen?: Aksen;
   /** Varian ringkas khusus hero agar tidak terpotong di viewport */
   ringkas?: boolean;
-  /** Catatan penyesuaian batas minimum transaksi Rp15.000 */
+  /** Catatan penyesuaian batas minimum transaksi Rp 15.000 */
   minimumAdjustmentNote?: string | null;
 }
 
@@ -221,7 +221,7 @@ export function Nota({
           </p>
         </div>
 
-        {/* Catatan penyesuaian minimum transaksi Rp15.000 */}
+        {/* Catatan penyesuaian minimum transaksi Rp 15.000 */}
         {minimumAdjustmentNote ? (
           <p className="mt-2 text-center text-xs font-semibold text-amber bg-amber-soft/60 border border-amber/20 rounded-xl py-1.5 px-3">
             ✦ {minimumAdjustmentNote}
@@ -243,7 +243,7 @@ export function Nota({
                   </span>
                 </div>
                 <p className="text-xs text-slate-600 pl-5 font-medium leading-tight">
-                  Sudah dibulatkan ke kelipatan Rp500 terdekat.
+                  Sudah dibulatkan ke kelipatan Rp 500 terdekat.
                 </p>
               </div>
             ) : null}

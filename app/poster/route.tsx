@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 import { aksenLayanan } from "@/lib/aksen";
-import { rupiah } from "@/lib/format";
+import { hargaTampil } from "@/lib/harga-tampil";
 import type { ServiceId } from "@/lib/services";
 import { pembayaran } from "@/lib/site";
 
@@ -37,17 +37,17 @@ interface Baris {
 }
 
 const KIRI: Baris[] = [
-  { id: "humanisasi", label: "Humanisasi teks AI", satuan: "per 100 kata", harga: rupiah(4000) },
-  { id: "parafrase", label: "Parafrase", satuan: "per 100 kata", harga: rupiah(3000) },
-  { id: "makalah", label: "Makalah & laporan", satuan: "per halaman", harga: rupiah(12000) },
-  { id: "jurnal", label: "Artikel jurnal", satuan: "per artikel", harga: rupiah(250000) },
+  { id: "humanisasi", label: "Humanisasi teks AI", satuan: "per 100 kata", harga: hargaTampil("humanisasi").angka },
+  { id: "parafrase", label: "Parafrase", satuan: "per 100 kata", harga: hargaTampil("parafrase").angka },
+  { id: "makalah", label: "Makalah & laporan", satuan: "per halaman", harga: hargaTampil("makalah").angka },
+  { id: "jurnal", label: "Artikel jurnal", satuan: "per artikel", harga: hargaTampil("jurnal").angka },
 ];
 
 const KANAN: Baris[] = [
-  { id: "powerpoint", label: "PowerPoint", satuan: "per slide", harga: rupiah(7500) },
-  { id: "word", label: "Rapikan Word", satuan: "per dokumen (maks. 25 hal)", harga: rupiah(30000) },
-  { id: "terjemah", label: "Terjemahan", satuan: "per 100 kata", harga: rupiah(10000) },
-  { id: "desain", label: "Desain visual", satuan: "per desain", harga: rupiah(45000) },
+  { id: "powerpoint", label: "PowerPoint", satuan: "per slide", harga: hargaTampil("powerpoint").angka },
+  { id: "word", label: "Rapikan Word", satuan: "per dokumen (maks. 25 hal)", harga: hargaTampil("word").angka },
+  { id: "terjemah", label: "Terjemahan", satuan: "per 100 kata", harga: hargaTampil("terjemah").angka },
+  { id: "desain", label: "Desain visual", satuan: "per desain", harga: hargaTampil("desain").angka },
 ];
 
 const FAKTA = [

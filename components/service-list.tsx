@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { ServiceIcon } from "./service-icon";
 import { aksenLayanan } from "@/lib/aksen";
+import { hargaTampil } from "@/lib/harga-tampil";
 import {
   CATALOG_SERVICES,
   type ServiceId,
@@ -21,7 +22,7 @@ export const DESKRIPSI_AWAM: Record<ServiceId, string> = {
   jurnal_submit:
     "Artikel jurnal standar publikasi (SINTA/internasional), struktur IMRAD (struktur jurnal) lengkap siap submit.",
   jurnal:
-    "Penulisan artikel ilmiah tugas kuliah atau artikel jurnal siap submit publikasi, mulai Rp250.000.",
+    "Penulisan artikel ilmiah tugas kuliah atau artikel jurnal siap submit publikasi, mulai Rp 250.000.",
   powerpoint:
     "Membuat slide presentasi yang rapi, visual, dan enak dibaca dari materi tugas atau makalahmu.",
   word:
@@ -36,29 +37,6 @@ export const DESKRIPSI_AWAM: Record<ServiceId, string> = {
     "Menurunkan skor kemiripan (skor Turnitin) dan deteksi AI naskahmu hingga target aman yang disepakati.",
 };
 
-export const HARGA_SERAGAM: Record<
-  ServiceId,
-  { angka: string; satuan: string }
-> = {
-  parafrase: { angka: "Rp3.000", satuan: "per 100 kata" },
-  humanisasi: { angka: "Rp4.000", satuan: "per 100 kata" },
-  makalah: { angka: "Rp12.000", satuan: "per halaman" },
-  artikel_ilmiah: {
-    angka: "Rp250.000",
-    satuan: "per artikel (maks. 3.000 kata)",
-  },
-  jurnal_submit: {
-    angka: "Rp400.000",
-    satuan: "per artikel (maks. 6.000 kata)",
-  },
-  jurnal: { angka: "Rp250.000", satuan: "mulai 2 pilihan tingkat" },
-  powerpoint: { angka: "Rp7.500", satuan: "per slide" },
-  word: { angka: "Rp30.000", satuan: "berdasarkan jumlah halaman" },
-  terjemah: { angka: "Rp10.000", satuan: "per 100 kata" },
-  paket_abstrak: { angka: "Rp35.000", satuan: "per paket (ID+EN)" },
-  desain: { angka: "Rp45.000", satuan: "per desain" },
-  turnitin_ai: { angka: "Minta Penawaran", satuan: "sesuai skor awal & naskah" },
-};
 
 interface ServiceListProps {
   isCatalogPage?: boolean;
@@ -77,7 +55,7 @@ export function ServiceList({
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {services.map((service) => {
           const deskripsi = DESKRIPSI_AWAM[service.id] ?? service.promise;
-          const harga = HARGA_SERAGAM[service.id];
+          const harga = hargaTampil(service.id);
           const aksen = aksenLayanan(service.id);
           const isUnggulan = service.id === "humanisasi" || service.id === "turnitin_ai";
 

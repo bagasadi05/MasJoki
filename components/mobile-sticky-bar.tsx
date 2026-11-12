@@ -66,7 +66,7 @@ export function MobileStickyBar() {
                 Mas Joki
               </p>
               <p className="text-xs font-semibold text-mint">
-                Mulai Rp15.000 · DP 50%
+                Mulai Rp 15.000 · DP 50%
               </p>
             </div>
           )}

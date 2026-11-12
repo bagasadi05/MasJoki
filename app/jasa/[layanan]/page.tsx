@@ -192,14 +192,14 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                       href="/hitung?layanan=artikel_ilmiah"
                       className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-6 py-4 text-sm font-bold text-white shadow-lg shadow-brand/25 transition-all hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35"
                     >
-                      <span>Pesan Artikel Ilmiah (Rp250rb)</span>
+                      <span>Pesan Artikel Ilmiah (Rp 250rb)</span>
                       <ArrowRight className="size-4" />
                     </Link>
                     <Link
                       href="/hitung?layanan=jurnal_submit"
                       className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-brand bg-white px-6 py-4 text-sm font-bold text-brand hover:bg-brand hover:text-white transition-colors"
                     >
-                      <span>Pesan Jurnal Submit (Rp400rb)</span>
+                      <span>Pesan Jurnal Submit (Rp 400rb)</span>
                       <ArrowRight className="size-4" />
                     </Link>
                   </div>
@@ -389,7 +389,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                           </h3>
                         </div>
                         <span className="font-mono text-base font-bold text-brand">
-                          Rp250.000
+                          Rp 250.000
                         </span>
                       </div>
                       <ul className="mt-3 space-y-1.5 text-xs text-slate-600">
@@ -402,7 +402,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                           href="/hitung?layanan=artikel_ilmiah"
                           className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-xs font-bold text-white shadow-xs transition-colors hover:bg-brand-dark"
                         >
-                          <span>Pesan Artikel Ilmiah (Rp250.000)</span>
+                          <span>Pesan Artikel Ilmiah (Rp 250.000)</span>
                           <ArrowRight className="size-3.5" />
                         </Link>
                       </div>
@@ -420,7 +420,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                           </h3>
                         </div>
                         <span className="font-mono text-base font-bold text-brand">
-                          Rp400.000
+                          Rp 400.000
                         </span>
                       </div>
                       <ul className="mt-3 space-y-1.5 text-xs text-slate-600">
@@ -433,7 +433,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                           href="/hitung?layanan=jurnal_submit"
                           className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-xs font-bold text-white shadow-xs transition-colors hover:bg-brand-dark"
                         >
-                          <span>Pesan Jurnal Siap Submit (Rp400.000)</span>
+                          <span>Pesan Jurnal Siap Submit (Rp 400.000)</span>
                           <ArrowRight className="size-3.5" />
                         </Link>
                       </div>
@@ -446,7 +446,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                     Tingkat Tarif Berdasarkan Jumlah Halaman
                   </h2>
                   <p className="mt-2 text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
-                    Tarif dihitung bertingkat berdasarkan jumlah halaman dokumen Word kamu (mulai Rp30.000). Margin, daftar isi otomatis, heading, dan penomoran halaman dirapikan sesuai pedoman resmi kampus.
+                    Tarif dihitung bertingkat berdasarkan jumlah halaman dokumen Word kamu (mulai Rp 30.000). Margin, daftar isi otomatis, heading, dan penomoran halaman dirapikan sesuai pedoman resmi kampus.
                   </p>
 
                   <ul className="mt-6 divide-y divide-line border-y border-line">
@@ -456,7 +456,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                         <span className="text-xs text-slate-500">Makalah, artikel pendek, atau proposal singkat</span>
                       </div>
                       <span className="font-mono text-base font-bold tabular-nums text-brand">
-                        Rp30.000
+                        Rp 30.000
                       </span>
                     </li>
                     <li className="flex items-center justify-between py-3.5">
@@ -465,7 +465,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                         <span className="text-xs text-slate-500">Proposal skripsi, laporan magang, atau KKN</span>
                       </div>
                       <span className="font-mono text-base font-bold tabular-nums text-brand">
-                        Rp50.000
+                        Rp 50.000
                       </span>
                     </li>
                     <li className="flex items-center justify-between py-3.5">
@@ -474,7 +474,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                         <span className="text-xs text-slate-500">Naskah skripsi atau tesis lengkap</span>
                       </div>
                       <span className="font-mono text-base font-bold tabular-nums text-brand">
-                        Rp85.000
+                        Rp 85.000
                       </span>
                     </li>
                     <li className="flex items-center justify-between py-3.5">
@@ -529,7 +529,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                   </ul>
 
                   <p className="mt-3 text-[13px] text-slate-600 font-medium leading-relaxed">
-                    *Total di bawah Rp15.000 disesuaikan menjadi Rp15.000 (minimum transaksi) saat pemesanan.
+                    *Total di bawah Rp 15.000 disesuaikan menjadi Rp 15.000 (minimum transaksi) saat pemesanan.
                   </p>
 
                   {service.id === "terjemah" && (
@@ -547,7 +547,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                           </p>
                         </div>
                         <span className="font-mono text-base font-bold text-brand shrink-0">
-                          Rp35.000
+                          Rp 35.000
                         </span>
                       </div>
                       <div className="mt-3.5">
@@ -555,7 +555,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                           href="/hitung?layanan=paket_abstrak"
                           className="inline-flex w-full items-center justify-center gap-1.5 rounded-xl bg-brand px-4 py-2 text-xs font-bold text-white shadow-xs hover:bg-brand-dark transition-colors"
                         >
-                          <span>Pesan Paket Abstrak (Rp35.000)</span>
+                          <span>Pesan Paket Abstrak (Rp 35.000)</span>
                           <ArrowRight className="size-3.5" />
                         </Link>
                       </div>

@@ -19,6 +19,7 @@ import { FaqRingkas } from "@/components/faq-ringkas";
 import { HeroStaticReceipt } from "@/components/hero-static-receipt";
 import { ServiceList } from "@/components/service-list";
 import { SimulasiContoh } from "@/components/simulasi-contoh";
+import { TestimoniNyata } from "@/components/testimoni-nyata";
 import { HighlightHumanizer } from "@/components/highlight-humanizer";
 import { LacakKlik } from "@/components/lacak-klik";
 import { SiteFooter } from "@/components/site-footer";
@@ -347,7 +348,12 @@ export default function Home() {
         </section>
 
         {/* ========================================================== *
-         * 6. HIGHLIGHT CARA PESAN (4 Langkah Praktis)
+         * 6. TESTIMONI & BUKTI PENGERJAAN NYATA (5 Arsip Chat Asli)
+         * ========================================================== */}
+        <TestimoniNyata />
+
+        {/* ========================================================== *
+         * 7. HIGHLIGHT CARA PESAN (4 Langkah Praktis)
          * ========================================================== */}
         <AlurKerja />
 

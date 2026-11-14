@@ -5,6 +5,7 @@ import { SiteHeader } from "@/components/site-header";
 
 const TAUTAN = [
   { href: "/jasa", label: "Daftar layanan" },
+  { href: "/testimoni", label: "Testimoni nyata" },
   { href: "/hitung", label: "Kalkulator biaya" },
   { href: "/cara-kerja", label: "Cara kerja" },
   { href: "/faq", label: "Pertanyaan umum" },

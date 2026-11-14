@@ -8,6 +8,7 @@ import {
   useMemo,
   useState,
 } from "react";
+import { usePathname } from "next/navigation";
 import { SERVICES, type ServiceId } from "@/lib/services";
 
 type Mode = "hitung" | "penawaran";
@@ -66,6 +67,7 @@ export function CalculatorProvider({
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
   const [serviceId, setServiceId] = useState<ServiceId>("parafrase");
   const [mode, setMode] = useState<Mode>("hitung");
   const [estimasiRingkas, setEstimasiRingkas] = useState<EstimasiRingkas | null>(
@@ -80,10 +82,17 @@ export function CalculatorProvider({
     const params = new URLSearchParams(window.location.search);
 
     const layanan = params.get("layanan");
-    if (layanan && SERVICES.some((service) => service.id === layanan)) {
-      setServiceId(layanan as ServiceId);
-      if (layanan === "turnitin_ai") {
+    const validLayanan =
+      layanan && SERVICES.some((service) => service.id === layanan)
+        ? (layanan as ServiceId)
+        : null;
+
+    if (validLayanan) {
+      setServiceId(validLayanan);
+      if (validLayanan === "turnitin_ai") {
         setMode("penawaran");
+      } else if (!params.get("mode") && !params.get("tab")) {
+        setMode("hitung");
       }
     }
 
@@ -100,7 +109,7 @@ export function CalculatorProvider({
     if (tenggat) {
       setPreselectedDeadline(tenggat);
     }
-  }, []);
+  }, [pathname]);
 
   const pilihLayanan = useCallback(
     (id: ServiceId, qty?: number, deadlineId?: string) => {

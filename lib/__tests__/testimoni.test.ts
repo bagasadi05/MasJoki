@@ -8,6 +8,7 @@ import {
   URUTAN_TAMPIL_TESTIMONI,
 } from "../../content/testimoni";
 import { AKSEN } from "../aksen";
+import { navigasi } from "../nav";
 import { SERVICES } from "../services";
 
 const ROOT = process.cwd();
@@ -107,11 +108,25 @@ test("Bukti #04 memuat detail Turnitin 31/10/2026 beserta filter & disclaimer no
   assert.match(bukti04.turnitinDetail.disclaimer, /bukan jaminan/i);
 });
 
+test("testimoni terdaftar di menu navigasi utama dan terpisah dari beranda", () => {
+  assert.ok(
+    navigasi.some((item) => item.href === "/testimoni" && item.label === "Testimoni"),
+    "navigasi harus memuat tautan menu /testimoni",
+  );
+
+  const beranda = fs.readFileSync(path.join(ROOT, "app", "page.tsx"), "utf8");
+  assert.doesNotMatch(
+    beranda,
+    /TestimoniNyata/,
+    "beranda tidak boleh menempelkan komponen TestimoniNyata di bawah",
+  );
+});
+
 test("kepatuhan Pasal 04 & aturan copy: nihil PII klien, nihil 'Anda', nihil klaim/rating palsu", () => {
   const filesToAudit = [
     path.join(ROOT, "content", "testimoni.ts"),
     path.join(ROOT, "components", "testimoni-nyata.tsx"),
-    path.join(ROOT, "app", "page.tsx"),
+    path.join(ROOT, "app", "testimoni", "page.tsx"),
   ];
 
   const forbiddenPii = [

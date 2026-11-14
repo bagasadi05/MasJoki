@@ -113,8 +113,8 @@ export function SiteFooter() {
                 </Link>
               </li>
               <li>
-                <Link href="/#testimoni" className="text-slate-600 transition-colors hover:text-brand">
-                  Bukti Chat Nyata
+                <Link href="/testimoni" className="text-slate-600 transition-colors hover:text-brand">
+                  Testimoni Nyata
                 </Link>
               </li>
               <li>

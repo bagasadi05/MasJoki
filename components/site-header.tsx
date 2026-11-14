@@ -55,7 +55,7 @@ export function SiteHeader() {
               <span className="font-display text-[1.22rem] font-bold tracking-tight text-ink leading-tight">
                 Mas Joki
               </span>
-              <span className="hidden font-mono text-xs font-medium text-slate-500 xl:inline-block">
+              <span className="hidden font-mono text-xs font-medium text-slate-500 2xl:inline-block">
                 Asisten Akademik Transparan
               </span>
             </div>
@@ -63,7 +63,7 @@ export function SiteHeader() {
 
           {/* Status badge operasional WIB */}
           <span
-            className={`hidden shrink-0 items-center gap-2 whitespace-nowrap rounded-full border px-2.5 py-1 text-xs font-bold md:inline-flex lg:hidden xl:inline-flex shadow-2xs ${
+            className={`hidden shrink-0 items-center gap-2 whitespace-nowrap rounded-full border px-2.5 py-1 text-xs font-bold md:inline-flex lg:hidden 2xl:inline-flex shadow-2xs ${
               isOpen
                 ? "border-mint/25 bg-mint-soft/90 text-mint"
                 : "border-amber/25 bg-amber-soft/90 text-amber"

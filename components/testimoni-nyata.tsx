@@ -399,7 +399,10 @@ function LightboxBukti({
   onTutup: () => void;
   onPindah: (arah: -1 | 1) => void;
 }) {
-  const [zoomAsli, setZoomAsli] = useState(false);
+  const [zoomItemId, setZoomItemId] = useState<TestimoniBukti["id"] | null>(
+    null,
+  );
+  const zoomAsli = zoomItemId === item.id;
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
@@ -410,11 +413,6 @@ function LightboxBukti({
     onTutupRef.current = onTutup;
     onPindahRef.current = onPindah;
   }, [onTutup, onPindah]);
-
-  // Reset mode zoom tiap ganti bukti supaya gambar langsung muat rapi di layar.
-  useEffect(() => {
-    setZoomAsli(false);
-  }, [item.id]);
 
   // Kunci scroll body, pindahkan fokus ke tombol tutup, tangani Escape / Arrow / Tab trap,
   // lalu kembalikan fokus ke tombol pemicu saat modal ditutup.
@@ -526,7 +524,9 @@ function LightboxBukti({
           <div className="flex items-center gap-2">
             <button
               type="button"
-              onClick={() => setZoomAsli((z) => !z)}
+              onClick={() =>
+                setZoomItemId((prev) => (prev === item.id ? null : item.id))
+              }
               aria-pressed={zoomAsli}
               className="inline-flex min-h-10 cursor-pointer items-center gap-1.5 rounded-xl border border-line bg-card px-3 py-2 text-xs font-bold text-ink transition-colors hover:border-brand hover:text-brand motion-reduce:transition-none"
             >
@@ -706,7 +706,11 @@ function LightboxBukti({
   );
 }
 
-export function TestimoniNyata() {
+export function TestimoniNyata({
+  tampilkanHeader = false,
+}: {
+  tampilkanHeader?: boolean;
+}) {
   const [kategoriAktif, setKategoriAktif] = useState<TestimoniKategori>("semua");
   const [lightboxId, setLightboxId] = useState<TestimoniBukti["id"] | null>(
     null,
@@ -747,7 +751,7 @@ export function TestimoniNyata() {
   return (
     <section
       id="testimoni"
-      className="relative overflow-hidden border-b border-line bg-paper-2 py-14 scroll-mt-16 sm:py-20"
+      className="relative overflow-hidden border-b border-line bg-paper-2 py-12 scroll-mt-16 sm:py-16"
     >
       <div
         aria-hidden
@@ -755,29 +759,40 @@ export function TestimoniNyata() {
       />
 
       <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
-        {/* Header Bagian */}
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-          <div className="max-w-2xl">
-            <span className="stempel-hijau">✓ ARSIP CHAT NYATA</span>
-            <h2 className="mt-3 font-display text-[2rem] leading-tight tracking-[-0.02em] text-ink sm:text-[2.6rem]">
-              Bukti pengerjaan langsung dari WhatsApp.
+        {tampilkanHeader ? (
+          <div className="mb-7 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-2xl">
+              <span className="stempel-hijau">✓ ARSIP CHAT NYATA</span>
+              <h2 className="mt-3 font-display text-[2rem] leading-tight tracking-[-0.02em] text-ink sm:text-[2.6rem]">
+                Bukti pengerjaan langsung dari WhatsApp.
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed font-medium text-ink-soft">
+                Lima tangkapan layar pesanan sungguhan tanpa rating atau angka karangan. Nama klien, nomor HP, nama kampus, dan judul naskah disamarkan sesuai Pasal 04.
+              </p>
+            </div>
+
+            <div className="inline-flex w-fit items-center gap-2 rounded-full border border-line bg-card px-3.5 py-2 text-xs font-semibold text-ink shadow-2xs">
+              <ShieldCheck className="size-4 shrink-0 text-mint" aria-hidden />
+              <span>5 bukti terverifikasi · Klik gambar untuk zoom</span>
+            </div>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <h2 className="font-display text-lg font-bold tracking-tight text-ink sm:text-xl">
+              Arsip Pesanan Terverifikasi
             </h2>
-            <p className="mt-2 text-sm leading-relaxed font-medium text-ink-soft">
-              Lima tangkapan layar pesanan sungguhan tanpa rating atau angka karangan. Nama klien, nomor HP, nama kampus, dan judul naskah disamarkan sesuai Pasal 04.
+            <p className="inline-flex w-fit items-center gap-2 text-xs font-semibold text-ink-soft">
+              <ShieldCheck className="size-4 shrink-0 text-mint" aria-hidden />
+              <span>Klik gambar mana saja untuk memperbesar chat</span>
             </p>
           </div>
-
-          <div className="inline-flex w-fit items-center gap-2 rounded-full border border-line bg-card px-3.5 py-2 text-xs font-semibold text-ink shadow-2xs">
-            <ShieldCheck className="size-4 shrink-0 text-mint" aria-hidden />
-            <span>5 bukti terverifikasi · Klik gambar untuk zoom</span>
-          </div>
-        </div>
+        )}
 
         {/* Filter Kategori Opsional */}
         <div
           role="group"
           aria-label="Saring bukti berdasarkan kategori layanan"
-          className="mt-7 flex flex-wrap gap-2"
+          className="mt-5 flex flex-wrap gap-2"
         >
           {KATEGORI_TESTIMONI.map((kat) => {
             const aktif = kategoriAktif === kat.id;

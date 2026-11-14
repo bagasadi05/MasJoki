@@ -33,6 +33,7 @@ ${layanan}
 ## Halaman penting
 - [Kalkulator biaya](${SITE_URL}/hitung): hitung estimasi sendiri sebelum chat
 - [Daftar layanan](${SITE_URL}/jasa): katalog lengkap
+- [Testimoni nyata](${SITE_URL}/testimoni): arsip chat WhatsApp pesanan asli dengan privasi klien disamarkan
 - [Cara kerja](${SITE_URL}/cara-kerja): empat langkah pemesanan
 - [FAQ](${SITE_URL}/faq): pertanyaan umum
 - [AI Humanizer](${SITE_URL}/humanizer): alat mandiri untuk menulis ulang naskah

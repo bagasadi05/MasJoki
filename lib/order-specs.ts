@@ -30,7 +30,7 @@ export const SERVICE_ORDER_SPECS: Record<ServiceId, ServiceOrderSpec> = {
     serviceId: "humanisasi",
     headline: "Form Pemesanan Humanisasi Teks AI",
     subheadline:
-      "Ubah teks hasil AI menjadi naskah mengalir alami yang mengalir alami dan sesuai standar dosen.",
+      "Ubah teks hasil AI menjadi naskah yang mengalir alami dan sesuai standar dosen.",
     checkerTitle: "Alat Pengecek AI yang Digunakan Kampus",
     checkerOptions: [
       { value: "turnitin_ai", label: "Turnitin AI Writing", badge: "Paling Umum" },

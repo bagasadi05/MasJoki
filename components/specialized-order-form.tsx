@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
+import Link from "next/link";
 import {
   ArrowLeft,
   ArrowRight,
@@ -41,7 +42,7 @@ import {
   priceLabel,
   type Service,
 } from "@/lib/services";
-import { pembayaran } from "@/lib/site";
+import { pembayaran, waLink } from "@/lib/site";
 import type { ActionResult } from "@/lib/types";
 
 const fieldClass =
@@ -130,21 +131,48 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
   );
 
   const sliderMax =
-    service.basis === "kata"
-      ? 10000
-      : service.basis === "halaman"
-        ? 80
-        : service.basis === "slide"
-          ? 50
-          : 10;
-  const sliderStep = service.chunk > 1 ? service.chunk : 1;
+    service.id === "word"
+      ? 150
+      : service.id === "artikel_ilmiah"
+        ? 4000
+        : service.id === "jurnal_submit"
+          ? 8000
+          : service.id === "paket_abstrak"
+            ? 500
+            : service.basis === "kata"
+              ? 10000
+              : service.basis === "halaman"
+                ? 80
+                : service.basis === "slide"
+                  ? 60
+                  : 10;
+
+  const sliderStep =
+    service.id === "paket_abstrak"
+      ? 10
+      : service.id === "artikel_ilmiah" || service.id === "jurnal_submit"
+        ? 100
+        : service.basis === "kata"
+          ? 250
+          : service.id === "word"
+            ? 1
+            : service.basis === "halaman" || service.basis === "slide"
+              ? 2
+              : 1;
 
   function ubahJumlah(val: number) {
     setQty(Math.max(service.minQty, val));
   }
 
   function sesuaikanJumlah(selisih: number) {
-    const langkah = service.chunk > 1 ? service.chunk : 1;
+    const langkah =
+      service.id === "paket_abstrak"
+        ? 25
+        : service.id === "artikel_ilmiah" || service.id === "jurnal_submit"
+          ? 250
+          : service.basis === "kata"
+            ? 250
+            : 1;
     ubahJumlah(qty + selisih * langkah);
   }
 
@@ -610,14 +638,30 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                   </div>
                 ) : null}
 
+                {/* Banner Peringatan Melebihi Batas Hitungan Otomatis */}
+                {price.isOverLimit ? (
+                  <div className="mt-4 rounded-2xl border border-amber/35 bg-amber-soft/85 p-4 text-[0.82rem] text-ink-soft">
+                    <p className="font-bold text-ink flex items-center gap-2">
+                      <Lightbulb className="size-4 shrink-0 text-amber" />
+                      <span>Dialihkan ke Mode Penawaran Khusus</span>
+                    </p>
+                    <p className="mt-1.5 leading-relaxed text-ink-soft">
+                      {price.overLimitMessage ??
+                        "Jumlah naskah melebihi batas perhitungan otomatis. Silakan kirimkan brief ke Mas Joki untuk penawaran waktu & biaya khusus."}
+                    </p>
+                  </div>
+                ) : null}
+
                 {/* Page to word helper for kata services */}
-                {service.basis === "kata" ? (
+                {service.basis === "kata" && service.id !== "paket_abstrak" ? (
                   <div className="mt-4 flex flex-wrap items-center gap-2 rounded-2xl bg-paper-2/70 p-3">
                     <span className="text-xs font-bold text-ink-soft">
                       Pilihan cepat halaman A4:
                     </span>
                     <div className="flex flex-wrap gap-1.5">
-                      {KONVERSI_HALAMAN_KATA.map((item) => (
+                      {KONVERSI_HALAMAN_KATA.filter(
+                        (item) => service.id !== "artikel_ilmiah" || item.kata <= 3000,
+                      ).map((item) => (
                         <button
                           key={item.hal}
                           type="button"
@@ -917,25 +961,51 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                   <span>Kembali</span>
                 </button>
 
-                <button
-                  type="submit"
-                  disabled={pending}
-                  className="flex-1 inline-flex items-center justify-center gap-2.5 rounded-2xl bg-brand px-7 py-4.5 text-[0.98rem] font-bold text-white shadow-lg shadow-brand/25 transition duration-200 hover:-translate-y-1 hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35 disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
-                >
-                  {pending ? (
-                    <span>Sedang Memproses…</span>
-                  ) : (
-                    <>
-                      <Send className="size-4.5" />
-                      <span>Kirim Pesanan ke WhatsApp</span>
-                      <span className="rounded-lg bg-white/20 px-2.5 py-0.5 font-mono text-sm font-bold">
-                        {rupiah(price.total)}
-                      </span>
-                      <ArrowRight className="size-4" />
-                    </>
-                  )}
-                </button>
+                {price.isOverLimit ? (
+                  <a
+                    href={waLink(
+                      `Halo Mas Joki, saya mau minta penawaran untuk layanan ${service.name} dengan jumlah perkiraan ${price.qty} ${BASIS_LABEL[service.basis]}. Tenggat: ${price.deadline.label}. Mohon info estimasi biaya dan waktu pengerjaannya!`,
+                    )}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 inline-flex items-center justify-center gap-2.5 rounded-2xl bg-brand px-7 py-4.5 text-[0.98rem] font-bold text-white shadow-lg shadow-brand/25 transition duration-200 hover:-translate-y-1 hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35"
+                  >
+                    <Send className="size-4.5" />
+                    <span>Kirim Penawaran via WhatsApp</span>
+                    <ArrowRight className="size-4" />
+                  </a>
+                ) : (
+                  <button
+                    type="submit"
+                    disabled={pending}
+                    className="flex-1 inline-flex items-center justify-center gap-2.5 rounded-2xl bg-brand px-7 py-4.5 text-[0.98rem] font-bold text-white shadow-lg shadow-brand/25 transition duration-200 hover:-translate-y-1 hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35 disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
+                  >
+                    {pending ? (
+                      <span>Sedang Memproses…</span>
+                    ) : (
+                      <>
+                        <Send className="size-4.5" />
+                        <span>Kirim Pesanan ke WhatsApp</span>
+                        <span className="rounded-lg bg-white/20 px-2.5 py-0.5 font-mono text-sm font-bold">
+                          {rupiah(price.total)}
+                        </span>
+                        <ArrowRight className="size-4" />
+                      </>
+                    )}
+                  </button>
+                )}
               </div>
+
+              {price.isOverLimit ? (
+                <div className="text-center">
+                  <Link
+                    href={`/hitung?mode=penawaran&layanan=${service.id}`}
+                    className="inline-flex items-center justify-center py-1 text-xs font-bold text-brand hover:underline"
+                  >
+                    Atau isi formulir detail di mode Minta Penawaran
+                  </Link>
+                </div>
+              ) : null}
 
               <p className="text-center text-[0.76rem] leading-relaxed text-muted">
                 Tanpa perlu buat akun. Format chat terisi otomatis di aplikasi WhatsApp kamu.
@@ -947,19 +1017,65 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
         {/* Kolom Kanan: Live Nota Kwitansi (Sticky) */}
         <div className="lg:col-start-2">
           <div className="lg:sticky lg:top-24">
-            <Nota
-              lines={price.lines}
-              total={price.total}
-              dpAmount={price.dpAmount}
-              effectiveUnitLabel={price.effectiveUnitLabel}
-              estimatedTurnaround={price.estimatedTurnaround}
-              estimatedDateRange={estimatedDateRange}
-              equivalentLabel={price.equivalentLabel}
-              note="Harga terkunci setelah file dicek Mas Joki. Tidak ada biaya tersembunyi."
-              stamp="Harga Transparan"
-              code="ORDER-SPECS"
-              aksen={aksen}
-            />
+            {price.isOverLimit ? (
+              <div className="nota p-6 sm:p-7">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="font-display text-lg font-bold leading-none tracking-tight text-ink">
+                      {service.name}
+                    </p>
+                    <p className="mt-1 text-xs font-semibold text-muted">
+                      Penawaran Khusus
+                    </p>
+                  </div>
+                  <span className="rounded-md border border-line bg-paper-2 px-2 py-0.5 font-mono text-[11px] font-bold uppercase text-ink-soft">
+                    CUSTOM
+                  </span>
+                </div>
+                <div className="my-5 border-t border-dashed border-line" />
+                <div className="space-y-2.5 text-sm">
+                  <div className="flex items-baseline justify-between gap-3">
+                    <span className="text-muted">Perkiraan jumlah</span>
+                    <span className="font-mono text-xs font-bold text-ink">
+                      {angka(price.qty)} {BASIS_LABEL[service.basis]}
+                    </span>
+                  </div>
+                  <div className="flex items-baseline justify-between gap-3">
+                    <span className="text-muted">Tenggat</span>
+                    <span className="font-mono text-xs font-bold text-ink">
+                      {price.deadline.label}
+                    </span>
+                  </div>
+                </div>
+                <div className="my-5 border-t border-dashed border-line" />
+                <div className="flex items-end justify-between gap-3 rounded-2xl bg-paper-2/70 p-4">
+                  <p className="text-xs font-bold uppercase tracking-wider text-ink">
+                    Estimasi Biaya
+                  </p>
+                  <p className="font-display text-xl font-bold tracking-tight text-brand">
+                    Dihitung Mas Joki
+                  </p>
+                </div>
+                <p className="mt-3.5 text-xs leading-relaxed text-ink-soft">
+                  {price.overLimitMessage ??
+                    "Jumlah naskah melebihi batas perhitungan otomatis. Mas Joki akan mengonfirmasi harga terbaik di WhatsApp."}
+                </p>
+              </div>
+            ) : (
+              <Nota
+                lines={price.lines}
+                total={price.total}
+                dpAmount={price.dpAmount}
+                effectiveUnitLabel={price.effectiveUnitLabel}
+                estimatedTurnaround={price.estimatedTurnaround}
+                estimatedDateRange={estimatedDateRange}
+                equivalentLabel={price.equivalentLabel}
+                note="Harga terkunci setelah file dicek Mas Joki. Tidak ada biaya tersembunyi."
+                stamp="Harga Transparan"
+                code="ORDER-SPECS"
+                aksen={aksen}
+              />
+            )}
 
             {/* Jaminan Layanan Box */}
             <div className="mt-5 rounded-2xl border border-line bg-paper-2/90 p-5 text-[0.8rem] shadow-xs">
@@ -1015,7 +1131,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                 Langkah {step}/3 · {service.name}
               </p>
               <p className="font-display text-lg font-bold leading-none text-brand tabular-nums">
-                <AnimatedPrice value={price.total} />
+                {price.isOverLimit ? "Dihitung Mas Joki" : <AnimatedPrice value={price.total} />}
               </p>
             </div>
           </div>
@@ -1029,6 +1145,18 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
               <span>Lanjut Langkah {step + 1}</span>
               <ArrowRight className="size-3.5" />
             </button>
+          ) : price.isOverLimit ? (
+            <a
+              href={waLink(
+                `Halo Mas Joki, saya mau minta penawaran untuk layanan ${service.name} dengan jumlah perkiraan ${price.qty} ${BASIS_LABEL[service.basis]}. Tenggat: ${price.deadline.label}. Mohon info estimasi biaya dan waktu pengerjaannya!`,
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="shrink-0 inline-flex items-center gap-1.5 rounded-xl bg-brand px-4 py-2.5 text-xs font-bold text-white shadow-md shadow-brand/20 active:scale-95"
+            >
+              <span>Kirim Penawaran</span>
+              <Send className="size-3.5" />
+            </a>
           ) : (
             <button
               type="button"

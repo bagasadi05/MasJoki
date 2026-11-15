@@ -5,13 +5,37 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { TestimoniNyata } from "@/components/testimoni-nyata";
 import { TransisiHalaman } from "@/components/transisi-halaman";
-import { waLink, waPesanUmum } from "@/lib/site";
+import { SITE_URL } from "@/lib/config";
+import { site, waLink, waPesanUmum } from "@/lib/site";
+
+const PAGE_DESCRIPTION =
+  "Lima tangkapan layar chat WhatsApp pesanan nyata Mas Joki tanpa rating karangan, dengan identitas klien disamarkan sesuai Pasal 04 Kerahasiaan.";
 
 export const metadata: Metadata = {
   title: "Testimoni & Bukti Pengerjaan Nyata",
-  description:
-    "Lima tangkapan layar chat WhatsApp pesanan nyata Mas Joki tanpa rating karangan, dengan identitas klien disamarkan sesuai Pasal 04 Kerahasiaan.",
+  description: PAGE_DESCRIPTION,
   alternates: { canonical: "/testimoni" },
+  openGraph: {
+    title: `Testimoni & Bukti Pengerjaan Nyata · ${site.name}`,
+    description: PAGE_DESCRIPTION,
+    url: "/testimoni",
+    type: "website",
+    locale: "id_ID",
+  },
+};
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Beranda", item: SITE_URL },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Testimoni",
+      item: `${SITE_URL}/testimoni`,
+    },
+  ],
 };
 
 export default function HalamanTestimoni() {
@@ -83,6 +107,11 @@ export default function HalamanTestimoni() {
       </TransisiHalaman>
 
       <SiteFooter />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
     </>
   );
 }

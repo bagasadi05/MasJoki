@@ -179,6 +179,13 @@ export default function HalamanCaraKerja() {
                 <span>Buka Kalkulator Biaya</span>
                 <ArrowRight className="size-4" />
               </Link>
+              <Link
+                href="/testimoni"
+                className="inline-flex items-center gap-2 rounded-xl border border-line bg-paper-2 px-5 py-3.5 text-sm font-bold text-ink transition-colors hover:border-brand hover:text-brand"
+              >
+                <span>Lihat Bukti Pengerjaan</span>
+                <ArrowRight className="size-4" />
+              </Link>
               <a
                 href={waLink(waPesanUmum)}
                 target="_blank"

@@ -147,7 +147,7 @@ export function ServiceList({
                   </Link>
                 ) : (
                   <Link
-                    href={`/hitung?layanan=${service.id}`}
+                    href={`/hitung?layanan=${service.id === "jurnal" ? "artikel_ilmiah" : service.id}`}
                     className="inline-flex items-center gap-1.5 rounded-xl bg-brand px-5 py-2.5 text-xs font-bold text-white shadow-xs transition duration-200 hover:bg-brand-dark hover:shadow-md active:scale-95 shrink-0"
                   >
                     <span>Hitung</span>

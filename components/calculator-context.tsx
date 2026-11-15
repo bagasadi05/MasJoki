@@ -30,6 +30,15 @@ interface CalculatorState {
   setEstimasiRingkas: (est: EstimasiRingkas | null) => void;
   preselectedQty: number | null;
   preselectedDeadline: string | null;
+  clearPreselected: () => void;
+}
+
+/**
+ * Katalog utama memakai id `"jurnal"`, sedangkan kalkulator memisahkan layanan
+ * jurnal menjadi `"artikel_ilmiah"` (Tugas Kuliah) dan `"jurnal_submit"` (Siap Submit).
+ */
+export function normalisasiLayananKalkulator(id: ServiceId): ServiceId {
+  return id === "jurnal" ? "artikel_ilmiah" : id;
 }
 
 const CalculatorContext = createContext<CalculatorState | null>(null);
@@ -54,7 +63,7 @@ export function scrollKeKalkulator(
     document.getElementById("judul-hitung")?.focus({ preventScroll: true });
   } else if (typeof window !== "undefined") {
     const params = new URLSearchParams();
-    if (id) params.set("layanan", id);
+    if (id) params.set("layanan", normalisasiLayananKalkulator(id));
     if (qty !== undefined) params.set("jumlah", String(qty));
     if (deadlineId !== undefined) params.set("tenggat", deadlineId);
     const queryString = params.toString();
@@ -84,7 +93,7 @@ export function CalculatorProvider({
     const layanan = params.get("layanan");
     const validLayanan =
       layanan && SERVICES.some((service) => service.id === layanan)
-        ? (layanan as ServiceId)
+        ? normalisasiLayananKalkulator(layanan as ServiceId)
         : null;
 
     if (validLayanan) {
@@ -111,10 +120,16 @@ export function CalculatorProvider({
     }
   }, [pathname]);
 
+  const clearPreselected = useCallback(() => {
+    setPreselectedQty(null);
+    setPreselectedDeadline(null);
+  }, []);
+
   const pilihLayanan = useCallback(
     (id: ServiceId, qty?: number, deadlineId?: string) => {
-      setServiceId(id);
-      if (id === "turnitin_ai") {
+      const targetId = normalisasiLayananKalkulator(id);
+      setServiceId(targetId);
+      if (targetId === "turnitin_ai") {
         setMode("penawaran");
       } else {
         setMode("hitung");
@@ -125,7 +140,7 @@ export function CalculatorProvider({
       if (deadlineId !== undefined) {
         setPreselectedDeadline(deadlineId);
       }
-      scrollKeKalkulator(id, qty, deadlineId);
+      scrollKeKalkulator(targetId, qty, deadlineId);
     },
     [],
   );
@@ -141,6 +156,7 @@ export function CalculatorProvider({
       setEstimasiRingkas,
       preselectedQty,
       preselectedDeadline,
+      clearPreselected,
     }),
     [
       serviceId,
@@ -149,6 +165,7 @@ export function CalculatorProvider({
       estimasiRingkas,
       preselectedQty,
       preselectedDeadline,
+      clearPreselected,
     ],
   );
 

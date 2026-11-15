@@ -11,6 +11,7 @@ import { TransisiHalaman } from "@/components/transisi-halaman";
 import { StempelLayanan } from "@/components/stempel-layanan";
 import { KONTEN_LAYANAN } from "@/content/layanan";
 import { aksenLayanan } from "@/lib/aksen";
+import { SITE_URL } from "@/lib/config";
 import { rupiah } from "@/lib/format";
 import { computePrice } from "@/lib/pricing";
 import {
@@ -107,13 +108,18 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Beranda", item: "/" },
-          { "@type": "ListItem", position: 2, name: "Layanan", item: "/jasa" },
+          { "@type": "ListItem", position: 1, name: "Beranda", item: SITE_URL },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Layanan",
+            item: `${SITE_URL}/jasa`,
+          },
           {
             "@type": "ListItem",
             position: 3,
             name: service.name,
-            item: `/jasa/${service.id}`,
+            item: `${SITE_URL}/jasa/${service.id}`,
           },
         ],
       },
@@ -682,10 +688,22 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
 
               <div className="flex flex-col gap-3 sm:flex-row">
                 <Link
-                  href={service.customQuoteOnly ? "/hitung?mode=penawaran&layanan=turnitin_ai" : `/jasa/${service.id}/order`}
+                  href={
+                    service.customQuoteOnly
+                      ? "/hitung?mode=penawaran&layanan=turnitin_ai"
+                      : service.id === "jurnal"
+                        ? "/hitung?layanan=artikel_ilmiah"
+                        : `/jasa/${service.id}/order`
+                  }
                   className="inline-flex items-center justify-center gap-2 rounded-xl bg-stabilo px-7 py-4 text-sm font-black text-slate-950 shadow-md transition hover:bg-amber-300"
                 >
-                  <span>{service.customQuoteOnly ? "Minta Penawaran Sekarang" : `Pesan ${service.name} Sekarang`}</span>
+                  <span>
+                    {service.customQuoteOnly
+                      ? "Minta Penawaran Sekarang"
+                      : service.id === "jurnal"
+                        ? "Buka Kalkulator Jurnal"
+                        : `Pesan ${service.name} Sekarang`}
+                  </span>
                   <ArrowRight className="size-4" />
                 </Link>
                 <a

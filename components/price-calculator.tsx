@@ -150,6 +150,46 @@ const KONVERSI_HALAMAN_KATA = [
   { hal: 20, kata: 5000, badge: "-10%" },
 ];
 
+const KATEGORI_GRUP: {
+  id: string;
+  category: string;
+  badge?: string;
+  services: ServiceId[];
+}[] = [
+  {
+    id: "penulisan",
+    category: "Parafrase & Humanisasi Teks",
+    services: ["parafrase", "humanisasi"],
+  },
+  {
+    id: "makalah_jurnal",
+    category: "Kepenulisan Makalah",
+    services: ["makalah"],
+  },
+  {
+    id: "makalah_jurnal",
+    category: "Artikel Jurnal",
+    badge: "2 Pilihan Tingkat",
+    services: ["artikel_ilmiah", "jurnal_submit"],
+  },
+  {
+    id: "dokumen",
+    category: "Presentasi & Format Dokumen",
+    services: ["powerpoint", "word"],
+  },
+  {
+    id: "bahasa_desain",
+    category: "Bahasa & Terjemahan",
+    badge: "Termasuk Paket Abstrak",
+    services: ["terjemah", "paket_abstrak"],
+  },
+  {
+    id: "bahasa_desain",
+    category: "Desain & Khusus",
+    services: ["desain", "turnitin_ai"],
+  },
+];
+
 export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {}) {
   const {
     serviceId,
@@ -159,6 +199,7 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
     setEstimasiRingkas,
     preselectedQty,
     preselectedDeadline,
+    clearPreselected,
   } = useCalculator();
   const service = getService(serviceId);
   const aksen = aksenLayanan(service.id);
@@ -185,25 +226,31 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
 
   useEffect(() => {
     setQuoteService(serviceId);
+    setKategoriFilter((currentFilter) => {
+      if (currentFilter === "semua") return currentFilter;
+      const terlihat = KATEGORI_GRUP.some(
+        (grp) => grp.id === currentFilter && grp.services.includes(serviceId),
+      );
+      return terlihat ? currentFilter : "semua";
+    });
   }, [serviceId]);
 
   useEffect(() => {
+    if (preselectedQty === null && preselectedDeadline === null) return;
     if (preselectedQty && preselectedQty > 0) {
       setQtyInput((prev) => ({
         ...prev,
         [serviceId]: String(preselectedQty),
       }));
     }
-  }, [preselectedQty, serviceId]);
-
-  useEffect(() => {
     if (
       preselectedDeadline &&
       DEADLINES.some((d) => d.id === preselectedDeadline)
     ) {
       setDeadlineId(preselectedDeadline as DeadlineId);
     }
-  }, [preselectedDeadline]);
+    clearPreselected();
+  }, [preselectedQty, preselectedDeadline, serviceId, clearPreselected]);
 
   const [result, setResult] = useState<ActionResult | null>(null);
   const [pending, startTransition] = useTransition();
@@ -503,40 +550,7 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
                 </div>
 
                 <div className="space-y-4">
-                  {[
-                    {
-                      id: "penulisan",
-                      category: "Parafrase & Humanisasi Teks",
-                      services: ["parafrase", "humanisasi"],
-                    },
-                    {
-                      id: "makalah_jurnal",
-                      category: "Kepenulisan Makalah",
-                      services: ["makalah"],
-                    },
-                    {
-                      id: "makalah_jurnal",
-                      category: "Artikel Jurnal",
-                      badge: "2 Pilihan Tingkat",
-                      services: ["artikel_ilmiah", "jurnal_submit"],
-                    },
-                    {
-                      id: "dokumen",
-                      category: "Presentasi & Format Dokumen",
-                      services: ["powerpoint", "word"],
-                    },
-                    {
-                      id: "bahasa_desain",
-                      category: "Bahasa & Terjemahan",
-                      badge: "Termasuk Paket Abstrak",
-                      services: ["terjemah", "paket_abstrak"],
-                    },
-                    {
-                      id: "bahasa_desain",
-                      category: "Desain & Khusus",
-                      services: ["desain", "turnitin_ai"],
-                    },
-                  ]
+                  {KATEGORI_GRUP
                     .filter((grp) => kategoriFilter === "semua" || grp.id === kategoriFilter)
                     .map((grp) => {
                     const groupItems = CALCULABLE_SERVICES.filter((item) =>
@@ -783,13 +797,15 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
                 </div>
 
                 {/* Kalkulator Bantu Konversi Halaman ke Kata */}
-                {service.basis === "kata" ? (
+                {service.basis === "kata" && service.id !== "paket_abstrak" ? (
                   <div className="mt-3 flex flex-wrap items-center gap-2 rounded-2xl bg-paper-2/70 p-3">
                     <span className="text-xs font-bold text-ink-soft">
                       Hanya tahu jumlah halaman A4? Pilih taksiran:
                     </span>
                     <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-1.5">
-                      {KONVERSI_HALAMAN_KATA.map((item) => {
+                      {KONVERSI_HALAMAN_KATA.filter(
+                        (item) => service.id !== "artikel_ilmiah" || item.kata <= 3000,
+                      ).map((item) => {
                         const aktif = price.qty === item.kata;
                         return (
                           <button
@@ -1132,7 +1148,7 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
             </p>
 
             <div>
-              {mode === "hitung" ? (
+              {mode === "hitung" && !price.isOverLimit ? (
                 <Nota
                   lines={price.lines}
                   total={price.total}

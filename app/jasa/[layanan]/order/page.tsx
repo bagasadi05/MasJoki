@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { SpecializedOrderForm } from "@/components/specialized-order-form";
 import { SiteFooter } from "@/components/site-footer";
@@ -15,7 +15,9 @@ interface OrderPageProps {
 }
 
 export function generateStaticParams() {
-  return SERVICES.map((service) => ({ layanan: service.id }));
+  return SERVICES.filter((service) => service.id !== "jurnal").map((service) => ({
+    layanan: service.id,
+  }));
 }
 
 export async function generateMetadata({
@@ -39,6 +41,7 @@ export async function generateMetadata({
 export default async function HalamanOrderSpesifik({ params }: OrderPageProps) {
   const { layanan } = await params;
   if (!SLUG.has(layanan as ServiceId)) notFound();
+  if (layanan === "jurnal") redirect("/hitung?layanan=artikel_ilmiah");
 
   const service = getService(layanan as ServiceId);
   const spec = getOrderSpec(service.id);

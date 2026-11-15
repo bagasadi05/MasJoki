@@ -10,19 +10,11 @@ import { getService } from "@/lib/services";
 import { waLink } from "@/lib/site";
 import type { ActionResult } from "@/lib/types";
 import type { VoucherRedeemResult } from "@/lib/humanizer/types";
-import { verifyVoucherCode } from "@/lib/humanizer/vouchers.server";
-
-import {
-  humanizeWithGemini,
-  type GeminiHumanizeOptions,
-  type GeminiHumanizeResult,
+import type {
+  GeminiHumanizeOptions,
+  GeminiHumanizeResult,
 } from "@/lib/humanizer/gemini.server";
 import { validateHumanizerIntegrity } from "@/lib/humanizer/integrity";
-import {
-  creditHumanizerWords,
-  deductHumanizerWords,
-  getOrCreateHumanizerWallet,
-} from "@/lib/humanizer/wallets.server";
 import { countWords } from "@/lib/humanizer/analyzer";
 import {
   fieldErrors,
@@ -149,6 +141,15 @@ export async function submitOrder(
     data.addons,
   );
 
+  if (service.customQuoteOnly || price.isOverLimit) {
+    return {
+      status: "error",
+      message:
+        price.overLimitMessage ??
+        "Jumlah pesanan melebihi batas hitungan otomatis. Silakan gunakan mode Minta Penawaran.",
+    };
+  }
+
   const pesan = pesanPesanan({
     service,
     price,
@@ -216,6 +217,15 @@ export async function submitSpecializedOrder(
     data.difficultyId,
     data.addons,
   );
+
+  if (service.customQuoteOnly || price.isOverLimit) {
+    return {
+      status: "error",
+      message:
+        price.overLimitMessage ??
+        "Jumlah pesanan melebihi batas hitungan otomatis. Silakan gunakan mode Minta Penawaran.",
+    };
+  }
 
   const pesan = pesanOrderSpesifik({
     service,
@@ -311,6 +321,14 @@ export async function redeemVoucherAction(code: string): Promise<VoucherRedeemRe
     };
   }
 
+  const [
+    { creditHumanizerWords, getOrCreateHumanizerWallet },
+    { verifyVoucherCode },
+  ] = await Promise.all([
+    import("@/lib/humanizer/wallets.server"),
+    import("@/lib/humanizer/vouchers.server"),
+  ]);
+
   const wallet = await getOrCreateHumanizerWallet();
   if (!wallet.ok) return { ok: false, error: wallet.error };
 
@@ -336,6 +354,10 @@ export async function getHumanizerWalletAction(): Promise<
   | { ok: true; remainingWords: number }
   | { ok: false; error: string; errorCode?: "auth" | "config" | "database" }
 > {
+  const { getOrCreateHumanizerWallet } = await import(
+    "@/lib/humanizer/wallets.server"
+  );
+
   const wallet = await getOrCreateHumanizerWallet();
   if (!wallet.ok) {
     return { ok: false, error: wallet.error, errorCode: wallet.errorCode };
@@ -424,6 +446,14 @@ export async function humanizeWithGeminiAction(
       errorCode: "rate-limit",
     };
   }
+
+  const [
+    { creditHumanizerWords, deductHumanizerWords, getOrCreateHumanizerWallet },
+    { humanizeWithGemini },
+  ] = await Promise.all([
+    import("@/lib/humanizer/wallets.server"),
+    import("@/lib/humanizer/gemini.server"),
+  ]);
 
   const wallet = await getOrCreateHumanizerWallet();
   if (!wallet.ok) return { ok: false, error: wallet.error, errorCode: "wallet" };

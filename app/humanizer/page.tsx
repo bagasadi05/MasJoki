@@ -5,13 +5,20 @@ import { TransisiHalaman } from "@/components/transisi-halaman";
 import { SiteFooter } from "@/components/site-footer";
 import { HumanizerWorkspace } from "@/components/humanizer/humanizer-workspace";
 import { HumanizerTour } from "@/components/humanizer/humanizer-tour";
+import { buatBreadcrumbSchema, buatOpenGraph } from "@/lib/schema";
+
+const TITLE = "Humanizer AI";
+const DESCRIPTION =
+  "Ubah naskah akademik, formal, atau draf buatan AI menjadi bahasa sehari-hari yang sangat sederhana, agak polos, dan mudah dipahami tanpa mengubah angka desimal atau sitasi referensi.";
 
 export const metadata: Metadata = {
-  title: "Humanizer AI",
-  description:
-    "Ubah naskah akademik, formal, atau draf buatan AI menjadi bahasa sehari-hari yang sangat sederhana, agak polos, dan mudah dipahami tanpa mengubah angka desimal atau sitasi referensi.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: "/humanizer" },
+  openGraph: buatOpenGraph(TITLE, DESCRIPTION, "/humanizer"),
 };
+
+const jsonLd = buatBreadcrumbSchema([{ name: "Humanizer AI", path: "/humanizer" }]);
 
 const PRINSIP = [
   {
@@ -128,6 +135,11 @@ export default function HumanizerPage() {
       </TransisiHalaman>
 
       <SiteFooter />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
     </>
   );
 }

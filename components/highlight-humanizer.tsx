@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, Coins, Sparkles } from "lucide-react";
 import { TOKEN_PACKAGES, INITIAL_FREE_TOKENS } from "@/lib/humanizer/tokens";
-import { rupiah } from "@/lib/format";
+import { angka, rupiah } from "@/lib/format";
 import { LacakKlik } from "./lacak-klik";
 
 /**
@@ -35,7 +35,7 @@ export function HighlightHumanizer() {
               <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-mint" aria-hidden />
               <span>
                 <strong className="font-bold text-ink">
-                  {INITIAL_FREE_TOKENS.toLocaleString("id-ID")} kata gratis
+                  {angka(INITIAL_FREE_TOKENS)} kata gratis
                 </strong>{" "}
                 untuk akun baru, tanpa kartu kredit.
               </span>
@@ -113,7 +113,7 @@ export function HighlightHumanizer() {
                     )}
                   </p>
                   <p className="mt-0.5 text-[0.72rem] text-muted">
-                    {p.words.toLocaleString("id-ID")} kata naskah ·{" "}
+                    {angka(p.words)} kata naskah ·{" "}
                     {rupiah(Math.round(((p.price / p.words) * 1000) / 100) * 100)} / 1.000 kata
                   </p>
                 </div>
@@ -130,7 +130,7 @@ export function HighlightHumanizer() {
               berikutnya.
             </p>
             <span className="stempel shrink-0 text-[0.58rem]">
-              {INITIAL_FREE_TOKENS} kata gratis
+              {angka(INITIAL_FREE_TOKENS)} kata gratis
             </span>
           </div>
         </div>

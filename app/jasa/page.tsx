@@ -6,14 +6,21 @@ import { ServiceList } from "@/components/service-list";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { TransisiHalaman } from "@/components/transisi-halaman";
+import { buatBreadcrumbSchema, buatOpenGraph } from "@/lib/schema";
 import { waLink, waPesanUmum } from "@/lib/site";
 
+const TITLE = "Daftar Layanan & Harga Lengkap";
+const DESCRIPTION =
+  "Sembilan layanan Mas Joki dengan standar transparansi harga: parafrase, humanisasi teks AI, makalah, artikel jurnal, PowerPoint, rapikan Word, terjemahan, desain visual, dan penurunan skor Turnitin & AI.";
+
 export const metadata: Metadata = {
-  title: "Daftar Layanan & Harga Lengkap",
-  description:
-    "Sembilan layanan Mas Joki dengan standar transparansi harga: parafrase, humanisasi teks AI, makalah, artikel jurnal, PowerPoint, rapikan Word, terjemahan, desain visual, dan penurunan skor Turnitin & AI.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: "/jasa" },
+  openGraph: buatOpenGraph(TITLE, DESCRIPTION, "/jasa"),
 };
+
+const jsonLd = buatBreadcrumbSchema([{ name: "Semua Layanan", path: "/jasa" }]);
 
 export default function HalamanDaftarLayanan() {
   return (
@@ -103,6 +110,11 @@ export default function HalamanDaftarLayanan() {
       </TransisiHalaman>
 
       <SiteFooter />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
     </>
   );
 }

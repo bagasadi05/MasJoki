@@ -18,19 +18,27 @@ export function WaMelayang() {
   const pathname = usePathname();
 
   useEffect(() => {
-    const bagian = document.querySelectorAll("#hitung, #bayar, #cta-bawah, footer");
-    if (bagian.length === 0) return;
+    setSembunyi(false);
+    let pengamat: IntersectionObserver | null = null;
+    const rafId = window.requestAnimationFrame(() => {
+      const bagian = document.querySelectorAll("#hitung, #bayar, #cta-bawah, footer");
+      if (bagian.length === 0) return;
 
-    const pengamat = new IntersectionObserver(
-      (entries) => {
-        setSembunyi(entries.some((entry) => entry.isIntersecting));
-      },
-      { rootMargin: "0px 0px -15% 0px", threshold: 0 },
-    );
+      pengamat = new IntersectionObserver(
+        (entries) => {
+          setSembunyi(entries.some((entry) => entry.isIntersecting));
+        },
+        { rootMargin: "0px 0px -15% 0px", threshold: 0 },
+      );
 
-    bagian.forEach((el) => pengamat.observe(el));
-    return () => pengamat.disconnect();
-  }, []);
+      bagian.forEach((el) => pengamat?.observe(el));
+    });
+
+    return () => {
+      window.cancelAnimationFrame(rafId);
+      pengamat?.disconnect();
+    };
+  }, [pathname]);
 
   // Di halaman alat (Humanizer) tombol melayang mengganggu area editor.
   if (pathname?.startsWith("/humanizer")) return null;
@@ -58,7 +66,6 @@ export function WaMelayang() {
           width={32}
           height={32}
           className="size-full object-cover object-top"
-          priority
         />
         <span className={`absolute bottom-0 right-0 size-2 rounded-full border border-white ${isOpen ? "bg-mint" : "bg-amber"}`} />
       </div>

@@ -315,7 +315,6 @@ export default function Home() {
                   width={112}
                   height={112}
                   className="size-full object-cover object-[center_18%]"
-                  priority
                 />
               </div>
 

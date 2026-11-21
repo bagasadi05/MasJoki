@@ -6,13 +6,20 @@ import { SimulasiContoh } from "@/components/simulasi-contoh";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { TransisiHalaman } from "@/components/transisi-halaman";
+import { buatBreadcrumbSchema, buatOpenGraph } from "@/lib/schema";
+
+const TITLE = "Kalkulator Biaya Bantuan Tugas";
+const DESCRIPTION =
+  "Hitung estimasi biaya bantuan tugas kuliahmu secara mandiri. Pilih layanan, sesuaikan jumlah kata/halaman, tentukan tenggat, dan dapatkan rincian nota kwitansi transparan di awal.";
 
 export const metadata: Metadata = {
-  title: "Kalkulator Biaya Bantuan Tugas",
-  description:
-    "Hitung estimasi biaya bantuan tugas kuliahmu secara mandiri. Pilih layanan, sesuaikan jumlah kata/halaman, tentukan tenggat, dan dapatkan rincian nota kwitansi transparan di awal.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: "/hitung" },
+  openGraph: buatOpenGraph(TITLE, DESCRIPTION, "/hitung"),
 };
+
+const jsonLd = buatBreadcrumbSchema([{ name: "Kalkulator Biaya", path: "/hitung" }]);
 
 export default function HalamanKalkulator() {
   return (
@@ -63,6 +70,11 @@ export default function HalamanKalkulator() {
       </TransisiHalaman>
 
       <SiteFooter />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
     </>
   );
 }

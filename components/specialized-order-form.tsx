@@ -945,7 +945,7 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
               {result?.status === "error" ? (
                 <p
                   role="alert"
-                  className="rounded-2xl border border-red-300 bg-red-50 p-4 text-[0.84rem] font-medium text-red-800"
+                  className="rounded-2xl border border-red-300 bg-red-50 p-4 text-[0.84rem] font-medium text-red-800 dark:border-red-800 dark:bg-red-950/40 dark:text-red-200"
                 >
                   {result.message}
                 </p>

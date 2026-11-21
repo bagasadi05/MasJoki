@@ -90,12 +90,18 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
           name: site.name,
           email: site.email,
         },
-        offers: {
-          "@type": "Offer",
-          priceCurrency: "IDR",
-          price: service.pricePerChunk,
-          description: `${priceLabel(service)}, total menyesuaikan jumlah dan tenggat.`,
-        },
+        offers: service.customQuoteOnly
+          ? {
+              "@type": "Offer",
+              priceCurrency: "IDR",
+              description: `${priceLabel(service)}, penawaran harga dihitung sesuai brief tugas.`,
+            }
+          : {
+              "@type": "Offer",
+              priceCurrency: "IDR",
+              price: service.pricePerChunk,
+              description: `${priceLabel(service)}, total menyesuaikan jumlah dan tenggat.`,
+            },
       },
       {
         "@type": "FAQPage",
@@ -422,7 +428,7 @@ export default async function HalamanLayanan({ params }: HalamanProps) {
                     <div className="rounded-2xl border-2 border-brand/35 bg-brand-soft/20 p-5 transition hover:border-brand">
                       <div className="flex items-start justify-between gap-3">
                         <div>
-                          <span className="inline-block rounded-md bg-purple-100 text-purple-800 px-2.5 py-0.5 text-xs font-bold">
+                          <span className="inline-block rounded-md bg-purple-100 text-purple-800 dark:bg-purple-950/50 dark:text-purple-200 px-2.5 py-0.5 text-xs font-bold">
                             Publikasi Jurnal
                           </span>
                           <h3 className="mt-1 font-display text-base font-bold text-ink">

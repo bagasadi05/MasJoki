@@ -55,8 +55,8 @@ export function SimulasiContoh({
     <div className={tanpaBorderAtas ? "" : "border-t border-dashed border-line pt-14"}>
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-purple-200 bg-purple-50 px-3.5 py-1 text-xs font-bold text-purple-900 shadow-2xs">
-            <Lightbulb className="size-3.5 text-purple-700" />
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-purple-200 bg-purple-50 px-3.5 py-1 text-xs font-bold text-purple-900 shadow-2xs dark:border-purple-400/30 dark:bg-purple-950/40 dark:text-purple-200">
+            <Lightbulb className="size-3.5 text-purple-700 dark:text-purple-300" />
             <span>Simulasi Contoh Nyata</span>
           </span>
           <h3 className="mt-3 font-display text-[1.8rem] leading-tight tracking-[-0.02em] text-ink sm:text-[2.2rem]">

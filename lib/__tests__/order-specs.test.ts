@@ -3,6 +3,7 @@ import { test } from "node:test";
 import { submitOrder, submitSpecializedOrder } from "../../app/actions";
 import { normalisasiLayananKalkulator } from "../../components/calculator-context";
 import { SERVICE_ORDER_SPECS } from "../order-specs";
+import { buatBreadcrumbGraph, buatBreadcrumbSchema, buatOpenGraph } from "../schema";
 import { SERVICES } from "../services";
 
 function buatFormDataOrder(overrides: Record<string, string>): FormData {
@@ -78,4 +79,21 @@ test("submitSpecializedOrder menolak over-limit dan menerima qty dalam batas", a
   );
   assert.equal(wordValid.status, "ok");
   assert.ok(wordValid.waUrl?.includes("https://wa.me/"));
+});
+
+test("helper SEO schema menghasilkan BreadcrumbList absolut dan OpenGraph", () => {
+  const og = buatOpenGraph("Kalkulator Biaya", "Hitung estimasi tugas", "/hitung");
+  assert.equal(og.url, "/hitung");
+  assert.match(String(og.title), /Kalkulator Biaya/);
+
+  const schema = buatBreadcrumbSchema([{ name: "Kalkulator Biaya", path: "/hitung" }]);
+  assert.equal(schema["@context"], "https://schema.org");
+  assert.equal(schema["@type"], "BreadcrumbList");
+  assert.equal(schema.itemListElement.length, 2);
+  assert.match(schema.itemListElement[0].item, /^https?:\/\//);
+  assert.match(schema.itemListElement[1].item, /\/hitung$/);
+
+  const graphNode = buatBreadcrumbGraph([{ name: "FAQ", path: "/faq" }]);
+  assert.equal(graphNode["@type"], "BreadcrumbList");
+  assert.equal(graphNode.itemListElement[1].position, 2);
 });

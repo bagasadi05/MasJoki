@@ -8,23 +8,33 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { TransisiHalaman } from "@/components/transisi-halaman";
 import { faq } from "@/content/faq";
+import { buatBreadcrumbGraph, buatOpenGraph } from "@/lib/schema";
 import { waLink, waPesanUmum } from "@/lib/site";
 
+const TITLE = "Cara Kerja, Alur Pemesanan & FAQ Bantuan";
+const DESCRIPTION =
+  "Pelajari alur pemesanan tugas di Mas Joki yang cepat, tanpa perantara langsung ke Mas Joki, dengan garansi 2x revisi gratis, pembayaran e-wallet, dan FAQ lengkap.";
+
 export const metadata: Metadata = {
-  title: "Cara Kerja, Alur Pemesanan & FAQ Bantuan",
-  description:
-    "Pelajari alur pemesanan tugas di Mas Joki yang cepat, tanpa perantara langsung ke Mas Joki, dengan garansi 2x revisi gratis, pembayaran e-wallet, dan FAQ lengkap.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: "/cara-kerja" },
+  openGraph: buatOpenGraph(TITLE, DESCRIPTION, "/cara-kerja"),
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faq.map((item) => ({
-    "@type": "Question",
-    name: item.q,
-    acceptedAnswer: { "@type": "Answer", text: item.a },
-  })),
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      mainEntity: faq.map((item) => ({
+        "@type": "Question",
+        name: item.q,
+        acceptedAnswer: { "@type": "Answer", text: item.a },
+      })),
+    },
+    buatBreadcrumbGraph([{ name: "Cara Kerja & FAQ", path: "/cara-kerja" }]),
+  ],
 };
 
 const langkah = [

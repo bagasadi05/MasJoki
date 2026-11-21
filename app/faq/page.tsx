@@ -6,23 +6,33 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { TransisiHalaman } from "@/components/transisi-halaman";
 import { faq } from "@/content/faq";
+import { buatBreadcrumbGraph, buatOpenGraph } from "@/lib/schema";
 import { site, waLink, waPesanUmum } from "@/lib/site";
 
+const TITLE = "Tanya Jawab & FAQ Lengkap Asistensi Tugas Kuliah";
+const DESCRIPTION =
+  "Pertanyaan seputar keamanan privasi, revisi 2x gratis, metode pembayaran e-wallet, waktu pengerjaan tugas, dan format file di Mas Joki.";
+
 export const metadata: Metadata = {
-  title: "Tanya Jawab & FAQ Lengkap Asistensi Tugas Kuliah",
-  description:
-    "Pertanyaan seputar keamanan privasi, revisi 2x gratis, metode pembayaran e-wallet, waktu pengerjaan tugas, dan format file di Mas Joki.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: "/faq" },
+  openGraph: buatOpenGraph(TITLE, DESCRIPTION, "/faq"),
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faq.map((item) => ({
-    "@type": "Question",
-    name: item.q,
-    acceptedAnswer: { "@type": "Answer", text: item.a },
-  })),
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      mainEntity: faq.map((item) => ({
+        "@type": "Question",
+        name: item.q,
+        acceptedAnswer: { "@type": "Answer", text: item.a },
+      })),
+    },
+    buatBreadcrumbGraph([{ name: "FAQ", path: "/faq" }]),
+  ],
 };
 
 export default function HalamanFaq() {

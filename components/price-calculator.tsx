@@ -758,7 +758,7 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
                 {/* Banner Peringatan Melebihi Batas Hitungan Otomatis */}
                 {price.isOverLimit ? (
                   <div className="mt-4 rounded-2xl border border-amber/35 bg-amber-soft/85 p-4 text-[0.82rem] text-ink-soft">
-                    <p className="font-bold text-amber-950 flex items-center gap-2">
+                    <p className="font-bold text-amber-950 dark:text-amber-200 flex items-center gap-2">
                       <Lightbulb className="size-4 shrink-0 text-amber" />
                       <span>Dialihkan ke Mode Penawaran Khusus</span>
                     </p>
@@ -1333,7 +1333,7 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
           {result?.status === "error" && !galat ? (
             <p
               role="alert"
-              className="rounded-2xl border border-red-300 bg-red-50 p-4 text-[0.84rem] font-medium text-red-800"
+              className="rounded-2xl border border-red-300 bg-red-50 p-4 text-[0.84rem] font-medium text-red-800 dark:border-red-800 dark:bg-red-950/40 dark:text-red-200"
             >
               {result.message}
             </p>

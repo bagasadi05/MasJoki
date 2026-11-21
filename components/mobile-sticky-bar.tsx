@@ -87,7 +87,7 @@ export function MobileStickyBar() {
                 href={waLink(waPesanUmum)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="grid size-9 place-items-center rounded-xl border border-[#25D366]/35 bg-[#25D366]/10 text-[#166534] shadow-xs transition-transform active:scale-95 hover:bg-[#25D366]/20"
+                className="grid size-9 place-items-center rounded-xl border border-[#25D366]/35 bg-[#25D366]/10 text-[#166534] shadow-xs transition-transform active:scale-95 hover:bg-[#25D366]/20 dark:border-emerald-400/35 dark:bg-emerald-500/15 dark:text-emerald-300 dark:hover:bg-emerald-500/25"
                 aria-label="Chat WhatsApp Mas Joki"
               >
                 <svg
@@ -115,7 +115,7 @@ export function MobileStickyBar() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => lacak("chat_whatsapp", { lokasi: "mobile_bar" })}
-                className="inline-flex items-center gap-1.5 rounded-xl border border-[#25D366]/35 bg-[#25D366]/10 px-3 py-2 text-xs font-bold text-[#166534] shadow-xs transition-transform active:scale-95 hover:bg-[#25D366]/20"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-[#25D366]/35 bg-[#25D366]/10 px-3 py-2 text-xs font-bold text-[#166534] shadow-xs transition-transform active:scale-95 hover:bg-[#25D366]/20 dark:border-emerald-400/35 dark:bg-emerald-500/15 dark:text-emerald-300 dark:hover:bg-emerald-500/25"
                 aria-label="Chat WhatsApp Mas Joki"
               >
                 <svg

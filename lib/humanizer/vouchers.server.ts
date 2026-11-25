@@ -10,8 +10,11 @@ import { getSupabaseAdmin } from "@/lib/supabase";
  *    - Begitu diklaim, status langsung diubah menjadi `is_redeemed = true`.
  *    - Percobaan klaim kedua oleh siapa pun akan ditolak: "Voucher sudah expired".
  * 2. Voucher Promo Publik (seperti MASJOKIBARU):
- *    - Dicatat di tabel promo_claims per alamat IP agar tidak bisa diklaim berulang kali.
- * 3. Fallback HMAC in-memory untuk pengujian lokal & backward compatibility.
+ *    - Diklaim lewat RPC `claim_promo` yang mengikat klaim ke `wallet_id`
+ *      (bukan sekadar IP) dan menambah saldo dalam SATU transaksi, sehingga
+ *      klaim ganda mustahil dan klaim tidak bisa "hangus tanpa saldo".
+ *      Lihat supabase/migrations/20261113000100_promo_claim_atomic.sql.
+ * 3. Fallback HMAC/ledger in-memory untuk pengujian lokal & backward compatibility.
  */
 
 if (typeof window !== "undefined") {
@@ -125,78 +128,81 @@ export async function verifyVoucherCode(
     };
   }
 
-  // 1. CEK VOUCHER PROMO PUBLIK (mis. MASJOKIBARU)
+  // 1. VOUCHER PROMO PUBLIK (mis. MASJOKIBARU)
+  //    Klaim diikat ke wallet_id (akun yang login), bukan ke IP: IP mudah
+  //    berubah/dipalsukan, wallet tidak. Pencatatan klaim + pengkreditan saldo
+  //    dilakukan atomik oleh RPC `claim_promo`.
   const promo = PROMO_VOUCHERS[code];
   if (promo) {
-    const kunciMemori = `promo:${code}:${clientKey}`;
-
-    if (supabase) {
+    if (supabase && walletId) {
       try {
-        const { data: claim, error: claimErr } = await supabase
-          .from("promo_claims")
-          .select("id")
-          .eq("promo_code", code)
-          .eq("client_ip", clientKey)
-          .maybeSingle();
-
-        // Error baca jangan dianggap "belum pernah klaim".
-        if (claimErr) throw claimErr;
-
-        if (claim) {
-          return {
-            ok: false,
-            error:
-              "Voucher promo ini sudah pernah kamu klaim di perangkat/jaringan ini. Gunakan voucher lain atau beli paket di Mas Joki.",
-          };
-        }
-
-        // Catat klaim baru ke Supabase
-        const { error: insertErr } = await supabase.from("promo_claims").insert({
-          promo_code: code,
-          client_ip: clientKey,
+        const { data, error: rpcErr } = await supabase.rpc("claim_promo", {
+          p_promo_code: code,
+          p_wallet_id: walletId,
+          p_client_ip: clientKey,
+          p_words: promo.words,
         });
 
-        if (insertErr) {
-          // Bisa jadi balapan dua request: cek ulang sebelum menyerah.
-          const { data: recheck, error: recheckErr } = await supabase
-            .from("promo_claims")
-            .select("id")
-            .eq("promo_code", code)
-            .eq("client_ip", clientKey)
-            .maybeSingle();
-
-          if (recheckErr) throw insertErr;
-          if (recheck) {
+        if (rpcErr) {
+          if (rpcErr.code === "PGRST202") {
+            // Migrasi belum dijalankan: fallback ke ledger per-IP (di bawah).
+            console.error(
+              "Fungsi claim_promo belum ada. Jalankan supabase/migrations/20261113000100_promo_claim_atomic.sql.",
+            );
+          } else {
+            throw rpcErr;
+          }
+        } else {
+          const baris = Array.isArray(data) ? data[0] : data;
+          if (baris?.ok) {
+            return {
+              ok: true,
+              tokens: Number(baris.tokens),
+              remainingWords: Number(baris.remaining_words),
+              credited: true,
+              message: `${promo.note} (+${promo.words.toLocaleString("id-ID")} kata)!`,
+            };
+          }
+          if (baris?.reason === "already_claimed") {
             return {
               ok: false,
               error:
-                "Voucher promo ini sudah pernah kamu klaim di perangkat/jaringan ini. Gunakan voucher lain atau beli paket di Mas Joki.",
+                "Voucher promo ini sudah pernah kamu klaim di akun ini. Gunakan voucher lain atau beli paket di Mas Joki.",
             };
           }
-          throw insertErr;
+          if (baris?.reason === "wallet_not_found") {
+            return {
+              ok: false,
+              error: "Saldo token belum siap. Muat ulang halaman lalu coba lagi.",
+            };
+          }
+          if (production) {
+            return {
+              ok: false,
+              error: "Verifikasi voucher sedang tidak tersedia. Silakan coba lagi nanti.",
+            };
+          }
         }
-      } catch {
+      } catch (err: unknown) {
+        console.error("Gagal klaim promo via claim_promo:", err);
         if (production) {
           return {
             ok: false,
             error: "Verifikasi voucher sedang tidak tersedia. Silakan coba lagi nanti.",
           };
         }
-        // Fallback ke in-memory jika tabel promo_claims belum dibuat
-        if (sudahDipakai(kunciMemori, sekarang)) {
-          return {
-            ok: false,
-            error: "Voucher promo ini sudah pernah kamu klaim.",
-          };
-        }
       }
-    } else if (sudahDipakai(kunciMemori, sekarang)) {
-      return {
-        ok: false,
-        error: "Voucher promo ini sudah pernah kamu klaim di jaringan ini.",
-      };
     }
 
+    // Fallback pengembangan tanpa Supabase / migrasi belum jalan: ledger
+    // in-memory dikunci ke wallet (kalau ada) agar sama dengan perilaku produksi.
+    const kunciMemori = `promo:${code}:${walletId ?? clientKey}`;
+    if (sudahDipakai(kunciMemori, sekarang)) {
+      return {
+        ok: false,
+        error: "Voucher promo ini sudah pernah kamu klaim di akun ini.",
+      };
+    }
     catatPemakaian(kunciMemori, sekarang);
     return {
       ok: true,

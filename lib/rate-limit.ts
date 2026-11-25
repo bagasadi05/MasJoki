@@ -74,16 +74,22 @@ export function batasiKunci(
   return { ok: true };
 }
 
-/** Alamat IP permintaan saat ini, dipakai juga untuk ledger voucher. */
+/**
+ * Alamat IP permintaan saat ini, dipakai juga untuk pencatatan klaim voucher.
+ *
+ * HANYA header yang dijamin diisi platform/edge yang dipakai:
+ * - `x-vercel-forwarded-for` (Vercel selalu mengisinya; entri pertama = klien asli)
+ * - `cf-connecting-ip` (Cloudflare selalu mengisinya)
+ * - `x-real-ip` (proxy yang dikonfigurasi benar, mis. nginx `proxy_set_header X-Real-IP`)
+ *
+ * `x-forwarded-for` polos SENGAJA tidak dipakai: tanpa proxy tepercaya yang
+ * menambahkan entri, nilai itu 100% dikontrol klien sehingga rate limit dan
+ * dedup voucher bisa di-bypass dengan header palsu. Self-host di belakang proxy
+ * wajib mengisi `X-Real-IP` dan menghapus header masuk dari klien.
+ */
 export async function ambilAlamatIp(): Promise<string> {
   try {
     const h = await headers();
-
-    // Header yang diisi platform tepercaya lebih dulu. `x-forwarded-for`
-    // hanya dipakai terakhir dan diambil entri paling kanan (proxy terdekat),
-    // bukan entri paling kiri yang bisa dipalsukan klien.
-    const real = h.get("x-real-ip");
-    if (real?.trim()) return real.trim();
 
     const vercel = h.get("x-vercel-forwarded-for");
     if (vercel?.trim()) return vercel.split(",")[0].trim();
@@ -91,11 +97,8 @@ export async function ambilAlamatIp(): Promise<string> {
     const cf = h.get("cf-connecting-ip");
     if (cf?.trim()) return cf.trim();
 
-    const forwarded = h.get("x-forwarded-for");
-    if (forwarded?.trim()) {
-      const parts = forwarded.split(",").map((part) => part.trim()).filter(Boolean);
-      if (parts.length > 0) return parts[parts.length - 1];
-    }
+    const real = h.get("x-real-ip");
+    if (real?.trim()) return real.trim();
 
     return "lokal";
   } catch {

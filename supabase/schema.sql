@@ -57,14 +57,23 @@ create policy "Anon no direct access to humanizer wallets"
   to anon
   using (false);
 
--- 4. Tabel Pencatatan Klaim Promo Publik (misal MASJOKIBARU agar tidak bisa diklaim berulang)
+-- 4. Tabel Pencatatan Klaim Promo Publik (misal MASJOKIBARU agar tidak bisa diklaim berulang).
+--    Klaim diikat ke wallet_id (akun login), BUKAN ke IP: IP mudah berubah/dipalsukan.
+--    client_ip hanya untuk audit. Lihat juga migrasi 20261113000100 (RPC claim_promo).
 create table if not exists public.promo_claims (
   id uuid primary key default gen_random_uuid(),
   promo_code text not null,
   client_ip text not null,
-  created_at timestamptz default now() not null,
-  unique (promo_code, client_ip)
+  wallet_id uuid,
+  created_at timestamptz default now() not null
 );
+
+create unique index if not exists promo_claims_promo_wallet_key
+  on public.promo_claims (promo_code, wallet_id)
+  where wallet_id is not null;
+
+create index if not exists idx_promo_claims_promo_ip
+  on public.promo_claims (promo_code, client_ip);
 
 -- 5. Aktifkan Row Level Security (RLS)
 alter table public.token_licenses enable row level security;

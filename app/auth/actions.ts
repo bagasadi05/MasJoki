@@ -1,6 +1,5 @@
 "use server";
 
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
@@ -18,18 +17,15 @@ export type PasswordAuthResult =
   | { ok: false; error: string };
 
 /**
- * Origin untuk tautan konfirmasi email. Env situs dipakai lebih dulu: header
- * Host/x-forwarded-host bisa dipalsukan dan akan mengarahkan tautan verifikasi
- * ke domain penyerang (host header injection).
+ * Origin untuk tautan konfirmasi email. HANYA dari env `NEXT_PUBLIC_SITE_URL`:
+ * header Host/x-forwarded-host bisa dipalsukan klien dan akan mengarahkan
+ * tautan verifikasi ke domain penyerang (host header injection), jadi tidak
+ * pernah dipakai. Kalau env belum diset, kembalikan null — Supabase lalu
+ * memakai Site URL yang dikonfigurasi di dashboard (fail-closed).
  */
-async function getRequestOrigin(): Promise<string> {
+async function getRequestOrigin(): Promise<string | null> {
   const dikonfigurasi = process.env.NEXT_PUBLIC_SITE_URL?.trim().replace(/\/$/, "");
-  if (dikonfigurasi) return dikonfigurasi;
-
-  const requestHeaders = await headers();
-  const host = requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host");
-  const protocol = requestHeaders.get("x-forwarded-proto") ?? "http";
-  return host ? `${protocol}://${host}` : "http://localhost:3000";
+  return dikonfigurasi || null;
 }
 
 const BATAS_MASUK_PER_IP = 10;
@@ -106,11 +102,13 @@ export async function signUpWithPasswordAction(
 
   try {
     const supabase = await createSupabaseServerClient();
-    const redirectTo = `${await getRequestOrigin()}/auth/callback?next=/humanizer`;
+    const origin = await getRequestOrigin();
     const { data, error } = await supabase.auth.signUp({
       email: parsed.data.email,
       password: parsed.data.password,
-      options: { emailRedirectTo: redirectTo },
+      options: {
+        emailRedirectTo: origin ? `${origin}/auth/callback?next=/humanizer` : undefined,
+      },
     });
 
     if (error) {

@@ -28,10 +28,11 @@ import {
 /* ------------------------------------------------------------------ *
  * Cache hasil humanize
  * ------------------------------------------------------------------ *
- * Naskah + pengaturan yang sama persis tidak perlu dikirim ulang ke Gemini.
- * Menekan kuota saat pengguna menekan tombol berkali-kali, membuka ulang
- * halaman, atau mencoba lagi karena ragu. Cukup di memori proses: kalau
- * instance berganti, cache kosong lagi tanpa merusak apa pun.
+ * Naskah + pengaturan + wallet yang sama persis tidak perlu dikirim ulang ke
+ * Gemini. Menekan kuota saat pengguna menekan tombol berkali-kali, membuka
+ * ulang halaman, atau mencoba lagi karena ragu. Kunci cache mencakup walletId
+ * sehingga hasil olahan satu akun tidak bisa diakses akun lain. Cukup di memori
+ * proses: kalau instance berganti, cache kosong lagi tanpa merusak apa pun.
  */
 
 const CACHE_AI_TTL_MS = 30 * 60 * 1000;
@@ -424,18 +425,6 @@ export async function humanizeWithGeminiAction(
     };
   }
 
-  // Hasil identik yang sudah pernah diproses tidak perlu memanggil Gemini lagi.
-  const kunciCache = kunciHasilAi(trimmed, parsedOptions.data);
-  const hasilCache = ambilHasilAi(kunciCache);
-  if (hasilCache) {
-    return {
-      ok: true,
-      text: hasilCache,
-      chargedWords: 0,
-      cached: true,
-    };
-  }
-
   // Batasi panggilan per IP agar kuota API aman dari penyalahgunaan
   const limit = await cekRateLimit("gemini-ai", 30);
   if (!limit.ok) {
@@ -457,6 +446,21 @@ export async function humanizeWithGeminiAction(
 
   const wallet = await getOrCreateHumanizerWallet();
   if (!wallet.ok) return { ok: false, error: wallet.error, errorCode: "wallet" };
+
+  // Cache hasil identik — diperiksa SETELAH auth dan rate limit, dan dikunci
+  // per wallet: hasil olahan satu akun tidak bisa diambil akun lain (atau
+  // pengguna anonim) hanya dengan menebak teks yang sama.
+  const kunciCache = kunciHasilAi(trimmed, { ...parsedOptions.data, wallet: wallet.walletId });
+  const hasilCache = ambilHasilAi(kunciCache);
+  if (hasilCache) {
+    return {
+      ok: true,
+      text: hasilCache,
+      chargedWords: 0,
+      remainingWords: wallet.remainingWords,
+      cached: true,
+    };
+  }
 
   const charged = await deductHumanizerWords(wallet.walletId, words);
   if (!charged.ok) return { ok: false, error: charged.error, errorCode: "wallet" };

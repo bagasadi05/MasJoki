@@ -47,9 +47,10 @@ function generateKeyCode(kata: number): string {
   // Hanya pakai ringkasan "3K" bila benar-benar kelipatan 1.000. Angka seperti
   // 1.500 sebelumnya dibulatkan menjadi "2K" sehingga menyesatkan admin.
   const prefix = kata >= 1000 && kata % 1000 === 0 ? `${kata / 1000}K` : `${kata}`;
-  const part1 = randomBytes(2).toString("hex").toUpperCase();
-  const part2 = randomBytes(2).toString("hex").toUpperCase();
-  return `MJ-${prefix}-${part1}-${part2}`;
+  // 96 bit entropi (24 hex). Versi lama 2x16 bit terlalu mudah ditebak online
+  // bila rate limit bisa di-bypass.
+  const rahasia = randomBytes(12).toString("hex").toUpperCase();
+  return `MJ-${prefix}-${rahasia}`;
 }
 
 const keyCode = generateKeyCode(words);

@@ -44,6 +44,22 @@ test("Voucher: promo dibatasi sekali per pemakai", async () => {
   assert.equal(penggunaLain.ok, true, "voucher promo harus tetap bisa dipakai pengguna lain");
 });
 
+test("Voucher: promo diikat ke wallet, bukan ke IP", async () => {
+  resetVoucherLedger();
+
+  // Wallet sama dengan IP berbeda: tetap ditolak (IP tidak lagi menjadi kunci).
+  const walletA = "11111111-1111-4111-8111-111111111111";
+  const walletB = "22222222-2222-4222-8222-222222222222";
+
+  const pertama = await verifyVoucherCode("GPTZEROFREE", "5.5.5.5", walletA);
+  const ipBerbeda = await verifyVoucherCode("GPTZEROFREE", "6.6.6.6", walletA);
+  const walletLain = await verifyVoucherCode("GPTZEROFREE", "5.5.5.5", walletB);
+
+  assert.equal(pertama.ok, true);
+  assert.equal(ipBerbeda.ok, false, "ganti IP tidak boleh menembus klaim ganda");
+  assert.equal(walletLain.ok, true, "wallet lain tetap bisa klaim promo yang sama");
+});
+
 test("Voucher: tanpa secret server, voucher bertanda tangan ditolak", async () => {
   resetVoucherLedger();
   delete process.env.HUMANIZER_VOUCHER_SECRET;

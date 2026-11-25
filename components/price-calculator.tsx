@@ -174,8 +174,8 @@ const KATEGORI_GRUP: {
   },
   {
     id: "dokumen",
-    category: "Presentasi & Format Dokumen",
-    services: ["powerpoint", "word"],
+    category: "Dokumen, Presentasi & Referensi",
+    services: ["powerpoint", "word", "referensi"],
   },
   {
     id: "bahasa_desain",
@@ -319,7 +319,9 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
                 ? 80
                 : service.basis === "slide"
                   ? 50
-                  : 10;
+                  : service.basis === "referensi"
+                    ? 350
+                    : 10;
 
   const sliderStep =
     service.id === "word"
@@ -648,7 +650,9 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
                           ? "Jumlah Kata per Versi (Maks. 300 kata)"
                           : service.id === "word"
                             ? "Jumlah Halaman Dokumen Word"
-                            : `Jumlah ${BASIS_LABEL[service.basis]}`}
+                            : service.id === "referensi"
+                              ? "Jumlah Referensi (Maks. 300)"
+                              : `Jumlah ${BASIS_LABEL[service.basis]}`}
                   </label>
                   <span className="rounded-full bg-paper-2 px-3 py-1 text-xs font-bold text-ink-soft">
                     {price.equivalentLabel}

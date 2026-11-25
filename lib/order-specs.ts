@@ -223,6 +223,20 @@ export const SERVICE_ORDER_SPECS: Record<ServiceId, ServiceOrderSpec> = {
     fileHelperText:
       "Tautan Google Drive naskah materi, logo kampus, dan contoh poster referensi jika ada.",
   },
+  referensi: {
+    serviceId: "referensi",
+    headline: "Form Pemesanan Input Mendeley/Zotero",
+    subheadline:
+      "Daftar pustaka dimasukkan rapi ke reference manager pilihanmu, lengkap metadata, DOI, dan file lampiran.",
+    customQuestionTitle: "Reference Manager yang Kamu Pakai",
+    customQuestionOptions: [
+      { value: "mendeley", label: "Mendeley", badge: "Paling umum di kampus" },
+      { value: "zotero", label: "Zotero" },
+      { value: "keduanya", label: "Mendeley & Zotero sekaligus" },
+    ],
+    fileHelperText:
+      "Tautan Google Drive atau file daftar pustaka (Word/PDF/RIS/CSV) yang mau dimasukkan, plus file PDF jurnalnya kalau ada.",
+  },
   turnitin_ai: {
     serviceId: "turnitin_ai",
     headline: "Form Penawaran Penurunan Skor Turnitin & AI",

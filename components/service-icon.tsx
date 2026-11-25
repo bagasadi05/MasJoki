@@ -11,6 +11,7 @@ export const SERVICE_ICON_PATHS: Record<ServiceId, string> = {
   word: "/icons/layanan/word.svg",
   terjemah: "/icons/layanan/terjemah.svg",
   paket_abstrak: "/icons/layanan/paket_abstrak.svg",
+  referensi: "/icons/layanan/referensi.svg",
   desain: "/icons/layanan/desain.svg",
   turnitin_ai: "/icons/layanan/turnitin_ai.svg",
 };
@@ -217,6 +218,24 @@ export function ServiceIcon({ id, className = "size-5", size }: ServiceIconProps
           {/* Lencana ID+EN Hijau */}
           <rect x="23" y="32" width="19" height="9" rx="4.5" fill="#10B981" stroke="#FFFFFF" strokeWidth="1.5" />
           <text x="25.5" y="38.5" fontFamily="sans-serif" fontWeight="800" fontSize="6.5" fill="#FFFFFF">ID+EN</text>
+        </svg>
+      );
+
+    case "referensi":
+      return (
+        <svg {...props}>
+          {/* Tumpukan Buku Perpustakaan */}
+          <rect x="8" y="26" width="32" height="10" rx="3" fill="#EDE9FE" stroke="#6556A3" strokeWidth="2.5" />
+          <rect x="11" y="17" width="27" height="10" rx="3" fill="#FFFFFF" stroke="#6556A3" strokeWidth="2.5" />
+          <rect x="14" y="8" width="24" height="10" rx="3" fill="#EFF6FF" stroke="#6556A3" strokeWidth="2.5" />
+          {/* Pembatas & Garis Judul Buku */}
+          <path d="M14 33H20M17 22H23M20 13H26" stroke="#A78BFA" strokeWidth="2" strokeLinecap="round" />
+          {/* Kartu Sitasi (Author, 2024) melayang */}
+          <g transform="translate(28, 24)">
+            <rect x="0" y="0" width="15" height="13" rx="2.5" fill="#FFFFFF" stroke="#2563EB" strokeWidth="2" />
+            <path d="M3 4.5H12M3 8H9" stroke="#2563EB" strokeWidth="1.5" strokeLinecap="round" />
+            <circle cx="11.5" cy="10.5" r="1.5" fill="#10B981" />
+          </g>
         </svg>
       );
 

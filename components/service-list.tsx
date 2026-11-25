@@ -31,6 +31,8 @@ export const DESKRIPSI_AWAM: Record<ServiceId, string> = {
     "Menerjemahkan teks akademik Indonesia–Inggris secara luwes dan kontekstual, tersedia opsi Paket Abstrak.",
   paket_abstrak:
     "Pasangan abstrak dua versi (Indonesia + Inggris) untuk skripsi atau artikel jurnal.",
+  referensi:
+    "Daftar pustakamu dimasukkan rapi ke Mendeley atau Zotero — metadata, DOI, dan file lampiran terpasang, siap disitasi otomatis.",
   desain:
     "Membuat cover tugas, poster ilmiah, atau infografis rapi lengkap dengan file sumber yang bisa diedit.",
   turnitin_ai:

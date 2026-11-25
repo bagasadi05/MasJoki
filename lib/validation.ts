@@ -11,6 +11,7 @@ const SERVICE_IDS = [
   "word",
   "terjemah",
   "paket_abstrak",
+  "referensi",
   "desain",
   "turnitin_ai",
 ] as const;

@@ -145,7 +145,9 @@ export function SpecializedOrderForm({ service }: SpecializedOrderFormProps) {
                 ? 80
                 : service.basis === "slide"
                   ? 60
-                  : 10;
+                  : service.basis === "referensi"
+                    ? 350
+                    : 10;
 
   const sliderStep =
     service.id === "paket_abstrak"

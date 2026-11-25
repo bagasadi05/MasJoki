@@ -260,6 +260,36 @@ export const KONTEN_LAYANAN: Record<ServiceId, KontenLayanan> = {
       },
     ],
   },
+  referensi: {
+    intro:
+      "Daftar pustakamu dimasukkan satu per satu ke Mendeley atau Zotero sampai rapi: metadata lengkap, DOI terisi, dan file lampiran ikut terpasang — siap kamu sitasi otomatis saat nulis.",
+    cakupan: [
+      "Input per referensi ke Mendeley atau Zotero (pilihan kamu)",
+      "Metadata diperiksa manual: judul, penulis, tahun, jurnal, volume, halaman",
+      "DOI diisi dan dicocokkan; file PDF lampiran di-attach kalau kamu kirim",
+      "Duplikat di library lama dibersihkan, folder/koleksi dirapikan sesuai kategori",
+      "Hasil dikirim sebagai file library (.bib / .ris) atau screenshot library yang sudah rapi",
+    ],
+    siapkan: [
+      "File daftar pustaka (Word, PDF, RIS, atau CSV) dari dosen/draftmu",
+      "File PDF jurnalnya kalau ada, supaya lampiran ikut terpasang",
+      "Pilihan aplikasi: Mendeley atau Zotero",
+    ],
+    faq: [
+      {
+        q: "Berapa harga per referensinya?",
+        a: "Rp 20.000 per 10 referensi (setara Rp 2.000 per referensi). Makin banyak, makin murah: 100 referensi ke atas potongan 5%, 200 ke atas potongan 10%.",
+      },
+      {
+        q: "Apakah metadata dijamin 100% benar?",
+        a: "Tidak ada yang bisa menjamin 100%, makanya setiap entri tetap dicek manual dan DOI dicocokkan. Kalau ada yang keliru, revisi gratis sampai cocok — itu bagian dari 2 kali revisi gratis.",
+      },
+      {
+        q: "Kalau daftar pustakanya banyak sekali (lebih dari 300)?",
+        a: "Di atas 300 referensi harganya jadi penawaran khusus via WhatsApp, karena library besar sering berantakan (duplikat, metadata rusak) dan waktunya baru bisa dihitung setelah saya lihat dulu.",
+      },
+    ],
+  },
   desain: {
     intro:
       "Membuat cover, poster, atau infografis untuk keperluan kampus dan organisasi, lengkap dengan file sumber yang bisa kamu edit.",

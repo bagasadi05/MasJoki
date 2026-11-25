@@ -7,7 +7,8 @@ export type Basis =
   | "dokumen"
   | "artikel"
   | "paket"
-  | "desain";
+  | "desain"
+  | "referensi";
 
 export type ServiceId =
   | "parafrase"
@@ -20,6 +21,7 @@ export type ServiceId =
   | "word"
   | "terjemah"
   | "paket_abstrak"
+  | "referensi"
   | "desain"
   | "turnitin_ai";
 
@@ -41,6 +43,8 @@ export interface Service {
   maxWords?: number;
   /** Batas maksimal halaman untuk layanan tertentu (mis. Word 120 halaman). */
   maxPages?: number;
+  /** Batas maksimal referensi untuk input Mendeley/Zotero (di atas itu jadi penawaran manual). */
+  maxRefs?: number;
   /** Estimasi pengerjaan pada tenggat normal. */
   turnaround: string;
   presets: number[];
@@ -60,6 +64,7 @@ export const BASIS_LABEL: Record<Basis, string> = {
   artikel: "artikel",
   paket: "paket",
   desain: "desain",
+  referensi: "referensi",
 };
 
 export const SERVICES: Service[] = [
@@ -204,6 +209,24 @@ export const SERVICES: Service[] = [
     turnaround: "6–12 jam",
     presets: [300, 500, 1000, 3000],
   },
+  // Input daftar pustaka ke Mendeley/Zotero: Rp 20.000 per 10 referensi
+  // (setara Rp 2.000/referensi — murah di pasaran, tetap ada margin untuk
+  // kerja manual metadata/DOI/lampiran). Di atas 300 referensi jadi penawaran.
+  {
+    id: "referensi",
+    name: "Input Mendeley/Zotero",
+    promise:
+      "Daftar pustakamu dimasukkan rapi ke Mendeley atau Zotero: metadata lengkap, DOI, dan file lampiran ikut terpasang.",
+    basis: "referensi",
+    chunk: 10,
+    pricePerChunk: 20000,
+    minQty: 10,
+    defaultQty: 30,
+    minPrice: 0,
+    maxRefs: 300,
+    turnaround: "6–12 jam",
+    presets: [10, 30, 50, 100],
+  },
   // REVISI 2(b): Paket Abstrak (ID+EN) flat Rp 35.000 (maks. 300 kata per versi)
   {
     id: "paket_abstrak",
@@ -259,6 +282,7 @@ const CATALOG_ORDER: ServiceId[] = [
   "parafrase",
   "makalah",
   "jurnal",
+  "referensi",
   "powerpoint",
   "word",
   "terjemah",

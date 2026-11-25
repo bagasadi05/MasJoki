@@ -148,6 +148,7 @@ export const WARNA_LAYANAN: Record<ServiceId, AksenId> = {
   word: "langit",
   terjemah: "olive",
   paket_abstrak: "olive",
+  referensi: "lilac",
   desain: "rose",
   turnitin_ai: "mint",
 };
@@ -164,6 +165,7 @@ export const INISIAL: Record<ServiceId, string> = {
   word: "Wo",
   terjemah: "Te",
   paket_abstrak: "Ab",
+  referensi: "Re",
   desain: "De",
   turnitin_ai: "Tu",
 };

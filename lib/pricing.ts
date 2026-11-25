@@ -142,6 +142,12 @@ export const TURNAROUND_ESTIMATES: Record<
     cepat: "2–3 hari kerja",
     kilat: "20–24 jam prioritas",
   },
+  referensi: {
+    santai: "2–3 hari kerja",
+    normal: "1–2 hari kerja",
+    cepat: "12–24 jam",
+    kilat: "4–8 jam",
+  },
   powerpoint: {
     santai: "5–7 hari kerja",
     normal: "3–4 hari kerja",
@@ -239,6 +245,10 @@ export const VOLUME_TIERS: Record<Service["basis"], VolumeDiscountTier[]> = {
   desain: [
     { minQty: 5, rate: 0.1, label: "Diskon paket ≥5 desain (10%)" },
     { minQty: 3, rate: 0.05, label: "Diskon paket ≥3 desain (5%)" },
+  ],
+  referensi: [
+    { minQty: 200, rate: 0.1, label: "Diskon partai besar ≥200 referensi (10%)" },
+    { minQty: 100, rate: 0.05, label: "Diskon kuantitas ≥100 referensi (5%)" },
   ],
 };
 
@@ -379,6 +389,8 @@ export function hitungKonversiEkuivalen(service: Service, qty: number): string {
       return `Perapian menyeluruh margin, heading & daftar isi (${qty} file)`;
     case "desain":
       return `Resolusi cetak & digital tinggi + file sumber (${qty} desain)`;
+    case "referensi":
+      return `Library siap pakai, langsung bisa disitasi otomatis (${qty} referensi)`;
     default:
       return `${qty} ${service.basis}`;
   }
@@ -487,6 +499,14 @@ export function computePrice(
       service.chunk === 1
         ? `${qty} ${BASIS_LABEL[service.basis] ?? service.basis} × ${rupiah(unitPrice)}`
         : `${qty.toLocaleString("id-ID")} ${BASIS_LABEL[service.basis] ?? service.basis} (${units} × ${rupiah(unitPrice)})`;
+  }
+
+  // Batas maksimal input referensi (Mendeley/Zotero): di atas ini perlu
+  // penawaran manual karena library besar sering berantakan (duplikat, metadata
+  // rusak) sehingga lama pengerjaan tidak bisa dihitung otomatis.
+  if (!isOverLimit && service.maxRefs && qty > service.maxRefs) {
+    isOverLimit = true;
+    overLimitMessage = `Input di atas ${service.maxRefs.toLocaleString("id-ID")} referensi tidak dihitung otomatis. Kirim daftar pustakamu lewat WhatsApp untuk penawaran khusus.`;
   }
 
   // Diskon kuantitas hanya untuk layanan non-paket dan non-tier

@@ -13,6 +13,37 @@ import { getService } from "../services";
 const parafrase = getService("parafrase"); // Rp3.000 / 100 kata
 const word = getService("word"); // tier per halaman
 const artikel = getService("artikel_ilmiah"); // flat Rp250.000
+const referensi = getService("referensi"); // Rp20.000 / 10 referensi
+
+test("input referensi: harga per chunk 10, min order 10 tidak kena minimum transaksi", () => {
+  const hasil = computePrice(referensi, 30, "santai", "standar");
+  assert.equal(hasil.units, 3);
+  assert.equal(hasil.total, 60_000);
+  assert.equal(hasil.minimumFee, 0, "Rp 60.000 sudah di atas minimum Rp 15.000");
+
+  const min = computePrice(referensi, 10, "santai", "standar");
+  assert.equal(min.total, 20_000);
+  assert.equal(min.minimumFee, 0, "Rp 20.000 masih di atas minimum transaksi");
+});
+
+test("input referensi: diskon kuantitas ≥100 (5%) dan ≥200 (10%)", () => {
+  const hasil100 = computePrice(referensi, 100, "santai", "standar");
+  assert.equal(hasil100.discountAmount, 10_000); // 10 chunk × 20.000 = 200.000, 5% = 10.000
+  assert.equal(hasil100.total, 190_000);
+
+  const hasil200 = computePrice(referensi, 200, "santai", "standar");
+  assert.equal(hasil200.discountAmount, 40_000); // 20 chunk × 20.000 = 400.000, 10% = 40.000
+  assert.equal(hasil200.total, 360_000);
+});
+
+test("input referensi: di atas 300 over-limit jadi penawaran manual", () => {
+  const hasil = computePrice(referensi, 301, "santai", "standar");
+  assert.equal(hasil.isOverLimit, true);
+  assert.ok(hasil.overLimitMessage?.includes("300"));
+
+  const batas = computePrice(referensi, 300, "santai", "standar");
+  assert.equal(batas.isOverLimit, false);
+});
 
 test("pembulatan rupiah selalu ke kelipatan 500", () => {
   assert.equal(bulatkan(12_340), 12_500);

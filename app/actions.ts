@@ -4,7 +4,7 @@ import { createHash } from "node:crypto";
 
 import { pesanPesanan, pesanOrderSpesifik, pesanPenawaran } from "@/lib/pesan";
 import { z } from "zod";
-import { computePrice } from "@/lib/pricing";
+import { hitungOrder } from "@/lib/order-hitung";
 import { ambilAlamatIp, cekRateLimit } from "@/lib/rate-limit";
 import { getService } from "@/lib/services";
 import { waLink } from "@/lib/site";
@@ -19,7 +19,6 @@ import { countWords } from "@/lib/humanizer/analyzer";
 import {
   fieldErrors,
   firstIssue,
-  orderSchema,
   specializedOrderSchema,
   quoteSchema,
   voucherCodeSchema,
@@ -111,7 +110,7 @@ export async function submitOrder(
     .map((item) => String(item))
     .filter(Boolean);
 
-  const parsed = orderSchema.safeParse({
+  const hasil = hitungOrder({
     serviceId: formData.get("serviceId"),
     qty: formData.get("qty"),
     deadlineId: formData.get("deadlineId"),
@@ -123,33 +122,15 @@ export async function submitOrder(
     notes: formData.get("notes") ?? "",
   });
 
-  if (!parsed.success) {
+  if (!hasil.ok) {
     return {
       status: "error",
-      message: firstIssue(parsed.error),
-      fieldErrors: fieldErrors(parsed.error),
+      message: hasil.message,
+      fieldErrors: hasil.fieldErrors,
     };
   }
 
-  const data = parsed.data;
-  const service = getService(data.serviceId);
-  // Harga dihitung ulang di server; angka dari browser tidak dipercaya.
-  const price = computePrice(
-    service,
-    data.qty,
-    data.deadlineId,
-    data.difficultyId,
-    data.addons,
-  );
-
-  if (service.customQuoteOnly || price.isOverLimit) {
-    return {
-      status: "error",
-      message:
-        price.overLimitMessage ??
-        "Jumlah pesanan melebihi batas hitungan otomatis. Silakan gunakan mode Minta Penawaran.",
-    };
-  }
+  const { data, service, price } = hasil;
 
   const pesan = pesanPesanan({
     service,
@@ -209,24 +190,19 @@ export async function submitSpecializedOrder(
     };
   }
 
-  const data = parsed.data;
-  const service = getService(data.serviceId);
-  const price = computePrice(
-    service,
-    data.qty,
-    data.deadlineId,
-    data.difficultyId,
-    data.addons,
-  );
-
-  if (service.customQuoteOnly || price.isOverLimit) {
+  const hasil = hitungOrder(parsed.data);
+  if (!hasil.ok) {
     return {
       status: "error",
-      message:
-        price.overLimitMessage ??
-        "Jumlah pesanan melebihi batas hitungan otomatis. Silakan gunakan mode Minta Penawaran.",
+      message: hasil.message,
+      fieldErrors: hasil.fieldErrors,
     };
   }
+
+  // `data` tetap SpecializedOrderInput (memuat field tambahan checkerTool dsb.);
+  // hitungOrder hanya dipakai untuk validasi + harga server.
+  const { service, price } = hasil;
+  const data = parsed.data;
 
   const pesan = pesanOrderSpesifik({
     service,

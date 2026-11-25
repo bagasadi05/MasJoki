@@ -27,6 +27,8 @@ import { useEstimatedDateRange } from "./use-wib-status";
 import { AnimatedPrice } from "./animated-number";
 import { Nota } from "./nota";
 import { ServiceIcon } from "./service-icon";
+import { UnduhKwitansi } from "./unduh-kwitansi";
+import type { KwitansiPayload } from "@/lib/kwitansi";
 import { aksenLayanan } from "@/lib/aksen";
 import { angka, rupiah } from "@/lib/format";
 import {
@@ -253,6 +255,7 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
   }, [preselectedQty, preselectedDeadline, serviceId, clearPreselected]);
 
   const [result, setResult] = useState<ActionResult | null>(null);
+  const [kwitansiPayload, setKwitansiPayload] = useState<KwitansiPayload | null>(null);
   const [pending, startTransition] = useTransition();
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -394,6 +397,19 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
           : await submitQuote(null, data);
       setResult(jawaban);
       if (jawaban.status === "ok") {
+        // Simpan data mentah pesanan sebelum form.reset() supaya tombol
+        // kwitansi PDF mengirim data yang sama ke server (divalidasi ulang).
+        if (mode === "hitung") {
+          setKwitansiPayload({
+            serviceId: String(data.get("serviceId") ?? ""),
+            qty: Number(data.get("qty") ?? 0),
+            deadlineId: String(data.get("deadlineId") ?? ""),
+            difficultyId: String(data.get("difficultyId") ?? "standar"),
+            addons: data.getAll("addons").map(String).filter(Boolean),
+            name: String(data.get("name") ?? ""),
+            whatsapp: String(data.get("whatsapp") ?? ""),
+          });
+        }
         lacak(mode === "hitung" ? "order_terkirim" : "penawaran_terkirim", {
           layanan: String(data.get("serviceId") ?? ""),
         });
@@ -442,7 +458,11 @@ export function PriceCalculator({ ringkas = false }: { ringkas?: boolean } = {})
         }
         total={mode === "hitung" ? price.total : null}
         dpAmount={mode === "hitung" ? price.dpAmount : null}
-        onReset={() => setResult(null)}
+        kwitansiPayload={mode === "hitung" ? kwitansiPayload : null}
+        onReset={() => {
+          setResult(null);
+          setKwitansiPayload(null);
+        }}
       />
     );
   }
@@ -1487,6 +1507,7 @@ function SuccessPanel({
   detail,
   total,
   dpAmount,
+  kwitansiPayload,
   onReset,
 }: {
   result: ActionResult;
@@ -1495,6 +1516,7 @@ function SuccessPanel({
   detail?: string;
   total: number | null;
   dpAmount: number | null;
+  kwitansiPayload?: KwitansiPayload | null;
   onReset: () => void;
 }) {
   const [tersalin, setTersalin] = useState(false);
@@ -1617,6 +1639,10 @@ function SuccessPanel({
                 Hitung Lagi
               </button>
             </div>
+
+            {kwitansiPayload ? (
+              <UnduhKwitansi payload={kwitansiPayload} className="mt-3" />
+            ) : null}
 
             <p className="mt-3.5 text-center text-xs leading-relaxed text-muted">
               Format chat sudah tersusun rapi otomatis. Kamu cukup klik tombol kirim di WhatsApp.

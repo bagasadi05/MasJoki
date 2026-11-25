@@ -31,6 +31,8 @@ const nextConfig: NextConfig = {
   // Jangan bocorkan versi framework lewat header respons.
   poweredByHeader: false,
   partialPrefetching: true,
+  // react-pdf dipakai apa adanya di server (route /kwitansi), jangan di-bundle.
+  serverExternalPackages: ["@react-pdf/renderer"],
   async headers() {
     return [
       {

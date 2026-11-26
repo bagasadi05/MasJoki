@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ArrowRight, Calculator } from "lucide-react";
+import { ArrowRight, Calculator, ReceiptText } from "lucide-react";
 import { getCurrentUserAction, signOutAction } from "@/app/auth/actions";
 import type { AuthUserSummary } from "@/app/auth/actions";
 import { MenuSeluler } from "./menu-seluler";
@@ -111,6 +111,16 @@ export function SiteHeader() {
         {/* CTA & Mobile Trigger */}
         <div className="flex shrink-0 items-center gap-2 sm:gap-2.5">
           <ThemeToggle />
+          {!authLoading && currentUser?.isAdmin ? (
+            <Link
+              href="/admin/kwitansi"
+              className="hidden shrink-0 cursor-pointer items-center gap-1.5 whitespace-nowrap rounded-xl border border-line bg-card px-3 py-2 text-xs font-bold text-ink-soft transition hover:border-brand/40 hover:text-brand sm:inline-flex"
+              title="Buat kwitansi custom"
+            >
+              <ReceiptText className="size-3.5" />
+              <span>Kwitansi</span>
+            </Link>
+          ) : null}
           {!authLoading && currentUser ? (
             <form action={signOutAction} className="flex items-center gap-2">
               <span
@@ -144,7 +154,13 @@ export function SiteHeader() {
             <span>Hitung Biaya</span>
             <ArrowRight className="size-3.5" />
           </Link>
-          <MenuSeluler items={navigasi} />
+          <MenuSeluler
+            items={
+              currentUser?.isAdmin
+                ? [...navigasi, { href: "/admin/kwitansi", label: "Kwitansi" }]
+                : navigasi
+            }
+          />
         </div>
       </div>
     </header>

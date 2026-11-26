@@ -4,12 +4,15 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { cekRateLimit, cekRateLimitKunci, type HasilLimit } from "@/lib/rate-limit";
+import { isEmailAdmin } from "@/lib/admin-auth";
 
 export interface AuthUserSummary {
   id: string;
   email: string | null;
   name: string;
   avatarUrl: string | null;
+  /** True kalau email user terdaftar di ADMIN_EMAILS (server-only, fail-closed). */
+  isAdmin: boolean;
 }
 
 export type PasswordAuthResult =
@@ -143,6 +146,7 @@ export async function getCurrentUserAction(): Promise<AuthUserSummary | null> {
       email: data.user.email ?? null,
       name,
       avatarUrl: typeof metadata.avatar_url === "string" ? metadata.avatar_url : null,
+      isAdmin: isEmailAdmin(data.user.email),
     };
   } catch {
     return null;
